@@ -1,4 +1,4 @@
-import Navigation from "./navigation";
+import Navigation from "../navigation";
 
 export default function Serwis() {
   return (
@@ -6,6 +6,5 @@ export default function Serwis() {
       <Navigation />
       <p>Zaplanowane na przyszłość</p>
     </main>
-    
   );
 }
