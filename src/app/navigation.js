@@ -2,7 +2,7 @@ import NavButton from "./nav_button";
 
 
 const navigation = [
-  { name: 'Strona Główna', href: '', current: true },
+  { name: 'Strona Główna', href: '/', current: true },
   { name: 'Rowery', href: 'rowery', current: false },
   { name: 'Serwis', href: 'serwis', current: false },
 ]

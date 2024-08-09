@@ -1,7 +1,3 @@
-import Navigation from "../navigation";
-
-// const bike = {name, size, wheel, price, number, gala, gesia, wojc, a, b, d, avail}
-
 export default function BikeRecord({bike}) {
   return (
     <tr>
@@ -19,5 +15,4 @@ export default function BikeRecord({bike}) {
       <td>{bike.avail}</td>
     </tr>
   )
-
 }
