@@ -1,5 +1,5 @@
-import NavButton from "./nav_button";
-
+'use client';
+import NavButton from "../../components/navigation/nav_button";
 
 const navigation = [
   { name: 'Strona Główna', href: '/', current: true },
@@ -13,7 +13,7 @@ function classNames(...classes) {
 
 export default function Navigation() {
   const navItems = navigation.map(item =>
-    <NavButton key={item.title} title={item.name} href={item.href} current={item.current}></NavButton>
+    <NavButton key={item.name} title={item.name} href={item.href} current={item.current}></NavButton>
   )
   return (
     <nav className="flex gap-x-10">{navItems}</nav>

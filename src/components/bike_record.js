@@ -1,3 +1,4 @@
+'use client';
 export default function BikeRecord({bike}) {
   return (
     <tr>

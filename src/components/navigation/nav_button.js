@@ -1,3 +1,4 @@
+'use client';
 export default function NavButton({href, title, current}) {
   return(
     <div className={current ? "navButtonCurrent" : "navButton"}>
