@@ -1,5 +1,4 @@
 "use client";
-import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 // Component that turns data fetch from 'src' to <option> list.
