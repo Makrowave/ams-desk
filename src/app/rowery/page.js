@@ -117,7 +117,6 @@ export default function Rowery() {
           />
         </div>
         {/*Table*/}
-        {/*Table*/}
         <div className="col-span-5 flex justify-center bg-slate-700 rounded-lg mx-4">
           <table className="table-fixed min-w-full text-center">
             <TableHeader placeCount={placeCount} />
