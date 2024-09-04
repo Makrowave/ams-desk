@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import FetchSelect from "@/components/filtering/fetch_select";
 import TableHeader from "@/components/table/table_header";
 import TableBody from "@/components/table/table_body";
+import FilterInput from "@/components/filtering/filter_input";
 
 
 const defaults = {
@@ -57,19 +58,18 @@ export default function Rowery() {
             <p>Filtruj</p>
           </div>
           {/* Name */}
-          <div className="flex justify-center flex-col py-2">
-            <div className="flex justify-center">
-              <p>Nazwa</p>
-            </div>
-            <input className="text-black text-center" placeholder="Dowolny" value={name} onChange={e => { setName(e.target.value.trim().toLowerCase()) }}></input>
-          </div>
+          <FilterInput
+            title={"Nazwa"}
+            value={name}
+            onChange={e => { setName(e.target.value.trim().toLowerCase()) }}
+          />
           {/* Size */}
-          <div className="flex justify-center flex-col py-2">
-            <div className="flex justify-center">
-              <p>Rozmiar</p>
-            </div>
-            <input className="text-black text-center" placeholder="Dowolny" value={size} onChange={e => { setSize(e.target.value) }}></input>
-          </div>
+          <FilterInput
+            title={"Rozmiar"}
+            value={size}
+            onChange={e => { setSize(e.target.value) }}
+
+          />
           {/* Wheel size */}
           <div className="flex justify-center flex-col py-2">
             <div className="flex justify-center">
@@ -89,12 +89,12 @@ export default function Rowery() {
             </div>
           </div>
           {/*Manufacturer*/}
-            <FetchSelect value={make} 
-              onChange={e => { setMake(e.target.value)}} 
-              src='https://localhost:7077/api/Manufacturers' 
-              queryKey='manufacturers' 
-              title = 'Producent'  
-            />
+          <FetchSelect value={make}
+            onChange={e => { setMake(e.target.value) }}
+            src='https://localhost:7077/api/Manufacturers'
+            queryKey='manufacturers'
+            title='Producent'
+          />
         </div>
         <div className="col-span-5 flex justify-center">
           <table className="table-auto min-w-full text-center">

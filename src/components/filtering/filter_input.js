@@ -1,17 +1,13 @@
 "use client";
-import { useState } from 'react';
 
-export default function FilterInput({onChange, className}) {
-  const [isEmpty, setIsEmpty] = useState(true);
-  const [value, setValue] = useState('');
-  function handleChange() {
-    if(value == '' || value === null) {
-      setIsEmpty(true);
-    } else {
-      setIsEmpty(false);
-    }
-  }
+export default function FilterInput({ onChange, value, title }) {
+
   return (
-    <input className={className} type='text' onChange={e => {setValue(e.target.value); onChange; handleChange()}}></input>
+    <div className="flex justify-center flex-col py-2">
+      <div className="flex justify-center">
+        <p>{title}</p>
+      </div>
+      <input className="text-black text-center" placeholder="Dowolny" value={value} onChange={onChange}></input>
+    </div>
   );
 }
