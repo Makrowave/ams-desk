@@ -18,7 +18,7 @@ export default function TableBody({ src, placeCount }) {
   })
 
   if (isPending) {
-    return <tbody>Loading...</tbody>
+    return <tbody></tbody>
   }
 
   if (isError) {

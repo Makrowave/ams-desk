@@ -7,8 +7,6 @@ import TableBody from "@/components/table/table_body";
 import FilterInput from "@/components/filtering/filter_input";
 import FilterSelect from "@/components/filtering/filter_select";
 import SingleCheckbox from "@/components/filtering/single_checkbox";
-import FilterSelect from "@/components/filtering/filter_select";
-import SingleCheckbox from "@/components/filtering/single_checkbox";
 
 
 const defaults = {
@@ -32,7 +30,6 @@ export default function Rowery() {
   const [number, setNumber] = useState(defaults.number);
   const [avail, setAvail] = useState(defaults.avail);
   const [ready, setReady] = useState(defaults.ready);
-  const [electric, setElectric] = useState(defaults.electric);
   const [electric, setElectric] = useState(defaults.electric);
   const [make, setMake] = useState(defaults.make);
   const [placeCount, setPlaceNumber] = useState(6);
@@ -69,35 +66,16 @@ export default function Rowery() {
           {/* Name */}
           <FilterInput
             title="Nazwa"
-            title="Nazwa"
             value={name}
-            onChange={e => { setName(e.target.value) }}
             onChange={e => { setName(e.target.value) }}
           />
           {/* Size */}
           <FilterInput
             title="Rozmiar"
-            title="Rozmiar"
             value={size}
             onChange={e => { setSize(e.target.value) }}
           />
           {/* Wheel size */}
-          <FilterSelect
-            title="Rozmiar koła"
-            value={wheel}
-            onChange={e => { setWheel(e.target.value) }}
-          >
-            <option value=''> Dowolny </option>
-            <option value='12'> 12 </option>
-            <option value='14'> 14 </option>
-            <option value='16'> 16 </option>
-            <option value='20'> 20 </option>
-            <option value='24'> 24 </option>
-            <option value='26'> 26 </option>
-            <option value='27'> 27 </option>
-            <option value='28'> 28 </option>
-            <option value='29'> 29 </option>
-          </FilterSelect>
           <FilterSelect
             title="Rozmiar koła"
             value={wheel}
@@ -135,7 +113,6 @@ export default function Rowery() {
             src='https://localhost:7077/api/Manufacturers'
             queryKey='manufacturers'
             title='Producent'
-            default_option={defaults.make}
             default_option={defaults.make}
           />
         </div>
