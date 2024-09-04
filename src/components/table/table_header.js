@@ -43,8 +43,6 @@ export default function TableHeader(placeCount) {
       .sort((a, b) => a.placeId - b.placeId)
       .map((place) => (<th key={place.placeId}>{place.placeName}</th>))
 
-  console.log(data);
-
   return (
     thead_body(p_data)
   );

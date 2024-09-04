@@ -44,7 +44,7 @@ export default function Rowery() {
     setAvail(defaults.avail);
   }
   function filter() {
-    
+
   }
   return (
     <main>
@@ -88,24 +88,19 @@ export default function Rowery() {
               <p className="pl-2">Dostępny</p>
             </div>
           </div>
-          {/* Wheel size */}
-          <div className="flex justify-center flex-col py-2">
-            <div className="flex justify-center">
-              <p>Producent</p>
-            </div>
-            <div className="flex justify-center items-center py-2">
-              <select className="text-black text-center" value={make} onChange={e => { setMake(e.target.value) }}>
-                <option value=''> Dowolny </option>
-                <FetchSelect src='https://localhost:7077/api/Manufacturers' queryKey='manufacturers' />
-              </select>
-            </div>
-          </div>
+          {/*Manufacturer*/}
+            <FetchSelect value={make} 
+              onChange={e => { setMake(e.target.value)}} 
+              src='https://localhost:7077/api/Manufacturers' 
+              queryKey='manufacturers' 
+              title = 'Producent'  
+            />
         </div>
         <div className="col-span-5 flex justify-center">
           <table className="table-auto min-w-full text-center">
-            <TableHeader placeCount={placeCount}/>
-            <TableBody 
-              placeCount={placeCount} 
+            <TableHeader placeCount={placeCount} />
+            <TableBody
+              placeCount={placeCount}
               src={"https://localhost:7077/api/Models/notSold?avaible=" + avail.toString()}
             />
           </table>
