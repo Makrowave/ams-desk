@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 // Component that turns data fetch from 'src' to <option> list.
 // Data fetched should have unique key as first parameter and name as second
-export default function FetchSelect({ src, queryKey, value, onChange, title }) {
+export default function FetchSelect({ src, queryKey, value, onChange, title, default_option}) {
 
   const Body = ({children}) => {
     return (
@@ -40,7 +40,7 @@ export default function FetchSelect({ src, queryKey, value, onChange, title }) {
 
   return (
     <Body>
-      <option value=''> Dowolny </option>
+      <option value={default_option}> Dowolny </option>
       {data.map((d) => (
         <option value={Object.values(d)[0]} key={Object.values(d)[0]}>{Object.values(d)[1]}</option>
       ))}
