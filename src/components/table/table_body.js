@@ -25,12 +25,13 @@ export default function TableBody({ src, placeCount }) {
     return <tbody>{error.message}</tbody>
   }
   return (
-    <tbody>
+    <tbody className='flex-col align-top'>
       {
         data.map((record) => (
           <BikeRecord key={record.modelId} bike={record} placeCount={placeCount} />
         ))
       }
+      <div></div> {/*This div makes it so the rows don't stretch*/}
     </tbody>
 
   )

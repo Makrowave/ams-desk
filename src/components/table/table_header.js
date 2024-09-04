@@ -14,16 +14,16 @@ export default function TableHeader(placeCount) {
     }
   })
 
-  const thead_body = (places) => {
+  function TableHeaderWrapper({children}) {
     return (
       <thead>
         <tr>
-          <th>Rower</th>
-          <th>Rozmiar</th>
-          <th>Koła</th>
-          <th>Cena</th>
-          <th>Ilość</th>
-          {places}
+          <th className='w-96 pl-8'>Rower</th>
+          <th className='w-24'>Rozmiar</th>
+          <th className='w-24'>Koła</th>
+          <th className='w-24'>Cena</th>
+          <th className='w-24'>Ilość</th>
+          {children}
         </tr>
       </thead>
     );
@@ -31,19 +31,19 @@ export default function TableHeader(placeCount) {
 
 
   if (isPending) {
-    return thead_body(<th>Loading...</th>);
+    return <TableHeaderWrapper><th>Loading...</th></TableHeaderWrapper>;
   }
 
   if (isError) {
-    return thead_body(<th>{error.message}</th>);
+    return <TableHeaderWrapper><th>{error.message}</th></TableHeaderWrapper>;
   }
 
   let p_data =
     data
       .sort((a, b) => a.placeId - b.placeId)
-      .map((place) => (<th key={place.placeId}>{place.placeName}</th>))
+      .map((place) => (<th className='w-24' key={place.placeId}>{place.placeName}</th>))
 
   return (
-    thead_body(p_data)
+    <TableHeaderWrapper>{p_data}</TableHeaderWrapper>
   );
 }

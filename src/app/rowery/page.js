@@ -56,7 +56,7 @@ export default function Rowery() {
       <Navigation />  <br />
       <div className="grid grid-cols-6">
         {/* Filter */}
-        <div className="col-span-1 flex bg-blue-600 rounded-lg flex-col px-10">
+        <div className="col-span-1 flex bg-slate-600 rounded-lg flex-col px-10">
           {/* Title */}
           <div className="flex justify-center">
             <p>Filtruj</p>
@@ -115,8 +115,8 @@ export default function Rowery() {
           />
         </div>
         {/*Table*/}
-        <div className="col-span-5 flex justify-center">
-          <table className="table-auto min-w-full text-center">
+        <div className="col-span-5 flex justify-center bg-slate-700 rounded-lg mx-4">
+          <table className="table-fixed min-w-full text-center">
             <TableHeader placeCount={placeCount} />
             <TableBody
               placeCount={placeCount}

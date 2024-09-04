@@ -8,8 +8,8 @@ export default function BikeRecord({bike, placeCount}) {
     places[count.placeId-1] = count.count
   ))
   return (
-    <tr>
-      <td>{bike.modelName}</td>
+    <tr className="h-2 max-h-2 odd:bg-slate-800">
+      <td className="text-left pl-8">{bike.modelName}</td>
       <td>{bike.frameSize}</td>
       <td>{bike.wheelSize}</td>
       <td>{bike.price}</td>
