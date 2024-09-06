@@ -1,6 +1,7 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import Modal from '../modals/modal';
 export default function BikeRecord({ bike, placeCount }) {
 
 
@@ -49,7 +50,7 @@ export default function BikeRecord({ bike, placeCount }) {
                 <span>{bike.productCode}</span>
               </div>
               <div>
-                <button>Dodaj</button>
+                <Modal buttonTitle='Dodaj' title='Dodaj rower'><div><span>Test</span></div></Modal>
               </div>
               <div>
                 <button>Usuń</button>
