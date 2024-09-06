@@ -37,8 +37,24 @@ export default function BikeRecord({ bike, placeCount }) {
 
     if (clicked) {
       return (
-        <tr className='max-h-2 h-2 odd:bg-slate-800 '>
+        <tr className='max-h-2 h-2 bg-slate-600 border-b-2 border-x-2 border-slate-400'>
           <td colSpan={5 + placeCount}>
+            <div className='mx-8 flex border-b-2 space-x-4'>
+              <div>
+                <span>EAN: </span>
+                <span>{bike.eanCode}</span>
+              </div>
+              <div>
+                <span>Kod: </span>
+                <span>{bike.productCode}</span>
+              </div>
+              <div>
+                <button>Dodaj</button>
+              </div>
+              <div>
+                <button>Usuń</button>
+              </div>
+            </div>
             <table>
               <thead className='*:pr-4'>
                 <th className='pl-8'>Lp.</th>
@@ -76,7 +92,12 @@ export default function BikeRecord({ bike, placeCount }) {
 
   return (
     <>
-      <tr className="h-2 max-h-2 odd:bg-slate-800" onClick={() => { handleClick() }}>
+      <tr className={
+        clicked
+        ? "h-2 max-h-2 odd:bg-slate-800 border-t-2 border-x-2 border-slate-400 rounded-lg"
+        : "h-2 max-h-2 odd:bg-slate-800 border-t-2 border-x-2 odd:border-slate-800 even:border-slate-700 rounded-lg"
+      } 
+      onClick={() => { handleClick() }}>
         <td className="text-left pl-8">{bike.modelName}</td>
         <td>{bike.frameSize}</td>
         <td>{bike.wheelSize}</td>
