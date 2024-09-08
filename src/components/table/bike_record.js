@@ -4,7 +4,10 @@ import { useEffect, useState } from 'react';
 import Modal from '../modals/modal';
 import AssembleButton from '../buttons/assemble_button';
 import AddBikeModal from '../modals/add_bike_modal';
-export default function BikeRecord({ bike, placeCount }) {
+import MoveModal from '../modals/move_modal';
+import DeleteModal from '../modals/delete_modal';
+import SellModal from '../modals/sell_modal';
+export default function BikeRecord({ model, placeCount }) {
 
 
   const places = new Array(placeCount).fill(0);
@@ -12,14 +15,14 @@ export default function BikeRecord({ bike, placeCount }) {
 
 
 
-  bike.placeBikeCount.map((count) => (
+  model.placeBikeCount.map((count) => (
     places[count.placeId - 1] = count.count
   ))
 
   const { refetch, data, isPending, isError, error } = useQuery({
-    queryKey: ['bikeSubRecord', bike.modelId],
+    queryKey: ['bikeSubRecord', model.modelId],
     queryFn: async () => {
-      const response = await fetch("https://localhost:7077/api/Bikes/bikesByModelId/" + bike.modelId);
+      const response = await fetch("https://localhost:7077/api/Bikes/bikesByModelId/" + model.modelId);
       if (!response.ok) {
         throw new Error('Data fetch failed!');
       }
@@ -29,7 +32,7 @@ export default function BikeRecord({ bike, placeCount }) {
   })
 
   function renderInfo() {
-    
+
     if (isPending) {
       return
     }
@@ -45,15 +48,15 @@ export default function BikeRecord({ bike, placeCount }) {
             <div className='mx-8 flex border-b-2 space-x-4'>
               <div>
                 <span>EAN: </span>
-                <span>{bike.eanCode}</span>
+                <span>{model.eanCode}</span>
               </div>
               <div>
                 <span>Kod: </span>
-                <span>{bike.productCode}</span>
+                <span>{model.productCode}</span>
               </div>
               <div>
                 <Modal buttonTitle='Dodaj' title='Dodaj rower'>
-                  <AddBikeModal refetch={refetch} modelId={bike.modelId}/>
+                  <AddBikeModal refetch={refetch} modelId={model.modelId} />
                 </Modal>
               </div>
               <div>
@@ -76,10 +79,10 @@ export default function BikeRecord({ bike, placeCount }) {
                     <td className='pl-8'>{index + 1}</td>
                     <td>{bike.place}</td>
                     <td>{bike.status}</td>
-                    <td><button>Przenieś</button></td>
-                    <td><AssembleButton bikeId={bike.id} refetch={refetch}/></td>
-                    <td><button>Sprzedaj</button></td>
-                    <td><button>Usuń</button></td>
+                    <td><Modal buttonTitle='Przenieś' title='Przenieś rower'><MoveModal refetch={refetch} bikeId={bike.id} /></Modal></td>
+                    <td><AssembleButton bikeId={bike.id} refetch={refetch} /></td>
+                    <td><Modal buttonTitle='Sprzedaj' title='Sprzedaj rower'><SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} /></Modal></td>
+                    <td><Modal buttonTitle='Usuń' title='Usuń rower'><DeleteModal refetch={refetch} bikeId={bike.id} /></Modal></td>
                   </tr>
                 ))
               }
@@ -99,15 +102,15 @@ export default function BikeRecord({ bike, placeCount }) {
     <>
       <tr className={
         clicked
-        ? "h-2 max-h-2 odd:bg-slate-800 border-t-2 border-x-2 border-slate-400 rounded-lg"
-        : "h-2 max-h-2 odd:bg-slate-800 border-t-2 border-x-2 odd:border-slate-800 even:border-slate-700 rounded-lg"
-      } 
-      onClick={() => { handleClick() }}>
-        <td className="text-left pl-8">{bike.modelName}</td>
-        <td>{bike.frameSize}</td>
-        <td>{bike.wheelSize}</td>
-        <td>{bike.price}</td>
-        <td>{bike.bikeCount}</td>
+          ? "h-2 max-h-2 odd:bg-slate-800 border-t-2 border-x-2 border-slate-400 rounded-lg"
+          : "h-2 max-h-2 odd:bg-slate-800 border-t-2 border-x-2 odd:border-slate-800 even:border-slate-700 rounded-lg"
+      }
+        onClick={() => { handleClick() }}>
+        <td className="text-left pl-8">{model.modelName}</td>
+        <td>{model.frameSize}</td>
+        <td>{model.wheelSize}</td>
+        <td>{model.price}</td>
+        <td>{model.bikeCount}</td>
         {
           places.map((place, i) => (
             <td key={i}>{place}</td>

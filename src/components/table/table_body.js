@@ -28,7 +28,7 @@ export default function TableBody({ src, placeCount }) {
     <tbody className='flex-col align-top'>
       {
         data.map((record) => (
-          <BikeRecord key={record.modelId} bike={record} placeCount={placeCount} />
+          <BikeRecord key={record.modelId} model={record} placeCount={placeCount} />
         ))
       }
       <div></div> {/*This div makes it so the rows don't stretch*/}
