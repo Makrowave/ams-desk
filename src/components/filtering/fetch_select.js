@@ -40,7 +40,11 @@ export default function FetchSelect({ src, queryKey, value, onChange, title, def
 
   return (
     <Body>
-      <option value={default_option}> Dowolny </option>
+      {
+        default_option === null
+        ? <></>
+        : <option value={default_option}> Dowolny </option>
+      }
       {data.map((d) => (
         <option value={Object.values(d)[0]} key={Object.values(d)[0]}>{Object.values(d)[1]}</option>
       ))}

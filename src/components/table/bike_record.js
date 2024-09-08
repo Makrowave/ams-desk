@@ -2,6 +2,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import Modal from '../modals/modal';
+import AssembleButton from '../buttons/assemble_button';
+import AddBikeModal from '../modals/add_bike_modal';
 export default function BikeRecord({ bike, placeCount }) {
 
 
@@ -50,7 +52,9 @@ export default function BikeRecord({ bike, placeCount }) {
                 <span>{bike.productCode}</span>
               </div>
               <div>
-                <Modal buttonTitle='Dodaj' title='Dodaj rower'><div><span>Test</span></div></Modal>
+                <Modal buttonTitle='Dodaj' title='Dodaj rower'>
+                  <AddBikeModal refetch={refetch} modelId={bike.modelId}/>
+                </Modal>
               </div>
               <div>
                 <button>Usuń</button>
@@ -73,7 +77,7 @@ export default function BikeRecord({ bike, placeCount }) {
                     <td>{bike.place}</td>
                     <td>{bike.status}</td>
                     <td><button>Przenieś</button></td>
-                    <td><button>Złóż</button></td>
+                    <td><AssembleButton bikeId={bike.id} refetch={refetch}/></td>
                     <td><button>Sprzedaj</button></td>
                     <td><button>Usuń</button></td>
                   </tr>
