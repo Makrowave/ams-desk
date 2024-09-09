@@ -16,6 +16,10 @@ export default function Navigation() {
     <NavButton key={item.name} title={item.name} href={item.href} current={item.current}></NavButton>
   )
   return (
-    <nav className="flex gap-x-10">{navItems}</nav>
+    <nav className="">
+      <div className="max-w-screen-2xl m-auto flex gap-x-10 items-center bg-slate-100 px-10 border-b-2 border-slate-300">
+        {navItems}
+      </div>
+    </nav>
   );
 }

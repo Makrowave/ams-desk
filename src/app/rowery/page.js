@@ -54,11 +54,11 @@ export default function Rowery() {
 
   }
   return (
-    <main>
-      <Navigation />  <br />
-      <div className="grid grid-cols-6">
+    <main className="overflow-auto h-full">
+      <Navigation />
+      <div className="grid grid-cols-6 max-w-screen-2xl m-auto bg-slate-100 px-5 py-5 rounded-b-xl">
         {/* Filter */}
-        <div className="col-span-1 flex bg-slate-600 rounded-lg flex-col px-10">
+        <div className="col-span-1 flex bg-slate-100 flex-col px-10 h-fit">
           {/* Title */}
           <div className="flex justify-center">
             <p>Filtruj</p>
@@ -117,7 +117,7 @@ export default function Rowery() {
           />
         </div>
         {/*Table*/}
-        <div className="col-span-5 flex justify-center bg-slate-700 rounded-lg mx-4">
+        <div className="col-span-5 flex justify-center mx-4 border-l-2 pl-5 border-slate-300">
           <table className="table-fixed min-w-full text-center">
             <TableHeader placeCount={placeCount} />
             <TableBody

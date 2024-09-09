@@ -16,7 +16,7 @@ export default function TableHeader(placeCount) {
 
   function TableHeaderWrapper({children}) {
     return (
-      <thead>
+      <thead className='bg-slate-300 border-2 border-slate-300 mb-px'>
         <tr>
           <th className='w-96 pl-8'>Rower</th>
           <th className='w-24'>Rozmiar</th>

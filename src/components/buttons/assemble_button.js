@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
-export default function AssembleButton({bikeId, refetch}) {
+export default function AssembleButton({bikeId, refetch, className}) {
   const mutation = useMutation({
     mutationFn: async (bikeId) => {
       return await fetch("https://localhost:7077/api/Desktop/assemble/" + bikeId, {
@@ -16,6 +16,6 @@ export default function AssembleButton({bikeId, refetch}) {
   }
 
   return (
-    <button onClick={() => handleClick()}>Złóż</button>
+    <button className={className} onClick={() => handleClick()}>Złóż</button>
   )
 }

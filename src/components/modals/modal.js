@@ -10,7 +10,7 @@ export default function Modal({buttonTitle, buttonClassName, children, title}) {
     {
       visible && (
         <div className="fixed inset-0">
-          <div className="bg-slate-800 flex flex-col w-4/12 h-2/4 absolute top-0 bottom-0 left-0 right-0 m-auto rounded-2xl px-6">
+          <div className="bg-slate-100 flex flex-col w-4/12 h-2/4 absolute top-0 bottom-0 left-0 right-0 m-auto rounded-2xl border-slate-400 border-2 px-6">
             {/*Header*/}
             <div className="flex justify-between">
               <h2>{title}</h2>
