@@ -7,6 +7,8 @@ import TableBody from "@/components/table/table_body";
 import FilterInput from "@/components/filtering/filter_input";
 import FilterSelect from "@/components/filtering/filter_select";
 import SingleCheckbox from "@/components/filtering/single_checkbox";
+import Modal from "@/components/modals/modal";
+import AddModelModal from "@/components/modals/add_model_modal";
 
 
 const defaults = {
@@ -55,13 +57,13 @@ export default function Rowery() {
   }
   return (
     <main className="overflow-auto h-full">
-      <Navigation />
+      <Navigation active={1} />
       <div className="grid grid-cols-6 max-w-screen-2xl m-auto bg-slate-100 px-5 py-5 rounded-b-xl">
         {/* Filter */}
         <div className="col-span-1 flex bg-slate-100 flex-col px-10 h-fit">
           {/* Title */}
           <div className="flex justify-center">
-            <p>Filtruj</p>
+            <h2><b>Filtry</b></h2>
           </div>
           {/* Name */}
           <FilterInput
@@ -133,6 +135,16 @@ export default function Rowery() {
               }
             />
           </table>
+        </div>
+      </div>
+      <div className="fixed bottom-0 align-center  flex w-full pointer-events-none">
+        <div className="justify-between max-w-screen-2xl w-full m-auto px-5">
+            <Modal buttonTitle='+ Dodaj model' 
+            buttonClassName="bg-slate-100 mb-10 max-w-60 rounded-2xl py-2 px-5 border-2 border-slate-400 ml-auto block"
+            title='Dodaj model'
+            >
+              <AddModelModal/>
+            </Modal>
         </div>
       </div>
     </main>
