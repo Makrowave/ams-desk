@@ -7,7 +7,7 @@ export default function FilterInput({ onChange, value, title }) {
       <div className="flex justify-center">
         <p>{title}</p>
       </div>
-      <input className="text-black text-center" placeholder="Dowolny" value={value} onChange={onChange}></input>
+      <input className="text-black text-center bg-primary border-2 border-tertiary rounded-l" placeholder="Dowolny" value={value} onChange={onChange}></input>
     </div>
   );
 }

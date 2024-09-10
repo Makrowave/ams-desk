@@ -41,27 +41,30 @@ export default function AddModelModal() {
 
 
   return (
-    <div>
-      <div>
+    <div className="flex flex-col gap-y-2">
+      <div className="flex justify-between">
         <span>Nazwa</span>
-        <input className="text-black text-center" value={name} onChange={e => { setName(e.target.value) }}></input>
+        <input className="self-end text-black text-center bg-primary border-2 border-tertiary rounded-l" value={name} onChange={e => { setName(e.target.value) }}></input>
       </div>
-      <div>
-        <span>Kod producenta</span>
-        <input className="text-black text-center" value={productCode} onChange={e => { setProductCode(e.target.value) }}></input>
+      <div className="flex justify-between">
+        <span className="pr-8">Kod producenta</span>
+        <input className="self-end text-black text-center bg-primary border-2 border-tertiary rounded-l" value={productCode} onChange={e => { setProductCode(e.target.value) }}></input>
       </div>
-      <div>
+      <div className="flex justify-between">
         <span>Kod EAN</span>
-        <input className="text-black text-center" value={eanCode} onChange={e => { setEanCode(e.target.value) }}></input>
+        <input className="self-end text-black text-center bg-primary border-2 border-tertiary rounded-l" value={eanCode} onChange={e => { setEanCode(e.target.value) }}></input>
       </div>
-
-      <div>
+      <div className="flex justify-between">
         <span>Rozmiar ramy</span>
-        <input className="text-black text-center" value={frameSize} onChange={e => { setFrameSize(e.target.value) }}></input>
+        <input className="self-end text-black text-center bg-primary border-2 border-tertiary rounded-l" value={frameSize} onChange={e => { setFrameSize(e.target.value) }}></input>
       </div>
-      <div>
+      <div className="flex justify-between">
         <span>Rozmiar koła</span>
-        <input className="text-black text-center" value={wheelSize} onChange={e => { setWheelSize(e.target.value) }}></input>
+        <input className="self-end text-black text-center bg-primary border-2 border-tertiary rounded-l" value={wheelSize} onChange={e => { setWheelSize(e.target.value) }}></input>
+      </div>
+      <div className="flex justify-between">
+        <span>Cena</span>
+        <input className="self-end text-black text-center bg-primary border-2 border-tertiary rounded-l" value={price} onChange={e => { setPrice(e.target.value) }}></input>
       </div>
       <FetchSelect value={manufacturerId}
         onChange={e => { setManufacturerId(e.target.value) }}
@@ -70,10 +73,6 @@ export default function AddModelModal() {
         title='Producent'
         default_option={null}
       />
-      <div>
-        <span>Cena</span>
-        <input className="text-black text-center" value={price} onChange={e => { setPrice(e.target.value) }}></input>
-      </div>
       <SingleCheckbox
         checked={isWoman}
         onChange={e => { setIsWoman(!isWoman) }}
@@ -82,7 +81,7 @@ export default function AddModelModal() {
         checked={isElectric}
         onChange={e => { setIsElectric(!isElectric) }}
         title="Elektryczny" />
-      <button onClick={() => { mutation.mutate() }}>Dodaj model</button>
+      <button className="bg-primary mb-4 rounded-2xl py-1 px-5 border-2 border-border m-auto" onClick={() => { mutation.mutate() }}>Dodaj model</button>
     </div>
   )
 }

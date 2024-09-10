@@ -12,7 +12,7 @@ export default function FetchSelect({ src, queryKey, value, onChange, title, def
           <p>{title}</p>
         </div>
         <div className="flex justify-center items-center py-2">
-          <select className="text-black text-center" value={value} onChange={onChange}>
+          <select className="text-black text-center bg-primary border-2 border-tertiary rounded-l" value={value} onChange={onChange}>
             {children}
           </select>
         </div>

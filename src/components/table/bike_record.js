@@ -44,9 +44,9 @@ export default function BikeRecord({ model, placeCount }) {
     if (clicked) {
       return (
         <>
-        <tr className='max-h-2 h-2 even:bg-slate-200 odd:bg-slate-100 border-b-2 border-x-2 border-slate-400'>
+        <tr className='max-h-2 h-2 even:bg-secondary odd:bg-primary border-b-2 border-x-2 border-border'>
           <td colSpan={5 + placeCount}>
-            <div className='mx-8 flex border-y-2 space-x-4 border-slate-400 py-2 items-center'>
+            <div className='mx-8 flex border-y-2 space-x-4 border-border py-2 items-center'>
               <div>
                 <span>EAN: </span>
                 <span>{model.eanCode}</span>
@@ -56,7 +56,7 @@ export default function BikeRecord({ model, placeCount }) {
                 <span>{model.productCode}</span>
               </div>
               <div>
-                <Modal buttonClassName={'bg-slate-200 rounded-lg px-2 border-slate-400 border-2'} buttonTitle='Dodaj' title='Dodaj rower'>
+                <Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2'} buttonTitle='Dodaj' title='Dodaj rower'>
                   <AddBikeModal refetch={refetch} modelId={model.modelId} />
                 </Modal>
               </div>
@@ -77,10 +77,10 @@ export default function BikeRecord({ model, placeCount }) {
                     <td className='pl-8'>{index + 1}</td>
                     <td>{bike.place}</td>
                     <td>{bike.status}</td>
-                    <td><Modal buttonClassName={'bg-slate-200 rounded-lg px-2 border-slate-400 border-2'} buttonTitle='Przenieś' title='Przenieś rower'><MoveModal refetch={refetch} bikeId={bike.id} /></Modal></td>
-                    <td><AssembleButton className={'bg-slate-200 rounded-lg px-2 border-slate-400 border-2'} bikeId={bike.id} refetch={refetch} /></td>
-                    <td><Modal buttonClassName={'bg-slate-200 rounded-lg px-2 border-slate-400 border-2'} buttonTitle='Sprzedaj' title='Sprzedaj rower'><SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} /></Modal></td>
-                    <td><Modal buttonClassName={'bg-slate-200 rounded-lg px-2 border-slate-400 border-2'} buttonTitle='Usuń' title='Usuń rower'><DeleteModal refetch={refetch} bikeId={bike.id} /></Modal></td>
+                    <td><Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2'} buttonTitle='Przenieś' title='Przenieś rower'><MoveModal refetch={refetch} bikeId={bike.id} /></Modal></td>
+                    <td><AssembleButton className={'bg-secondary rounded-lg px-2 border-border border-2'} bikeId={bike.id} refetch={refetch} /></td>
+                    <td><Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2'} buttonTitle='Sprzedaj' title='Sprzedaj rower'><SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} /></Modal></td>
+                    <td><Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2'} buttonTitle='Usuń' title='Usuń rower'><DeleteModal refetch={refetch} bikeId={bike.id} /></Modal></td>
                   </tr>
                 ))
               }
@@ -104,8 +104,8 @@ export default function BikeRecord({ model, placeCount }) {
     <>
       <tr className={
         clicked
-          ? "h-2 max-h-2 odd:bg-slate-200 border-t-2 border-x-2 border-slate-400 rounded-lg"
-          : "h-2 max-h-2 odd:bg-slate-200 border-t-2 border-x-2 odd:border-slate-200 even:border-slate-200 rounded-lg"
+          ? "h-2 max-h-2 odd:bg-secondary border-t-2 border-x-2 border-border rounded-lg"
+          : "h-2 max-h-2 odd:bg-secondary border-t-2 border-x-2 odd:border-secondary even:border-secondary rounded-lg"
       }
         onClick={() => { handleClick() }}>
         <td className="text-left pl-8">{model.modelName}</td>

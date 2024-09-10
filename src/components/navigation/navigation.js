@@ -17,7 +17,7 @@ export default function Navigation({active}) {
   )
   return (
     <nav className="">
-      <div className="max-w-screen-2xl m-auto flex items-center bg-slate-100 border-b-2 border-slate-300">
+      <div className="max-w-1920 m-auto flex items-center bg-primary border-b-2 border-tertiary">
         {navItems}
       </div>
     </nav>

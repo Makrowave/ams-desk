@@ -58,9 +58,9 @@ export default function Rowery() {
   return (
     <main className="overflow-auto h-full">
       <Navigation active={1} />
-      <div className="grid grid-cols-6 max-w-screen-2xl m-auto bg-slate-100 px-5 py-5 rounded-b-xl">
+      <div className="grid grid-cols-6 max-w-1920 m-auto bg-primary px-5 py-5 rounded-b-xl">
         {/* Filter */}
-        <div className="col-span-1 flex bg-slate-100 flex-col px-10 h-fit">
+        <div className="col-span-1 flex bg-primary flex-col px-10 h-fit">
           {/* Title */}
           <div className="flex justify-center">
             <h2><b>Filtry</b></h2>
@@ -119,7 +119,7 @@ export default function Rowery() {
           />
         </div>
         {/*Table*/}
-        <div className="col-span-5 flex justify-center mx-4 border-l-2 pl-5 border-slate-300">
+        <div className="col-span-5 flex justify-center mx-4 border-l-2 pl-5 border-tertiary">
           <table className="table-fixed min-w-full text-center">
             <TableHeader placeCount={placeCount} />
             <TableBody
@@ -138,9 +138,9 @@ export default function Rowery() {
         </div>
       </div>
       <div className="fixed bottom-0 align-center  flex w-full pointer-events-none">
-        <div className="justify-between max-w-screen-2xl w-full m-auto px-5">
+        <div className="justify-between max-w-1920 w-full m-auto px-5">
             <Modal buttonTitle='+ Dodaj model' 
-            buttonClassName="bg-slate-100 mb-10 max-w-60 rounded-2xl py-2 px-5 border-2 border-slate-400 ml-auto block"
+            buttonClassName="bg-primary mb-10 max-w-60 rounded-2xl py-2 px-5 border-2 border-border ml-auto block"
             title='Dodaj model'
             >
               <AddModelModal/>
