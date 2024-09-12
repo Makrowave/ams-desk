@@ -9,7 +9,7 @@ export default function MoveModal({ refetch, bikeId}) {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      return await fetch("https://localhost:7077/api/Desktop/move/" + bikeId + "?placeId=" + place.toString(), {
+      return await fetch("https://localhost:7077/api/Desktop/Move/" + bikeId + "?placeId=" + place.toString(), {
         method: "PUT"
       })
     },

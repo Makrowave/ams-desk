@@ -8,7 +8,7 @@ export default function SellModal({ refetch, bikeId, basePrice }) {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      return await fetch("https://localhost:7077/api/Desktop/sell/" + bikeId + "?salePrice=" + price.toString(), {
+      return await fetch("https://localhost:7077/api/Desktop/Sell/" + bikeId + "?salePrice=" + price.toString(), {
         method: "PUT"
       })
     },

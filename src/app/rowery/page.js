@@ -2,14 +2,12 @@
 import Navigation from "../../components/navigation/navigation";
 import { useEffect, useState } from 'react';
 import FetchSelect from "@/components/filtering/fetch_select";
-import TableHeader from "@/components/table/table_header";
-import TableBody from "@/components/table/table_body";
 import FilterInput from "@/components/filtering/filter_input";
 import FilterSelect from "@/components/filtering/filter_select";
 import SingleCheckbox from "@/components/filtering/single_checkbox";
 import Modal from "@/components/modals/modal";
 import AddModelModal from "@/components/modals/add_model_modal";
-
+import BikeTable from "@/components/table/bike_table";
 
 const defaults = {
   name: '',
@@ -21,7 +19,9 @@ const defaults = {
   avail: true,
   ready: false,
   electric: false,
+  isWoman: '',
   make: '',
+  place: 0,
 }
 
 export default function Rowery() {
@@ -33,8 +33,9 @@ export default function Rowery() {
   const [avail, setAvail] = useState(defaults.avail);
   const [ready, setReady] = useState(defaults.ready);
   const [electric, setElectric] = useState(defaults.electric);
+  const [isWoman, setIsWoman] = useState(defaults.isWoman);
   const [make, setMake] = useState(defaults.make);
-  const [placeCount, setPlaceNumber] = useState(6);
+  const [place, setPlace] = useState(defaults.place);
 
   //Filters after one of the states in list change
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function Rowery() {
     setAvail(defaults.avail);
     setElectric(defaults.electric);
     setMake(defaults.make);
-    setElectric(defaults.electric);
+    setIsWoman(defaults.isWoman);
     setMake(defaults.make);
   }
   function filter() {
@@ -117,34 +118,38 @@ export default function Rowery() {
             title='Producent'
             default_option={defaults.make}
           />
+          {/* Frame type (is woman) */}
+          <FilterSelect value={isWoman}
+            onChange={(e) => { setIsWoman(e.target.value) }}
+            title='Typ ramy'
+          >
+            <option value={defaults.isWoman}>Dowolny</option>
+            <option value={true}>Damski</option>
+            <option value={false}>Męski</option>
+          </FilterSelect>
         </div>
         {/*Table*/}
-        <div className="col-span-5 flex justify-center mx-4 border-l-2 pl-5 border-tertiary">
-          <table className="table-fixed min-w-full text-center">
-            <TableHeader placeCount={placeCount} />
-            <TableBody
-              placeCount={placeCount}
-              src={"https://localhost:7077/api/Models/notSold"
-                + '?avaible=' + avail.toString()
-                + '&manufacturer_id=' + make.toString()
-                + '&wheel_size=' + wheel.toString()
-                + '&frame_size=' + size.toString()
-                + '&name=' + name.trim().toLowerCase()
-                + '&electric=' + electric.toString()
-                + '&ready=' + ready.toString()
-              }
-            />
-          </table>
-        </div>
+        <BikeTable
+          filterSrc={
+            '?avaible=' + avail.toString()
+            + '&manufacturerId=' + make.toString()
+            + '&wheelSize=' + wheel.toString()
+            + '&frameSize=' + size.toString()
+            + '&name=' + name.trim().toLowerCase()
+            + '&electric=' + electric.toString()
+            + '&ready=' + ready.toString()
+            + '&isWoman=' + isWoman.toString()
+          }
+        />
       </div>
       <div className="fixed bottom-0 align-center  flex w-full pointer-events-none">
         <div className="justify-between max-w-1920 w-full m-auto px-5">
-            <Modal buttonTitle='+ Dodaj model' 
+          <Modal buttonTitle='+ Dodaj model'
             buttonClassName="bg-primary mb-10 max-w-60 rounded-2xl py-2 px-5 border-2 border-border ml-auto block"
             title='Dodaj model'
-            >
-              <AddModelModal/>
-            </Modal>
+          >
+            <AddModelModal />
+          </Modal>
         </div>
       </div>
     </main>

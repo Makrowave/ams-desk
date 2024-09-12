@@ -1,20 +1,19 @@
 "use client";
 import { useQuery } from '@tanstack/react-query';
-import BikeRecord from './bike_record';
 
-export default function TableHeader(placeCount) {
-  const { data, isPending, isError, error } = useQuery({
-    queryKey: ['headerStatuses'],
-    queryFn: async () => {
-      const response = await fetch('https://localhost:7077/api/Places');
-      if (!response.ok) {
-        throw new Error('Header status fetch failed!');
-      }
-      return response.json();
-    }
-  })
+export default function TableHeader({ singlePlace }) {
+  // const { data, isPending, isError, error } = useQuery({
+  //   queryKey: ['headerStatuses'],
+  //   queryFn: async () => {
+  //     const response = await fetch('https://localhost:7077/api/Places');
+  //     if (!response.ok) {
+  //       throw new Error('Header status fetch failed!');
+  //     }
+  //     return response.json();
+  //   }
+  // })
 
-  function TableHeaderWrapper({children}) {
+  function TableHeaderWrapper({ children }) {
     return (
       <thead className='bg-tertiary border-2 border-tertiary mb-px'>
         <tr>
@@ -30,13 +29,22 @@ export default function TableHeader(placeCount) {
   }
 
 
-  if (isPending) {
-    return <TableHeaderWrapper><th>Loading...</th></TableHeaderWrapper>;
-  }
+  // if (isPending) {
+  //   return <TableHeaderWrapper><th>Loading...</th></TableHeaderWrapper>;
+  // }
 
-  if (isError) {
-    return <TableHeaderWrapper><th>{error.message}</th></TableHeaderWrapper>;
-  }
+  // if (isError) {
+  //   return <TableHeaderWrapper><th>{error.message}</th></TableHeaderWrapper>;
+  // }
+
+  const data = [
+    { placeId: 1, placeName: 'Wojc' },
+    { placeId: 2, placeName: 'Gala' },
+    { placeId: 3, placeName: 'Gęsia' },
+    { placeId: 4, placeName: 'Mag A' },
+    { placeId: 5, placeName: 'Mag B' },
+    { placeId: 6, placeName: 'Mag D' },
+  ]
 
   let p_data =
     data
@@ -44,6 +52,9 @@ export default function TableHeader(placeCount) {
       .map((place) => (<th className='w-24' key={place.placeId}>{place.placeName}</th>))
 
   return (
-    <TableHeaderWrapper>{p_data}</TableHeaderWrapper>
-  );
+    <TableHeaderWrapper>
+      {!singlePlace && p_data}
+    </TableHeaderWrapper>
+  )
+
 }

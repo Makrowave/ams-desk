@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 export default function AssembleButton({bikeId, refetch, className}) {
   const mutation = useMutation({
     mutationFn: async (bikeId) => {
-      return await fetch("https://localhost:7077/api/Desktop/assemble/" + bikeId, {
+      return await fetch("https://localhost:7077/api/Desktop/Assemble/" + bikeId, {
         method: "PUT"
       })
     },

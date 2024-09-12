@@ -10,7 +10,7 @@ export default function AddBikeModal({ refetch, modelId }) {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      return await fetch("https://localhost:7077/api/Desktop/add_bike", {
+      return await fetch("https://localhost:7077/api/Desktop/AddBike", {
         method: "POST",
         body: JSON.stringify({
           modelId: modelId,
