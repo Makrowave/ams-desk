@@ -22,6 +22,7 @@ const defaults = {
   isWoman: '',
   make: '',
   place: 0,
+  isKids: false,
 }
 
 export default function Rowery() {
@@ -35,12 +36,7 @@ export default function Rowery() {
   const [electric, setElectric] = useState(defaults.electric);
   const [isWoman, setIsWoman] = useState(defaults.isWoman);
   const [make, setMake] = useState(defaults.make);
-  const [place, setPlace] = useState(defaults.place);
-
-  //Filters after one of the states in list change
-  useEffect(() => {
-    filter();
-  }, [name, size, wheel, number, avail, ready, electric, make]);
+  const [isKids, setIsKids] = useState(defaults.isKids)
 
   function reset() {
     setName(defaults.name);
@@ -48,14 +44,15 @@ export default function Rowery() {
     setWheel(defaults.wheel);
     setNumber(defaults.number);
     setAvail(defaults.avail);
+    setReady(defaults.ready);
     setElectric(defaults.electric);
-    setMake(defaults.make);
     setIsWoman(defaults.isWoman);
     setMake(defaults.make);
+    setIsKids(defaults.isKids);
   }
-  function filter() {
 
-  }
+
+
   return (
     <main className="overflow-auto h-full">
       <Navigation active={1} />
@@ -110,6 +107,10 @@ export default function Rowery() {
             checked={electric}
             onChange={e => { setElectric(!electric) }}
             title="Elektryczny" />
+          <SingleCheckbox
+            checked={isKids}
+            onChange={e => { setIsKids(!isKids) }}
+            title="Dziecięcy" />
           {/*Manufacturer*/}
           <FetchSelect value={make}
             onChange={e => { setMake(e.target.value) }}
@@ -127,6 +128,12 @@ export default function Rowery() {
             <option value={true}>Damski</option>
             <option value={false}>Męski</option>
           </FilterSelect>
+
+          <button className={'bg-primary rounded-lg px-2 border-border border-2'}
+            onClick={() => {reset()}}
+          >
+            Reset
+          </button>
         </div>
         {/*Table*/}
         <BikeTable
@@ -139,6 +146,7 @@ export default function Rowery() {
             + '&electric=' + electric.toString()
             + '&ready=' + ready.toString()
             + '&isWoman=' + isWoman.toString()
+            + '&isKids=' + isKids.toString()
           }
         />
       </div>
