@@ -1,6 +1,6 @@
 "use client";
 import Navigation from "../../components/navigation/navigation";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import FetchSelect from "@/components/filtering/fetch_select";
 import FilterInput from "@/components/filtering/filter_input";
 import FilterSelect from "@/components/filtering/filter_select";
