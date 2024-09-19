@@ -114,7 +114,7 @@ export default function Rowery() {
           {/*Manufacturer*/}
           <FetchSelect value={make}
             onChange={e => { setMake(e.target.value) }}
-            src='https://localhost:7077/api/Manufacturers'
+            src='/Manufacturers'
             queryKey='manufacturers'
             title='Producent'
             default_option={defaults.make}

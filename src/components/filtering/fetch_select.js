@@ -1,4 +1,5 @@
 "use client";
+import axios from '@/api/axios';
 import { useQuery } from '@tanstack/react-query';
 
 // Component that turns data fetch from 'src' to <option> list.
@@ -22,11 +23,8 @@ export default function FetchSelect({ src, queryKey, value, onChange, title, def
   const { data, isPending, isError, error } = useQuery({
     queryKey: [queryKey],
     queryFn: async () => {
-      const response = await fetch(src);
-      if (!response.ok) {
-        throw new Error('Data fetch failed!');
-      }
-      return response.json();
+      const response = await axios.get(src);
+      return response.data;
     }
   })
 

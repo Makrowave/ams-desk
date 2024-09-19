@@ -1,3 +1,4 @@
+import axios from "@/api/axios";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -8,9 +9,7 @@ export default function SellModal({ refetch, bikeId, basePrice }) {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      return await fetch("https://localhost:7077/api/Desktop/Sell/" + bikeId + "?salePrice=" + price.toString(), {
-        method: "PUT"
-      })
+      return await axios.put("/Desktop/Sell/" + bikeId + "?salePrice=" + price.toString())
     },
     onSuccess: refetch()
   })

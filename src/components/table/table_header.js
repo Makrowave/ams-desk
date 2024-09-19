@@ -2,16 +2,6 @@
 import { useQuery } from '@tanstack/react-query';
 
 export default function TableHeader({ singlePlace }) {
-  // const { data, isPending, isError, error } = useQuery({
-  //   queryKey: ['headerStatuses'],
-  //   queryFn: async () => {
-  //     const response = await fetch('https://localhost:7077/api/Places');
-  //     if (!response.ok) {
-  //       throw new Error('Header status fetch failed!');
-  //     }
-  //     return response.json();
-  //   }
-  // })
 
   function TableHeaderWrapper({ children }) {
     return (
@@ -27,15 +17,6 @@ export default function TableHeader({ singlePlace }) {
       </thead>
     );
   }
-
-
-  // if (isPending) {
-  //   return <TableHeaderWrapper><th>Loading...</th></TableHeaderWrapper>;
-  // }
-
-  // if (isError) {
-  //   return <TableHeaderWrapper><th>{error.message}</th></TableHeaderWrapper>;
-  // }
 
   const data = [
     { placeId: 1, placeName: 'Wojc' },

@@ -1,7 +1,8 @@
 
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { MyQueryProvider } from "@/components/my_query_provider";
+
+import ProviderWrapper from "@/components/providers/providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -13,10 +14,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <MyQueryProvider>
+    <ProviderWrapper>
       <html lang="en">
         <body className={inter.className + ' h-full overflow-auto'}>{children}</body>
       </html>
-    </MyQueryProvider>
+    </ProviderWrapper>
   );
 }

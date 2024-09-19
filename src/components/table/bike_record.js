@@ -7,12 +7,13 @@ import AddBikeModal from '../modals/add_bike_modal';
 import MoveModal from '../modals/move_modal';
 import DeleteModal from '../modals/delete_modal';
 import SellModal from '../modals/sell_modal';
+import axios from '@/api/axios';
 export default function BikeRecord({ model, placeCount, placeId }) {
 
 
   const places = new Array(placeCount).fill(0);
   const [clicked, setClicked] = useState(false);
-
+  const _bikesUrl = '/Bikes/bikesByModelId/';
 
 
   model.placeBikeCount.map((count) => (
@@ -22,11 +23,8 @@ export default function BikeRecord({ model, placeCount, placeId }) {
   const { refetch, data, isPending, isError, error } = useQuery({
     queryKey: ['bikeSubRecord', model.modelId, placeId],
     queryFn: async () => {
-      const response = await fetch("https://localhost:7077/api/Bikes/bikesByModelId/" + model.modelId + "?placeId=" + placeId.toString());
-      if (!response.ok) {
-        throw new Error('Data fetch failed!');
-      }
-      return response.json();
+      const response = await axios.get(_bikesUrl + model.modelId + "?placeId=" + placeId.toString());
+      return response.data;
     },
     enabled: false
   })

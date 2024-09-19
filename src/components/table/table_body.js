@@ -1,16 +1,14 @@
 "use client";
 import { useQuery } from '@tanstack/react-query';
 import BikeRecord from './bike_record';
+import axios from '@/api/axios';
 
 export default function TableBody({ src, singlePlace, placeId }) {
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['bikes', src],
     queryFn: async () => {
-      const response = await fetch(src);
-      if (!response.ok) {
-        throw new Error('Header status fetch failed!');
-      }
-      return response.json();
+      const response = await axios.get(src);
+      return response.data;
     }
   })
 

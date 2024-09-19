@@ -1,24 +1,24 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import FetchSelect from "../filtering/fetch_select";
+import axios from "@/api/axios";
 
 export default function AddBikeModal({ refetch, modelId }) {
   //Change it based on selected location
   const [place, setPlace] = useState(1);
   const [status, setStatus] = useState(1);
-
+const _url = "/Desktop/AddBike"
 
   const mutation = useMutation({
     mutationFn: async () => {
-      return await fetch("https://localhost:7077/api/Desktop/AddBike", {
-        method: "POST",
-        body: JSON.stringify({
+      return await axios.post(_url,
+        JSON.stringify({
           modelId: modelId,
           placeId: place,
           statusId: status
         }),
-        headers: {'Content-Type': 'application/json'}
-      })
+        { headers: {'Content-Type': 'application/json'}}
+      )
     },
     onSuccess: refetch()
   })

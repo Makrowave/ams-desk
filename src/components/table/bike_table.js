@@ -7,13 +7,12 @@ import TableBody from "@/components/table/table_body";
 
 export default function BikeTable({filterSrc}) {
   const [place, setPlace] = useState(0);
-  const srcStart = "https://localhost:7077/api/Desktop/";
-  let src = "https://localhost:7077/api/Desktop/"
+  let src = ""
 
   if(place === 0) {
-    src = srcStart + "GetBikes";
+    src = "/Desktop/GetBikes";
   } else {
-    src = srcStart + "GetBikesByPlace/" + place.toString();
+    src = "/Desktop/GetBikesByPlace/" + place.toString();
   }
 
   let singlePlace = place !== 0;

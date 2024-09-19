@@ -1,11 +1,10 @@
+import axios from "@/api/axios";
 import { useMutation } from "@tanstack/react-query";
 
 export default function AssembleButton({bikeId, refetch, className}) {
   const mutation = useMutation({
     mutationFn: async (bikeId) => {
-      return await fetch("https://localhost:7077/api/Desktop/Assemble/" + bikeId, {
-        method: "PUT"
-      })
+      return await axios.put('/Desktop/Assemble/' + bikeId)
     },
     onSuccess: refetch()
   })

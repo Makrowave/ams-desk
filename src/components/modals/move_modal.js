@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import FetchSelect from "../filtering/fetch_select";
+import axios from "@/api/axios";
 
 export default function MoveModal({ refetch, bikeId}) {
   //Change it based on selected location
@@ -9,9 +10,7 @@ export default function MoveModal({ refetch, bikeId}) {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      return await fetch("https://localhost:7077/api/Desktop/Move/" + bikeId + "?placeId=" + place.toString(), {
-        method: "PUT"
-      })
+      return await axios.put("/Desktop/Move/" + bikeId + "?placeId=" + place.toString())
     },
     onSuccess: refetch()
   })
@@ -23,7 +22,7 @@ export default function MoveModal({ refetch, bikeId}) {
         <span>Dokąd</span>
         <FetchSelect value={place}
           onChange={e => { setPlace(e.target.value) }}
-          src='https://localhost:7077/api/Places'
+          src='/Places'
           queryKey='places'
           default_option={null}
         />

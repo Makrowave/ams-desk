@@ -1,3 +1,4 @@
+import axios from "@/api/axios";
 import { useMutation } from "@tanstack/react-query";
 
 export default function DeleteModal({ refetch, bikeId}) {
@@ -5,9 +6,7 @@ export default function DeleteModal({ refetch, bikeId}) {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      return await fetch("https://localhost:7077/api/Bikes/" + bikeId, {
-        method: "DELETE"
-      })
+      return await axios.delete("/Bikes/" + bikeId)
     },
     onSuccess: refetch()
   })

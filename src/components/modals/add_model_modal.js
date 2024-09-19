@@ -15,13 +15,12 @@ export default function AddModelModal() {
   const [price, setPrice] = useState('');
   const [isWoman, setIsWoman] = useState(false);
   const [isElectric, setIsElectric] = useState(false);
-
+  const _url = '/Models'
 
   const mutation = useMutation({
     mutationFn: async () => {
-      return await fetch("https://localhost:7077/api/Models", {
-        method: "POST",
-        body: JSON.stringify({
+      return await axios.post(_url,
+        JSON.stringify({
           productCode: productCode,
           eanCode: eanCode,
           frameSize: frameSize,
@@ -33,11 +32,10 @@ export default function AddModelModal() {
           price: price,
           isElectric: isElectric
         }),
-        headers: { 'Content-Type': 'application/json' }
-      })
+        { headers: { 'Content-Type': 'application/json' } }
+      )
     }
-  })
-
+  });
 
 
   return (
@@ -68,7 +66,7 @@ export default function AddModelModal() {
       </div>
       <FetchSelect value={manufacturerId}
         onChange={e => { setManufacturerId(e.target.value) }}
-        src='https://localhost:7077/api/Manufacturers'
+        src='/Manufacturers'
         queryKey='manufacturers'
         title='Producent'
         default_option={null}
