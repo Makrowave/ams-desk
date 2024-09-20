@@ -1,5 +1,5 @@
 "use client";
-import axios from '@/api/axios';
+import useAxiosPrivate from '@/hooks/use_axios_private';
 import { useQuery } from '@tanstack/react-query';
 
 // Component that turns data fetch from 'src' to <option> list.
@@ -20,10 +20,11 @@ export default function FetchSelect({ src, queryKey, value, onChange, title, def
       </div>
     )
   }
+  const axiosPrivate = useAxiosPrivate();
   const { data, isPending, isError, error } = useQuery({
     queryKey: [queryKey],
     queryFn: async () => {
-      const response = await axios.get(src);
+      const response = await axiosPrivate.get(src);
       return response.data;
     }
   })

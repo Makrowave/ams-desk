@@ -1,13 +1,15 @@
 "use client";
 import { useQuery } from '@tanstack/react-query';
 import BikeRecord from './bike_record';
-import axios from '@/api/axios';
+import useAxiosPrivate from '@/hooks/use_axios_private';
 
 export default function TableBody({ src, singlePlace, placeId }) {
+
+  const axiosPrivate = useAxiosPrivate();
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['bikes', src],
     queryFn: async () => {
-      const response = await axios.get(src);
+      const response = await axiosPrivate.get(src);
       return response.data;
     }
   })

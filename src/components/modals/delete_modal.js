@@ -1,12 +1,12 @@
-import axios from "@/api/axios";
+import useAxiosPrivate from "@/hooks/use_axios_private";
 import { useMutation } from "@tanstack/react-query";
 
 export default function DeleteModal({ refetch, bikeId}) {
 
-
+  const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axios.delete("/Bikes/" + bikeId)
+      return await axiosPrivate.delete("/Bikes/" + bikeId)
     },
     onSuccess: refetch()
   })

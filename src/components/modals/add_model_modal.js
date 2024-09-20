@@ -2,6 +2,7 @@ import { useState } from "react"
 import FetchSelect from "../filtering/fetch_select";
 import SingleCheckbox from "../filtering/single_checkbox";
 import { useMutation } from "@tanstack/react-query";
+import useAxiosPrivate from "@/hooks/use_axios_private";
 
 //Add refetch
 
@@ -17,9 +18,10 @@ export default function AddModelModal() {
   const [isElectric, setIsElectric] = useState(false);
   const _url = '/Models'
 
+  const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axios.post(_url,
+      return await axiosPrivate.post(_url,
         JSON.stringify({
           productCode: productCode,
           eanCode: eanCode,

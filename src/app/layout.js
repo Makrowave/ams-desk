@@ -1,4 +1,3 @@
-
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -14,10 +13,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ProviderWrapper>
-      <html lang="en">
-        <body className={inter.className + ' h-full overflow-auto'}>{children}</body>
-      </html>
-    </ProviderWrapper>
+
+    <html lang="en">
+      <body className={inter.className + ' h-full overflow-auto'}>
+        <ProviderWrapper>
+          {children}
+        </ProviderWrapper>
+      </body>
+    </html>
   );
 }

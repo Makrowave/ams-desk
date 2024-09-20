@@ -1,4 +1,4 @@
-import axios from "@/api/axios";
+import useAxiosPrivate from "@/hooks/use_axios_private";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -6,10 +6,10 @@ export default function SellModal({ refetch, bikeId, basePrice }) {
   //Change it based on selected location
   const [price, setPrice] = useState(basePrice);
 
-
+  const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axios.put("/Desktop/Sell/" + bikeId + "?salePrice=" + price.toString())
+      return await axiosPrivate.put("/Desktop/Sell/" + bikeId + "?salePrice=" + price.toString())
     },
     onSuccess: refetch()
   })

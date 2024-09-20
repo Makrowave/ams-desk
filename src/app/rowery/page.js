@@ -8,6 +8,7 @@ import SingleCheckbox from "@/components/filtering/single_checkbox";
 import Modal from "@/components/modals/modal";
 import AddModelModal from "@/components/modals/add_model_modal";
 import BikeTable from "@/components/table/bike_table";
+import PrivateRoute from "@/components/routing/private_route";
 
 const defaults = {
   name: '',
@@ -54,6 +55,7 @@ export default function Rowery() {
 
 
   return (
+    <PrivateRoute>
     <main className="overflow-auto h-full">
       <Navigation active={1} />
       <div className="grid grid-cols-6 max-w-1920 m-auto bg-primary px-5 py-5 rounded-b-xl">
@@ -161,5 +163,6 @@ export default function Rowery() {
         </div>
       </div>
     </main>
+    </PrivateRoute>
   )
 }

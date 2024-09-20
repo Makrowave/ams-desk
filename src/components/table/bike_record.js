@@ -7,7 +7,7 @@ import AddBikeModal from '../modals/add_bike_modal';
 import MoveModal from '../modals/move_modal';
 import DeleteModal from '../modals/delete_modal';
 import SellModal from '../modals/sell_modal';
-import axios from '@/api/axios';
+import useAxiosPrivate from '@/hooks/use_axios_private';
 export default function BikeRecord({ model, placeCount, placeId }) {
 
 
@@ -19,11 +19,11 @@ export default function BikeRecord({ model, placeCount, placeId }) {
   model.placeBikeCount.map((count) => (
     places[count.placeId - 1] = count.count
   ))
-
+  const axiosPrivate = useAxiosPrivate();
   const { refetch, data, isPending, isError, error } = useQuery({
     queryKey: ['bikeSubRecord', model.modelId, placeId],
     queryFn: async () => {
-      const response = await axios.get(_bikesUrl + model.modelId + "?placeId=" + placeId.toString());
+      const response = await axiosPrivate.get(_bikesUrl + model.modelId + "?placeId=" + placeId.toString());
       return response.data;
     },
     enabled: false

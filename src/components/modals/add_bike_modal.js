@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import FetchSelect from "../filtering/fetch_select";
-import axios from "@/api/axios";
+import useAxiosPrivate from "@/hooks/use_axios_private";
 
 export default function AddBikeModal({ refetch, modelId }) {
   //Change it based on selected location
@@ -9,9 +9,10 @@ export default function AddBikeModal({ refetch, modelId }) {
   const [status, setStatus] = useState(1);
 const _url = "/Desktop/AddBike"
 
+  const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axios.post(_url,
+      return await axiosPrivate.post(_url,
         JSON.stringify({
           modelId: modelId,
           placeId: place,
