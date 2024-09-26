@@ -6,15 +6,15 @@ import { useEffect } from "react";
 
 
 export default function PrivateRoute({children}) {
-  const { auth } = useAuth();
+  const { accessToken } = useAuth();
   const router = useRouter();
   useEffect(() => {
-    if(!auth) {
+    if(!accessToken) {
       router.push('/login');
     }
   })
 
-  if(!auth) {
+  if(!accessToken) {
     return null;
   }
   return (
