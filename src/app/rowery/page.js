@@ -24,6 +24,10 @@ const defaults = {
   make: '',
   place: 0,
   isKids: false,
+  category: '',
+  minPrice: 0,
+  maxPrice: 100000,
+  color: ''
 }
 
 export default function Rowery() {
@@ -37,7 +41,11 @@ export default function Rowery() {
   const [electric, setElectric] = useState(defaults.electric);
   const [isWoman, setIsWoman] = useState(defaults.isWoman);
   const [make, setMake] = useState(defaults.make);
-  const [isKids, setIsKids] = useState(defaults.isKids)
+  const [isKids, setIsKids] = useState(defaults.isKids);
+  const [category, setCategory] = useState(defaults.category);
+  const [minPrice, setMinPrice] = useState(defaults.minPrice);
+  const [maxPrice, setMaxPrice] = useState(defaults.maxPrice);
+  const [color, setColor] = useState(defaults.color);
 
   function reset() {
     setName(defaults.name);
@@ -50,6 +58,10 @@ export default function Rowery() {
     setIsWoman(defaults.isWoman);
     setMake(defaults.make);
     setIsKids(defaults.isKids);
+    setMinPrice(defaults.minPrice);
+    setMaxPrice(defaults.maxPrice);
+    setColor(defaults.color);
+    setCategory(defaults.category);
   }
 
 
@@ -108,6 +120,30 @@ export default function Rowery() {
                   <option value={true}>Damski</option>
                   <option value={false}>Męski</option>
                 </FilterSelect>
+                {/* Manufacturer */}
+                <FetchSelect value={make}
+                  onChange={e => { setMake(e.target.value) }}
+                  src='/Manufacturers'
+                  queryKey='manufacturers'
+                  title='Producent'
+                  default_option={defaults.make}
+                />
+                {/* Category */}
+                {/* Endpoint to be made */}
+                <FetchSelect value={category}
+                  onChange={e => { setCategory(e.target.value) }}
+                  src='/Categories'
+                  queryKey='categories'
+                  title='Kategoria'
+                  default_option={defaults.category}
+                />
+                <FetchSelect value={color}
+                  onChange={e => { setColor(e.target.value) }}
+                  src='/Colors'
+                  queryKey='colors'
+                  title='Kolor'
+                  default_option={defaults.color}
+                />
                 {/* Avaible */}
                 <SingleCheckbox
                   checked={avail}
@@ -127,14 +163,6 @@ export default function Rowery() {
                   checked={isKids}
                   onChange={e => { setIsKids(!isKids) }}
                   title="Dziecięcy" />
-                {/*Manufacturer*/}
-                <FetchSelect value={make}
-                  onChange={e => { setMake(e.target.value) }}
-                  src='/Manufacturers'
-                  queryKey='manufacturers'
-                  title='Producent'
-                  default_option={defaults.make}
-                />
               </div>
               {/*Reset button*/}
               <button className={'bg-primary rounded-lg px-2 border-border border-2'}
@@ -155,6 +183,10 @@ export default function Rowery() {
                 + '&ready=' + ready.toString()
                 + '&isWoman=' + isWoman.toString()
                 + '&isKids=' + isKids.toString()
+                + '&minPrice=' + minPrice.toString()
+                + '&maxPrice=' + maxPrice.toString()
+                + '&color=' + color.toString()
+                + '&category'+ category.toString()
               }
 
             />
