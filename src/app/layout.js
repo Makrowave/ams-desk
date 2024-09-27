@@ -11,11 +11,11 @@ export const metadata = {
 
 
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children}) {
   return (
-
+//overflow auto
     <html lang="en">
-      <body className={inter.className + ' h-full overflow-auto'}>
+      <body className={inter.className + 'overflow-hidden text-xl'}>
         <ProviderWrapper>
           {children}
         </ProviderWrapper>

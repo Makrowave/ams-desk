@@ -16,7 +16,13 @@ module.exports = {
         primary: '#FFFFFF',
         secondary: '#DEE2DB',
         tertiary: '#BCC0BA',
-        border: '#7A7C78'
+        border: '#7A7C78',
+        //Status colors
+        assembled: '#4CAF50',
+        notAssembled: '#FF9800',
+        prepaid: '#2196F3',
+        delivery: '#FFEB3B',
+        guarantee: '#9C27B0'
       },
       maxWidth: {
         '1920': '1920px',

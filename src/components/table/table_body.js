@@ -23,7 +23,7 @@ export default function TableBody({ src, singlePlace, placeId }) {
   }
 
   return (
-    <tbody className='flex-col align-top'>
+    <tbody className=''>
       {data.map((record) => (
         <BikeRecord key={record.modelId} model={record} placeCount={singlePlace ? 0 : 6} placeId={placeId} />
       ))}

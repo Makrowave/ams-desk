@@ -5,11 +5,11 @@ import TableBody from "@/components/table/table_body";
 
 
 
-export default function BikeTable({filterSrc}) {
+export default function BikeTable({ filterSrc }) {
   const [place, setPlace] = useState(0);
   let src = ""
 
-  if(place === 0) {
+  if (place === 0) {
     src = "/Desktop/GetBikes";
   } else {
     src = "/Desktop/GetBikesByPlace/" + place.toString();
@@ -18,19 +18,21 @@ export default function BikeTable({filterSrc}) {
   let singlePlace = place !== 0;
 
   return (
-    <div className="col-span-5 flex justify-center mx-4 border-l-2 pl-5 border-tertiary">
-      <div>
+    <div className="col-span-5 flex justify-center mx-4 border-l-2 pl-5 border-tertiary overflow-hidden h-full h-full max-w-full">
+      <div className="flex flex-col w-full h-full overflow-hidden">
         <ChangeTable changePlaceId={(index) => setPlace(index)} />
-        <table className="table-fixed min-w-full text-center">
-          <TableHeader singlePlace={singlePlace} />
-          <TableBody
-            singlePlace={singlePlace}
-            placeId={place}
-            src={
-              src + filterSrc
-            }
-          />
-        </table>
+        <div className="overflow-y-auto flex-1 h-0">
+          <table className="table-fixed min-w-full text-center border-separate border-spacing-0 border-tertiary border-2"> 
+            <TableHeader singlePlace={singlePlace} />
+            <TableBody
+              singlePlace={singlePlace}
+              placeId={place}
+              src={
+                src + filterSrc
+              }
+            />
+          </table>
+        </div>
       </div>
     </div>
   )

@@ -29,6 +29,18 @@ export default function BikeRecord({ model, placeCount, placeId }) {
     enabled: false
   })
 
+  function StatusColor({statusId}) {
+    let constStyle = "min-w-[6px] mr-1 "
+    switch (statusId) {
+      case 1: return <div className={constStyle + "bg-notAssembled"}></div>;
+      case 2: return <div className={constStyle + "bg-assembled"}></div>;
+      case 4: return <div className={constStyle + "bg-delivery"}></div>;
+      case 5: return <div className={constStyle + "bg-prepaid"}></div>; 
+      case 6: return <div className={constStyle + "bg-guarantee"}></div>;
+      default: return <div className={constStyle + "bg-primary"}></div>; 
+    }
+  }
+
   function renderInfo() {
 
     if (isPending) {
@@ -73,8 +85,8 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                   data.map((bike, index) => (
                     <tr key={bike.id} className='*:pr-4'>
                       <td className='pl-8'>{index + 1}</td>
-                      <td>{bike.place}</td>
-                      <td>{bike.status}</td>
+                      <td >{bike.place}</td>
+                      <td className='flex'><StatusColor statusId={bike.statusId}/>{bike.status}</td>
                       <td><Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2'} buttonTitle='Przenieś' title='Przenieś rower'><MoveModal refetch={refetch} bikeId={bike.id} /></Modal></td>
                       <td><AssembleButton className={'bg-secondary rounded-lg px-2 border-border border-2'} bikeId={bike.id} refetch={refetch} /></td>
                       <td><Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2'} buttonTitle='Sprzedaj' title='Sprzedaj rower'><SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} /></Modal></td>
@@ -102,8 +114,8 @@ export default function BikeRecord({ model, placeCount, placeId }) {
     <>
       <tr className={
         clicked
-          ? "h-2 max-h-2 odd:bg-secondary border-t-2 border-x-2 border-border rounded-lg"
-          : "h-2 max-h-2 odd:bg-secondary border-t-2 border-x-2 odd:border-secondary even:border-secondary rounded-lg"
+          ? "h-2 max-h-2 odd:bg-secondary border-2 border-border rounded-lg"
+          : "h-2 max-h-2 odd:bg-secondary"
       }
         onClick={() => { handleClick() }}>
         <td className="text-left pl-8">{model.modelName}</td>

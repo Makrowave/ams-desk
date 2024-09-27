@@ -16,8 +16,12 @@ export default function Navigation({active}) {
   return (
     <nav className="">
       <div className="max-w-1920 m-auto flex items-center bg-primary border-b-2 border-tertiary">
+        <div className="flex items-center">
         {navItems}
-        <button onClick={()=>{logout()}}>Wyloguj</button>
+        </div>
+        <div className="ml-auto mr-20">
+          <button  onClick={()=>{logout()}}>Wyloguj</button>
+        </div>
       </div>
     </nav>
   );

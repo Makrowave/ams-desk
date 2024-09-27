@@ -5,7 +5,7 @@ export default function TableHeader({ singlePlace }) {
 
   function TableHeaderWrapper({ children }) {
     return (
-      <thead className='bg-tertiary border-2 border-tertiary mb-px'>
+      <thead className='bg-tertiary mb-px sticky top-0 z-5'>
         <tr>
           <th className='w-96 pl-8'>Rower</th>
           <th className='w-24'>Rozmiar</th>
