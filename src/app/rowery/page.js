@@ -9,6 +9,7 @@ import Modal from "@/components/modals/modal";
 import AddModelModal from "@/components/modals/add_model_modal";
 import BikeTable from "@/components/table/bike_table";
 import PrivateRoute from "@/components/routing/private_route";
+import RangeInput from "@/components/filtering/range_input";
 
 const defaults = {
   name: '',
@@ -137,12 +138,21 @@ export default function Rowery() {
                   title='Kategoria'
                   default_option={defaults.category}
                 />
+                {/* Color */}
                 <FetchSelect value={color}
                   onChange={e => { setColor(e.target.value) }}
                   src='/Colors'
                   queryKey='colors'
                   title='Kolor'
                   default_option={defaults.color}
+                />
+                {/* Price range */}
+                <RangeInput
+                  title="Cena"
+                  minValue={minPrice}
+                  maxValue={maxPrice}
+                  minOnChange={e => { setMinPrice(e.target.value) }}
+                  maxOnChange={e => { setMaxPrice(e.target.value) }}
                 />
                 {/* Avaible */}
                 <SingleCheckbox
@@ -186,7 +196,7 @@ export default function Rowery() {
                 + '&minPrice=' + minPrice.toString()
                 + '&maxPrice=' + maxPrice.toString()
                 + '&color=' + color.toString()
-                + '&category'+ category.toString()
+                + '&category' + category.toString()
               }
 
             />
