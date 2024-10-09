@@ -1,9 +1,9 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://localhost:7077/api"
+  baseURL: process.env.NEXT_PUBLIC_API_URL
 })
 
 export const axiosPrivate = axios.create({
-  baseURL: "https://localhost:7077/api"
+  baseURL: process.env.NEXT_PUBLIC_API_URL
 })

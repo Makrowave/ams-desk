@@ -15,7 +15,7 @@ export default function RootLayout({ children}) {
   return (
 //overflow auto
     <html lang="en">
-      <body className={inter.className + 'overflow-hidden text-xl'}>
+      <body className={inter.className + 'overflow-hidden text-xl h-full'}>
         <ProviderWrapper>
           {children}
         </ProviderWrapper>
