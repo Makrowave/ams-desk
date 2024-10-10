@@ -1,7 +1,7 @@
 'use client'
 import useAuth from "@/hooks/use_auth";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -23,7 +23,7 @@ export default function Login() {
     if (accessToken) {
       router.push('/rowery');
     }
-  }, [])
+  })
 
   return (
     <div className="justify-center flex content-center h-full items-center">
