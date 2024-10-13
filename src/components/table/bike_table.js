@@ -18,7 +18,7 @@ export default function BikeTable({ filterSrc }) {
   let singlePlace = place !== 0;
 
   return (
-    <div className="col-span-5 flex justify-center mx-4 border-l-2 pl-5 border-tertiary overflow-hidden h-full h-full max-w-full">
+    <div className="col-span-5 flex justify-center mx-4 border-l-2 pl-5 border-tertiary overflow-hidden h-full max-w-full">
       <div className="flex flex-col w-full h-full overflow-hidden">
         <ChangeTable changePlaceId={(index) => setPlace(index)} />
         <div className="overflow-y-auto flex-1 h-0">
