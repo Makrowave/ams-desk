@@ -1,7 +1,6 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import Modal from '../modals/modal';
+import { useState } from 'react';
 import AssembleButton from '../buttons/assemble_button';
 import AddBikeModal from '../modals/add_bike_modal';
 import MoveModal from '../modals/move_modal';

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import ChangeTable from "@/components/filtering/change_table";
 import TableHeader from "@/components/table/table_header";
 import TableBody from "@/components/table/table_body";

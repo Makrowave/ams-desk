@@ -1,5 +1,5 @@
 import { axiosPrivate } from "@/api/axios";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import useAuth from "./use_auth";
 
 //Code for including Authorization header in request
