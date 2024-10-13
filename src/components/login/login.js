@@ -44,12 +44,12 @@ export default function Login() {
         </div>
         <div className="my-6">
           <span>Login</span>
-          <input className="block text-black text-center bg-primary border-2 border-tertiary rounded-l" 
+          <input className="block  text-center bg-primary border-2 border-tertiary rounded-l" 
           value={username} onChange={e => { setUsername(e.target.value) }} onKeyDown={handleKeyDown}></input>
         </div>
         <div className="my-6">
           <span>Hasło</span>
-          <input type="password" className="block text-black text-center bg-primary border-2 border-tertiary rounded-l" 
+          <input type="password" className="block  text-center bg-primary border-2 border-tertiary rounded-l" 
           value={password} onChange={e => { setPassword(e.target.value) }} onKeyDown={handleKeyDown}></input>
         </div>
         <button className="block bg-primary rounded-lg px-2 border-border border-2" onClick={() => { handleSubmit() }}>Zaloguj</button>

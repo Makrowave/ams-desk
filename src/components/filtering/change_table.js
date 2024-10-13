@@ -39,7 +39,7 @@ function ChangeTableButton({ isActive, title, onClick }) {
   return (
     <button className={
       isActive
-        ? 'bg-tertiary'
+        ? 'bg-secondary rounded-t-lg h-10'
         : 'bg-primary'
     }
       onClick={onClick}

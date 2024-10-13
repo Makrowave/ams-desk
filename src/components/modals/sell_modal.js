@@ -19,7 +19,7 @@ export default function SellModal({ refetch, bikeId, basePrice }) {
     <div>
       <div>
         <span>Cena</span>
-        <input className="text-black text-center" value={price} onChange={e => {setPrice(e.target.value)}}></input>
+        <input className=" text-center" value={price} onChange={e => {setPrice(e.target.value)}}></input>
       </div>
       <button onClick={() => { mutation.mutate() }}>Sprzedaj</button>
     </div>

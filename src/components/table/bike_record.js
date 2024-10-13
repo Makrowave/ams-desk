@@ -29,15 +29,14 @@ export default function BikeRecord({ model, placeCount, placeId }) {
     enabled: false
   })
 
-  function StatusColor({statusId}) {
-    let constStyle = "min-w-[6px] mr-1 "
+  function statusColor(statusId) {
     switch (statusId) {
-      case 1: return <div className={constStyle + "bg-notAssembled"}></div>;
-      case 2: return <div className={constStyle + "bg-assembled"}></div>;
-      case 4: return <div className={constStyle + "bg-delivery"}></div>;
-      case 5: return <div className={constStyle + "bg-prepaid"}></div>; 
-      case 6: return <div className={constStyle + "bg-guarantee"}></div>;
-      default: return <div className={constStyle + "bg-primary"}></div>; 
+      case 1: return "bg-notAssembled-light text-notAssembled-dark";
+      case 2: return "bg-assembled-light text-assembled-dark";
+      case 4: return "bg-delivery-light text-delivery-dark";
+      case 5: return "bg-prepaid-light text-prepaid-dark";
+      case 6: return "bg-guarantee-light text-guarantee-dark";
+      default: return "bg-primary-light text-primary-dark";
     }
   }
 
@@ -54,7 +53,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
     if (clicked) {
       return (
         <>
-          <tr className='max-h-2 h-2 even:bg-secondary odd:bg-primary border-b-2 border-x-2 border-border'>
+          <tr className='even:bg-secondary odd:bg-primary border-b-2 border-x-2 border-border drop-shadow-md'>
             <td colSpan={5 + placeCount}>
               <div className='mx-8 flex border-y-2 space-x-4 border-border py-2 items-center'>
                 <div>
@@ -66,31 +65,34 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                   <span>{model.productCode}</span>
                 </div>
                 <div>
-                  <Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2'} buttonTitle='Dodaj' title='Dodaj rower'>
+                  <Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'} buttonTitle='Dodaj' title='Dodaj rower'>
                     <AddBikeModal refetch={refetch} modelId={model.modelId} />
                   </Modal>
                 </div>
               </div>
-              <table>
-                <thead className='*:pr-4'>
-                  <th className='pl-8'>Lp.</th>
-                  <th>Miejsce</th>
-                  <th>Status</th>
-                  <th></th>{/*Move*/}
-                  <th></th>{/*Assemble*/}
-                  <th></th>{/*Sell*/}
-                  <th></th>{/*Delete*/}
+              <table className='table-fixed w-full mx-8'>
+                <thead>
+                  <th className='w-10'>Lp.</th>
+                  <th className='w-fit'>Miejsce</th>
+                  <th className='w-2/12'>Status</th>
+                  <th className='w-4/12'></th>{/*Move*/}
+                  <th></th>
                 </thead>
                 {
                   data.map((bike, index) => (
-                    <tr key={bike.id} className='*:pr-4'>
-                      <td className='pl-8'>{index + 1}</td>
-                      <td >{bike.place}</td>
-                      <td className='flex'><StatusColor statusId={bike.statusId}/>{bike.status}</td>
-                      <td><Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2'} buttonTitle='Przenieś' title='Przenieś rower'><MoveModal refetch={refetch} bikeId={bike.id} /></Modal></td>
-                      <td><AssembleButton className={'bg-secondary rounded-lg px-2 border-border border-2'} bikeId={bike.id} refetch={refetch} /></td>
-                      <td><Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2'} buttonTitle='Sprzedaj' title='Sprzedaj rower'><SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} /></Modal></td>
-                      <td><Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2'} buttonTitle='Usuń' title='Usuń rower'><DeleteModal refetch={refetch} bikeId={bike.id} /></Modal></td>
+                    <tr key={bike.id} className='border-y border-border last:border-b-0 h-10'>
+                      <td>{index + 1}</td>
+                      <td>{bike.place}</td>
+                      <td className={statusColor(bike.statusId) + " border-border border-x border-b"}>{bike.status}</td>
+                      <td>
+                        <div className="flex *:mx-2">
+                          <Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'} buttonTitle='Przenieś' title='Przenieś rower'><MoveModal refetch={refetch} bikeId={bike.id} /></Modal>
+                          <AssembleButton className={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'} bikeId={bike.id} refetch={refetch} />
+                          <Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'} buttonTitle='Sprzedaj' title='Sprzedaj rower'><SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} /></Modal>
+                          <Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'} buttonTitle='Usuń' title='Usuń rower'><DeleteModal refetch={refetch} bikeId={bike.id} /></Modal>
+                        </div>
+                      </td>
+                      <td></td>
                     </tr>
                   ))
                 }
@@ -110,19 +112,57 @@ export default function BikeRecord({ model, placeCount, placeId }) {
     if (!clicked) refetch();
   }
 
+  function colorCount(count) {
+    if(count===0)
+      return 'bg-count-none';
+    if(count===1)
+      return 'bg-count-low';
+    if(count<=3)
+      return 'bg-count-medium';
+    return 'bg-count-high';
+  }
+
+  function ColorPreview({primaryColor, secondaryColor}) {
+    let pColor = primaryColor === null || secondaryColor === null 
+      ? '#ff00ff' : primaryColor;
+    let sColor = primaryColor === null || secondaryColor === null ? "#000000" : secondaryColor;
+
+    return (
+      <div style={{
+        background: 'linear-gradient(225deg, ' + pColor + ' 50%, ' + sColor +  ' 50%)',
+        height: 25,
+        width: 25,
+        marginRight: 10,
+        alignSelf: 'center',
+        borderRadius: '20%'
+      }}/>
+    )
+  }
+  // width: 25,
+  //       height: 25,
+  //       borderRadius: '50%',
+  //       background: 'linear-gradient(235deg, ' + pColor + ' 50%, ' + sColor +  ' 50%)',
+  //       alignSelf: 'center',
+  //       marginRight: 10,
+  // {
   return (
     <>
       <tr className={
         clicked
-          ? "h-2 max-h-2 odd:bg-secondary border-2 border-border rounded-lg"
-          : "h-2 max-h-2 odd:bg-secondary"
+          ? "h-10 odd:bg-secondary"
+          : "h-10 odd:bg-secondary"
       }
         onClick={() => { handleClick() }}>
-        <td className="text-left pl-8">{model.modelName}</td>
+        <td className="text-left pl-8 flex min-h-10 place-center align-center">
+          <ColorPreview primaryColor={model.primaryColor} secondaryColor={model.secondaryColor} />
+          <div className='self-center'>
+            {model.modelName}
+          </div>
+        </td>
         <td>{model.frameSize}</td>
         <td>{model.wheelSize}</td>
         <td>{model.price}</td>
-        <td>{model.bikeCount}</td>
+        <td className={colorCount(model.bikeCount)}>{model.bikeCount}</td>
         {
           places.map((place, i) => (
             <td key={i}>{place}</td>

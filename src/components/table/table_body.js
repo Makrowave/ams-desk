@@ -27,7 +27,6 @@ export default function TableBody({ src, singlePlace, placeId }) {
       {data.map((record) => (
         <BikeRecord key={record.modelId} model={record} placeCount={singlePlace ? 0 : 6} placeId={placeId} />
       ))}
-      <tr><td colSpan={5 + (singlePlace ? 0 : 6)}></td></tr> {/*This div makes it so the rows don't stretch*/}
     </tbody>
   )
 }

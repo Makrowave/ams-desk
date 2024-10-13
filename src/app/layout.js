@@ -1,8 +1,11 @@
-import { Inter } from "next/font/google";
+import { Work_Sans } from "next/font/google";
 import "./globals.css";
 
 import ProviderWrapper from "@/components/providers/providers";
-const inter = Inter({ subsets: ["latin"] });
+const work_sans = Work_Sans({ 
+  subsets: ["latin"],
+  weight: '400'
+ });
 
 export const metadata = {
   title: "Rowery",
@@ -15,7 +18,7 @@ export default function RootLayout({ children}) {
   return (
 //overflow auto
     <html lang="en">
-      <body className={inter.className + 'overflow-hidden text-xl h-full'}>
+      <body className={work_sans.className + ' overflow-hidden text-xl h-full text-slate-600'}>
         <ProviderWrapper>
           {children}
         </ProviderWrapper>

@@ -9,7 +9,7 @@ export default function FilterSelect({ onChange, value, title, children}) {
         <p>{title}</p>
       </div>
       <div className="flex justify-center items-center self-start w-full">
-        <select className="text-black text-center bg-primary border-2 border-tertiary rounded w-full" value={value} onChange={onChange}>
+        <select className=" text-center bg-primary border-2 border-tertiary rounded w-full" value={value} onChange={onChange}>
           {children}
         </select>
       </div>

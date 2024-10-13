@@ -10,9 +10,9 @@ export default function RangeInput({minValue, maxValue, title, minOnChange, maxO
         <p>{title}</p>
       </div>
       <div className="flex justify-items-center">
-        <input className="text-black text-center bg-primary border-2 border-tertiary rounded w-2/5 block" placeholder="min" value={minValue} onChange={minOnChange}></input>
+        <input className=" text-center bg-primary border-2 border-tertiary rounded w-2/5 block" placeholder="min" value={minValue} onChange={minOnChange}></input>
         <span className="m-auto block">-</span>
-        <input className="text-black text-center bg-primary border-2 border-tertiary rounded w-2/5 block" placeholder="max" value={maxValue} onChange={maxOnChange}></input>
+        <input className=" text-center bg-primary border-2 border-tertiary rounded w-2/5 block" placeholder="max" value={maxValue} onChange={maxOnChange}></input>
       </div>
     </div>
   )

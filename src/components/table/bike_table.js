@@ -22,7 +22,7 @@ export default function BikeTable({ filterSrc }) {
       <div className="flex flex-col w-full h-full overflow-hidden">
         <ChangeTable changePlaceId={(index) => setPlace(index)} />
         <div className="overflow-y-auto flex-1 h-0">
-          <table className="table-fixed min-w-full text-center border-separate border-spacing-0 border-tertiary border-2"> 
+          <table className="table-fixed min-w-full text-center border-separate border-spacing-0 shadow-lg"> 
             <TableHeader singlePlace={singlePlace} />
             <TableBody
               singlePlace={singlePlace}
