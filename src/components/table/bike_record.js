@@ -8,13 +8,14 @@ import MoveModal from '../modals/move_modal';
 import DeleteModal from '../modals/delete_modal';
 import SellModal from '../modals/sell_modal';
 import useAxiosPrivate from '@/hooks/use_axios_private';
+import UseModal from '@/hooks/use_modal';
 export default function BikeRecord({ model, placeCount, placeId }) {
 
 
   const places = new Array(placeCount).fill(0);
   const [clicked, setClicked] = useState(false);
   const _bikesUrl = '/Bikes/bikesByModelId/';
-
+  const { setModalChildren, setTitle, setIsOpen } = UseModal();
 
   model.placeBikeCount.map((count) => (
     places[count.placeId - 1] = count.count
@@ -65,9 +66,15 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                   <span>{model.productCode}</span>
                 </div>
                 <div>
-                  <Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'} buttonTitle='Dodaj' title='Dodaj rower'>
-                    <AddBikeModal refetch={refetch} modelId={model.modelId} />
-                  </Modal>
+                  <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'
+                    onClick={() => {
+                      setModalChildren(<AddBikeModal refetch={refetch} modelId={model.modelId} />);
+                      setTitle("Dodaj rower");
+                      setIsOpen(true);
+                    }}
+                  >
+                    Dodaj
+                  </button>
                 </div>
               </div>
               <table className='table-fixed w-full mx-8'>
@@ -86,10 +93,35 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                       <td className={statusColor(bike.statusId) + " border-border border-x border-b"}>{bike.status}</td>
                       <td>
                         <div className="flex *:mx-2">
-                          <Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'} buttonTitle='Przenieś' title='Przenieś rower'><MoveModal refetch={refetch} bikeId={bike.id} /></Modal>
-                          <AssembleButton className={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'} bikeId={bike.id} refetch={refetch} />
-                          <Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'} buttonTitle='Sprzedaj' title='Sprzedaj rower'><SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} /></Modal>
-                          <Modal buttonClassName={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'} buttonTitle='Usuń' title='Usuń rower'><DeleteModal refetch={refetch} bikeId={bike.id} /></Modal>
+                          <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'
+                            onClick={() => {
+                              setModalChildren(<MoveModal refetch={refetch} bikeId={bike.id} />);
+                              setTitle("Przenieś rower");
+                              setIsOpen(true);
+                            }}
+                          >
+                            Przenieś
+                          </button>
+                          <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'
+                            onClick={() => {
+                              setModalChildren(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} />);
+                              setTitle("Sprzedaj rower");
+                              setIsOpen(true);
+                            }}
+                          >
+                            Sprzedaj
+                          </button>
+                          <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'
+                            onClick={() => {
+                              setModalChildren(<DeleteModal refetch={refetch} bikeId={bike.id} />);
+                              setTitle("Usuń rower");
+                              setIsOpen(true);
+                            }}
+                          >
+                            Usuń
+                          </button>
+                          <AssembleButton className={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'} 
+                            bikeId={bike.id} refetch={refetch} />
                         </div>
                       </td>
                       <td></td>
@@ -113,38 +145,31 @@ export default function BikeRecord({ model, placeCount, placeId }) {
   }
 
   function colorCount(count) {
-    if(count===0)
+    if (count === 0)
       return 'bg-count-none';
-    if(count===1)
+    if (count === 1)
       return 'bg-count-low';
-    if(count<=3)
+    if (count <= 3)
       return 'bg-count-medium';
     return 'bg-count-high';
   }
 
-  function ColorPreview({primaryColor, secondaryColor}) {
-    let pColor = primaryColor === null || secondaryColor === null 
+  function ColorPreview({ primaryColor, secondaryColor }) {
+    let pColor = primaryColor === null || secondaryColor === null
       ? '#ff00ff' : primaryColor;
     let sColor = primaryColor === null || secondaryColor === null ? "#000000" : secondaryColor;
 
     return (
       <div style={{
-        background: 'linear-gradient(225deg, ' + pColor + ' 50%, ' + sColor +  ' 50%)',
+        background: 'linear-gradient(225deg, ' + pColor + ' 50%, ' + sColor + ' 50%)',
         height: 25,
         width: 25,
         marginRight: 10,
         alignSelf: 'center',
         borderRadius: '20%'
-      }}/>
+      }} />
     )
   }
-  // width: 25,
-  //       height: 25,
-  //       borderRadius: '50%',
-  //       background: 'linear-gradient(235deg, ' + pColor + ' 50%, ' + sColor +  ' 50%)',
-  //       alignSelf: 'center',
-  //       marginRight: 10,
-  // {
   return (
     <>
       <tr className={

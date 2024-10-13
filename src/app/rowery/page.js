@@ -10,6 +10,7 @@ import AddModelModal from "@/components/modals/add_model_modal";
 import BikeTable from "@/components/table/bike_table";
 import PrivateRoute from "@/components/routing/private_route";
 import RangeInput from "@/components/filtering/range_input";
+import UseModal from "@/hooks/use_modal";
 
 const defaults = {
   name: '',
@@ -64,8 +65,13 @@ export default function Rowery() {
     setColor(defaults.color);
     setCategory(defaults.category);
   }
-
-
+  //Modal
+  const {setIsOpen, setModalChildren, setTitle}  = UseModal();
+  function openModal() {
+    setModalChildren(<AddModelModal />);
+    setTitle("Dodaj rower");
+    setIsOpen(true);
+  }
 
   return (
     //overflow auto main
@@ -202,17 +208,20 @@ export default function Rowery() {
             />
             <div className="fixed bottom-0 align-center  flex w-full pointer-events-none">
               <div className="justify-between max-w-1920 w-full m-auto px-5">
-                <Modal buttonTitle='+ Dodaj model'
-                  buttonClassName="bg-primary mb-10 max-w-60 rounded-2xl py-2 px-5 border-2 border-border ml-auto block shadow-lg border-b-4"
-                  title='Dodaj model'
-                >
-                  <AddModelModal />
-                </Modal>
+                <button className={'bg-primary mb-10 max-w-60 rounded-2xl py-2 px-5 border-2 border-border ml-auto block shadow-lg border-b-4 pointer-events-auto'} 
+                  onClick={ () => openModal()}>
+                    Dodaj Model
+                </button>
               </div>
             </div>
           </main>
         </div>
       </div>
+      <Modal buttonTitle='+ Dodaj model'
+                  
+                  title='Dodaj model'
+      >
+      </Modal>
     </PrivateRoute>
   )
 }
