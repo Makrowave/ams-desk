@@ -26,8 +26,8 @@ const _url = "/Desktop/AddBike"
 
 
   return (
-    <div>
-      <div>
+    <div className='flex flex-col justify-between flex-grow'>
+      <div className="flex flex-col">
         <span>Miejsce</span>
         <FetchSelect value={place}
           onChange={e => { setPlace(e.target.value) }}
@@ -45,7 +45,10 @@ const _url = "/Desktop/AddBike"
           default_option={null}
         />
       </div>
-      <button onClick={() => { mutation.mutate() }}>Dodaj</button>
+      <button  className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 self-center mt-auto mb-4 hover:bg-tertiary'
+        onClick={() => { mutation.mutate() }}>
+        Dodaj
+      </button>
     </div>
   )
 }

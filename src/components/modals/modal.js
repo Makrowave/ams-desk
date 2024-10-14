@@ -30,16 +30,16 @@ export default function Modal() {
         isOpen && (
           <div className="">
             <div className="fixed top-0 bottom-0 left-0 right-0 pointer-events-auto transparent-bg z-10">
-              <div className="bg-primary flex flex-col w-fit h-fit absolute top-0 bottom-0 left-0 right-0 m-auto rounded-2xl border-border border-2 min-w-80 min-h-80">
+              <div className="bg-primary flex flex-col w-fit h-fit absolute top-0 bottom-0 left-0 right-0 m-auto rounded-2xl border-border border-2 min-h-80 min-w-80">
                 {/*Header*/}
                 <div className="flex justify-between bg-secondary rounded-t-2xl px-6 align-center h-10 shadow-md">
-                  <h2 className="leading-10">{title}</h2>
+                  <h2 className="leading-10"><b>{title}</b></h2>
                   <button className="flex align-center " onClick={() => handleClose()}>
                     <img className='h-5 self-center px-1' src='/close.png' />
                   </button>
                 </div>
                 {/*Content*/}
-                <div className="mx-6 pt-2">
+                <div className="mx-6 pt-2 flex-grow flex">
                   {modalChildren}
                 </div>
               </div>

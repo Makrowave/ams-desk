@@ -81,7 +81,7 @@ export default function AddModelModal() {
         checked={isElectric}
         onChange={e => { setIsElectric(!isElectric) }}
         title="Elektryczny" />
-      <button className="bg-primary mb-4 rounded-2xl py-1 px-5 border-2 border-border m-auto shadow-lg border-b-4" onClick={() => { mutation.mutate() }}>Dodaj model</button>
+      <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 self-center mt-auto mb-4 hover:bg-tertiary' onClick={() => { mutation.mutate() }}>Dodaj model</button>
     </div>
   )
 }

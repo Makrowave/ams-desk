@@ -65,7 +65,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                   <span>{model.productCode}</span>
                 </div>
                 <div>
-                  <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'
+                  <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
                     onClick={() => {
                       setModalChildren(<AddBikeModal refetch={refetch} modelId={model.modelId} />);
                       setTitle("Dodaj rower");
@@ -92,7 +92,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                       <td className={statusColor(bike.statusId) + " border-border border-x border-b"}>{bike.status}</td>
                       <td>
                         <div className="flex *:mx-2">
-                          <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'
+                          <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
                             onClick={() => {
                               setModalChildren(<MoveModal refetch={refetch} bikeId={bike.id} />);
                               setTitle("Przenieś rower");
@@ -101,7 +101,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                           >
                             Przenieś
                           </button>
-                          <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'
+                          <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
                             onClick={() => {
                               setModalChildren(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} />);
                               setTitle("Sprzedaj rower");
@@ -110,7 +110,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                           >
                             Sprzedaj
                           </button>
-                          <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'
+                          <button className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
                             onClick={() => {
                               setModalChildren(<DeleteModal refetch={refetch} bikeId={bike.id} />);
                               setTitle("Usuń rower");
@@ -119,7 +119,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                           >
                             Usuń
                           </button>
-                          <AssembleButton className={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'} 
+                          <AssembleButton className={'bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'} 
                             bikeId={bike.id} refetch={refetch} />
                         </div>
                       </td>

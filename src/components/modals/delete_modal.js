@@ -13,14 +13,17 @@ export default function DeleteModal({ refetch, bikeId}) {
 
 
   return (
-    <div>
-      <div>
+    <div className='flex flex-col justify-between flex-grow'>
+      <div className="w-96">
         <h2>Czy na pewno?</h2> <br />
-        <span>Jeśli chcesz zdjąć rower ze stanu po sprzedaży użyj opcji sprzedaj.</span><br />
-        <span>Ta opcja powinna zostać użyta w przypadku przypadkowego dodania roweru.</span> <br />
-        <span>Jeśli rower został dodany ze złym statusem lub w złym miejscu - użyj innej opcji, żeby to poprawić</span>
+        <p className="indent-8">Jeśli chcesz zdjąć rower ze stanu po sprzedaży użyj opcji sprzedaj.</p>
+        <p className="indent-8">Ta opcja powinna zostać użyta w przypadku przypadkowego dodania roweru.</p>
+        <p className="indent-8">Jeśli rower został dodany ze złym statusem lub w złym miejscu - użyj innej opcji, żeby to poprawić</p>
       </div>
-      <button onClick={() => { mutation.mutate() }}>Usuń</button>
+      <button 
+        className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 self-center my-4 hover:bg-tertiary'
+        onClick={() => { mutation.mutate() }}>
+        Usuń</button>
     </div>
   )
 }

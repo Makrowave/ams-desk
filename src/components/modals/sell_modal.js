@@ -16,12 +16,15 @@ export default function SellModal({ refetch, bikeId, basePrice }) {
 
 
   return (
-    <div>
-      <div>
-        <span>Cena</span>
-        <input className=" text-center" value={price} onChange={e => {setPrice(e.target.value)}}></input>
+    <div className='flex flex-col justify-between flex-grow'>
+      <div className="flex flex-col">
+        <p>Cena</p>
+        <input className=" text-center bg-primary border-2 border-tertiary rounded" value={price} onChange={e => {setPrice(e.target.value)}}></input>
       </div>
-      <button onClick={() => { mutation.mutate() }}>Sprzedaj</button>
+      <button  className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 self-center mt-auto mb-4 hover:bg-tertiary' 
+        onClick={() => { mutation.mutate() }}>
+        Sprzedaj
+      </button>
     </div>
   )
 }

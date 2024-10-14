@@ -181,7 +181,7 @@ export default function Rowery() {
                   title="Dziecięcy" />
               </div>
               {/*Reset button*/}
-              <button className={'bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4'}
+              <button className={'bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'}
                 onClick={() => { reset() }}
               >
                 Reset
@@ -208,7 +208,7 @@ export default function Rowery() {
             />
             <div className="fixed bottom-0 align-center  flex w-full pointer-events-none">
               <div className="justify-between max-w-1920 w-full m-auto px-5">
-                <button className={'bg-primary mb-10 max-w-60 rounded-2xl py-2 px-5 border-2 border-border ml-auto block shadow-lg border-b-4 pointer-events-auto'} 
+                <button className={'bg-primary mb-10 max-w-60 rounded-2xl py-2 px-5 border-2 border-border ml-auto block shadow-lg border-b-4 pointer-events-auto hover:bg-tertiary'} 
                   onClick={ () => openModal()}>
                     Dodaj Model
                 </button>
@@ -217,11 +217,7 @@ export default function Rowery() {
           </main>
         </div>
       </div>
-      <Modal buttonTitle='+ Dodaj model'
-                  
-                  title='Dodaj model'
-      >
-      </Modal>
+      <Modal/>
     </PrivateRoute>
   )
 }
