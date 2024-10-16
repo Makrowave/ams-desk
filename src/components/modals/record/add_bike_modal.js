@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import FetchSelect from "../filtering/fetch_select";
+import FetchSelect from "../../filtering/fetch_select";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 
 export default function AddBikeModal({ refetch, modelId }) {

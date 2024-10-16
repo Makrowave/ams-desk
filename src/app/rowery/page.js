@@ -1,16 +1,16 @@
-"use client";
-import Navigation from "../../components/navigation/navigation";
+'use client';
+import Navigation from '../../components/navigation/navigation';
 import { useState } from 'react';
-import FetchSelect from "@/components/filtering/fetch_select";
-import FilterInput from "@/components/filtering/filter_input";
-import FilterSelect from "@/components/filtering/filter_select";
-import SingleCheckbox from "@/components/filtering/single_checkbox";
-import Modal from "@/components/modals/modal";
-import AddModelModal from "@/components/modals/add_model_modal";
-import BikeTable from "@/components/table/bike_table";
-import PrivateRoute from "@/components/routing/private_route";
-import RangeInput from "@/components/filtering/range_input";
-import UseModal from "@/hooks/use_modal";
+import FetchSelect from '@/components/filtering/fetch_select';
+import FilterInput from '@/components/filtering/filter_input';
+import FilterSelect from '@/components/filtering/filter_select';
+import SingleCheckbox from '@/components/filtering/single_checkbox';
+import Modal from '@/components/modals/modal';
+import AddModelModal from '@/components/modals/add_model_modal';
+import BikeTable from '@/components/table/bike_table';
+import PrivateRoute from '@/components/routing/private_route';
+import RangeInput from '@/components/filtering/range_input';
+import UseModal from '@/hooks/use_modal';
 
 const defaults = {
   name: '',
@@ -29,8 +29,8 @@ const defaults = {
   category: '',
   minPrice: 0,
   maxPrice: 100000,
-  color: ''
-}
+  color: '',
+};
 
 export default function Rowery() {
   //Filtering criterions
@@ -66,46 +66,54 @@ export default function Rowery() {
     setCategory(defaults.category);
   }
   //Modal
-  const {setIsOpen, setModalChildren, setTitle}  = UseModal();
+  const { setIsOpen, setModalChildren, setTitle } = UseModal();
   function openModal() {
     setModalChildren(<AddModelModal />);
-    setTitle("Dodaj rower");
+    setTitle('Dodaj rower');
     setIsOpen(true);
   }
 
   return (
     //overflow auto main
     <PrivateRoute>
-      <div className="max-h-screen overflow-hidden">
+      <div className='max-h-screen overflow-hidden'>
         <Navigation active={1} />
-        <div className="h-screen flex flex-col overflow-hidden max-w-1920 m-auto">
-          <main className="flex-1 grid grid-cols-6 bg-primary py-5 rounded-b-xl overflow-hidden flex-col">
+        <div className='h-screen flex flex-col overflow-hidden max-w-1920 m-auto'>
+          <main className='flex-1 grid grid-cols-6 bg-primary py-5 rounded-b-xl overflow-hidden flex-col'>
             {/* Filter */}
-            <div className="col-span-1 h-full overflow-y-auto m-4 bg-primary flex flex-col ">
+            <div className='col-span-1 h-full overflow-y-auto m-4 bg-primary flex flex-col '>
               {/* Title */}
-              <div className="flex justify-center sticky top-0 bg-primary">
-                <div className="flex justify-center text-2xl w-3/5 border-border border-b pb-1 mb">
-                  <h2><b>Filtry</b></h2>
+              <div className='flex justify-center sticky top-0 bg-primary'>
+                <div className='flex justify-center text-2xl w-3/5 border-border border-b pb-1 mb'>
+                  <h2>
+                    <b>Filtry</b>
+                  </h2>
                 </div>
               </div>
-              <div className="*:pb-1 flex flex-col">
+              <div className='*:pb-1 flex flex-col'>
                 {/* Name */}
                 <FilterInput
-                  title="Nazwa"
+                  title='Nazwa'
                   value={name}
-                  onChange={e => { setName(e.target.value) }}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
                 />
                 {/* Size */}
                 <FilterInput
-                  title="Rozmiar"
+                  title='Rozmiar'
                   value={size}
-                  onChange={e => { setSize(e.target.value) }}
+                  onChange={(e) => {
+                    setSize(e.target.value);
+                  }}
                 />
                 {/* Wheel size */}
                 <FilterSelect
-                  title="Rozmiar koła"
+                  title='Rozmiar koła'
                   value={wheel}
-                  onChange={e => { setWheel(e.target.value) }}
+                  onChange={(e) => {
+                    setWheel(e.target.value);
+                  }}
                 >
                   <option value=''> Dowolny </option>
                   <option value='12'> 12 </option>
@@ -119,8 +127,11 @@ export default function Rowery() {
                   <option value='29'> 29 </option>
                 </FilterSelect>
                 {/* Frame type (is woman) */}
-                <FilterSelect value={isWoman}
-                  onChange={(e) => { setIsWoman(e.target.value) }}
+                <FilterSelect
+                  value={isWoman}
+                  onChange={(e) => {
+                    setIsWoman(e.target.value);
+                  }}
                   title='Typ ramy'
                 >
                   <option value={defaults.isWoman}>Dowolny</option>
@@ -128,8 +139,11 @@ export default function Rowery() {
                   <option value={false}>Męski</option>
                 </FilterSelect>
                 {/* Manufacturer */}
-                <FetchSelect value={make}
-                  onChange={e => { setMake(e.target.value) }}
+                <FetchSelect
+                  value={make}
+                  onChange={(e) => {
+                    setMake(e.target.value);
+                  }}
                   src='/Manufacturers'
                   queryKey='manufacturers'
                   title='Producent'
@@ -137,16 +151,22 @@ export default function Rowery() {
                 />
                 {/* Category */}
                 {/* Endpoint to be made */}
-                <FetchSelect value={category}
-                  onChange={e => { setCategory(e.target.value) }}
+                <FetchSelect
+                  value={category}
+                  onChange={(e) => {
+                    setCategory(e.target.value);
+                  }}
                   src='/Categories'
                   queryKey='categories'
                   title='Kategoria'
                   default_option={defaults.category}
                 />
                 {/* Color */}
-                <FetchSelect value={color}
-                  onChange={e => { setColor(e.target.value) }}
+                <FetchSelect
+                  value={color}
+                  onChange={(e) => {
+                    setColor(e.target.value);
+                  }}
                   src='/Colors'
                   queryKey='colors'
                   title='Kolor'
@@ -154,41 +174,61 @@ export default function Rowery() {
                 />
                 {/* Price range */}
                 <RangeInput
-                  title="Cena"
+                  title='Cena'
                   minValue={minPrice}
                   maxValue={maxPrice}
-                  minOnChange={e => { setMinPrice(e.target.value) }}
-                  maxOnChange={e => { setMaxPrice(e.target.value) }}
+                  minOnChange={(e) => {
+                    setMinPrice(e.target.value);
+                  }}
+                  maxOnChange={(e) => {
+                    setMaxPrice(e.target.value);
+                  }}
                 />
                 {/* Avaible */}
                 <SingleCheckbox
                   checked={avail}
-                  onChange={e => { setAvail(!avail) }}
-                  title="Dostępny" />
+                  onChange={(e) => {
+                    setAvail(!avail);
+                  }}
+                  title='Dostępny'
+                />
                 {/* Ready */}
                 <SingleCheckbox
                   checked={ready}
-                  onChange={e => { setReady(!ready) }}
-                  title="Złożony" />
+                  onChange={(e) => {
+                    setReady(!ready);
+                  }}
+                  title='Złożony'
+                />
                 {/* Electric */}
                 <SingleCheckbox
                   checked={electric}
-                  onChange={e => { setElectric(!electric) }}
-                  title="Elektryczny" />
+                  onChange={(e) => {
+                    setElectric(!electric);
+                  }}
+                  title='Elektryczny'
+                />
                 <SingleCheckbox
                   checked={isKids}
-                  onChange={e => { setIsKids(!isKids) }}
-                  title="Dziecięcy" />
+                  onChange={(e) => {
+                    setIsKids(!isKids);
+                  }}
+                  title='Dziecięcy'
+                />
               </div>
               {/*Reset button*/}
-              <button className={'bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'}
-                onClick={() => { reset() }}
+              <button
+                className={'bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'}
+                onClick={() => {
+                  reset();
+                }}
               >
                 Reset
               </button>
             </div>
             {/*Table*/}
             <BikeTable
+              //prettier-ignore
               filterSrc={
                 '?avaible=' + avail.toString()
                 + '&manufacturerId=' + make.toString()
@@ -204,20 +244,23 @@ export default function Rowery() {
                 + '&colorId=' + color.toString()
                 + '&categoryId=' + category.toString()
               }
-
             />
-            <div className="fixed bottom-0 align-center  flex w-full pointer-events-none">
-              <div className="justify-between max-w-1920 w-full m-auto px-5">
-                <button className={'bg-primary mb-10 max-w-60 rounded-2xl py-2 px-5 border-2 border-border ml-auto block shadow-lg border-b-4 pointer-events-auto hover:bg-tertiary'} 
-                  onClick={ () => openModal()}>
-                    Dodaj Model
+            <div className='fixed bottom-0 align-center  flex w-full pointer-events-none'>
+              <div className='justify-between max-w-1920 w-full m-auto px-5'>
+                <button
+                  className={
+                    'bg-primary mb-10 max-w-60 rounded-2xl py-2 px-5 border-2 border-border ml-auto block shadow-lg border-b-4 pointer-events-auto hover:bg-tertiary'
+                  }
+                  onClick={() => openModal()}
+                >
+                  Dodaj Model
                 </button>
               </div>
             </div>
           </main>
         </div>
       </div>
-      <Modal/>
+      <Modal />
     </PrivateRoute>
-  )
+  );
 }

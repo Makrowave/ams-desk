@@ -10,7 +10,7 @@ export default function TableHeader({ singlePlace }) {
           <th className='w-24'>Rozmiar</th>
           <th className='w-24'>Koła</th>
           <th className='w-24'>Cena</th>
-          <th className='w-24'>Ilość</th>
+          <th className='w-24 '>Ilość</th>
           {children}
         </tr>
       </thead>
