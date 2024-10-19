@@ -4,16 +4,33 @@ import { useQuery } from "@tanstack/react-query";
 
 // Component that turns data fetch from 'src' to <option> list.
 // Data fetched should have unique key as first parameter and name as second
-export default function FetchSelect({ src, queryKey, value, onChange, title, default_option, default_title }) {
+// Shows an icon if value other than default is chosen
+export default function ValidationFetchSelect({
+  src,
+  queryKey,
+  value,
+  onChange,
+  title,
+  default_option,
+  default_title,
+  useRowStyle,
+}) {
   const Body = ({ children }) => {
     return (
-      <div className='flex justify-center flex-col'>
+      <div className={useRowStyle ? "flex flex-row justify-between" : "flex justify-center flex-col"}>
         <div className='flex justify-center self-start'>
           <p>{title}</p>
+          <img className='h-5 self-center px-2' src={value === default_option ? "/red_cross.png" : "/checkmark.png"} />
         </div>
-        <div className='flex justify-center items-center self-start w-full'>
+        <div
+          className={
+            useRowStyle
+              ? "flex justify-center items-center self-end w-1/2"
+              : "flex justify-center items-center self-start w-full"
+          }
+        >
           <select
-            className=' text-center bg-primary border-2 border-tertiary rounded w-full'
+            className='text-center bg-primary border-2 border-tertiary rounded w-full'
             value={value}
             onChange={onChange}
           >
@@ -50,7 +67,7 @@ export default function FetchSelect({ src, queryKey, value, onChange, title, def
 
   return (
     <Body>
-      {default_option === null ? <></> : <option value={default_option}> {default_title} </option>}
+      <option value={default_option}> {default_title} </option>
       {data.map((d) => (
         <option value={Object.values(d)[0]} key={Object.values(d)[0]}>
           {Object.values(d)[1]}

@@ -1,35 +1,35 @@
-'use client';
-import Navigation from '../../components/navigation/navigation';
-import { useState } from 'react';
-import FetchSelect from '@/components/filtering/fetch_select';
-import FilterInput from '@/components/filtering/filter_input';
-import FilterSelect from '@/components/filtering/filter_select';
-import SingleCheckbox from '@/components/filtering/single_checkbox';
-import Modal from '@/components/modals/modal';
-import AddModelModal from '@/components/modals/add_model_modal';
-import BikeTable from '@/components/table/bike_table';
-import PrivateRoute from '@/components/routing/private_route';
-import RangeInput from '@/components/filtering/range_input';
-import UseModal from '@/hooks/use_modal';
+"use client";
+import Navigation from "../../components/navigation/navigation";
+import { useState } from "react";
+import FetchSelect from "@/components/filtering/fetch_select";
+import FilterInput from "@/components/filtering/filter_input";
+import FilterSelect from "@/components/filtering/filter_select";
+import SingleCheckbox from "@/components/filtering/single_checkbox";
+import Modal from "@/components/modals/modal";
+import AddModelModal from "@/components/modals/add_model_modal";
+import BikeTable from "@/components/table/bike_table";
+import PrivateRoute from "@/components/routing/private_route";
+import RangeInput from "@/components/filtering/range_input";
+import UseModal from "@/hooks/use_modal";
 
 const defaults = {
-  name: '',
-  size: '',
-  wheel: '',
+  name: "",
+  size: "",
+  wheel: "",
   priceMin: 0,
   priceMax: 100000,
   number: 1,
   avail: true,
   ready: false,
   electric: false,
-  isWoman: '',
-  make: '',
+  isWoman: "",
+  make: "",
   place: 0,
   isKids: false,
-  category: '',
+  category: "",
   minPrice: 0,
   maxPrice: 100000,
-  color: '',
+  color: "",
 };
 
 export default function Rowery() {
@@ -69,7 +69,7 @@ export default function Rowery() {
   const { setIsOpen, setModalChildren, setTitle } = UseModal();
   function openModal() {
     setModalChildren(<AddModelModal />);
-    setTitle('Dodaj rower');
+    setTitle("Dodaj rower");
     setIsOpen(true);
   }
 
@@ -92,21 +92,9 @@ export default function Rowery() {
               </div>
               <div className='*:pb-1 flex flex-col'>
                 {/* Name */}
-                <FilterInput
-                  title='Nazwa'
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                />
+                <FilterInput title='Nazwa' value={name} setValue={setName} />
                 {/* Size */}
-                <FilterInput
-                  title='Rozmiar'
-                  value={size}
-                  onChange={(e) => {
-                    setSize(e.target.value);
-                  }}
-                />
+                <FilterInput title='Rozmiar' value={size} setValue={setSize} />
                 {/* Wheel size */}
                 <FilterSelect
                   title='Rozmiar koła'
@@ -148,6 +136,7 @@ export default function Rowery() {
                   queryKey='manufacturers'
                   title='Producent'
                   default_option={defaults.make}
+                  default_title='Dowolny'
                 />
                 {/* Category */}
                 {/* Endpoint to be made */}
@@ -160,6 +149,7 @@ export default function Rowery() {
                   queryKey='categories'
                   title='Kategoria'
                   default_option={defaults.category}
+                  default_title='Dowolny'
                 />
                 {/* Color */}
                 <FetchSelect
@@ -171,18 +161,15 @@ export default function Rowery() {
                   queryKey='colors'
                   title='Kolor'
                   default_option={defaults.color}
+                  default_title='Dowolny'
                 />
                 {/* Price range */}
                 <RangeInput
                   title='Cena'
                   minValue={minPrice}
                   maxValue={maxPrice}
-                  minOnChange={(e) => {
-                    setMinPrice(e.target.value);
-                  }}
-                  maxOnChange={(e) => {
-                    setMaxPrice(e.target.value);
-                  }}
+                  setMin={setMinPrice}
+                  setMax={setMaxPrice}
                 />
                 {/* Avaible */}
                 <SingleCheckbox
@@ -218,7 +205,7 @@ export default function Rowery() {
               </div>
               {/*Reset button*/}
               <button
-                className={'bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'}
+                className={"bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary"}
                 onClick={() => {
                   reset();
                 }}
@@ -249,7 +236,7 @@ export default function Rowery() {
               <div className='justify-between max-w-1920 w-full m-auto px-5'>
                 <button
                   className={
-                    'bg-primary mb-10 max-w-60 rounded-2xl py-2 px-5 border-2 border-border ml-auto block shadow-lg border-b-4 pointer-events-auto hover:bg-tertiary'
+                    "bg-primary mb-10 max-w-60 rounded-2xl py-2 px-5 border-2 border-border ml-auto block shadow-lg border-b-4 pointer-events-auto hover:bg-tertiary"
                   }
                   onClick={() => openModal()}
                 >
