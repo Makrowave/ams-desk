@@ -3,6 +3,8 @@ import ValidationFetchSelect from "../validation/validation_fetch_select";
 import SingleCheckbox from "../filtering/single_checkbox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/use_axios_private";
+import ErrorDisplay from "../error/error_display";
+import useModal from "@/hooks/use_modal";
 
 //Add refetch
 
@@ -43,8 +45,8 @@ export default function AddModelModal() {
   const [isElectric, setIsElectric] = useState(false);
   //Other
   const _url = "/Models";
-  const [isValidated, setIsValidated] = useState(false);
-  const [wasChecked, setWasChecked] = useState(false);
+  const [error, setError] = useState("");
+  const { setIsOpen } = useModal();
 
   //Validation logic
   //Name
@@ -93,15 +95,20 @@ export default function AddModelModal() {
         { headers: { "Content-Type": "application/json" } }
       );
     },
-    onSuccess: () => {
-      queryClient.refetchQueries({
-        queryKey: ["bikes"],
-        exact: false,
-      });
+    onSuccess: (data) => {
+      if (data) {
+        queryClient.refetchQueries({
+          queryKey: ["bikes"],
+          exact: false,
+        });
+        setIsOpen(false);
+      } else {
+        setError("Rower o podanym kodzie EAN już instnieje");
+      }
     },
   });
   function validate() {
-    return (
+    let result =
       validName &&
       validEanCode &&
       validPrice &&
@@ -116,26 +123,17 @@ export default function AddModelModal() {
       isWoman !== null &&
       isWoman !== undefined &&
       isElectric !== null &&
-      isElectric !== undefined
-    );
+      isElectric !== undefined;
+    if (!result) setError("Wprowadzono niepoprawne dane");
+    return result;
   }
 
   function handleClick() {
-    let val = validate();
-    setIsValidated(val);
-    setWasChecked(true);
-    if (val) mutation.mutate();
+    if (validate()) mutation.mutate();
   }
   return (
     <div className='flex flex-col gap-y-2'>
-      {isValidated || !wasChecked ? (
-        <></>
-      ) : (
-        <div className='flex bg-error-light text-error-dark p-2 justify-center rounded-md'>
-          <span>Wprowadzono niepoprawne dane</span>
-        </div>
-      )}
-
+      <ErrorDisplay message={error} isVisible={error !== ""} />
       <div>
         <div className='flex justify-between'>
           <div className='flex'>
@@ -165,7 +163,7 @@ export default function AddModelModal() {
       <div>
         <div className='flex justify-between'>
           <div className='flex'>
-            <span>Kod producenta</span>
+            <span className='text-nowrap'>Kod producenta</span>
             <img className='h-5 self-center px-2' src={validProductCode ? "/checkmark.png" : "/red_cross.png"} />
           </div>
           <input
@@ -368,7 +366,6 @@ export default function AddModelModal() {
         title='Elektryczny'
       />
       <button
-        di
         className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 self-center mt-auto mb-4 hover:bg-tertiary'
         onClick={() => handleClick()}
       >

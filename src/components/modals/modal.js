@@ -1,4 +1,4 @@
-import UseModal from "@/hooks/use_modal";
+import useModal from "@/hooks/use_modal";
 
 /**
  * Modal component which creates a popup with dimmer background.
@@ -16,7 +16,7 @@ import UseModal from "@/hooks/use_modal";
  * @returns ModalComponent
  */
 export default function Modal() {
-  const { isOpen, setIsOpen, modalChildren, setModalChildren, title, setTitle } = UseModal();
+  const { isOpen, setIsOpen, modalChildren, setModalChildren, title, setTitle } = useModal();
 
   function handleClose() {
     setIsOpen(false);
@@ -29,7 +29,7 @@ export default function Modal() {
       {isOpen && (
         <div className=''>
           <div className='fixed top-0 bottom-0 left-0 right-0 pointer-events-auto transparent-bg z-10'>
-            <div className='bg-primary flex flex-col w-fit h-fit absolute top-0 bottom-0 left-0 right-0 m-auto rounded-2xl border-border border-2 min-h-80 min-w-80'>
+            <div className='bg-primary flex flex-col h-fit absolute top-0 bottom-0 left-0 right-0 m-auto rounded-2xl border-border border-2 min-h-80 w-[430px]'>
               {/*Header*/}
               <div className='flex justify-between bg-secondary rounded-t-2xl px-6 align-center h-10 shadow-md'>
                 <h2 className='leading-10'>

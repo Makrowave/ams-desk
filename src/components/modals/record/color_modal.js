@@ -5,8 +5,8 @@ import { useState } from "react";
 //primaryColor and secondaryColor can be null in DB
 //(for example if not specified by manufacturer and bike inserts are automated)
 export default function ColorModal({ model }) {
-  const [primaryColor, setPrimaryColor] = useState(!!model.primaryColor ? primaryColor : "#FF00FF");
-  const [secondaryColor, setSecondaryColor] = useState(!!model.secondaryColor ? secondaryColor : "#000000");
+  const [primaryColor, setPrimaryColor] = useState(!!model.primaryColor ? model.primaryColor : "#FF00FF");
+  const [secondaryColor, setSecondaryColor] = useState(!!model.secondaryColor ? model.secondaryColor : "#000000");
 
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
@@ -30,7 +30,7 @@ export default function ColorModal({ model }) {
   });
 
   return (
-    <div className='flex flex-col justify-between flex-grow gap-10'>
+    <div className='flex flex-col justify-between flex-grow gap-10 w-72 mx-auto'>
       <div>
         <h2>Kliknij na kolor aby go zmienić</h2>
       </div>

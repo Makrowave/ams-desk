@@ -1,13 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import FetchSelect from "../../filtering/fetch_select";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
+import ErrorDisplay from "@/components/error/error_display";
+import useModal from "@/hooks/use_modal";
 
 export default function AddBikeModal({ refetch, modelId }) {
   //Change it based on selected location
   const [place, setPlace] = useState("");
   const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+  const { setIsOpen } = useModal();
   const _url = "/Desktop/AddBike";
 
   const axiosPrivate = useAxiosPrivate();
@@ -23,41 +26,48 @@ export default function AddBikeModal({ refetch, modelId }) {
         { headers: { "Content-Type": "application/json" } }
       );
     },
-    onSuccess: refetch(),
+    onSuccess: (data) => {
+      if (data) {
+        refetch();
+        setIsOpen(false);
+      }
+    },
   });
+  function validate() {
+    let result = place !== "" && status !== "";
+    if (!result) setError("Nie wybrano wszystkich pól");
+    return result;
+  }
 
   return (
-    <div className='flex flex-col justify-between flex-grow'>
-      <div className='flex flex-col'>
-        <ValidationFetchSelect
-          value={place}
-          onChange={(e) => {
-            setPlace(e.target.value);
-          }}
-          src='https://localhost:7077/api/Places'
-          queryKey='places'
-          title='Miejsce'
-          default_option={""}
-          default_title='Wybierz z listy'
-        />
-      </div>
-      <div>
-        <ValidationFetchSelect
-          value={status}
-          onChange={(e) => {
-            setStatus(e.target.value);
-          }}
-          src='https://localhost:7077/api/Status'
-          queryKey='statuses'
-          title='Status'
-          default_option={""}
-          default_title='Wybierz z listy'
-        />
-      </div>
+    <div className='flex flex-col justify-between w-72 mx-auto'>
+      <ErrorDisplay message={error} isVisible={error !== ""} />
+      <ValidationFetchSelect
+        value={place}
+        onChange={(e) => {
+          setPlace(e.target.value);
+        }}
+        src='https://localhost:7077/api/Places'
+        queryKey='places'
+        title='Miejsce'
+        default_option={""}
+        default_title='Wybierz z listy'
+      />
+      <ValidationFetchSelect
+        value={status}
+        onChange={(e) => {
+          setStatus(e.target.value);
+        }}
+        src='https://localhost:7077/api/Status'
+        queryKey='statuses'
+        title='Status'
+        default_option={""}
+        default_title='Wybierz z listy'
+      />
       <button
         className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 self-center mt-auto mb-4 hover:bg-tertiary'
         onClick={() => {
-          mutation.mutate();
+          if (validate()) mutation.mutate();
         }}
       >
         Dodaj

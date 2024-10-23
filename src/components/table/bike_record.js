@@ -7,7 +7,7 @@ import MoveModal from "../modals/record/move_modal";
 import DeleteModal from "../modals/record/delete_modal";
 import SellModal from "../modals/record/sell_modal";
 import useAxiosPrivate from "@/hooks/use_axios_private";
-import UseModal from "@/hooks/use_modal";
+import useModal from "@/hooks/use_modal";
 import AssembleModal from "../modals/record/assemble_modal";
 import ColorModal from "../modals/record/color_modal";
 import StatusModal from "../modals/record/status_modal";
@@ -15,7 +15,7 @@ export default function BikeRecord({ model, placeCount, placeId, modelRefetch })
   const places = new Array(placeCount).fill(0);
   const [clicked, setClicked] = useState(false);
   const _bikesUrl = "/Bikes/bikesByModelId/";
-  const { setModalChildren, setTitle, setIsOpen } = UseModal();
+  const { setModalChildren, setTitle, setIsOpen } = useModal();
 
   model.placeBikeCount.map((count) => (places[count.placeId - 1] = count.count));
   const axiosPrivate = useAxiosPrivate();
@@ -206,6 +206,11 @@ export default function BikeRecord({ model, placeCount, placeId, modelRefetch })
       />
     );
   }
+  //Turns value in centimeters to inches
+  function calculateFrameSize(size, wheelSize) {
+    return size > 32 && wheelSize >= 26 ? `${Math.round(size / 2.54)}[${size}cm]` : size;
+  }
+
   return (
     <>
       <tr
@@ -218,7 +223,7 @@ export default function BikeRecord({ model, placeCount, placeId, modelRefetch })
           <ColorPreview primaryColor={model.primaryColor} secondaryColor={model.secondaryColor} />
           <div className='self-center'>{model.modelName}</div>
         </td>
-        <td>{model.frameSize}</td>
+        <td>{calculateFrameSize(model.frameSize, model.wheelSize)}</td>
         <td>{model.wheelSize}</td>
         <td>{model.price}</td>
         <td className={colorCount(model.bikeCount)}>{model.bikeCount}</td>

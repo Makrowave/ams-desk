@@ -2,6 +2,7 @@
 import useAuth from "@/hooks/use_auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import ErrorDisplay from "../error/error_display";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -39,11 +40,9 @@ export default function Login() {
 
   return (
     <div className='justify-center flex content-center h-full items-center'>
-      <div className='flex flex-col m-auto item-center bg-primary py-6 px-6 border-2 border-border'>
+      <div className='flex flex-col m-auto item-center bg-primary py-6 px-6 border-2 border-border w-1/6'>
         <span className='self-center text-3xl'>Logowanie</span>
-        <div className={loginError === "" ? "" : "bg-red-300 p-2 mt-2 border-red-600 border text-center"}>
-          <span className='text-red-800 text-xl'>{loginError}</span>
-        </div>
+        <ErrorDisplay message={loginError} isVisible={loginError !== ""} />
         <div className='my-6 flex flex-col'>
           <span>Login</span>
           <input

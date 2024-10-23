@@ -10,7 +10,7 @@ import AddModelModal from "@/components/modals/add_model_modal";
 import BikeTable from "@/components/table/bike_table";
 import PrivateRoute from "@/components/routing/private_route";
 import RangeInput from "@/components/filtering/range_input";
-import UseModal from "@/hooks/use_modal";
+import useModal from "@/hooks/use_modal";
 
 const defaults = {
   name: "",
@@ -66,7 +66,7 @@ export default function Rowery() {
     setCategory(defaults.category);
   }
   //Modal
-  const { setIsOpen, setModalChildren, setTitle } = UseModal();
+  const { setIsOpen, setModalChildren, setTitle } = useModal();
   function openModal() {
     setModalChildren(<AddModelModal />);
     setTitle("Dodaj rower");

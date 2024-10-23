@@ -11,8 +11,8 @@ export default function DeleteModal({ refetch, bikeId }) {
   });
 
   return (
-    <div className='flex flex-col justify-between flex-grow'>
-      <div className='w-96 *:py-2'>
+    <div className='flex flex-col justify-between flex-grow w-72 mx-auto'>
+      <div className='w-full *:py-2'>
         <h2>
           <b>Czy na pewno?</b>
         </h2>
