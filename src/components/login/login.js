@@ -44,10 +44,10 @@ export default function Login() {
         <div className={loginError === "" ? "" : "bg-red-300 p-2 mt-2 border-red-600 border text-center"}>
           <span className='text-red-800 text-xl'>{loginError}</span>
         </div>
-        <div className='my-6'>
+        <div className='my-6 flex flex-col'>
           <span>Login</span>
           <input
-            className='block  text-center bg-primary border-2 border-tertiary rounded-l'
+            className='block text-center bg-primary border-2 border-tertiary rounded-l'
             value={username}
             onChange={(e) => {
               setUsername(e.target.value);
@@ -55,7 +55,7 @@ export default function Login() {
             onKeyDown={handleKeyDown}
           ></input>
         </div>
-        <div className='my-6'>
+        <div className='my-6 flex flex-col'>
           <span>Hasło</span>
           <input
             type='password'
