@@ -2,10 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import FetchSelect from "../../filtering/fetch_select";
 import useAxiosPrivate from "@/hooks/use_axios_private";
+import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
 
 export default function MoveModal({ refetch, bikeId }) {
   //Change it based on selected location
-  const [place, setPlace] = useState(1);
+  const [place, setPlace] = useState("");
 
   const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
@@ -17,14 +18,14 @@ export default function MoveModal({ refetch, bikeId }) {
 
   return (
     <div className='flex flex-col justify-between flex-grow'>
-      <FetchSelect
+      <ValidationFetchSelect
         value={place}
         onChange={(e) => {
           setPlace(e.target.value);
         }}
         src='/Places'
         queryKey='places'
-        default_option={null}
+        default_option={""}
         title='Dokąd'
         default_title='Wybierz z listy'
       />

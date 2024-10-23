@@ -34,7 +34,7 @@ export default function TableBody({ src, singlePlace, placeId }) {
   }
 
   return (
-    <tbody className=''>
+    <tbody>
       {data.map((record) => (
         <BikeRecord key={record.modelId} model={record} placeCount={singlePlace ? 0 : 6} placeId={placeId} />
       ))}

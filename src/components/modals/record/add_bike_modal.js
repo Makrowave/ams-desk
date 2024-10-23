@@ -2,11 +2,12 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import FetchSelect from "../../filtering/fetch_select";
 import useAxiosPrivate from "@/hooks/use_axios_private";
+import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
 
 export default function AddBikeModal({ refetch, modelId }) {
   //Change it based on selected location
-  const [place, setPlace] = useState(1);
-  const [status, setStatus] = useState(1);
+  const [place, setPlace] = useState("");
+  const [status, setStatus] = useState("");
   const _url = "/Desktop/AddBike";
 
   const axiosPrivate = useAxiosPrivate();
@@ -28,28 +29,28 @@ export default function AddBikeModal({ refetch, modelId }) {
   return (
     <div className='flex flex-col justify-between flex-grow'>
       <div className='flex flex-col'>
-        <span>Miejsce</span>
-        <FetchSelect
+        <ValidationFetchSelect
           value={place}
           onChange={(e) => {
             setPlace(e.target.value);
           }}
           src='https://localhost:7077/api/Places'
           queryKey='places'
-          default_option={null}
+          title='Miejsce'
+          default_option={""}
           default_title='Wybierz z listy'
         />
       </div>
       <div>
-        <span>Status</span>
-        <FetchSelect
+        <ValidationFetchSelect
           value={status}
           onChange={(e) => {
             setStatus(e.target.value);
           }}
           src='https://localhost:7077/api/Status'
           queryKey='statuses'
-          default_option={null}
+          title='Status'
+          default_option={""}
           default_title='Wybierz z listy'
         />
       </div>

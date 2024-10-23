@@ -18,7 +18,7 @@ export default function ValidationFetchSelect({
   const Body = ({ children }) => {
     return (
       <div className={useRowStyle ? "flex flex-row justify-between" : "flex justify-center flex-col"}>
-        <div className='flex justify-center self-start'>
+        <div className='flex justify-center self-start flex-row'>
           <p>{title}</p>
           <img className='h-5 self-center px-2' src={value === default_option ? "/red_cross.png" : "/checkmark.png"} />
         </div>

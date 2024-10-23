@@ -1,43 +1,39 @@
-'use client'
+"use client";
 import axios from "@/api/axios";
 import { useRouter } from "next/navigation";
 import { createContext, useState } from "react";
 
-
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [accessToken, setAccessToken] = useState('');
-  const [loginError, setLoginError] = useState('');
-  const _loginUrl = '/Auth/Login';
-  const _refreshUrl = '/Auth/Refresh';
-  const _logoutUrl = '/Auth/Logout';
+  const [accessToken, setAccessToken] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [prevRoute, setPrevRoute] = useState("");
+  const _loginUrl = "/Auth/Login";
+  const _refreshUrl = "/Auth/Refresh";
+  const _logoutUrl = "/Auth/Logout";
   const router = useRouter();
 
   /**
    * Sends API request for session cookie which is
    * used to authenticate for accessToken.
    * If login error occurs it is set in loginError state.
-   * @param {string} username 
-   * @param {string} password 
+   * @param {string} username
+   * @param {string} password
    */
   async function login(username, password) {
-    setLoginError('');
+    setLoginError("");
     try {
-      const response = await axios.post(_loginUrl,
-        JSON.stringify({ username, password }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(_loginUrl, JSON.stringify({ username, password }), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
       if (response.status === 200) {
         await refresh();
-        router.push('/rowery');
+        router.push(prevRoute);
       }
-    }
-    catch(err) {
-      if(!err?.response) {
+    } catch (err) {
+      if (!err?.response) {
         setLoginError("Brak odpowiedzi serwera");
       } else if (err.response.status === 400) {
         setLoginError("Niewłaściwy format danych");
@@ -56,22 +52,23 @@ export function AuthProvider({ children }) {
    * with invalid accessToken when session cookie is invalid too.
    */
   async function refresh() {
-    setAccessToken('');
+    setAccessToken("");
     try {
-      const response = await axios.post(_refreshUrl, {},
+      const response = await axios.post(
+        _refreshUrl,
+        {},
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
-      const data = response.data
+      const data = response.data;
       if (!!data) {
         setAccessToken(data);
       } else {
         throw new Error();
       }
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err);
     }
   }
@@ -82,27 +79,27 @@ export function AuthProvider({ children }) {
    */
   async function logout() {
     try {
-      const response = await axios.post(_logoutUrl, {},
+      const response = await axios.post(
+        _logoutUrl,
+        {},
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
       if (response.status === 200) {
-        setAccessToken('');
-        router.push('/login');
+        setAccessToken("");
+        router.push("/login");
       } else {
         throw new Error();
       }
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err);
     }
   }
 
-
   return (
-    <AuthContext.Provider value={{ accessToken, login, refresh, logout, loginError}}>
+    <AuthContext.Provider value={{ accessToken, login, refresh, logout, loginError, setPrevRoute, prevRoute }}>
       {children}
     </AuthContext.Provider>
   );

@@ -152,7 +152,7 @@ export default function AddModelModal() {
             }}
           ></input>
         </div>
-        {!validName && nameFocus ? (
+        {/* {!validName && nameFocus ? (
           <div className='flex flex-col bg-tertiary px-4 py-2 rounded-md'>
             <p>4-50 znaków</p>
             <p>Polskie znaki, cyfry i spacje</p>
@@ -160,7 +160,7 @@ export default function AddModelModal() {
           </div>
         ) : (
           <></>
-        )}
+        )} */}
       </div>
       <div>
         <div className='flex justify-between'>
@@ -178,7 +178,7 @@ export default function AddModelModal() {
             }}
           ></input>
         </div>
-        {!validProductCode && productCodeFocus ? (
+        {/* {!validProductCode && productCodeFocus ? (
           <div className='flex flex-col bg-tertiary px-4 py-2 rounded-md'>
             <p>4-30 znaków</p>
             <p>Alfabet łaciński i cyfry</p>
@@ -186,7 +186,7 @@ export default function AddModelModal() {
           </div>
         ) : (
           <></>
-        )}
+        )} */}
       </div>
       <div>
         <div className='flex justify-between'>
@@ -204,14 +204,14 @@ export default function AddModelModal() {
             }}
           ></input>
         </div>
-        {!validEanCode && eanCodeFocus ? (
+        {/* {!validEanCode && eanCodeFocus ? (
           <div className='flex flex-col bg-tertiary px-4 py-2 rounded-md'>
             <p>13 cyfr</p>
-            {/*<p>Musi być poprawnym kodem EAN</p>*/}
+            <p>Musi być poprawnym kodem EAN</p>
           </div>
         ) : (
           <></>
-        )}
+        )} */}
       </div>
       <div>
         <div className='flex justify-between'>
@@ -229,13 +229,13 @@ export default function AddModelModal() {
             }}
           ></input>
         </div>
-        {!validFrameSize && frameSizeFocus ? (
+        {/* {!validFrameSize && frameSizeFocus ? (
           <div className='flex flex-col bg-tertiary px-4 py-2 rounded-md'>
             <p>1-2 cyfry</p>
           </div>
         ) : (
           <></>
-        )}
+        )} */}
       </div>
       <div className='flex justify-between'>
         <div className='flex justify-center self-start'>
@@ -277,13 +277,13 @@ export default function AddModelModal() {
             }}
           ></input>
         </div>
-        {!validPrice && priceFocus ? (
+        {/* {!validPrice && priceFocus ? (
           <div className='flex flex-col bg-tertiary px-4 py-2 rounded-md'>
             <p>3-5 cyfr</p>
           </div>
         ) : (
           <></>
-        )}
+        )} */}
       </div>
       <div>
         <ValidationFetchSelect

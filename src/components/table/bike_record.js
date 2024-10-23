@@ -83,7 +83,7 @@ export default function BikeRecord({ model, placeCount, placeId, modelRefetch })
                   <button
                     className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
                     onClick={() => {
-                      setModalChildren(<ColorModal refetch={modelRefetch} modelId={model.modelId} />);
+                      setModalChildren(<ColorModal model={model} />);
                       setTitle("Zmień kolor");
                       setIsOpen(true);
                     }}
@@ -144,7 +144,7 @@ export default function BikeRecord({ model, placeCount, placeId, modelRefetch })
                           className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
                           onClick={() => {
                             setModalChildren(<AssembleModal refetch={refetch} bikeId={bike.id} />);
-                            setTitle("Usuń rower");
+                            setTitle("Złóż rower");
                             setIsOpen(true);
                           }}
                         >

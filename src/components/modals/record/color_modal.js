@@ -1,25 +1,32 @@
 import useAxiosPrivate from "@/hooks/use_axios_private";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-export default function ColorModal({ refetch, modelId }) {
-  //Change it based on selected location
-  const [primaryColor, setPrimaryColor] = useState("#FF0000");
-  const [secondaryColor, setSecondaryColor] = useState("#FF0000");
+//primaryColor and secondaryColor can be null in DB
+//(for example if not specified by manufacturer and bike inserts are automated)
+export default function ColorModal({ model }) {
+  const [primaryColor, setPrimaryColor] = useState(!!model.primaryColor ? primaryColor : "#FF00FF");
+  const [secondaryColor, setSecondaryColor] = useState(!!model.secondaryColor ? secondaryColor : "#000000");
 
+  const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.put(
         "/Desktop/ChangeColor/" +
-          modelId +
+          model.modelId +
           "?primaryColor=" +
           primaryColor.slice(1) +
           "&secondaryColor=" +
           secondaryColor.slice(1)
       );
     },
-    onSuccess: refetch(),
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["bikes"],
+        exact: false,
+      });
+    },
   });
 
   return (
