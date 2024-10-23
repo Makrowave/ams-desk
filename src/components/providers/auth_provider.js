@@ -30,7 +30,11 @@ export function AuthProvider({ children }) {
       });
       if (response.status === 200) {
         await refresh();
-        router.push(prevRoute);
+        if (prevRoute === "/login" || prevRoute === "") {
+          router.push("/rowery");
+        } else {
+          router.push(prevRoute);
+        }
       }
     } catch (err) {
       if (!err?.response) {

@@ -29,7 +29,11 @@ export default function Login() {
       refresh();
     }
     if (accessToken) {
-      router.push(prevRoute);
+      if (prevRoute === "/login" || prevRoute === "") {
+        router.push("/rowery");
+      } else {
+        router.push(prevRoute);
+      }
     }
   });
 

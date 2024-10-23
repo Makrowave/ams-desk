@@ -10,6 +10,7 @@ import useAxiosPrivate from "@/hooks/use_axios_private";
 import UseModal from "@/hooks/use_modal";
 import AssembleModal from "../modals/record/assemble_modal";
 import ColorModal from "../modals/record/color_modal";
+import StatusModal from "../modals/record/status_modal";
 export default function BikeRecord({ model, placeCount, placeId, modelRefetch }) {
   const places = new Array(placeCount).fill(0);
   const [clicked, setClicked] = useState(false);
@@ -123,12 +124,32 @@ export default function BikeRecord({ model, placeCount, placeId, modelRefetch })
                         <button
                           className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
                           onClick={() => {
+                            setModalChildren(<AssembleModal refetch={refetch} bikeId={bike.id} />);
+                            setTitle("Złóż rower");
+                            setIsOpen(true);
+                          }}
+                        >
+                          Złóż
+                        </button>
+                        <button
+                          className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                          onClick={() => {
                             setModalChildren(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} />);
                             setTitle("Sprzedaj rower");
                             setIsOpen(true);
                           }}
                         >
                           Sprzedaj
+                        </button>
+                        <button
+                          className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary text-nowrap'
+                          onClick={() => {
+                            setModalChildren(<StatusModal refetch={refetch} bikeId={bike.id} />);
+                            setTitle("Zmień status");
+                            setIsOpen(true);
+                          }}
+                        >
+                          Zmień status
                         </button>
                         <button
                           className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
@@ -139,16 +160,6 @@ export default function BikeRecord({ model, placeCount, placeId, modelRefetch })
                           }}
                         >
                           Usuń
-                        </button>
-                        <button
-                          className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
-                          onClick={() => {
-                            setModalChildren(<AssembleModal refetch={refetch} bikeId={bike.id} />);
-                            setTitle("Złóż rower");
-                            setIsOpen(true);
-                          }}
-                        >
-                          Złóż
                         </button>
                       </div>
                     </td>
