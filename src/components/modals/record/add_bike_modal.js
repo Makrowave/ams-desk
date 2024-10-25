@@ -44,9 +44,7 @@ export default function AddBikeModal({ refetch, modelId }) {
       <ErrorDisplay message={error} isVisible={error !== ""} />
       <ValidationFetchSelect
         value={place}
-        onChange={(e) => {
-          setPlace(e.target.value);
-        }}
+        onChange={setPlace}
         src='https://localhost:7077/api/Places'
         queryKey='places'
         title='Miejsce'
@@ -55,14 +53,13 @@ export default function AddBikeModal({ refetch, modelId }) {
       />
       <ValidationFetchSelect
         value={status}
-        onChange={(e) => {
-          setStatus(e.target.value);
-        }}
+        onChange={setStatus}
         src='https://localhost:7077/api/Status'
         queryKey='statuses'
         title='Status'
         default_option={""}
         default_title='Wybierz z listy'
+        isColored={true}
       />
       <button
         className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 self-center mt-auto mb-4 hover:bg-tertiary'

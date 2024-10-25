@@ -11,6 +11,7 @@ import BikeTable from "@/components/table/bike_table";
 import PrivateRoute from "@/components/routing/private_route";
 import RangeInput from "@/components/filtering/range_input";
 import useModal from "@/hooks/use_modal";
+import { Select } from "@/components/input/select";
 
 const defaults = {
   name: "",
@@ -20,7 +21,6 @@ const defaults = {
   priceMax: 100000,
   number: 1,
   avail: true,
-  ready: false,
   electric: false,
   isWoman: "",
   make: "",
@@ -30,6 +30,7 @@ const defaults = {
   minPrice: 0,
   maxPrice: 100000,
   color: "",
+  statusId: 2,
 };
 
 export default function Rowery() {
@@ -39,7 +40,7 @@ export default function Rowery() {
   const [wheel, setWheel] = useState(defaults.wheel);
   const [number, setNumber] = useState(defaults.number);
   const [avail, setAvail] = useState(defaults.avail);
-  const [ready, setReady] = useState(defaults.ready);
+  const [statusId, setStatusId] = useState(defaults.statusId);
   const [electric, setElectric] = useState(defaults.electric);
   const [isWoman, setIsWoman] = useState(defaults.isWoman);
   const [make, setMake] = useState(defaults.make);
@@ -54,8 +55,7 @@ export default function Rowery() {
     setSize(defaults.size);
     setWheel(defaults.wheel);
     setNumber(defaults.number);
-    setAvail(defaults.avail);
-    setReady(defaults.ready);
+    setStatusId(defaults.statusId);
     setElectric(defaults.electric);
     setIsWoman(defaults.isWoman);
     setMake(defaults.make);
@@ -99,39 +99,37 @@ export default function Rowery() {
                 <FilterSelect
                   title='Rozmiar koła'
                   value={wheel}
-                  onChange={(e) => {
-                    setWheel(e.target.value);
-                  }}
-                >
-                  <option value=''> Dowolny </option>
-                  <option value='12'> 12 </option>
-                  <option value='14'> 14 </option>
-                  <option value='16'> 16 </option>
-                  <option value='20'> 20 </option>
-                  <option value='24'> 24 </option>
-                  <option value='26'> 26 </option>
-                  <option value='27'> 27 </option>
-                  <option value='28'> 28 </option>
-                  <option value='29'> 29 </option>
-                </FilterSelect>
+                  defaultKey={defaults.wheel}
+                  defaultValue={"Dowolny"}
+                  options={[
+                    { key: "12", value: "12" },
+                    { key: "14", value: "14" },
+                    { key: "16", value: "16" },
+                    { key: "20", value: "20" },
+                    { key: "24", value: "24" },
+                    { key: "26", value: "26" },
+                    { key: "27", value: "27" },
+                    { key: "28", value: "28" },
+                    { key: "29", value: "29" },
+                  ]}
+                  onChange={setWheel}
+                />
                 {/* Frame type (is woman) */}
                 <FilterSelect
-                  value={isWoman}
-                  onChange={(e) => {
-                    setIsWoman(e.target.value);
-                  }}
                   title='Typ ramy'
-                >
-                  <option value={defaults.isWoman}>Dowolny</option>
-                  <option value={true}>Damski</option>
-                  <option value={false}>Męski</option>
-                </FilterSelect>
+                  value={isWoman}
+                  defaultKey={defaults.isWoman}
+                  defaultValue={"Dowolny"}
+                  onChange={setIsWoman}
+                  options={[
+                    { key: "false", value: "Męski" },
+                    { key: "true", value: "Damski" },
+                  ]}
+                />
                 {/* Manufacturer */}
                 <FetchSelect
                   value={make}
-                  onChange={(e) => {
-                    setMake(e.target.value);
-                  }}
+                  onChange={setMake}
                   src='/Manufacturers'
                   queryKey='manufacturers'
                   title='Producent'
@@ -142,9 +140,7 @@ export default function Rowery() {
                 {/* Endpoint to be made */}
                 <FetchSelect
                   value={category}
-                  onChange={(e) => {
-                    setCategory(e.target.value);
-                  }}
+                  onChange={setCategory}
                   src='/Categories'
                   queryKey='categories'
                   title='Kategoria'
@@ -154,14 +150,23 @@ export default function Rowery() {
                 {/* Color */}
                 <FetchSelect
                   value={color}
-                  onChange={(e) => {
-                    setColor(e.target.value);
-                  }}
+                  onChange={setColor}
                   src='/Colors'
                   queryKey='colors'
                   title='Kolor'
                   default_option={defaults.color}
                   default_title='Dowolny'
+                  isColored={true}
+                />
+                <FetchSelect
+                  value={statusId}
+                  onChange={setStatusId}
+                  src='/Status/NotSold'
+                  queryKey='status'
+                  title='Status'
+                  default_option={""}
+                  default_title='Dowolny'
+                  isColored={true}
                 />
                 {/* Price range */}
                 <RangeInput
@@ -178,14 +183,6 @@ export default function Rowery() {
                     setAvail(!avail);
                   }}
                   title='Dostępny'
-                />
-                {/* Ready */}
-                <SingleCheckbox
-                  checked={ready}
-                  onChange={(e) => {
-                    setReady(!ready);
-                  }}
-                  title='Złożony'
                 />
                 {/* Electric */}
                 <SingleCheckbox
@@ -223,7 +220,7 @@ export default function Rowery() {
                 + '&frameSize=' + size.toString()
                 + '&name=' + name.trim().toLowerCase()
                 + '&electric=' + electric.toString()
-                + '&ready=' + ready.toString()
+                + '&statusId=' + statusId.toString()
                 + '&isWoman=' + isWoman.toString()
                 + '&isKids=' + isKids.toString()
                 + '&minPrice=' + minPrice.toString()

@@ -33,9 +33,7 @@ export default function AssembleModal({ refetch, bikeId }) {
       <ErrorDisplay message={error} isVisible={error !== ""} />
       <ValidationFetchSelect
         value={employeeId}
-        onChange={(e) => {
-          setEmployeeId(e.target.value);
-        }}
+        onChange={setEmployeeId}
         src='/Employees'
         queryKey='employees'
         default_option={""}

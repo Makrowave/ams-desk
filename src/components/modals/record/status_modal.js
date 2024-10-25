@@ -33,14 +33,13 @@ export default function StatusModal({ refetch, bikeId }) {
       <ErrorDisplay message={error} isVisible={error !== ""} />
       <ValidationFetchSelect
         value={status}
-        onChange={(e) => {
-          setStatus(e.target.value);
-        }}
-        src='/Status'
+        onChange={setStatus}
+        src='/Status/NotSold'
         queryKey='status'
         default_option={""}
         title='Status'
         default_title='Wybierz z listy'
+        isColored={true}
       />
       <button
         className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 self-center mt-auto mb-4 hover:bg-tertiary text-nowrap'

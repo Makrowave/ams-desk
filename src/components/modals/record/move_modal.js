@@ -33,9 +33,7 @@ export default function MoveModal({ refetch, bikeId }) {
       <ErrorDisplay message={error} isVisible={error !== ""} />
       <ValidationFetchSelect
         value={place}
-        onChange={(e) => {
-          setPlace(e.target.value);
-        }}
+        onChange={setPlace}
         src='/Places'
         queryKey='places'
         default_option={""}

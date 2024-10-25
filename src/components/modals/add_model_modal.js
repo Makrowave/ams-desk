@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import ErrorDisplay from "../error/error_display";
 import useModal from "@/hooks/use_modal";
+import { Select } from "../input/select";
 
 //Add refetch
 
@@ -240,24 +241,24 @@ export default function AddModelModal() {
           <span>Rozmiar koła</span>
           <img className='h-5 self-center px-2' src={wheelSize === "" ? "/red_cross.png" : "/checkmark.png"} />
         </div>
-        <select
-          className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-1/2'
-          value={wheelSize}
-          onChange={(e) => {
-            setWheelSize(e.target.value);
-          }}
-        >
-          <option value=''> Wybierz z listy </option>
-          <option value='12'> 12 </option>
-          <option value='14'> 14 </option>
-          <option value='16'> 16 </option>
-          <option value='20'> 20 </option>
-          <option value='24'> 24 </option>
-          <option value='26'> 26 </option>
-          <option value='27'> 27 </option>
-          <option value='28'> 28 </option>
-          <option value='29'> 29 </option>
-        </select>
+        <Select
+          pKey={wheelSize}
+          defaultKey={""}
+          defaultValue={"Wybierz"}
+          options={[
+            { key: "12", value: "12" },
+            { key: "14", value: "14" },
+            { key: "16", value: "16" },
+            { key: "20", value: "20" },
+            { key: "24", value: "24" },
+            { key: "26", value: "26" },
+            { key: "27", value: "27" },
+            { key: "28", value: "28" },
+            { key: "29", value: "29" },
+          ]}
+          onChange={setWheelSize}
+          isRow
+        />
       </div>
       <div>
         <div className='flex justify-between'>
@@ -286,43 +287,38 @@ export default function AddModelModal() {
       <div>
         <ValidationFetchSelect
           value={manufacturerId}
-          onChange={(e) => {
-            setManufacturerId(e.target.value);
-          }}
+          onChange={setManufacturerId}
           src='/Manufacturers'
           queryKey='manufacturers'
           title='Producent'
           default_option={""}
-          default_title='Wybierz z listy'
+          default_title='Wybierz'
           useRowStyle={true}
         />
       </div>
       <div>
         <ValidationFetchSelect
           value={categoryId}
-          onChange={(e) => {
-            setCategoryId(e.target.value);
-          }}
+          onChange={setCategoryId}
           src='/Categories'
           queryKey='categories'
           title='Kategoria'
           default_option={""}
-          default_title='Wybierz z listy'
+          default_title='Wybierz'
           useRowStyle={true}
         />
       </div>
       <div>
         <ValidationFetchSelect
           value={colorId}
-          onChange={(e) => {
-            setColorId(e.target.value);
-          }}
+          onChange={setColorId}
           src='/Colors'
           queryKey='colors'
           title='Kolor'
           default_option={""}
-          default_title='Wybierz z listy'
+          default_title='Wybierz'
           useRowStyle={true}
+          isColored={true}
         />
       </div>
       <div className='flex justify-between'>

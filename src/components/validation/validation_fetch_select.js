@@ -1,6 +1,7 @@
 "use client";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import { useQuery } from "@tanstack/react-query";
+import { Select } from "../input/select";
 
 // Component that turns data fetch from 'src' to <option> list.
 // Data fetched should have unique key as first parameter and name as second
@@ -14,6 +15,7 @@ export default function ValidationFetchSelect({
   default_option,
   default_title,
   useRowStyle,
+  isColored,
 }) {
   const Body = ({ children }) => {
     return (
@@ -29,13 +31,7 @@ export default function ValidationFetchSelect({
               : "flex justify-center items-center self-start w-full"
           }
         >
-          <select
-            className='text-center bg-primary border-2 border-tertiary rounded w-full'
-            value={value}
-            onChange={onChange}
-          >
-            {children}
-          </select>
+          {children}
         </div>
       </div>
     );
@@ -52,7 +48,7 @@ export default function ValidationFetchSelect({
   if (isPending) {
     return (
       <Body>
-        <option>Loading</option>
+        <div className=' text-center bg-primary border-2 border-tertiary rounded w-full'>Loading</div>
       </Body>
     );
   }
@@ -60,19 +56,22 @@ export default function ValidationFetchSelect({
   if (isError) {
     return (
       <Body>
-        <option>{error.message}</option>
+        <div className=' text-center bg-primary border-2 border-tertiary rounded w-full'>{error.message}</div>
       </Body>
     );
   }
 
   return (
     <Body>
-      <option value={default_option}> {default_title} </option>
-      {data.map((d) => (
-        <option value={Object.values(d)[0]} key={Object.values(d)[0]}>
-          {Object.values(d)[1]}
-        </option>
-      ))}
+      <Select
+        pKey={value}
+        defaultKey={default_option}
+        defaultValue={default_title}
+        onChange={onChange}
+        options={data}
+        isColored={isColored}
+        className=' text-center bg-primary border-2 border-tertiary rounded w-full'
+      />
     </Body>
   );
 }
