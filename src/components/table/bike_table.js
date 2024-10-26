@@ -6,6 +6,7 @@ import TableBody from "@/components/table/table_body";
 //filterSrc is query url that includes all filter criterions
 export default function BikeTable({ filterSrc }) {
   const [place, setPlace] = useState(0);
+  const [criterion, setCriterion] = useState({ name: "name", isAscending: true, key: null });
   let src = "";
 
   if (place === 0) {
@@ -22,8 +23,8 @@ export default function BikeTable({ filterSrc }) {
         <ChangeTable changePlaceId={(index) => setPlace(index)} />
         <div className='overflow-y-auto flex-1 h-0'>
           <table className='table-fixed min-w-full text-center border-separate border-spacing-0 shadow-lg'>
-            <TableHeader singlePlace={singlePlace} />
-            <TableBody singlePlace={singlePlace} placeId={place} src={src + filterSrc} />
+            <TableHeader singlePlace={singlePlace} setCriterion={setCriterion} />
+            <TableBody singlePlace={singlePlace} placeId={place} src={src + filterSrc} sortCriterion={criterion} />
           </table>
         </div>
       </div>

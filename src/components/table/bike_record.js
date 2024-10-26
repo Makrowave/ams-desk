@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AssembleButton from "../buttons/assemble_button";
 import AddBikeModal from "../modals/record/add_bike_modal";
 import MoveModal from "../modals/record/move_modal";
@@ -11,7 +11,7 @@ import useModal from "@/hooks/use_modal";
 import AssembleModal from "../modals/record/assemble_modal";
 import ColorModal from "../modals/record/color_modal";
 import StatusModal from "../modals/record/status_modal";
-export default function BikeRecord({ model, placeCount, placeId, modelRefetch }) {
+export default function BikeRecord({ model, placeCount, placeId }) {
   const places = new Array(placeCount).fill(0);
   const [clicked, setClicked] = useState(false);
   const _bikesUrl = "/Bikes/bikesByModelId/";
