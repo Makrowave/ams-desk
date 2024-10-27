@@ -1,7 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import AssembleButton from "../buttons/assemble_button";
+import { useState } from "react";
 import AddBikeModal from "../modals/record/add_bike_modal";
 import MoveModal from "../modals/record/move_modal";
 import DeleteModal from "../modals/record/delete_modal";
@@ -11,6 +10,9 @@ import useModal from "@/hooks/use_modal";
 import AssembleModal from "../modals/record/assemble_modal";
 import ColorModal from "../modals/record/color_modal";
 import StatusModal from "../modals/record/status_modal";
+import ExternalLink from "../navigation/external_link";
+import AddLinkModal from "../modals/record/add_link_modal";
+import AddEanModal from "../modals/record/add_ean_modal";
 export default function BikeRecord({ model, placeCount, placeId }) {
   const places = new Array(placeCount).fill(0);
   const [clicked, setClicked] = useState(false);
@@ -90,6 +92,30 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                     }}
                   >
                     Zmień kolor
+                  </button>
+                </div>
+                <div>
+                  <button
+                    className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                    onClick={() => {
+                      setModalChildren(<AddLinkModal model={model} />);
+                      setTitle("Zmień link");
+                      setIsOpen(true);
+                    }}
+                  >
+                    Zmień link
+                  </button>
+                </div>
+                <div>
+                  <button
+                    className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                    onClick={() => {
+                      setModalChildren(<AddEanModal model={model} />);
+                      setTitle("Zmień EAN");
+                      setIsOpen(true);
+                    }}
+                  >
+                    Zmień EAN
                   </button>
                 </div>
               </div>
@@ -190,16 +216,21 @@ export default function BikeRecord({ model, placeCount, placeId }) {
   }
 
   function ColorPreview({ primaryColor, secondaryColor }) {
-    let pColor = primaryColor === null || secondaryColor === null ? "#ff00ff" : primaryColor;
-    let sColor = primaryColor === null || secondaryColor === null ? "#000000" : secondaryColor;
-
-    return (
+    return primaryColor === null || secondaryColor === null ? (
+      <img
+        src='missing.png'
+        className='self-center mr-3'
+        style={{ height: 25, width: 25, minHeight: 25, minWidth: 25 }}
+      />
+    ) : (
       <div
         style={{
-          background: "linear-gradient(225deg, " + pColor + " 50%, " + sColor + " 50%)",
+          background: "linear-gradient(225deg, " + primaryColor + " 50%, " + secondaryColor + " 50%)",
           height: 25,
           width: 25,
-          marginRight: 10,
+          minHeight: 25,
+          minWidth: 25,
+          marginRight: 12,
           alignSelf: "center",
           borderRadius: "20%",
         }}
@@ -221,7 +252,11 @@ export default function BikeRecord({ model, placeCount, placeId }) {
       >
         <td className='text-left pl-8 flex min-h-10 place-center align-center'>
           <ColorPreview primaryColor={model.primaryColor} secondaryColor={model.secondaryColor} />
-          <div className='self-center'>{model.modelName}</div>
+          <div className='self-center'>
+            <ExternalLink disabled={model.link === null} href={model.link}>
+              {model.modelName}
+            </ExternalLink>
+          </div>
         </td>
         <td>{calculateFrameSize(model.frameSize, model.wheelSize)}</td>
         <td>{model.wheelSize}</td>
