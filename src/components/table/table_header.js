@@ -73,10 +73,11 @@ function SortButton({ onClick, isActive, id, value, subValue, defeaultIsAscendin
   const [isAscending, setIsAscending] = useState(defeaultIsAscending);
   function handleChange() {
     let order = isAscending;
-    console.log(isActive);
     if (isActive) {
       order = !order;
       setIsAscending(order);
+    } else {
+      setIsAscending(defeaultIsAscending);
     }
     let criterion = {
       name: value,
