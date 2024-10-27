@@ -45,7 +45,7 @@ export default function AddModelModal() {
   const [isWoman, setIsWoman] = useState(false);
   const [isElectric, setIsElectric] = useState(false);
   //Other
-  const _url = "/Models";
+  const _url = "/Desktop/AddModel";
   const [error, setError] = useState("");
   const { setIsOpen } = useModal();
 
@@ -78,20 +78,20 @@ export default function AddModelModal() {
       return await axiosPrivate.post(
         _url,
         JSON.stringify({
-          productCode: productCode.trim(),
-          eanCode: eanCode.trim(),
-          frameSize: frameSize.trim(),
-          modelName: name.trim(),
-          frameSize: frameSize.trim(),
+          productCode: productCode,
+          eanCode: eanCode,
+          frameSize: frameSize,
+          modelName: name,
+          frameSize: frameSize,
           isWoman: isWoman,
-          wheelSize: wheelSize.trim(),
-          manufacturerId: manufacturerId.trim(),
-          price: price.trim(),
+          wheelSize: wheelSize,
+          manufacturerId: manufacturerId,
+          price: price,
           isElectric: isElectric,
-          primaryColor: primaryColor.trim(),
-          secondaryColor: secondaryColor.trim(),
-          colorId: colorId.trim(),
-          categoryId: categoryId.trim(),
+          primaryColor: primaryColor,
+          secondaryColor: secondaryColor,
+          colorId: colorId,
+          categoryId: categoryId,
         }),
         { headers: { "Content-Type": "application/json" } }
       );
@@ -130,7 +130,7 @@ export default function AddModelModal() {
   }
 
   function handleClick() {
-    if (validate()) mutation.mutate();
+    if (true) mutation.mutate();
   }
   return (
     <div className='flex flex-col gap-y-2'>
