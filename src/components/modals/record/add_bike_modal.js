@@ -45,7 +45,7 @@ export default function AddBikeModal({ refetch, modelId }) {
       <ValidationFetchSelect
         value={place}
         onChange={setPlace}
-        src='https://localhost:7077/api/Places'
+        src='/Places'
         queryKey='places'
         title='Miejsce'
         default_option={""}
@@ -54,7 +54,7 @@ export default function AddBikeModal({ refetch, modelId }) {
       <ValidationFetchSelect
         value={status}
         onChange={setStatus}
-        src='https://localhost:7077/api/Status'
+        src='/Status'
         queryKey='statuses'
         title='Status'
         default_option={""}
