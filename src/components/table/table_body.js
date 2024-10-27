@@ -11,6 +11,7 @@ export default function TableBody({ src, singlePlace, placeId, sortCriterion }) 
       const response = await axiosPrivate.get(src);
       return response.data;
     },
+    refetchInterval: 5000,
   });
   const placeCount = process.env.NEXT_PUBLIC_PLACE_COUNT;
   if (isPending) {

@@ -70,9 +70,9 @@ export default function BikeRecord({ model, placeCount, placeId }) {
             <td colSpan={5 + placeCount}>
               <div className='mx-8 flex border-y-2 space-x-4 border-border py-2 items-center'>
                 {color.data === undefined ? (
-                  <img className='h-6 w-6 self-center' src='missing.png' />
+                  <img className='h-6 w-6 min-h-6 min-w-6 self-center' src='missing.png' />
                 ) : (
-                  <div className='h-8 w-8 rounded-md' style={{ background: color.data.hexCode }} />
+                  <div className='h-6 w-6 min-h-6 min-w-6 rounded-md' style={{ background: color.data.hexCode }} />
                 )}
                 <div>
                   <span>EAN: </span>
@@ -244,19 +244,19 @@ export default function BikeRecord({ model, placeCount, placeId }) {
       <img
         src='missing.png'
         className='self-center mr-3'
-        style={{ height: 25, width: 25, minHeight: 25, minWidth: 25 }}
+        style={{ height: 24, width: 24, minHeight: 24, minWidth: 24 }}
       />
     ) : (
       <div
         style={{
           background: "linear-gradient(225deg, " + primaryColor + " 50%, " + secondaryColor + " 50%)",
-          height: 25,
-          width: 25,
-          minHeight: 25,
-          minWidth: 25,
+          height: 24,
+          width: 24,
+          minHeight: 24,
+          minWidth: 24,
           marginRight: 12,
           alignSelf: "center",
-          borderRadius: "20%",
+          borderRadius: "6px",
         }}
       />
     );

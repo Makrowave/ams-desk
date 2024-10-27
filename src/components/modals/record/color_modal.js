@@ -1,4 +1,5 @@
 import useAxiosPrivate from "@/hooks/use_axios_private";
+import useModal from "@/hooks/use_modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -7,7 +8,7 @@ import { useState } from "react";
 export default function ColorModal({ model }) {
   const [primaryColor, setPrimaryColor] = useState(!!model.primaryColor ? model.primaryColor : "#FF00FF");
   const [secondaryColor, setSecondaryColor] = useState(!!model.secondaryColor ? model.secondaryColor : "#000000");
-
+  const { setIsOpen } = useModal();
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
@@ -21,11 +22,16 @@ export default function ColorModal({ model }) {
           secondaryColor.slice(1)
       );
     },
-    onSuccess: () => {
-      queryClient.refetchQueries({
-        queryKey: ["bikes"],
-        exact: false,
-      });
+    onSuccess: (data) => {
+      if (data) {
+        queryClient.refetchQueries({
+          queryKey: ["bikes"],
+          exact: false,
+        });
+        setIsOpen(false);
+      } else {
+        setError("Nie udało ustawić się linku");
+      }
     },
   });
 

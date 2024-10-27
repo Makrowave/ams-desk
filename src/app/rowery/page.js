@@ -59,6 +59,7 @@ export default function Rowery() {
     setElectric(defaults.electric);
     setIsWoman(defaults.isWoman);
     setMake(defaults.make);
+    setAvail(defaults.avail);
     setIsKids(defaults.isKids);
     setMinPrice(defaults.minPrice);
     setMaxPrice(defaults.maxPrice);
