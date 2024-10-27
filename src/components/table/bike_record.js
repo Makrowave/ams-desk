@@ -13,6 +13,7 @@ import StatusModal from "../modals/record/status_modal";
 import ExternalLink from "../navigation/external_link";
 import AddLinkModal from "../modals/record/add_link_modal";
 import AddEanModal from "../modals/record/add_ean_modal";
+import MainColorModal from "../modals/record/main_color_modal";
 export default function BikeRecord({ model, placeCount, placeId }) {
   const places = new Array(placeCount).fill(0);
   const [clicked, setClicked] = useState(false);
@@ -29,7 +30,13 @@ export default function BikeRecord({ model, placeCount, placeId }) {
     },
     enabled: false,
   });
-
+  const color = useQuery({
+    queryKey: ["color", model.colorId],
+    queryFn: async () => {
+      const response = await axiosPrivate.get("/Colors/" + model.colorId.toString());
+      return response.data;
+    },
+  });
   function statusColor(statusId) {
     switch (statusId) {
       case 1:
@@ -62,6 +69,11 @@ export default function BikeRecord({ model, placeCount, placeId }) {
           <tr className='even:bg-secondary odd:bg-primary border-b-2 border-x-2 border-border drop-shadow-md'>
             <td colSpan={5 + placeCount}>
               <div className='mx-8 flex border-y-2 space-x-4 border-border py-2 items-center'>
+                {color.data === undefined ? (
+                  <img className='h-6 w-6 self-center' src='missing.png' />
+                ) : (
+                  <div className='h-8 w-8 rounded-md' style={{ background: color.data.hexCode }} />
+                )}
                 <div>
                   <span>EAN: </span>
                   <span>{model.eanCode}</span>
@@ -116,6 +128,18 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                     }}
                   >
                     Zmień EAN
+                  </button>
+                </div>
+                <div>
+                  <button
+                    className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                    onClick={() => {
+                      setModalChildren(<MainColorModal model={model} />);
+                      setTitle("Przydziel Kolor");
+                      setIsOpen(true);
+                    }}
+                  >
+                    Przydziel kolor
                   </button>
                 </div>
               </div>
