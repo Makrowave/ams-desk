@@ -30,7 +30,7 @@ const defaults = {
   minPrice: 0,
   maxPrice: 100000,
   color: "",
-  statusId: 2,
+  statusId: "",
 };
 
 export default function Rowery() {
@@ -158,6 +158,7 @@ export default function Rowery() {
                   default_title='Dowolny'
                   isColored={true}
                 />
+                {/* Status */}
                 <FetchSelect
                   value={statusId}
                   onChange={setStatusId}

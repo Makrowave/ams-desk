@@ -3,8 +3,13 @@ import { useState } from "react";
 // Despite the name, it selects table or rather changes the query
 export default function ChangeTable({ changePlaceId }) {
   const [active, setActive] = useState(0);
-  const places = JSON.parse(process.env.NEXT_PUBLIC_PLACES);
+  const places = load();
 
+  function load() {
+    let arr = JSON.parse(process.env.NEXT_PUBLIC_PLACES);
+    arr.unshift({ placeId: 0, placeName: "Wszystkie" });
+    return arr;
+  }
   function handleClick(index) {
     changePlaceId(index);
     setActive(index);
