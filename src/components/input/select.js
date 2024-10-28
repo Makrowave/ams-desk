@@ -78,9 +78,7 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
   function handleChange(option) {
     setKey(option.key);
     setValue(option.value);
-    console.log(option.color);
     if (isColored) {
-      console.log("Entered if");
       setColor(option.color);
     }
     onChange(option.key);
@@ -91,14 +89,14 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
     <div ref={selectRef} className={isRow ? "flex w-1/2 flex-col relative h-8" : "flex flex-1 flex-col relative h-8"}>
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className={" text-center bg-primary border-2 border-tertiary rounded w-full select-none flex h-8"}
+        className={"text-center bg-primary border-2 border-tertiary rounded w-full select-none flex h-8"}
       >
         {isColored && <div className='w-9 border-tertiary border-r' style={{ background: color }}></div>}
         <span className='mx-auto'>{value}</span>
         <img src='chevron.png' className='h-1 self-center mr-2' />
       </div>
       {isOpen && (
-        <div className='flex flex-1 flex-col border-border border absolute w-full top-8 z-10'>
+        <div className='flex flex-1 flex-col border-border border w-full absolute z-10 max-h-44 overflow-auto'>
           {fOptions.map((option) => {
             return <Option key={option.key} isColored={isColored} option={option} onClick={handleChange} />;
           })}

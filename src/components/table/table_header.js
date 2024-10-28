@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function TableHeader({ singlePlace, setCriterion }) {
   const [active, setActive] = useState(1);
-
   function handleOptionButton(criterion, id) {
     setActive(id);
     setCriterion(criterion);
@@ -17,7 +16,7 @@ export default function TableHeader({ singlePlace, setCriterion }) {
         <th className={`w-24 ${place.color}`} key={place.placeId}>
           <SortButton
             onClick={handleOptionButton}
-            isActive={active === index + 6}
+            activeId={active}
             id={index + 6}
             value='amount'
             subValue={index + 1}
@@ -33,33 +32,27 @@ export default function TableHeader({ singlePlace, setCriterion }) {
     <thead className='bg-secondary mb-px sticky top-0 z-5 shadow-lg h-10'>
       <tr>
         <th className='w-96 pl-8'>
-          <SortButton onClick={handleOptionButton} isActive={active === 1} id={1} value='name'>
+          <SortButton onClick={handleOptionButton} activeId={active} id={1} value='name'>
             Rower
           </SortButton>
         </th>
         <th className='w-24'>
-          <SortButton onClick={handleOptionButton} isActive={active === 2} id={2} value='size'>
+          <SortButton onClick={handleOptionButton} activeId={active} id={2} value='size'>
             Rozmiar
           </SortButton>
         </th>
         <th className='w-24'>
-          <SortButton onClick={handleOptionButton} isActive={active === 3} id={3} value='wheel'>
+          <SortButton onClick={handleOptionButton} activeId={active} id={3} value='wheel'>
             Koła
           </SortButton>
         </th>
         <th className='w-24'>
-          <SortButton onClick={handleOptionButton} isActive={active === 4} id={4} value='price'>
+          <SortButton onClick={handleOptionButton} activeId={active} id={4} value='price'>
             Cena
           </SortButton>
         </th>
         <th className='w-24'>
-          <SortButton
-            onClick={handleOptionButton}
-            isActive={active === 5}
-            id={5}
-            value='total'
-            defeaultIsAscending={false}
-          >
+          <SortButton onClick={handleOptionButton} activeId={active} id={5} value='total' defeaultIsAscending={false}>
             Ilość
           </SortButton>
         </th>
@@ -69,14 +62,16 @@ export default function TableHeader({ singlePlace, setCriterion }) {
   );
 }
 
-function SortButton({ onClick, isActive, id, value, subValue, defeaultIsAscending = true, children }) {
+function SortButton({ onClick, activeId, id, value, subValue, defeaultIsAscending = true, children }) {
   const [isAscending, setIsAscending] = useState(defeaultIsAscending);
   function handleChange() {
+    console.log(activeId);
     let order = isAscending;
-    if (isActive) {
-      order = !order;
+    if (activeId === id) {
+      order = !isAscending;
       setIsAscending(order);
     } else {
+      order = defeaultIsAscending;
       setIsAscending(defeaultIsAscending);
     }
     let criterion = {
@@ -91,7 +86,7 @@ function SortButton({ onClick, isActive, id, value, subValue, defeaultIsAscendin
     <button className='w-full' onClick={() => handleChange()}>
       <div className='flex place-content-center'>
         {children}
-        {isActive && (
+        {activeId === id && (
           <img className={isAscending ? "h-2 self-center ml-2" : "h-2 self-center ml-2 rotate-180"} src='chevron.png' />
         )}
       </div>

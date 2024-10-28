@@ -26,6 +26,7 @@ export default function BikeTable({ filterSrc }) {
             <TableHeader singlePlace={singlePlace} setCriterion={setCriterion} />
             <TableBody singlePlace={singlePlace} placeId={place} src={src + filterSrc} sortCriterion={criterion} />
           </table>
+          <div className='min-h-4'></div>
         </div>
       </div>
     </div>

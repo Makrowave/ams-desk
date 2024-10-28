@@ -133,7 +133,7 @@ export default function AddModelModal() {
     if (true) mutation.mutate();
   }
   return (
-    <div className='flex flex-col gap-y-2'>
+    <div className='flex flex-col gap-y-2 w-[600px]'>
       <ErrorDisplay message={error} isVisible={error !== ""} />
       <div>
         <div className='flex justify-between'>

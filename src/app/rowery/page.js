@@ -211,6 +211,7 @@ export default function Rowery() {
               >
                 Reset
               </button>
+              <div className='min-h-8' />
             </div>
             {/*Table*/}
             <BikeTable

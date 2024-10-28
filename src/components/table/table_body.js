@@ -35,7 +35,7 @@ export default function TableBody({ src, singlePlace, placeId, sortCriterion }) 
   }
 
   function calculateFrameSize(size, wheelSize) {
-    return size > 32 && wheelSize >= 26 ? round(size / 2.54) : size;
+    return size > 32 && wheelSize >= 26 ? Math.round(size / 2.54) : size;
   }
   function sortPredicate(criterion) {
     const order = criterion.isAscending ? 1 : -1;
