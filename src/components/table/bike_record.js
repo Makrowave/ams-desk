@@ -14,6 +14,7 @@ import ExternalLink from "../navigation/external_link";
 import AddLinkModal from "../modals/record/add_link_modal";
 import AddEanModal from "../modals/record/add_ean_modal";
 import MainColorModal from "../modals/record/main_color_modal";
+import ChangeModelModal from "../modals/record/change_model_modal";
 export default function BikeRecord({ model, placeCount, placeId }) {
   const places = new Array(placeCount).fill(0);
   const [clicked, setClicked] = useState(false);
@@ -140,6 +141,18 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                     }}
                   >
                     Przydziel kolor
+                  </button>
+                </div>
+                <div>
+                  <button
+                    className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                    onClick={() => {
+                      setModalChildren(<ChangeModelModal model={model} />);
+                      setTitle("Zmień dane roweru");
+                      setIsOpen(true);
+                    }}
+                  >
+                    Zmień dane
                   </button>
                 </div>
               </div>

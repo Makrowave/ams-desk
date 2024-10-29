@@ -54,7 +54,7 @@ export default function AddBikeModal({ refetch, modelId }) {
       <ValidationFetchSelect
         value={status}
         onChange={setStatus}
-        src='/Status'
+        src='/Status/NotSold'
         queryKey='statuses'
         title='Status'
         default_option={""}
