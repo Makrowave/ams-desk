@@ -361,10 +361,7 @@ export default function AddModelModal() {
         }}
         title='Elektryczny'
       />
-      <button
-        className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 self-center mt-auto mb-4 hover:bg-tertiary'
-        onClick={() => handleClick()}
-      >
+      <button className='button-secondary self-center mt-auto mb-4' onClick={() => handleClick()}>
         Dodaj model
       </button>
     </div>

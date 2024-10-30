@@ -32,3 +32,10 @@ body {
 .transparent-bg {
   background-color: rgba(0, 0, 0, 0.7);
 }
+
+.button-secondary {
+  @apply bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary text-nowrap;
+}
+.button-primary {
+  @apply bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary;
+}

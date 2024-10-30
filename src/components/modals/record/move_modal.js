@@ -41,7 +41,7 @@ export default function MoveModal({ refetch, bikeId }) {
         default_title='Wybierz z listy'
       />
       <button
-        className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 self-center mt-auto mb-4 hover:bg-tertiary'
+        className='button-secondary self-center mt-auto mb-4'
         onClick={() => {
           if (validate()) mutation.mutate();
         }}

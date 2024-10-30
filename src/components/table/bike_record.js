@@ -84,7 +84,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                 </div>
                 <div>
                   <button
-                    className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                    className='button-secondary'
                     onClick={() => {
                       setModalChildren(<AddBikeModal refetch={refetch} modelId={model.modelId} />);
                       setTitle("Dodaj rower");
@@ -96,7 +96,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                 </div>
                 <div>
                   <button
-                    className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                    className='button-secondary'
                     onClick={() => {
                       setModalChildren(<ColorModal model={model} />);
                       setTitle("Zmień kolor");
@@ -108,7 +108,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                 </div>
                 <div>
                   <button
-                    className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                    className='button-secondary'
                     onClick={() => {
                       setModalChildren(<AddLinkModal model={model} />);
                       setTitle("Zmień link");
@@ -120,7 +120,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                 </div>
                 <div>
                   <button
-                    className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                    className='button-secondary'
                     onClick={() => {
                       setModalChildren(<AddEanModal model={model} />);
                       setTitle("Zmień EAN");
@@ -132,7 +132,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                 </div>
                 <div>
                   <button
-                    className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                    className='button-secondary'
                     onClick={() => {
                       setModalChildren(<MainColorModal model={model} />);
                       setTitle("Przydziel Kolor");
@@ -162,7 +162,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                     <td>
                       <div className='flex *:mx-2'>
                         <button
-                          className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                          className='button-secondary'
                           onClick={() => {
                             setModalChildren(<MoveModal refetch={refetch} bikeId={bike.id} />);
                             setTitle("Przenieś rower");
@@ -172,7 +172,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                           Przenieś
                         </button>
                         <button
-                          className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                          className='button-secondary'
                           onClick={() => {
                             setModalChildren(<AssembleModal refetch={refetch} bikeId={bike.id} />);
                             setTitle("Złóż rower");
@@ -182,7 +182,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                           Złóż
                         </button>
                         <button
-                          className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                          className='button-secondary'
                           onClick={() => {
                             setModalChildren(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} />);
                             setTitle("Sprzedaj rower");
@@ -192,7 +192,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                           Sprzedaj
                         </button>
                         <button
-                          className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary text-nowrap'
+                          className='button-secondary'
                           onClick={() => {
                             setModalChildren(<StatusModal refetch={refetch} bikeId={bike.id} />);
                             setTitle("Zmień status");
@@ -202,7 +202,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
                           Zmień status
                         </button>
                         <button
-                          className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+                          className='button-secondary'
                           onClick={() => {
                             setModalChildren(<DeleteModal refetch={refetch} bikeId={bike.id} />);
                             setTitle("Usuń rower");

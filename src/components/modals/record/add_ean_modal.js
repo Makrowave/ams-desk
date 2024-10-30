@@ -43,7 +43,7 @@ export default function AddEanModal({ model }) {
         />
       </div>
       <button
-        className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 self-center my-4 hover:bg-tertiary'
+        className='button-secondary self-center mt-auto mb-4'
         onClick={() => {
           mutation.mutate();
         }}

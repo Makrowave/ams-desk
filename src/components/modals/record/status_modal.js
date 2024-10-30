@@ -42,7 +42,7 @@ export default function StatusModal({ refetch, bikeId }) {
         isColored={true}
       />
       <button
-        className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 self-center mt-auto mb-4 hover:bg-tertiary text-nowrap'
+        className='button-secondary self-center mt-auto mb-4 text-nowrap'
         onClick={() => {
           if (validate()) mutation.mutate();
         }}
