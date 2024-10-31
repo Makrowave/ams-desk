@@ -217,7 +217,7 @@ export default function Rowery() {
             <BikeTable
               //prettier-ignore
               filterSrc={
-                '?avaible=' + avail.toString()
+                '&avaible=' + avail.toString()
                 + '&manufacturerId=' + make.toString()
                 + '&wheelSize=' + wheel.toString()
                 + '&frameSize=' + size.toString()

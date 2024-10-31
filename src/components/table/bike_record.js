@@ -286,9 +286,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
         <td>{model.wheelSize}</td>
         <td>{model.price}</td>
         <td className={colorCount(model.bikeCount)}>{model.bikeCount}</td>
-        {places.map((place, i) => (
-          <td key={i}>{place}</td>
-        ))}
+        {placeId == 0 ? places.map((place, i) => <td key={i}>{place}</td>) : <></>}
       </tr>
       {renderInfo()}
     </>
