@@ -7,7 +7,7 @@ import FilterSelect from "@/components/filtering/filter_select";
 import SingleCheckbox from "@/components/filtering/single_checkbox";
 import Modal from "@/components/modals/modal";
 import AddModelModal from "@/components/modals/add_model_modal";
-import BikeTable from "@/components/table/bike_table";
+import ModelTable from "@/components/table/model_table";
 import PrivateRoute from "@/components/routing/private_route";
 import RangeInput from "@/components/filtering/range_input";
 import useModal from "@/hooks/use_modal";
@@ -214,7 +214,7 @@ export default function Rowery() {
               <div className='min-h-8' />
             </div>
             {/*Table*/}
-            <BikeTable
+            <ModelTable
               //prettier-ignore
               filterSrc={
                 '&avaible=' + avail.toString()
