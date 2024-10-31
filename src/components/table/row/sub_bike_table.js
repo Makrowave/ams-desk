@@ -22,7 +22,6 @@ export function SubBikeTable({ model, placeId }) {
       const response = await axiosPrivate.get(_bikesUrl + model.modelId + "?placeId=" + placeId.toString());
       return response.data;
     },
-    enabled: true,
   });
 
   /**

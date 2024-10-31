@@ -12,8 +12,9 @@ import MainColorModal from "@/components/modals/record/main_color_modal";
  * Row containing more data about model and buttons to edit model's data.
  * @param {Object} props - Props.
  * @param {Object} props.model - Model that the record belongs to.
+ * @param {Object} props.placeId - PlaceId used to refetch query in AddBikeModal.
  */
-export function SubRowData({ model }) {
+export function SubRowData({ model, placeId }) {
   const axiosPrivate = useAxiosPrivate();
   const { setModalChildren, setTitle, setIsOpen } = useModal();
   const color = useQuery({
@@ -48,7 +49,7 @@ export function SubRowData({ model }) {
         <button
           className='button-secondary'
           onClick={() => {
-            setModalChildren(<AddBikeModal modelId={model.modelId} />);
+            setModalChildren(<AddBikeModal modelId={model.modelId} placeId={placeId} />);
             setTitle("Dodaj rower");
             setIsOpen(true);
           }}

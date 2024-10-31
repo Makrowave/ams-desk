@@ -7,8 +7,7 @@ import useModal from "@/hooks/use_modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 
-
-export default function ChangeModelModal({model}) {
+export default function ChangeModelModal({ model }) {
   const modelId = model.modelId;
   const [name, setName] = useState(model.modelName);
   const [productCode, setProductCode] = useState(model.productCode);
@@ -26,7 +25,7 @@ export default function ChangeModelModal({model}) {
   const FRAME_REGEX = /^[0-9]{1,2}$/;
   const PRICE_REGEX = /^[0-9]{3,5}$/;
   //In-built validation
-  const [wheelSize, setWheelSize] = useState(model.wheelSize);
+  const [wheelSize, setWheelSize] = useState(model.wheelSize.toString());
   const [manufacturerId, setManufacturerId] = useState(model.manufacturerId);
   const [categoryId, setCategoryId] = useState(model.categoryId);
   const [isWoman, setIsWoman] = useState(model.isWoman);
@@ -86,7 +85,7 @@ export default function ChangeModelModal({model}) {
         setError("Rower o podanym kodzie EAN już instnieje");
       }
     },
-  })
+  });
 
   function handleClick() {
     if (validate()) mutation.mutate();
@@ -108,8 +107,8 @@ export default function ChangeModelModal({model}) {
     if (!result) setError("Wprowadzono niepoprawne dane");
     return result;
   }
-  return(
-  <div className='flex flex-col gap-y-2 w-[600px]'>
+  return (
+    <div className='flex flex-col gap-y-2 w-[600px]'>
       <ErrorDisplay message={error} isVisible={error !== ""} />
       <div>
         <div className='flex justify-between'>

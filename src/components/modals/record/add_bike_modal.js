@@ -5,7 +5,7 @@ import ValidationFetchSelect from "@/components/validation/validation_fetch_sele
 import ErrorDisplay from "@/components/error/error_display";
 import useModal from "@/hooks/use_modal";
 
-export default function AddBikeModal({ modelId }) {
+export default function AddBikeModal({ modelId, placeId }) {
   //Change it based on selected location
   const [place, setPlace] = useState("");
   const [status, setStatus] = useState("");
@@ -30,8 +30,8 @@ export default function AddBikeModal({ modelId }) {
     onSuccess: (data) => {
       if (data) {
         queryClient.refetchQueries({
-          queryKey: ["bikes"],
-          exact: false,
+          queryKey: ["bikeSubRecord", modelId, placeId],
+          exact: true,
         });
         setIsOpen(false);
       }
