@@ -19,8 +19,8 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
   const fOptions = formatOptions();
   const [isOpen, setIsOpen] = useState(false);
   const [key, setKey] = useState(pKey);
-  const [value, setValue] = useState(fOptions.find((obj) => obj.key === pKey).value);
-  const [color, setColor] = useState(fOptions.find((obj) => obj.key === pKey).color);
+  const [value, setValue] = useState(findOption().value);
+  const [color, setColor] = useState(findOption().color);
   const prevKey = useRef(key);
   const selectRef = useRef(null);
   //Change shown value when parent changes value externally
@@ -30,9 +30,9 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
     if (pKey !== prevKey.current) {
       setKey(pKey);
       prevKey.current = pKey;
-      setValue(fOptions.find((obj) => obj.key === pKey).value);
+      setValue(findOption().value);
       if (isColored) {
-        setColor(fOptions.find((obj) => obj.key === pKey).color);
+        setColor(findOption().color);
       }
     }
   }, [pKey]);
@@ -53,6 +53,13 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
    * @returns {Array<{string, string, string}>|Array<{string | string}>} - an array of objects:
    *  {key, value} for isColored=false, {key, value, color} for isColored=true
    */
+  function findOption() {
+    if(fOptions.find((obj) => obj.key === pKey) === undefined) 
+      return {key: defaultKey, value: defaultValue, color: "#FF00FF"} 
+    else
+      return fOptions.find((obj) => obj.key === pKey);
+  }
+
   function formatOptions() {
     let opt;
     if (options.length > 0) {

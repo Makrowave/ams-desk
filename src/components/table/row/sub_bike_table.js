@@ -2,6 +2,11 @@ import useAxiosPrivate from "@/hooks/use_axios_private";
 import { useQuery } from "@tanstack/react-query";
 import useModal from "@/hooks/use_modal";
 import React from "react";
+import MoveModal from "@/components/modals/record/move_modal";
+import AssembleModal from "@/components/modals/record/assemble_modal";
+import SellModal from "@/components/modals/record/sell_modal";
+import StatusModal from "@/components/modals/record/status_modal";
+import DeleteModal from "@/components/modals/record/delete_modal";
 /**
  * Renders table of bikes with buttons that open modals and allow to edit bikes.
  * @param {Object} props - Props.

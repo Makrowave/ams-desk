@@ -1,16 +1,17 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
 import ErrorDisplay from "@/components/error/error_display";
 import useModal from "@/hooks/use_modal";
 
-export default function AddBikeModal({ refetch, modelId }) {
+export default function AddBikeModal({ modelId }) {
   //Change it based on selected location
   const [place, setPlace] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const { setIsOpen } = useModal();
+  const queryClient = useQueryClient();
   const _url = "/Desktop/AddBike";
 
   const axiosPrivate = useAxiosPrivate();
@@ -28,7 +29,10 @@ export default function AddBikeModal({ refetch, modelId }) {
     },
     onSuccess: (data) => {
       if (data) {
-        refetch();
+        queryClient.refetchQueries({
+          queryKey: ["bikes"],
+          exact: false,
+        });
         setIsOpen(false);
       }
     },
@@ -54,7 +58,7 @@ export default function AddBikeModal({ refetch, modelId }) {
       <ValidationFetchSelect
         value={status}
         onChange={setStatus}
-        src='/Status'
+        src='/Status/NotSold'
         queryKey='statuses'
         title='Status'
         default_option={""}
