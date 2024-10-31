@@ -29,7 +29,7 @@ export default function TableHeader({ singlePlace, setCriterion }) {
             activeId={active}
             id={index + 6}
             criterionName='amount'
-            subcriterionName={index + 1}
+            subValue={index + 1}
             defeaultIsAscending={false}
             title={place.placeName}
           />
@@ -83,9 +83,6 @@ export default function TableHeader({ singlePlace, setCriterion }) {
  */
 function SortButton({ onClick, activeId, id, criterionName, subValue, defeaultIsAscending = true, title }) {
   const [isAscending, setIsAscending] = useState(defeaultIsAscending);
-  //If not pressed - sets order to default and button to active
-  //If pressed - reverses ordering
-  //Calls onClick
   /**
    * If not pressed - sets order to default and button to active.
    * If pressed - reverses ordering.
