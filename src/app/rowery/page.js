@@ -31,6 +31,7 @@ const defaults = {
   maxPrice: 100000,
   color: "",
   statusId: "",
+  productCode: "",
 };
 
 export default function Rowery() {
@@ -49,6 +50,7 @@ export default function Rowery() {
   const [minPrice, setMinPrice] = useState(defaults.minPrice);
   const [maxPrice, setMaxPrice] = useState(defaults.maxPrice);
   const [color, setColor] = useState(defaults.color);
+  const [productCode, setProductCode] = useState(defaults.productCode);
 
   function reset() {
     setName(defaults.name);
@@ -65,6 +67,7 @@ export default function Rowery() {
     setMaxPrice(defaults.maxPrice);
     setColor(defaults.color);
     setCategory(defaults.category);
+    setProductCode(defaults.productCode);
   }
   //Modal
   const { setIsOpen, setModalChildren, setTitle } = useModal();
@@ -94,6 +97,8 @@ export default function Rowery() {
               <div className='*:pb-1 flex flex-col'>
                 {/* Name */}
                 <FilterInput title='Nazwa' value={name} setValue={setName} />
+                {/* Product Code */}
+                <FilterInput title='Kod producenta' value={productCode} setValue={setProductCode} />
                 {/* Size */}
                 <FilterInput title='Rozmiar' value={size} setValue={setSize} />
                 {/* Wheel size */}
@@ -230,6 +235,7 @@ export default function Rowery() {
                 + '&maxPrice=' + maxPrice.toString()
                 + '&colorId=' + color.toString()
                 + '&categoryId=' + category.toString()
+                + '&productCode=' + productCode.toString()
               }
             />
             <div className='fixed bottom-0 align-center  flex w-full pointer-events-none'>
