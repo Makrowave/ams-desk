@@ -111,10 +111,10 @@ export default function AddModelModal() {
   function validate() {
     let result =
       validName &&
-      validEanCode &&
+      //validEanCode &&
       validPrice &&
       validFrameSize &&
-      validProductCode &&
+      //validProductCode &&
       !!wheelSize &&
       !!manufacturerId &&
       !!categoryId &&
