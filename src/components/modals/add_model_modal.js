@@ -45,7 +45,7 @@ export default function AddModelModal() {
   const [isWoman, setIsWoman] = useState(false);
   const [isElectric, setIsElectric] = useState(false);
   //Other
-  const _url = "/Desktop/AddModel";
+  const _url = "/Models";
   const [error, setError] = useState("");
   const { setIsOpen } = useModal();
 
@@ -93,18 +93,23 @@ export default function AddModelModal() {
           colorId: colorId,
           categoryId: categoryId,
         }),
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: { "Content-Type": "application/json" },
+          validateStatus: (status) => {
+            return status < 500;
+          },
+        }
       );
     },
-    onSuccess: (data) => {
-      if (data) {
+    onSuccess: (response) => {
+      if (response.status == 204) {
         queryClient.refetchQueries({
           queryKey: ["bikes"],
           exact: false,
         });
         setIsOpen(false);
       } else {
-        setError("Rower o podanym kodzie EAN już instnieje");
+        setError(response.data);
       }
     },
   });

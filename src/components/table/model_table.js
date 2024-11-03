@@ -24,7 +24,7 @@ export default function ModelTable({ filterSrc }) {
    *  Should be a valid placeId
    */
   const [criterion, setCriterion] = useState({ name: "name", isAscending: true, key: null });
-  let src = "/Desktop/GetBikes?placeId=" + place.toString();
+  let src = "/Models?placeId=" + place.toString();
 
   return (
     <div className='col-span-5 flex justify-center mx-4 border-l-2 pl-5 border-tertiary overflow-hidden h-full max-w-full'>

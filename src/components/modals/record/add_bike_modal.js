@@ -12,7 +12,7 @@ export default function AddBikeModal({ modelId, placeId }) {
   const [error, setError] = useState("");
   const { setIsOpen } = useModal();
   const queryClient = useQueryClient();
-  const _url = "/Desktop/AddBike";
+  const _url = "/Bikes";
 
   const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
@@ -24,16 +24,23 @@ export default function AddBikeModal({ modelId, placeId }) {
           placeId: place,
           statusId: status,
         }),
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: { "Content-Type": "application/json" },
+          validateStatus: (status) => {
+            return status < 500;
+          },
+        }
       );
     },
-    onSuccess: (data) => {
-      if (data) {
+    onSuccess: (response) => {
+      if (response.status == 204) {
         queryClient.refetchQueries({
-          queryKey: ["bikeSubRecord", modelId, placeId],
-          exact: true,
+          queryKey: ["bikes"],
+          exact: false,
         });
         setIsOpen(false);
+      } else {
+        setError(response.data);
       }
     },
   });

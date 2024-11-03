@@ -14,23 +14,28 @@ export default function ColorModal({ model }) {
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.put(
-        "/Desktop/ChangeColor/" +
-          model.modelId +
-          "?primaryColor=" +
-          primaryColor.slice(1) +
-          "&secondaryColor=" +
-          secondaryColor.slice(1)
+        "/Models/" + model.modelId,
+        JSON.stringify({
+          primaryColor: primaryColor,
+          secondaryColor: secondaryColor,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+          validateStatus: (status) => {
+            return status < 500;
+          },
+        }
       );
     },
-    onSuccess: (data) => {
-      if (data) {
+    onSuccess: (response) => {
+      if (response.status == 204) {
         queryClient.refetchQueries({
           queryKey: ["bikes"],
           exact: false,
         });
         setIsOpen(false);
       } else {
-        setError("Nie udało ustawić się linku");
+        setError(response.data);
       }
     },
   });

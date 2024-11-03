@@ -7,12 +7,21 @@ export default function DeleteModal({ refetch, bikeId }) {
   const { setIsOpen } = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.delete("/Bikes/" + bikeId);
+      return await axiosPrivate.delete("/Bikes/" + bikeId, {
+        validateStatus: (status) => {
+          return status < 500;
+        },
+      });
     },
-    onSuccess: (data) => {
-      if (data) {
+    onSuccess: (response) => {
+      if (response.status == 204) {
+        queryClient.refetchQueries({
+          queryKey: ["bikes"],
+          exact: false,
+        });
         setIsOpen(false);
-        refetch();
+      } else {
+        setError(response.data);
       }
     },
   });

@@ -12,14 +12,28 @@ export default function MoveModal({ refetch, bikeId }) {
   const { setIsOpen } = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.put("/Desktop/Move/" + bikeId + "?placeId=" + place.toString());
+      return await axiosPrivate.put(
+        "/Bikes/" + bikeId,
+        JSON.stringify({
+          placeId: place,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+          validateStatus: (status) => {
+            return status < 500;
+          },
+        }
+      );
     },
-    onSuccess: (data) => {
-      if (data) {
-        refetch();
+    onSuccess: (response) => {
+      if (response.status == 204) {
+        queryClient.refetchQueries({
+          queryKey: ["bikes"],
+          exact: false,
+        });
         setIsOpen(false);
       } else {
-        setError("Nie można przenieść w to samo miejsce");
+        setError(response.data);
       }
     },
   });

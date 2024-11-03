@@ -30,7 +30,7 @@ export default function ChangeModelModal({ model }) {
   const [categoryId, setCategoryId] = useState(model.categoryId);
   const [isWoman, setIsWoman] = useState(model.isWoman);
   const [isElectric, setIsElectric] = useState(model.isElectric);
-  const _url = "/Desktop/PatchModel/";
+  const _url = "/Models/";
   //Other
   const [error, setError] = useState("");
   const { setIsOpen } = useModal();
@@ -70,19 +70,23 @@ export default function ChangeModelModal({ model }) {
           price: price,
           isElectric: isElectric,
         }),
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: { "Content-Type": "application/json" },
+          validateStatus: (status) => {
+            return status < 500;
+          },
+        }
       );
     },
-    onSuccess: (data) => {
-      console.log(data);
-      if (data) {
+    onSuccess: (response) => {
+      if (response.status == 204) {
         queryClient.refetchQueries({
           queryKey: ["bikes"],
           exact: false,
         });
         setIsOpen(false);
       } else {
-        setError("Rower o podanym kodzie EAN już instnieje");
+        setError(response.data);
       }
     },
   });

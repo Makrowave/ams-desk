@@ -11,7 +11,6 @@ import ModelTable from "@/components/table/model_table";
 import PrivateRoute from "@/components/routing/private_route";
 import RangeInput from "@/components/filtering/range_input";
 import useModal from "@/hooks/use_modal";
-import { Select } from "@/components/input/select";
 
 const defaults = {
   name: "",

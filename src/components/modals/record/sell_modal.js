@@ -13,7 +13,14 @@ export default function SellModal({ refetch, bikeId, basePrice }) {
   const regex = /^[0-9]{3,5}$/;
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.put("/Desktop/Sell/" + bikeId + "?salePrice=" + price.toString());
+      return await axiosPrivate.put(
+        "/Bikes/" + bikeId,
+        JSON.stringify({
+          statusId: 3,
+          salePrice: price,
+        }),
+        { headers: { "Content-Type": "application/json" } }
+      );
     },
     onSuccess: () => {
       refetch();

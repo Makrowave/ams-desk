@@ -12,17 +12,22 @@ export default function AddLinkModal({ model }) {
   const { setIsOpen } = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.put("/Desktop/AddLink/" + model.modelId + "?link=" + link.toString());
+      return await axiosPrivate.put("/Models/" + model.modelId, JSON.stringify({ link: link.toString() }), {
+        headers: { "Content-Type": "application/json" },
+        validateStatus: (status) => {
+          return status < 500;
+        },
+      });
     },
-    onSuccess: (data) => {
-      if (data) {
+    onSuccess: (response) => {
+      if (response.status == 204) {
         queryClient.refetchQueries({
           queryKey: ["bikes"],
           exact: false,
         });
         setIsOpen(false);
       } else {
-        setError("Nie udało ustawić się linku");
+        setError(response.data);
       }
     },
   });
