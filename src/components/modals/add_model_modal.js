@@ -73,6 +73,9 @@ export default function AddModelModal() {
   //Query
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
+
+  
+
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.post(
@@ -82,7 +85,7 @@ export default function AddModelModal() {
           eanCode: eanCode,
           frameSize: frameSize,
           modelName: name,
-          frameSize: frameSize,
+          frameSize: Number(frameSize),
           isWoman: isWoman,
           wheelSize: wheelSize,
           manufacturerId: manufacturerId,
@@ -95,9 +98,9 @@ export default function AddModelModal() {
         }),
         {
           headers: { "Content-Type": "application/json" },
-          validateStatus: (status) => {
-            return status < 500;
-          },
+          // validateStatus: (status) => {
+          //   return status < 500;
+          // },
         }
       );
     },
@@ -108,10 +111,11 @@ export default function AddModelModal() {
           exact: false,
         });
         setIsOpen(false);
-      } else {
-        setError(response.data);
       }
     },
+    onError: (error) => {
+      setError(error.response.data)
+    }
   });
   function validate() {
     let result =
@@ -224,12 +228,14 @@ export default function AddModelModal() {
             <img className='h-5 self-center px-2' src={validFrameSize ? "/checkmark.png" : "/red_cross.png"} />
           </div>
           <input
+            type="number"
             onFocus={() => setFrameSizeFocus(true)}
             onBlur={() => setFrameSizeFocus(false)}
             className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-1/2'
             value={frameSize}
             onChange={(e) => {
               setFrameSize(e.target.value);
+              console.log(Number(e.target.value))
             }}
           />
         </div>
@@ -272,6 +278,7 @@ export default function AddModelModal() {
             <img className='h-5 self-center px-2' src={validPrice ? "/checkmark.png" : "/red_cross.png"} />
           </div>
           <input
+            type="number"
             onFocus={() => setPriceFocus(true)}
             onBlur={() => setPriceFocus(false)}
             className='self-end  text-center bg-primary border-2 border-tertiary rounded-l w-1/2'

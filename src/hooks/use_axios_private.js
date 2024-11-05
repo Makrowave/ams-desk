@@ -26,6 +26,8 @@ export default function useAxiosPrivate() {
           refresh();
         } else if(error?.response?.status === 401) {
           logout();
+        } else {
+          return Promise.reject(error)
         }
       }
     );
