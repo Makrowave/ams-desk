@@ -4,6 +4,7 @@ import useAxiosPrivate from "@/hooks/use_axios_private";
 import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
 import ErrorDisplay from "@/components/error/error_display";
 import useModal from "@/hooks/use_modal";
+import { handleError } from "@/util/util";
 
 export default function AddBikeModal({ modelId, placeId }) {
   //Change it based on selected location
@@ -26,22 +27,18 @@ export default function AddBikeModal({ modelId, placeId }) {
         }),
         {
           headers: { "Content-Type": "application/json" },
-          validateStatus: (status) => {
-            return status < 500;
-          },
         }
       );
     },
-    onSuccess: (response) => {
-      if (response.status == 204) {
-        queryClient.refetchQueries({
-          queryKey: ["bikes"],
-          exact: false,
-        });
-        setIsOpen(false);
-      } else {
-        setError(response.data);
-      }
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["bikes"],
+        exact: false,
+      });
+      setIsOpen(false);
+    },
+    onError: (error) => {
+      setError(error.response.data);
     },
   });
   function validate() {

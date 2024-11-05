@@ -4,31 +4,27 @@ import useModal from "@/hooks/use_modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-export default function AddLinkModal({ model }) {
-  const [link, setLink] = useState("");
+export default function AddEanModal({ model }) {
+  const [ean, setEan] = useState("");
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
   const { setIsOpen } = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.put("/Models/" + model.modelId, JSON.stringify({ link: link.toString() }), {
+      return await axiosPrivate.put("/Models/" + model.modelId, JSON.stringify({ eanCode: ean.toString() }), {
         headers: { "Content-Type": "application/json" },
-        validateStatus: (status) => {
-          return status < 500;
-        },
       });
     },
-    onSuccess: (response) => {
-      if (response.status == 204) {
-        queryClient.refetchQueries({
-          queryKey: ["bikes"],
-          exact: false,
-        });
-        setIsOpen(false);
-      } else {
-        setError(response.data);
-      }
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["bikes"],
+        exact: false,
+      });
+      setIsOpen(false);
+    },
+    onError: (error) => {
+      setError(error.response.data);
     },
   });
 
@@ -37,13 +33,13 @@ export default function AddLinkModal({ model }) {
       <ErrorDisplay message={error} isVisible={!!error}></ErrorDisplay>
       <div>
         <div className='flex flex-col'>
-          <span>Link</span>
+          <span>EAN</span>
         </div>
         <input
           className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-full'
-          value={link}
+          value={ean}
           onChange={(e) => {
-            setLink(e.target.value);
+            setEan(e.target.value);
           }}
         />
       </div>
@@ -53,7 +49,7 @@ export default function AddLinkModal({ model }) {
           mutation.mutate();
         }}
       >
-        Zmień link
+        Zmień EAN
       </button>
     </div>
   );

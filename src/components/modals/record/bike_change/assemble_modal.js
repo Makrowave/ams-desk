@@ -4,9 +4,9 @@ import useAxiosPrivate from "@/hooks/use_axios_private";
 import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
 import ErrorDisplay from "@/components/error/error_display";
 import useModal from "@/hooks/use_modal";
-
-export default function MoveModal({ refetch, bikeId }) {
-  const [place, setPlace] = useState("");
+export default function AssembleModal({ refetch, bikeId }) {
+  //Change it based on selected location
+  const [employeeId, setEmployeeId] = useState("");
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const { setIsOpen } = useModal();
@@ -15,43 +15,40 @@ export default function MoveModal({ refetch, bikeId }) {
       return await axiosPrivate.put(
         "/Bikes/" + bikeId,
         JSON.stringify({
-          placeId: place,
+          assembledBy: employeeId.toString(),
+          statusId: 2,
         }),
         {
           headers: { "Content-Type": "application/json" },
-          validateStatus: (status) => {
-            return status < 500;
-          },
         }
       );
     },
-    onSuccess: (response) => {
-      if (response.status == 204) {
-        queryClient.refetchQueries({
-          queryKey: ["bikes"],
-          exact: false,
-        });
-        setIsOpen(false);
-      } else {
-        setError(response.data);
-      }
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["bikes"],
+        exact: false,
+      });
+      setIsOpen(false);
+    },
+    onError: (error) => {
+      setError(error.response.data);
     },
   });
   function validate() {
-    let result = place !== "";
-    if (!result) setError("Nie wybrano miejsca z listy");
+    let result = employeeId !== "";
+    if (!result) setError("Nie wybrano pracownika z listy");
     return result;
   }
   return (
     <div className='flex flex-col justify-between flex-grow w-72 mx-auto'>
       <ErrorDisplay message={error} isVisible={error !== ""} />
       <ValidationFetchSelect
-        value={place}
-        onChange={setPlace}
-        src='/Places'
-        queryKey='places'
+        value={employeeId}
+        onChange={setEmployeeId}
+        src='/Employees'
+        queryKey='employees'
         default_option={""}
-        title='Dokąd'
+        title='Pracownik'
         default_title='Wybierz z listy'
       />
       <button
@@ -60,7 +57,7 @@ export default function MoveModal({ refetch, bikeId }) {
           if (validate()) mutation.mutate();
         }}
       >
-        Przenieś
+        Złóż
       </button>
     </div>
   );

@@ -26,6 +26,9 @@ export default function SellModal({ refetch, bikeId, basePrice }) {
       refetch();
       setIsOpen(false);
     },
+    onError: (error) => {
+      setError(error.response.data);
+    },
   });
   function validate() {
     let result = regex.test(price);

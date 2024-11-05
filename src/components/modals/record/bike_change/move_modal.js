@@ -5,8 +5,8 @@ import ValidationFetchSelect from "@/components/validation/validation_fetch_sele
 import ErrorDisplay from "@/components/error/error_display";
 import useModal from "@/hooks/use_modal";
 
-export default function StatusModal({ refetch, bikeId }) {
-  const [status, setStatus] = useState("");
+export default function MoveModal({ refetch, bikeId }) {
+  const [place, setPlace] = useState("");
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const { setIsOpen } = useModal();
@@ -15,53 +15,48 @@ export default function StatusModal({ refetch, bikeId }) {
       return await axiosPrivate.put(
         "/Bikes/" + bikeId,
         JSON.stringify({
-          statusId: status.toString(),
+          placeId: place,
         }),
         {
           headers: { "Content-Type": "application/json" },
-          validateStatus: (status) => {
-            return status < 500;
-          },
         }
       );
     },
-    onSuccess: (response) => {
-      if (response.status == 204) {
-        queryClient.refetchQueries({
-          queryKey: ["bikes"],
-          exact: false,
-        });
-        setIsOpen(false);
-      } else {
-        setError(response.data);
-      }
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["bikes"],
+        exact: false,
+      });
+      setIsOpen(false);
+    },
+    onError: (error) => {
+      setError(error.response.data);
     },
   });
   function validate() {
-    let result = status !== "";
-    if (!result) setError("Nie wybrano statusu z listy");
+    let result = place !== "";
+    if (!result) setError("Nie wybrano miejsca z listy");
     return result;
   }
   return (
     <div className='flex flex-col justify-between flex-grow w-72 mx-auto'>
       <ErrorDisplay message={error} isVisible={error !== ""} />
       <ValidationFetchSelect
-        value={status}
-        onChange={setStatus}
-        src='/Status/NotSold'
-        queryKey='status'
+        value={place}
+        onChange={setPlace}
+        src='/Places'
+        queryKey='places'
         default_option={""}
-        title='Status'
+        title='Dokąd'
         default_title='Wybierz z listy'
-        isColored={true}
       />
       <button
-        className='button-secondary self-center mt-auto mb-4 text-nowrap'
+        className='button-secondary self-center mt-auto mb-4'
         onClick={() => {
           if (validate()) mutation.mutate();
         }}
       >
-        Zmień status
+        Przenieś
       </button>
     </div>
   );

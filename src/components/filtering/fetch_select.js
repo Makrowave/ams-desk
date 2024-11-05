@@ -42,7 +42,7 @@ export default function FetchSelect({
   if (isPending) {
     return (
       <Body>
-        <div className=' text-center bg-primary border-2 border-tertiary rounded w-full'>Loading</div>
+        <div className=' text-center bg-primary border-2 border-tertiary rounded w-full'>Ładowanie</div>
       </Body>
     );
   }
@@ -50,7 +50,9 @@ export default function FetchSelect({
   if (isError) {
     return (
       <Body>
-        <div className=' text-center bg-primary border-2 border-tertiary rounded w-full'>{error.message}</div>
+        <div className=' text-center bg-error-light text-error-dark border-2 border-tertiary rounded w-full'>
+          Błąd {error.code}
+        </div>
       </Body>
     );
   }

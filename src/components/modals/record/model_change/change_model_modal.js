@@ -72,22 +72,18 @@ export default function ChangeModelModal({ model }) {
         }),
         {
           headers: { "Content-Type": "application/json" },
-          validateStatus: (status) => {
-            return status < 500;
-          },
         }
       );
     },
-    onSuccess: (response) => {
-      if (response.status == 204) {
-        queryClient.refetchQueries({
-          queryKey: ["bikes"],
-          exact: false,
-        });
-        setIsOpen(false);
-      } else {
-        setError(response.data);
-      }
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["bikes"],
+        exact: false,
+      });
+      setIsOpen(false);
+    },
+    onError: (error) => {
+      setError(error.response.data);
     },
   });
 

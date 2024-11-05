@@ -6,7 +6,7 @@ import FilterInput from "@/components/filtering/filter_input";
 import FilterSelect from "@/components/filtering/filter_select";
 import SingleCheckbox from "@/components/filtering/single_checkbox";
 import Modal from "@/components/modals/modal";
-import AddModelModal from "@/components/modals/add_model_modal";
+import AddModelModal from "@/components/modals/record/model_change/add_model_modal";
 import ModelTable from "@/components/table/model_table";
 import PrivateRoute from "@/components/routing/private_route";
 import RangeInput from "@/components/filtering/range_input";

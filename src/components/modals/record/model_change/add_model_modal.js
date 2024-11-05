@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import ValidationFetchSelect from "../validation/validation_fetch_select";
-import SingleCheckbox from "../filtering/single_checkbox";
+import ValidationFetchSelect from "../../../validation/validation_fetch_select";
+import SingleCheckbox from "../../../filtering/single_checkbox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/use_axios_private";
-import ErrorDisplay from "../error/error_display";
+import ErrorDisplay from "../../../error/error_display";
 import useModal from "@/hooks/use_modal";
-import { Select } from "../input/select";
+import { Select } from "../../../input/select";
 
 //Add refetch
 
@@ -74,8 +74,6 @@ export default function AddModelModal() {
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
 
-  
-
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.post(
@@ -98,24 +96,20 @@ export default function AddModelModal() {
         }),
         {
           headers: { "Content-Type": "application/json" },
-          // validateStatus: (status) => {
-          //   return status < 500;
-          // },
         }
       );
     },
-    onSuccess: (response) => {
-      if (response.status == 204) {
-        queryClient.refetchQueries({
-          queryKey: ["bikes"],
-          exact: false,
-        });
-        setIsOpen(false);
-      }
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["bikes"],
+        exact: false,
+      });
+      setIsOpen(false);
     },
     onError: (error) => {
-      setError(error.response.data)
-    }
+      console.log(error);
+      setError(error.response.data);
+    },
   });
   function validate() {
     let result =
@@ -228,14 +222,14 @@ export default function AddModelModal() {
             <img className='h-5 self-center px-2' src={validFrameSize ? "/checkmark.png" : "/red_cross.png"} />
           </div>
           <input
-            type="number"
+            type='number'
             onFocus={() => setFrameSizeFocus(true)}
             onBlur={() => setFrameSizeFocus(false)}
             className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-1/2'
             value={frameSize}
             onChange={(e) => {
               setFrameSize(e.target.value);
-              console.log(Number(e.target.value))
+              console.log(Number(e.target.value));
             }}
           />
         </div>
@@ -278,7 +272,7 @@ export default function AddModelModal() {
             <img className='h-5 self-center px-2' src={validPrice ? "/checkmark.png" : "/red_cross.png"} />
           </div>
           <input
-            type="number"
+            type='number'
             onFocus={() => setPriceFocus(true)}
             onBlur={() => setPriceFocus(false)}
             className='self-end  text-center bg-primary border-2 border-tertiary rounded-l w-1/2'

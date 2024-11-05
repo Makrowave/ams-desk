@@ -27,7 +27,7 @@ export default function TableBody({ src, singlePlace, placeId, sortCriterion }) 
     return (
       <tbody>
         <tr>
-          <td colSpan={5 + (singlePlace ? 0 : placeCount)}>Loading...</td>
+          <td colSpan={5 + (singlePlace ? 0 : placeCount)}>Ładowanie...</td>
         </tr>
       </tbody>
     );
@@ -37,7 +37,9 @@ export default function TableBody({ src, singlePlace, placeId, sortCriterion }) 
     return (
       <tbody>
         <tr>
-          <td colSpan={5 + (singlePlace ? 0 : placeCount)}>{error.message}</td>
+          <td className='bg-error-light text-error-dark' colSpan={5 + (singlePlace ? 0 : placeCount)}>
+            {error.response.data}
+          </td>
         </tr>
       </tbody>
     );

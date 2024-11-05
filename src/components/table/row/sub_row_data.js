@@ -2,12 +2,12 @@ import useAxiosPrivate from "@/hooks/use_axios_private";
 import { useQuery } from "@tanstack/react-query";
 import useModal from "@/hooks/use_modal";
 import React from "react";
-import ChangeModelModal from "@/components/modals/record/change_model_modal";
-import AddBikeModal from "@/components/modals/record/add_bike_modal";
-import ColorModal from "@/components/modals/record/color_modal";
-import AddLinkModal from "@/components/modals/record/add_link_modal";
-import AddEanModal from "@/components/modals/record/add_ean_modal";
-import MainColorModal from "@/components/modals/record/main_color_modal";
+import ChangeModelModal from "@/components/modals/record/model_change/change_model_modal";
+import AddBikeModal from "@/components/modals/record/bike_change/add_bike_modal";
+import ColorModal from "@/components/modals/record/model_change/color_modal";
+import AddLinkModal from "@/components/modals/record/model_change/add_link_modal";
+import AddEanModal from "@/components/modals/record/model_change/add_ean_modal";
+import MainColorModal from "@/components/modals/record/model_change/main_color_modal";
 /**
  * Row containing more data about model and buttons to edit model's data.
  * @param {Object} props - Props.
