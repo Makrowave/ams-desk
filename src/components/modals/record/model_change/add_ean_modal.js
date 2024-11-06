@@ -24,7 +24,7 @@ export default function AddEanModal({ model }) {
       setIsOpen(false);
     },
     onError: (error) => {
-      setError(error.response.data);
+      setError(error.message);
     },
   });
 

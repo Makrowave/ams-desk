@@ -30,7 +30,7 @@ export default function StatusModal({ refetch, bikeId }) {
       setIsOpen(false);
     },
     onError: (error) => {
-      setError(error.response.data);
+      setError(error.message);
     },
   });
   function validate() {

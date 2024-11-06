@@ -23,20 +23,20 @@ export default function useAxiosPrivate() {
         const prevRequest = error?.config;
         if (error.response === undefined) {
           //Check for CORS errors or network errors
-          console.log("tutaj");
-          error.response = { data: "Nie udało połączyć się z serwerem" };
+          error.message = "Nie udało połączyć się z serwerem";
         } else if (error?.response?.status === 401 && !prevRequest?.sent) {
           //Refresh before logout
           prevRequest.sent = true;
           refresh();
-          console.log("tutaj2");
         } else if (error?.response?.status === 401) {
           //Logout if can't refresh
           logout();
         } else if (!(typeof error.response.data === "string")) {
           //If data is not in string format then backend messed up (or rather me coding it)
-          error.response.data = "Nastąpił nieoczekiwany błąd";
-          console.log("tutaj4");
+          error.message = "Nastąpił nieoczekiwany błąd";
+        } else if (typeof error.response.data === "string") {
+          //Not default but under if just to be safe (hopefully no edgecases)
+          error.message = error.message.data;
         }
         return Promise.reject(error);
       }

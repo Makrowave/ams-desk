@@ -107,8 +107,7 @@ export default function AddModelModal() {
       setIsOpen(false);
     },
     onError: (error) => {
-      console.log(error);
-      setError(error.response.data);
+      setError(error.message);
     },
   });
   function validate() {

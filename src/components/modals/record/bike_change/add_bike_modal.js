@@ -38,7 +38,7 @@ export default function AddBikeModal({ modelId, placeId }) {
       setIsOpen(false);
     },
     onError: (error) => {
-      setError(error.response.data);
+      setError(error.message);
     },
   });
   function validate() {

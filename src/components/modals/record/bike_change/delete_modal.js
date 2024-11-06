@@ -17,7 +17,7 @@ export default function DeleteModal({ refetch, bikeId }) {
       setIsOpen(false);
     },
     onError: (error) => {
-      setError(error.response.data);
+      setError(error.message);
     },
   });
 

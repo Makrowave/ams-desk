@@ -38,7 +38,7 @@ export default function TableBody({ src, singlePlace, placeId, sortCriterion }) 
       <tbody>
         <tr>
           <td className='bg-error-light text-error-dark' colSpan={5 + (singlePlace ? 0 : placeCount)}>
-            {error.response.data}
+            {error.message}
           </td>
         </tr>
       </tbody>

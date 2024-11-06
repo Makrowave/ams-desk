@@ -32,7 +32,7 @@ export default function ColorModal({ model }) {
       setIsOpen(false);
     },
     onError: (error) => {
-      setError(error.response.data);
+      setError(error.message);
     },
   });
 

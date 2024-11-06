@@ -27,7 +27,7 @@ export default function SellModal({ refetch, bikeId, basePrice }) {
       setIsOpen(false);
     },
     onError: (error) => {
-      setError(error.response.data);
+      setError(error.message);
     },
   });
   function validate() {
