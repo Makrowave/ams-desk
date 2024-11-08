@@ -24,11 +24,11 @@ export default function useAxiosPrivate() {
         if (error.response === undefined) {
           //Check for CORS errors or network errors
           error.message = "Nie udało połączyć się z serwerem";
-        } else if (error?.response?.status === 401 && !prevRequest?.sent) {
+        } else if ((error?.response?.status === 401 || error?.response?.status === 403) && !prevRequest?.sent) {
           //Refresh before logout
           prevRequest.sent = true;
           refresh();
-        } else if (error?.response?.status === 401) {
+        } else if (error?.response?.status === 401 || error?.response?.status === 403) {
           //Logout if can't refresh
           logout();
         } else if (!(typeof error.response.data === "string")) {
