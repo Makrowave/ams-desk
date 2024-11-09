@@ -40,7 +40,7 @@ export default function Login() {
 
   return (
     <div className='justify-center flex content-center h-full items-center'>
-      <div className='flex flex-col m-auto item-center bg-primary py-6 px-6 border-2 border-border w-1/6'>
+      <div className='flex flex-col m-auto item-center bg-primary py-6 px-6 border-2 border-border w-80'>
         <span className='self-center text-3xl'>Logowanie</span>
         <ErrorDisplay message={loginError} isVisible={loginError !== ""} />
         <div className='my-6 flex flex-col'>
@@ -58,7 +58,7 @@ export default function Login() {
           <span>Hasło</span>
           <input
             type='password'
-            className='block  text-center bg-primary border-2 border-tertiary rounded-l'
+            className='block text-center bg-primary border-2 border-tertiary rounded-l'
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);

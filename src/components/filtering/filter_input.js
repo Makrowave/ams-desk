@@ -40,7 +40,7 @@ export default function FilterInput({ setValue, value, title }) {
         <p>{title}</p>
       </div>
       <input
-        className=' text-center bg-primary border-2 border-tertiary rounded'
+        className='text-center bg-primary border-2 border-tertiary rounded'
         placeholder='Dowolny'
         value={realValue}
         onChange={(e) => {

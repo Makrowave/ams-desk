@@ -2,6 +2,7 @@
 import axios from "@/api/axios";
 import { useRouter } from "next/navigation";
 import { createContext, useState } from "react";
+import { decodeToken } from "react-jwt";
 
 const AuthContext = createContext();
 
@@ -9,6 +10,8 @@ export function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState("");
   const [loginError, setLoginError] = useState("");
   const [prevRoute, setPrevRoute] = useState("");
+  const [username, setUsername] = useState("");
+  const [decodedToken, setDecodedToken] = useState("");
   const _loginUrl = "/Auth/Login";
   const _refreshUrl = "/Auth/Refresh";
   const _logoutUrl = "/Auth/Logout";
@@ -69,6 +72,9 @@ export function AuthProvider({ children }) {
       const data = response.data;
       if (!!data) {
         setAccessToken(data);
+        let token = decodeToken(data);
+        setDecodedToken(token);
+        setUsername(token.name);
       } else {
         throw new Error();
       }
@@ -98,12 +104,14 @@ export function AuthProvider({ children }) {
         throw new Error();
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
     }
   }
 
   return (
-    <AuthContext.Provider value={{ accessToken, login, refresh, logout, loginError, setPrevRoute, prevRoute }}>
+    <AuthContext.Provider
+      value={{ accessToken, login, refresh, logout, loginError, setPrevRoute, prevRoute, username }}
+    >
       {children}
     </AuthContext.Provider>
   );

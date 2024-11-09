@@ -16,35 +16,59 @@ export default function useAxiosPrivate() {
       },
       (error) => Promise.reject(error)
     );
+    /*  
+      Some notes to myself or whoever will see this:
+        1. You can use multiple intercepts.
+        2. Since you can use multiple intercepts don't make a mistake of
+          mixing returning error message and refetching - I accidentally
+          made it so even though the app successfully refetches access token
+          it still returns rejected promise which in turn generates error
+          which in turn triggers intercept again and logs user out.
+        3. You should use shorter token expiry time for debugging.
+        4. 403 will most likely generate unexpected logouts when I will
+          introduce admin panel.
+    */
 
-    const responseIntercept = axiosPrivate.interceptors.response.use(
+    // This intercept tries to refetch access token and if unsuccessful logs user out
+    const unauthorizedIntercept = axiosPrivate.interceptors.response.use(
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
+        if ((error?.response?.status === 401 || error?.response?.status === 403) && !prevRequest?.sent) {
+          //Refresh before logout
+          prevRequest.sent = true;
+          await refresh();
+        } else if (error?.response?.status === 401 || error?.response?.status === 403) {
+          //Logout if can't refresh
+          await logout();
+        }
+      }
+    );
+    // This intercept changes error message based on backend's message when it's not 403 or 401
+    // so the unauthorizedIntercept intercept can work
+    const errorMessageIntercept = axiosPrivate.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        if (error?.response?.status === 401 || error?.response?.status === 403) {
+          return; // I am yet to learn the consequences.
+        }
         if (error.response === undefined) {
           //Check for CORS errors or network errors
           error.message = "Nie udało połączyć się z serwerem";
-        } else if ((error?.response?.status === 401 || error?.response?.status === 403) && !prevRequest?.sent) {
-          //Refresh before logout
-          prevRequest.sent = true;
-          refresh();
-        } else if (error?.response?.status === 401 || error?.response?.status === 403) {
-          //Logout if can't refresh
-          logout();
         } else if (!(typeof error.response.data === "string")) {
           //If data is not in string format then backend messed up (or rather me coding it)
           error.message = "Nastąpił nieoczekiwany błąd";
         } else if (typeof error.response.data === "string") {
           //Not default but under if just to be safe (hopefully no edgecases)
-          error.message = error.message.data;
+          error.message = error.response.data;
         }
         return Promise.reject(error);
       }
     );
-
     return () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
-      axiosPrivate.interceptors.response.eject(responseIntercept);
+      axiosPrivate.interceptors.response.eject(unauthorizedIntercept);
+      axiosPrivate.interceptors.response.eject(errorMessageIntercept);
     };
   }, [accessToken]);
 

@@ -4,7 +4,6 @@ import useAxiosPrivate from "@/hooks/use_axios_private";
 import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
 import ErrorDisplay from "@/components/error/error_display";
 import useModal from "@/hooks/use_modal";
-import { handleError } from "@/util/util";
 
 export default function AddBikeModal({ modelId, placeId }) {
   //Change it based on selected location

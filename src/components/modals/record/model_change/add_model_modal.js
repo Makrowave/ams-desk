@@ -228,7 +228,6 @@ export default function AddModelModal() {
             value={frameSize}
             onChange={(e) => {
               setFrameSize(e.target.value);
-              console.log(Number(e.target.value));
             }}
           />
         </div>
