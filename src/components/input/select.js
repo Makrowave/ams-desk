@@ -54,10 +54,9 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
    *  {key, value} for isColored=false, {key, value, color} for isColored=true
    */
   function findOption() {
-    if(fOptions.find((obj) => obj.key === pKey) === undefined) 
-      return {key: defaultKey, value: defaultValue, color: "#FF00FF"} 
-    else
-      return fOptions.find((obj) => obj.key === pKey);
+    if (fOptions.find((obj) => obj.key === pKey) === undefined)
+      return { key: defaultKey, value: defaultValue, color: "#FF00FF" };
+    else return fOptions.find((obj) => obj.key === pKey);
   }
 
   function formatOptions() {
@@ -100,7 +99,7 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
       >
         {isColored && <div className='w-9 border-tertiary border-r' style={{ background: color }}></div>}
         <span className='mx-auto'>{value}</span>
-        <img src='chevron.png' className='h-1 self-center mr-2' />
+        <img src='/chevron.png' className='h-1 self-center mr-2' />
       </div>
       {isOpen && (
         <div className='flex flex-1 flex-col border-border border w-full absolute z-10 max-h-44 overflow-auto'>

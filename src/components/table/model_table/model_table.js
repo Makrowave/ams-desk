@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ChangeTable from "@/components/filtering/change_table";
-import TableHeader from "@/components/table/table_header";
-import TableBody from "@/components/table/table_body";
+import TableHeader from "./table_header";
+import TableBody from "./table_body";
 
 /**
  * Table containing expandable rows with sortable bikes' data.
@@ -31,7 +31,7 @@ export default function ModelTable({ filterSrc }) {
       <div className='flex flex-col w-full h-full overflow-hidden'>
         <ChangeTable changePlaceId={(index) => setPlace(index)} />
         <div className='overflow-y-auto flex-1 h-0'>
-          <table className='table-fixed min-w-full text-center border-separate border-spacing-0 shadow-lg'>
+          <table className='table min-w-full'>
             <TableHeader singlePlace={place !== 0} setCriterion={setCriterion} />
             <TableBody singlePlace={place !== 0} placeId={place} src={src + filterSrc} sortCriterion={criterion} />
           </table>

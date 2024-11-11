@@ -1,7 +1,8 @@
 "use client";
 import { BikeSubrecord } from "./bike_subrecord";
 import { useState } from "react";
-import ExternalLink from "../../navigation/external_link";
+import ExternalLink from "../../../navigation/external_link";
+import "../../table.css";
 /**
  * Model preview - when clicked it opens or closes detailed info and bike info <BikeSubrecord>.
  * @param {Object} props - Props
@@ -30,7 +31,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
   return (
     <>
       <tr
-        className={clicked ? "h-10 odd:bg-secondary" : "h-10 odd:bg-secondary"}
+        className='table-row h-10'
         onClick={() => {
           setClicked(!clicked);
         }}
@@ -63,7 +64,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
 function ColorPreview({ primaryColor, secondaryColor }) {
   return primaryColor === null || secondaryColor === null ? (
     <img
-      src='missing.png'
+      src='/missing.png'
       className='self-center mr-3'
       style={{ height: 24, width: 24, minHeight: 24, minWidth: 24 }}
     />

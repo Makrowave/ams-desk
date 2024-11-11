@@ -27,13 +27,13 @@ export default function useAxiosPrivate() {
         3. You should use shorter token expiry time for debugging.
         4. 403 will most likely generate unexpected logouts when I will
           introduce admin panel.
+        5. Maybe learn how intercepts work
     */
-
-    // This intercept tries to refetch access token and if unsuccessful logs user out
-    const unauthorizedIntercept = axiosPrivate.interceptors.response.use(
+    const errorMessageIntercept = axiosPrivate.interceptors.response.use(
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
+        let authorized = false;
         if ((error?.response?.status === 401 || error?.response?.status === 403) && !prevRequest?.sent) {
           //Refresh before logout
           prevRequest.sent = true;
@@ -41,33 +41,26 @@ export default function useAxiosPrivate() {
         } else if (error?.response?.status === 401 || error?.response?.status === 403) {
           //Logout if can't refresh
           await logout();
-        }
-      }
-    );
-    // This intercept changes error message based on backend's message when it's not 403 or 401
-    // so the unauthorizedIntercept intercept can work
-    const errorMessageIntercept = axiosPrivate.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        if (error?.response?.status === 401 || error?.response?.status === 403) {
-          return; // I am yet to learn the consequences.
-        }
-        if (error.response === undefined) {
+        } else if (error.response === undefined) {
           //Check for CORS errors or network errors
           error.message = "Nie udało połączyć się z serwerem";
+          authorized = true;
         } else if (!(typeof error.response.data === "string")) {
           //If data is not in string format then backend messed up (or rather me coding it)
           error.message = "Nastąpił nieoczekiwany błąd";
+          authorized = true;
         } else if (typeof error.response.data === "string") {
           //Not default but under if just to be safe (hopefully no edgecases)
           error.message = error.response.data;
+          authorized = true;
         }
-        return Promise.reject(error);
+        if (authorized) {
+          return Promise.reject(error);
+        }
       }
     );
     return () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
-      axiosPrivate.interceptors.response.eject(unauthorizedIntercept);
       axiosPrivate.interceptors.response.eject(errorMessageIntercept);
     };
   }, [accessToken]);

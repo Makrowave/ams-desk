@@ -39,3 +39,6 @@ body {
 .button-primary {
   @apply bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary;
 }
+.main-div {
+  @apply h-screen flex flex-col overflow-hidden max-w-1920 m-auto;
+}

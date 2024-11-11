@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.table {
+  @apply table-fixed text-center border-separate border-spacing-0 shadow-lg;
+}
+.table-row {
+  @apply even:bg-secondary;
+}

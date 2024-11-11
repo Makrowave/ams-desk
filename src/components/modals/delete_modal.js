@@ -1,17 +1,19 @@
+import useAxiosAdmin from "@/hooks/use_axios_admin";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import useModal from "@/hooks/use_modal";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function DeleteModal({ refetch, bikeId }) {
-  const axiosPrivate = useAxiosPrivate();
+export default function DeleteModal({ refetchQueryKey, id, url, admin = false }) {
+  const axios = admin ? useAxiosAdmin() : useAxiosPrivate();
   const { setIsOpen } = useModal();
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.delete("/Bikes/" + bikeId);
+      return await axios.delete(url + id);
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: ["bikes"],
+        queryKey: [refetchQueryKey],
         exact: false,
       });
       setIsOpen(false);
@@ -22,14 +24,13 @@ export default function DeleteModal({ refetch, bikeId }) {
   });
 
   return (
-    <div className='flex flex-col justify-between flex-grow w-72 mx-auto'>
+    <div className='modal-basic'>
       <div className='w-full *:py-2'>
         <h2>
           <b>Czy na pewno?</b>
         </h2>
-        <p>Jeśli chcesz zdjąć rower ze stanu po sprzedaży użyj opcji sprzedaj.</p>
-        <p>Ta opcja powinna zostać użyta w przypadku przypadkowego dodania roweru.</p>
-        <p>Jeśli rower został dodany ze złym statusem lub w złym miejscu - użyj innej opcji, żeby to poprawić</p>
+        <p>Usunięcie danych może nieść za sobą niepożądane konsekwencje.</p>
+        <p>Upewnij się, czy nie można rozwiązać problemu innymi metodami jak np. edycją.</p>
       </div>
       <button
         className='button-secondary self-center mt-auto mb-4'

@@ -28,7 +28,7 @@ export function SubRowData({ model, placeId }) {
   return (
     <div className='mx-8 flex border-y-2 space-x-4 border-border py-2 items-center'>
       {color.data === undefined ? (
-        <img className='h-6 w-6 min-h-6 min-w-6 self-center' src='missing.png' />
+        <img className='h-6 w-6 min-h-6 min-w-6 self-center' src='/missing.png' />
       ) : (
         <div
           className='h-6 w-6 min-h-6 min-w-6 rounded-md'

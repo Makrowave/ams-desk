@@ -1,5 +1,5 @@
 import useModal from "@/hooks/use_modal";
-
+import "./modal.css";
 /**
  * Modal component which creates a popup with dimmer background.
  * To use modal you have to use it within ModalContextProvider.

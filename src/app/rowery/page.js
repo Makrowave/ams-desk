@@ -7,7 +7,7 @@ import FilterSelect from "@/components/filtering/filter_select";
 import SingleCheckbox from "@/components/filtering/single_checkbox";
 import Modal from "@/components/modals/modal";
 import AddModelModal from "@/components/modals/record/model_change/add_model_modal";
-import ModelTable from "@/components/table/model_table";
+import ModelTable from "@/components/table/model_table/model_table";
 import PrivateRoute from "@/components/routing/private_route";
 import RangeInput from "@/components/filtering/range_input";
 import useModal from "@/hooks/use_modal";
@@ -79,10 +79,10 @@ export default function Rowery() {
   return (
     //overflow auto main
     <PrivateRoute>
-      <div className='max-h-screen overflow-hidden'>
-        <Navigation active={1} />
-        <div className='h-screen flex flex-col overflow-hidden max-w-1920 m-auto'>
-          <main className='flex-1 grid grid-cols-6 bg-primary py-5 rounded-b-xl overflow-hidden flex-col'>
+      <Navigation active={1} />
+      <main className='max-h-screen overflow-hidden'>
+        <div className='main-div'>
+          <div className='flex-1 grid grid-cols-6 bg-primary py-5 rounded-b-xl overflow-hidden flex-col'>
             {/* Filter */}
             <div className='col-span-1 h-full overflow-y-auto m-4 bg-primary flex flex-col '>
               {/* Title */}
@@ -247,9 +247,9 @@ export default function Rowery() {
                 </button>
               </div>
             </div>
-          </main>
+          </div>
         </div>
-      </div>
+      </main>
       <Modal />
     </PrivateRoute>
   );

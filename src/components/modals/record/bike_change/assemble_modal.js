@@ -40,7 +40,7 @@ export default function AssembleModal({ refetch, bikeId }) {
     return result;
   }
   return (
-    <div className='flex flex-col justify-between flex-grow w-72 mx-auto'>
+    <div className='modal-basic'>
       <ErrorDisplay message={error} isVisible={error !== ""} />
       <ValidationFetchSelect
         value={employeeId}

@@ -1,6 +1,7 @@
 import ErrorDisplay from "@/components/error/error_display";
 import useAuth from "@/hooks/use_auth";
 import useAxiosPrivate from "@/hooks/use_axios_private";
+import useModal from "@/hooks/use_modal";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
@@ -12,6 +13,8 @@ export default function PasswordModal() {
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const { username, logout } = useAuth();
+  const { setIsOpen, setModalChildren, setTitle } = useModal();
+  const _url = "/Auth/ChangePassword";
   const mutation = useMutation({
     mutationFn: () => {
       axiosPrivate.post(
@@ -25,13 +28,15 @@ export default function PasswordModal() {
       );
     },
     onSuccess: () => {
+      setIsOpen(false);
+      setModalChildren(<></>);
+      setTitle("");
       logout();
     },
     onError: (error) => {
       setError(error.message);
     },
   });
-  const _url = "/Auth/ChangePassword";
   useEffect(() => {
     if (newPassword == confirmPassword) {
       setMatch(true);
@@ -41,6 +46,7 @@ export default function PasswordModal() {
   }, [newPassword, confirmPassword]);
   function handleClick() {
     if (match) {
+      mutation.mutate();
     } else {
       setError("Hasła nie są identyczne");
     }

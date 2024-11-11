@@ -1,4 +1,5 @@
 import ErrorDisplay from "@/components/error/error_display";
+import ModalTextInput from "@/components/input/modal_text_input";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import useModal from "@/hooks/use_modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -29,20 +30,9 @@ export default function AddEanModal({ model }) {
   });
 
   return (
-    <div className='flex flex-col justify-between flex-grow w-72 mx-auto'>
+    <div className='modal-basic'>
       <ErrorDisplay message={error} isVisible={!!error}></ErrorDisplay>
-      <div>
-        <div className='flex flex-col'>
-          <span>EAN</span>
-        </div>
-        <input
-          className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-full'
-          value={ean}
-          onChange={(e) => {
-            setEan(e.target.value);
-          }}
-        />
-      </div>
+      <ModalTextInput title='EAN' value={ean} setValue={setEan} />
       <button
         className='button-secondary self-center mt-auto mb-4'
         onClick={() => {

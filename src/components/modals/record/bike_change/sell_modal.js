@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import ErrorDisplay from "@/components/error/error_display";
 import useModal from "@/hooks/use_modal";
+import ModalTextInput from "@/components/input/modal_text_input";
 
 export default function SellModal({ refetch, bikeId, basePrice }) {
   //Change it based on selected location
@@ -37,19 +38,9 @@ export default function SellModal({ refetch, bikeId, basePrice }) {
   }
 
   return (
-    <div className='flex flex-col justify-between flex-grow w-72 mx-auto'>
+    <div className='modal-basic'>
       <ErrorDisplay message={error} isVisible={error !== ""} />
-      <div className='flex flex-col'>
-        <p>Cena</p>
-        <input
-          type='number'
-          className=' text-center bg-primary border-2 border-tertiary rounded'
-          value={price}
-          onChange={(e) => {
-            setPrice(e.target.value);
-          }}
-        ></input>
-      </div>
+      <ModalTextInput title='Cena' value={price} setValue={setPrice} />
       <button
         className='button-secondary self-center mt-auto mb-4'
         onClick={() => {

@@ -110,7 +110,10 @@ function SortButton({ onClick, activeId, id, criterionName, subValue, defeaultIs
       <div className='flex place-content-center'>
         {title}
         {activeId === id && (
-          <img className={isAscending ? "h-2 self-center ml-2" : "h-2 self-center ml-2 rotate-180"} src='chevron.png' />
+          <img
+            className={isAscending ? "h-2 self-center ml-2" : "h-2 self-center ml-2 rotate-180"}
+            src='/chevron.png'
+          />
         )}
       </div>
     </button>

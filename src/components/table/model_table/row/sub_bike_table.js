@@ -6,7 +6,7 @@ import MoveModal from "@/components/modals/record/bike_change/move_modal";
 import AssembleModal from "@/components/modals/record/bike_change/assemble_modal";
 import SellModal from "@/components/modals/record/bike_change/sell_modal";
 import StatusModal from "@/components/modals/record/bike_change/status_modal";
-import DeleteModal from "@/components/modals/record/bike_change/delete_modal";
+import DeleteModal from "@/components/modals/delete_modal";
 /**
  * Renders table of bikes with buttons that open modals and allow to edit bikes.
  * @param {Object} props - Props.
@@ -115,7 +115,9 @@ export function SubBikeTable({ model, placeId }) {
               <button
                 className='button-secondary'
                 onClick={() => {
-                  setModalChildren(<DeleteModal refetch={refetch} bikeId={bike.id} />);
+                  setModalChildren(
+                    <DeleteModal id={bike.id} url='/Bikes/' refetchQueryKey='bikeSubRecord' admin={false} />
+                  );
                   setTitle("Usuń rower");
                   setIsOpen(true);
                 }}

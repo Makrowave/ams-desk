@@ -36,6 +36,13 @@ export default function AddBikeModal({ modelId, placeId }) {
       });
       setIsOpen(false);
     },
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["bikeSubRecord"],
+        exact: false,
+      });
+      setIsOpen(false);
+    },
     onError: (error) => {
       setError(error.message);
     },

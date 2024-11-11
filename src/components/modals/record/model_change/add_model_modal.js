@@ -6,6 +6,7 @@ import useAxiosPrivate from "@/hooks/use_axios_private";
 import ErrorDisplay from "../../../error/error_display";
 import useModal from "@/hooks/use_modal";
 import { Select } from "../../../input/select";
+import ColorInput from "@/components/input/color_input";
 
 //Add refetch
 
@@ -325,32 +326,8 @@ export default function AddModelModal() {
           isColored={true}
         />
       </div>
-      <div className='flex justify-between'>
-        <p className='self-center'>Kolor główny</p>
-        <div>
-          <input
-            className='h-10'
-            type='color'
-            value={primaryColor}
-            onChange={(e) => {
-              setPrimaryColor(e.target.value);
-            }}
-          />
-        </div>
-      </div>
-      <div className='flex justify-between'>
-        <p className='self-center'>Kolor dodatkowy</p>
-        <div>
-          <input
-            className='h-10'
-            type='color'
-            value={secondaryColor}
-            onChange={(e) => {
-              setSecondaryColor(e.target.value);
-            }}
-          />
-        </div>
-      </div>
+      <ColorInput title='Kolor główny' value={primaryColor} setValue={setPrimaryColor} />
+      <ColorInput title='Kolor dodatkowy' value={secondaryColor} setValue={setSecondaryColor} />
       <SingleCheckbox
         checked={isWoman}
         onChange={(e) => {

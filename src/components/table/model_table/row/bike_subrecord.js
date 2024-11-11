@@ -12,7 +12,7 @@ import { SubBikeTable } from "./sub_bike_table";
 export function BikeSubrecord({ placeCount, model, placeId }) {
   return (
     <>
-      <tr className='even:bg-secondary odd:bg-primary border-b-2 border-x-2 border-border drop-shadow-md'>
+      <tr className='odd:bg-secondary even:bg-primary border-b-2 border-x-2 border-border drop-shadow-md'>
         <td colSpan={5 + placeCount}>
           <SubRowData model={model} placeId={placeId} />
           <SubBikeTable model={model} placeId={placeId} />
