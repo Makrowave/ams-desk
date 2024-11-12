@@ -32,10 +32,14 @@ export function AuthProvider({ children }) {
   async function login(username, password) {
     setLoginError("");
     try {
-      const response = await axios.post(_loginUrl, JSON.stringify({ username, password }), {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        _loginUrl,
+        JSON.stringify({ username, password }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
       if (response.status === 200) {
         await refresh();
       }
@@ -43,8 +47,6 @@ export function AuthProvider({ children }) {
       if (!err?.response) {
         setLoginError("Brak odpowiedzi serwera");
       } else if (err.response.status === 400) {
-        setLoginError("Niewłaściwy format danych");
-      } else if (err.response.status === 401) {
         setLoginError("Niepoprawny login lub hasło");
       } else {
         setLoginError("Kod błędu: " + err.response.status);
@@ -56,10 +58,14 @@ export function AuthProvider({ children }) {
   async function loginAdmin(username, password) {
     setLoginError("");
     try {
-      const response = await axios.post(_adminLoginUrl, JSON.stringify({ username, password }), {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        _adminLoginUrl,
+        JSON.stringify({ username, password }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
       if (response.status === 200) {
         await refreshAdmin();
       }
@@ -67,9 +73,12 @@ export function AuthProvider({ children }) {
       if (!err?.response) {
         setLoginError("Brak odpowiedzi serwera");
       } else if (err.response.status === 400) {
-        setLoginError("Niewłaściwy format danych");
-      } else if (err.response.status === 401) {
         setLoginError("Niepoprawny login lub hasło");
+      } else if (err.response.status === 401) {
+        router.push("/login");
+        setLoginError(
+          "Sesja wygasła, proszę zalogować się ponownie jako uzytkownik"
+        );
       } else {
         setLoginError("Kod błędu: " + err.response.status);
       }
@@ -152,7 +161,7 @@ export function AuthProvider({ children }) {
       );
       if (response.status === 200) {
         setAccessToken("");
-        router.push("/login")
+        router.push("/login");
       } else {
         throw new Error();
       }
@@ -172,11 +181,11 @@ export function AuthProvider({ children }) {
         }
       );
       if (response.status === 200) {
-        setIsAdmin(false);  
+        setIsAdmin(false);
         setAdminAccessToken("");
         setUsername(decodedToken.name);
-        if(redirect) {
-          router.push("/admin/login")
+        if (redirect) {
+          router.push("/admin/login");
         }
       } else {
         throw new Error();

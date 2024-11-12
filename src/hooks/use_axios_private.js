@@ -5,7 +5,7 @@ import useAuth from "./use_auth";
 //Code for including Authorization header in request
 //And resending requests when Access Token expires
 export default function useAxiosPrivate() {
-  const { accessToken, refresh, logout } = useAuth();
+  const { accessToken, refresh, logout, logoutAdmin } = useAuth();
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
@@ -34,11 +34,15 @@ export default function useAxiosPrivate() {
       async (error) => {
         const prevRequest = error?.config;
         let authorized = false;
-        if ((error?.response?.status === 401) && !prevRequest?.sent) {
+        if (error?.response?.status === 401 && !prevRequest?.sent) {
           prevRequest.sent = true;
           await refresh();
-        } else if (error?.response?.status === 401 || error?.response?.status === 403) {
+        } else if (
+          error?.response?.status === 401 ||
+          error?.response?.status === 403
+        ) {
           //Logout if can't refresh
+          await logoutAdmin();
           await logout();
         } else if (error.response === undefined) {
           //Check for CORS errors or network errors

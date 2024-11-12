@@ -4,10 +4,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function AdminRoute({ children }) {
-  const { adminAccessToken, setPrevRoute } = useAuth();
+  const {accessToken, adminAccessToken, setPrevRoute } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   useEffect(() => {
+    if(!accessToken) {
+      setPrevRoute(pathname);
+      router.push("/login");
+    }
     if (!adminAccessToken) {
       setPrevRoute(pathname);
       router.push("/admin/login");
