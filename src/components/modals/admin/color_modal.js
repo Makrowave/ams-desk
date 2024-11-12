@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export default function ColorModal({ colorData, action }) {
   const [name, setName] = useState("");
-  const [color, setColor] = useState(!colorData ?? colorData.hexCode);
+  const [color, setColor] = useState(colorData === undefined ? "#000000" : colorData.hexCode);
   const [error, setError] = useState("");
   const NAME_REGEX = /^[A-ZŻÓŁĆĘŚĄŹŃ][a-zżółćęśąźń]{1,15}$/;
   const COLOR_REGEX = /^#[A-Fa-f0-9]{6}$/;

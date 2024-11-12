@@ -152,6 +152,7 @@ export function AuthProvider({ children }) {
       );
       if (response.status === 200) {
         setAccessToken("");
+        router.push("/login")
       } else {
         throw new Error();
       }
@@ -159,7 +160,7 @@ export function AuthProvider({ children }) {
       //console.log(err);
     }
   }
-  async function logoutAdmin() {
+  async function logoutAdmin(redirect = true) {
     setPrevRoute("");
     try {
       const response = await axios.post(
@@ -171,8 +172,12 @@ export function AuthProvider({ children }) {
         }
       );
       if (response.status === 200) {
+        setIsAdmin(false);  
         setAdminAccessToken("");
         setUsername(decodedToken.name);
+        if(redirect) {
+          router.push("/admin/login")
+        }
       } else {
         throw new Error();
       }

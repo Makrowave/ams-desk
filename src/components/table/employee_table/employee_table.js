@@ -16,7 +16,7 @@ export default function EmployeeTable() {
   // });
   const data = [{ employeeId: 1, employeeName: "Maks S.", isAdmin: true }];
   return (
-    <table className='table min-w-fit w-8/12'>
+    <table className='table w-full'>
       <thead className='bg-secondary mb-px sticky top-0 z-5 shadow-lg h-10'>
         <tr>
           <th className='w-20'>Id</th>

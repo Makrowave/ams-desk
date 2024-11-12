@@ -34,8 +34,7 @@ export default function useAxiosPrivate() {
       async (error) => {
         const prevRequest = error?.config;
         let authorized = false;
-        if ((error?.response?.status === 401 || error?.response?.status === 403) && !prevRequest?.sent) {
-          //Refresh before logout
+        if ((error?.response?.status === 401) && !prevRequest?.sent) {
           prevRequest.sent = true;
           await refresh();
         } else if (error?.response?.status === 401 || error?.response?.status === 403) {

@@ -2,6 +2,8 @@ import useAuth from "@/hooks/use_auth";
 import useModal from "@/hooks/use_modal";
 import { useState } from "react";
 import PasswordModal from "../modals/auth/password_modal";
+import AdminPasswordModal from "../modals/auth/admin_password_modal";
+import UserPasswordModal from "../modals/auth/user_password_modal";
 //Maybe create admin UserDropdown
 export default function UserDropdown() {
   const { username, logout, logoutAdmin, isAdmin } = useAuth();
@@ -30,7 +32,8 @@ export default function UserDropdown() {
               onClick={() => {
                 setIsClicked(false);
                 setTitle("Zmień hasło");
-                setModalChildren(<PasswordModal admin={isAdmin} />);
+                if(isAdmin) setModalChildren(<AdminPasswordModal/>);
+                else setModalChildren(<UserPasswordModal/>);
                 setIsOpen(true);
               }}
             >

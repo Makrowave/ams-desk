@@ -1,42 +1,10 @@
 import ErrorDisplay from "@/components/error/error_display";
-import useAuth from "@/hooks/use_auth";
-import useAxiosPrivate from "@/hooks/use_axios_private";
-import useModal from "@/hooks/use_modal";
-import { useMutation } from "@tanstack/react-query";
+
 import { useEffect, useState } from "react";
 
-export default function PasswordModal() {
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+export default function PasswordModal({password, setPassword, newPassword, setNewPassword, error, setError, mutation}) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [match, setMatch] = useState(true);
-  const [error, setError] = useState("");
-  const axiosPrivate = useAxiosPrivate();
-  const { username, logout } = useAuth();
-  const { setIsOpen, setModalChildren, setTitle } = useModal();
-  const _url = "/Auth/ChangePassword";
-  const mutation = useMutation({
-    mutationFn: () => {
-      axiosPrivate.post(
-        _url,
-        JSON.stringify({
-          username: username,
-          password: password,
-          newPassword: newPassword,
-        }),
-        { headers: { "Content-Type": "application/json" } }
-      );
-    },
-    onSuccess: () => {
-      setIsOpen(false);
-      setModalChildren(<></>);
-      setTitle("");
-      logout();
-    },
-    onError: (error) => {
-      setError(error.message);
-    },
-  });
   useEffect(() => {
     if (newPassword == confirmPassword) {
       setMatch(true);
@@ -45,10 +13,12 @@ export default function PasswordModal() {
     }
   }, [newPassword, confirmPassword]);
   function handleClick() {
-    if (match) {
-      mutation.mutate();
-    } else {
+    if (!match) {
       setError("Hasła nie są identyczne");
+    } else if (password == "") {
+      setError("Hasło jest puste");
+    } else {
+      mutation.mutate();
     }
   }
 

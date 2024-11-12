@@ -15,7 +15,7 @@ export default function CategoryTable() {
     },
   });
   return (
-    <table className='table min-w-[600px] w-4/12'>
+    <table className='table w-full'>
       <thead className='bg-secondary mb-px sticky top-0 z-5 shadow-lg h-10'>
         <tr>
           <th className='w-20'>Id</th>

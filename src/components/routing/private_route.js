@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function PrivateRoute({ children, login }) {
-  const { accessToken, setPrevRoute, adminAccessToken, logoutAdmin, refresh } = useAuth();
+  const { accessToken, setPrevRoute, logoutAdmin } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   useEffect(() => {
@@ -12,8 +12,9 @@ export default function PrivateRoute({ children, login }) {
       setPrevRoute(pathname);
       router.push("/login");
     }
-    if (adminAccessToken && !login) {
-      logoutAdmin();
+    // Checked for admin token before, but it won't work on refresh or manually entering link.
+    if (!login) {
+      logoutAdmin(false);
     }
   });
 
