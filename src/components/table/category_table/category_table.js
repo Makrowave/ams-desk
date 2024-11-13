@@ -24,7 +24,11 @@ export default function CategoryTable() {
           <th></th>
         </tr>
       </thead>
-      <tbody>{!isPending && !isError && data.map((category) => <CategoryRow category={category} />)}</tbody>
+      <tbody>
+        {!isPending &&
+          !isError &&
+          data.map((category) => <CategoryRow category={category} key={category.categoryID} />)}
+      </tbody>
     </table>
   );
 }

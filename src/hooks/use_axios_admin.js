@@ -1,38 +1,36 @@
 import { axiosAdmin } from "@/api/axios";
 import { useEffect } from "react";
 import useAuth from "./use_auth";
+import useRefreshAdmin from "./use_refresh_admin";
 
 //Axios private duplicate - try to read into docs and refactor it later
 export default function useAxiosAdmin() {
   //refactor access token
-  const { adminAccessToken, refreshAdmin, logoutAdmin } = useAuth();
+  const { admin, logoutAdmin } = useAuth();
+  const refresh = useRefreshAdmin();
   useEffect(() => {
     const requestIntercept = axiosAdmin.interceptors.request.use(
       (config) => {
-        if (adminAccessToken) {
-          config.headers.Authorization = `Bearer ${adminAccessToken}`;
+        if (!config.headers["Authorization"]) {
+          config.headers["Authorization"] = `Bearer ${admin.token}`;
         }
         return config;
       },
       (error) => Promise.reject(error)
     );
-    const errorMessageIntercept = axiosAdmin.interceptors.response.use(
+    const responseIntercept = axiosAdmin.interceptors.response.use(
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
         let authorized = false;
         if (error?.response?.status === 401 && !prevRequest?.sent) {
-          //Refresh before logout
           prevRequest.sent = true;
-          await refreshAdmin();
-          console.log(error);
-        } else if (
-          error?.response?.status === 401 ||
-          error?.response?.status === 403
-        ) {
+          const newToken = await refresh();
+          prevRequest.headers["Authorization"] = `Bearer ${newToken}`;
+          return axiosAdmin(prevRequest);
+        } else if (error?.response?.status === 401 || error?.response?.status === 403) {
           //Logout if can't refresh
           await logoutAdmin();
-          console.log(error);
         } else if (error.response === undefined) {
           //Check for CORS errors or network errors
           error.message = "Nie udało połączyć się z serwerem";
@@ -52,9 +50,9 @@ export default function useAxiosAdmin() {
       }
     );
     return () => {
+      axiosAdmin.interceptors.response.eject(responseIntercept);
       axiosAdmin.interceptors.request.eject(requestIntercept);
-      axiosAdmin.interceptors.response.eject(errorMessageIntercept);
     };
-  }, [adminAccessToken]);
+  }, [admin, refresh]);
   return axiosAdmin;
 }

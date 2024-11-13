@@ -30,7 +30,7 @@ export default function EmployeeTable() {
       </thead>
       <tbody>
         {data.map((employee) => (
-          <EmployeeRow employee={employee} />
+          <EmployeeRow employee={employee} key={employee.employeeId} />
         ))}
       </tbody>
     </table>

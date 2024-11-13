@@ -21,7 +21,8 @@ export default function ColorModal({ colorData, action }) {
         return await axiosAdmin.put(
           "/Colors/" + colorData.colorId,
           JSON.stringify({
-            categoryName: name,
+            colorName: name,
+            hexCode: color,
           }),
           {
             headers: { "Content-Type": "application/json" },

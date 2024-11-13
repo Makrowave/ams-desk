@@ -6,7 +6,7 @@ import AdminPasswordModal from "../modals/auth/admin_password_modal";
 import UserPasswordModal from "../modals/auth/user_password_modal";
 //Maybe create admin UserDropdown
 export default function UserDropdown() {
-  const { username, logout, logoutAdmin, isAdmin } = useAuth();
+  const { user, admin, logout, logoutAdmin, isAdmin } = useAuth();
   const [isClicked, setIsClicked] = useState(false);
   const { setIsOpen, setTitle, setModalChildren } = useModal();
   return (
@@ -20,7 +20,7 @@ export default function UserDropdown() {
         onClick={() => setIsClicked(!isClicked)}
       >
         <div className='flex items-center justify-center h-full'>
-          <span className='text-2xl h-full leading-loose'>{username}</span>
+          <span className='text-2xl h-full leading-loose'>{isAdmin ? admin.username : user.username}</span>
           <img src='/chevron.png' className='h-2 ml-2' />
         </div>
       </div>
@@ -32,8 +32,8 @@ export default function UserDropdown() {
               onClick={() => {
                 setIsClicked(false);
                 setTitle("Zmień hasło");
-                if(isAdmin) setModalChildren(<AdminPasswordModal/>);
-                else setModalChildren(<UserPasswordModal/>);
+                if (isAdmin) setModalChildren(<AdminPasswordModal />);
+                else setModalChildren(<UserPasswordModal />);
                 setIsOpen(true);
               }}
             >

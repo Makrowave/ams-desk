@@ -26,7 +26,9 @@ export default function StatusTable() {
           <th></th>
         </tr>
       </thead>
-      <tbody>{!isPending && !isError && data.map((status) => <StatusRow status={status} />)}</tbody>
+      <tbody>
+        {!isPending && !isError && data.map((status) => <StatusRow status={status} key={status.statusId} />)}
+      </tbody>
     </table>
   );
 }

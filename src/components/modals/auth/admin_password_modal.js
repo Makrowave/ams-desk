@@ -7,7 +7,7 @@ import { useState } from "react";
 
 export default function AdminPasswordModal() {
   const axiosAdmin = useAxiosAdmin();
-  const { username, decodedToken, logoutAdmin, logout } = useAuth();
+  const { user, admin, logoutAdmin, logout } = useAuth();
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -18,7 +18,7 @@ export default function AdminPasswordModal() {
       await axiosAdmin.post(
         _url,
         JSON.stringify({
-          username: username,
+          username: admin.username,
           password: password,
           newPassword: newPassword,
         }),
@@ -30,7 +30,7 @@ export default function AdminPasswordModal() {
       setModalChildren(<></>);
       setTitle("");
       logoutAdmin();
-      if (decodedToken.name === username) logout();
+      if (admin.username == user.username) logout();
     },
     onError: (error) => {
       setError(error.message);

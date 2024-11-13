@@ -26,7 +26,7 @@ export default function ColorTable() {
           <th></th>
         </tr>
       </thead>
-      <tbody>{!isPending && !isError && data.map((color) => <ColorRow color={color} />)}</tbody>
+      <tbody>{!isPending && !isError && data.map((color) => <ColorRow color={color} key={color.colorId} />)}</tbody>
     </table>
   );
 }
