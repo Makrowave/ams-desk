@@ -13,6 +13,7 @@ export default function CategoryTable() {
       const response = await axiosPrivate.get(_url);
       return response.data;
     },
+    refetchInterval: 5000,
   });
   return (
     <table className='table w-full'>

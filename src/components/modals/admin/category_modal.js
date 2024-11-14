@@ -1,15 +1,17 @@
 import ErrorDisplay from "@/components/error/error_display";
 import ModalTextInput from "@/components/input/modal_text_input";
 import useAxiosAdmin from "@/hooks/use_axios_admin";
+import useModal from "@/hooks/use_modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 export default function CategoryModal({ category, action }) {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(category === undefined ? "" : category.categoryName);
   const [error, setError] = useState("");
   const NAME_REGEX = /^[A-ZŻÓŁĆĘŚĄŹŃ][a-zżółćęśąźń]{1,15}$/;
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
+  const { setIsOpen } = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
       if (action === "put") {
@@ -36,7 +38,7 @@ export default function CategoryModal({ category, action }) {
     },
     onSuccess: (response) => {
       queryClient.refetchQueries({
-        queryKey: ["bikes"],
+        queryKey: ["categories"],
         exact: false,
       });
       setIsOpen(false);

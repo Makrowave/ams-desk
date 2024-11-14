@@ -2,22 +2,25 @@ import ErrorDisplay from "@/components/error/error_display";
 import ColorInput from "@/components/input/color_input";
 import ModalTextInput from "@/components/input/modal_text_input";
 import useAxiosAdmin from "@/hooks/use_axios_admin";
+import useModal from "@/hooks/use_modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 export default function StatusModal({ status, action }) {
-  const [name, setName] = useState("");
-  const [color, setColor] = useState(!status ?? status.hexCode);
+  const [name, setName] = useState(status === undefined ? "" : status.statusName);
+  const [color, setColor] = useState(status === undefined ? "#000000" : status.hexCode);
   const [error, setError] = useState("");
-  const NAME_REGEX = /^[A-ZŻÓŁĆĘŚĄŹŃ][a-zżółćęśąźń]{15}$/;
+  const NAME_REGEX = /^[A-ZŻÓŁĆĘŚĄŹŃ][a-zżółćęśąźń]{1,15}$/;
   const COLOR_REGEX = /^#[A-Fa-f0-9]{6}$/;
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
+  const { setIsOpen } = useModal();
+  const _url = "/Status/";
   const mutation = useMutation({
     mutationFn: async () => {
       if (action === "put") {
         return await axiosAdmin.put(
-          "/Statuses/" + status.statusId,
+          _url + status.statusId,
           JSON.stringify({
             statusName: name,
             hexCode: color,
@@ -27,8 +30,8 @@ export default function StatusModal({ status, action }) {
           }
         );
       } else if (action === "post") {
-        return await axiosAdmin.put(
-          "/Statuses",
+        return await axiosAdmin.post(
+          "/Status",
           JSON.stringify({
             statusName: name,
             hexCode: color,

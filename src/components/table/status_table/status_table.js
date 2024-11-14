@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 export default function StatusTable() {
   //const data = [{ id: 1, name: "Niezłożony", hexCode: "#fff0c2" }];
   const axiosPrivate = useAxiosPrivate();
-  const _queryKey = "status";
+  const _queryKey = "statuses";
   const _url = "/Status";
   const { data, isPending, isError, error } = useQuery({
     queryKey: [_queryKey],
@@ -14,6 +14,7 @@ export default function StatusTable() {
       const response = await axiosPrivate.get(_url);
       return response.data;
     },
+    refetchInterval: 5000,
   });
   return (
     <table className='table w-full'>

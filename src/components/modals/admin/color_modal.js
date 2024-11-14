@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 export default function ColorModal({ colorData, action }) {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(colorData === undefined ? "" : colorData.colorName);
   const [color, setColor] = useState(colorData === undefined ? "#000000" : colorData.hexCode);
   const [error, setError] = useState("");
   const NAME_REGEX = /^[A-ZŻÓŁĆĘŚĄŹŃ][a-zżółćęśąźń]{1,15}$/;
@@ -15,11 +15,12 @@ export default function ColorModal({ colorData, action }) {
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
   const { setIsOpen } = useModal();
+  const _url = "/Colors/";
   const mutation = useMutation({
     mutationFn: async () => {
       if (action === "put") {
         return await axiosAdmin.put(
-          "/Colors/" + colorData.colorId,
+          _url + colorData.colorId,
           JSON.stringify({
             colorName: name,
             hexCode: color,
@@ -30,7 +31,7 @@ export default function ColorModal({ colorData, action }) {
         );
       } else if (action === "post") {
         return await axiosAdmin.post(
-          "/Colors",
+          _url,
           JSON.stringify({
             colorName: name,
             hexCode: color,

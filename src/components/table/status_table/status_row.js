@@ -26,7 +26,7 @@ export default function StatusRow({ status }) {
           className='button-secondary'
           onClick={() => {
             setModalChildren(
-              <DeleteModal id={status.statusId} url={"Statuses"} refetchQueryKey={"statuses"} admin={true} />
+              <DeleteModal id={status.statusId} url={"Status"} refetchQueryKey={"statuses"} admin={true} />
             );
             setTitle("Usuń status");
             setIsOpen(true);

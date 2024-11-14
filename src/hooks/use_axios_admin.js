@@ -35,8 +35,9 @@ export default function useAxiosAdmin() {
           //Check for CORS errors or network errors
           error.message = "Nie udało połączyć się z serwerem";
           authorized = true;
-        } else if (!(typeof error.response.data === "string")) {
+        } else if (!(typeof error.response.data === "string") || error?.response?.status >= 500) {
           //If data is not in string format then backend messed up (or rather me coding it)
+          console.log(error);
           error.message = "Nastąpił nieoczekiwany błąd";
           authorized = true;
         } else if (typeof error.response.data === "string") {
