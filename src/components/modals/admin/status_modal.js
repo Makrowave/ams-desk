@@ -10,8 +10,8 @@ export default function StatusModal({ status, action }) {
   const [name, setName] = useState(status === undefined ? "" : status.statusName);
   const [color, setColor] = useState(status === undefined ? "#000000" : status.hexCode);
   const [error, setError] = useState("");
-  const NAME_REGEX = /^[A-ZŻÓŁĆĘŚĄŹŃ][a-zżółćęśąźń]{1,15}$/;
-  const COLOR_REGEX = /^#[A-Fa-f0-9]{6}$/;
+  const NAME_REGEX = REGEX.NAME;
+  const COLOR_REGEX = REGEX.COLOR;
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
   const { setIsOpen } = useModal();

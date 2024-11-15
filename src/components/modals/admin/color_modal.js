@@ -10,8 +10,8 @@ export default function ColorModal({ colorData, action }) {
   const [name, setName] = useState(colorData === undefined ? "" : colorData.colorName);
   const [color, setColor] = useState(colorData === undefined ? "#000000" : colorData.hexCode);
   const [error, setError] = useState("");
-  const NAME_REGEX = /^[A-ZŻÓŁĆĘŚĄŹŃ][a-zżółćęśąźń]{1,15}$/;
-  const COLOR_REGEX = /^#[A-Fa-f0-9]{6}$/;
+  const NAME_REGEX = REGEX.NAME;
+  const COLOR_REGEX = REGEX.COLOR;
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
   const { setIsOpen } = useModal();

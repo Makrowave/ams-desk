@@ -9,7 +9,7 @@ import { useState } from "react";
 export default function ManufacturerModal({ manufacturer, action }) {
   const [name, setName] = useState(manufacturer === undefined ? "" : manufacturer.manufacturerName);
   const [error, setError] = useState("");
-  const NAME_REGEX = /^[A-ZŻÓŁĆĘŚĄŹŃa-zżółćęśąźń -]{1,16}$/;
+  const NAME_REGEX = REGEX.NAME;
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
   const { setIsOpen } = useModal();

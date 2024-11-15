@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function CategoryModal({ category, action }) {
   const [name, setName] = useState(category === undefined ? "" : category.categoryName);
   const [error, setError] = useState("");
-  const NAME_REGEX = /^[A-ZŻÓŁĆĘŚĄŹŃ][a-zżółćęśąźń]{1,15}$/;
+  const NAME_REGEX = REGEX.NAME;
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
   const { setIsOpen } = useModal();

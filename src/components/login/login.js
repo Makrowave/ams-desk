@@ -11,7 +11,7 @@ export default function Login() {
   const { user, prevRoute } = useAuth();
   const router = useRouter();
   const refresh = useRefreshUser();
-  const ADMIN_ROUTE_REG = /admin/;
+  const ADMIN_ROUTE_REG = REGEX.ADMIN_ROUTE;
   const _loginUrl = "/Auth/Login";
   /** Refresh session - if session token cookie is valid then
    * accessToken should be retrieved from the server with refresh() function

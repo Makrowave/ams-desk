@@ -30,11 +30,11 @@ export default function AddModelModal() {
   const [validFrameSize, setValidFrameSize] = useState(false);
   const [validPrice, setValidPrice] = useState(false);
   // Regex
-  const NAME_REGEX = /^[a-zA-Z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ. \_\-]{4,50}$/;
-  const EAN_REGEX = /^[0-9]{13}$/;
-  const PRODUCT_REGEX = /^[a-zA-Z0-9\_\-]{4,30}$/;
-  const FRAME_REGEX = /^[0-9]{1,2}$/;
-  const PRICE_REGEX = /^[0-9]{3,5}$/;
+  const NAME_REGEX = REGEX.MODEL_NAME;
+  const EAN_REGEX = REGEX.EAN;
+  const PRODUCT_REGEX = REGEX.PRODUCT_NAME;
+  const FRAME_REGEX = REGEX.FRAME;
+  const PRICE_REGEX = REGEX.PRICE_REGEX;
   // Values that use component with in-built validation render
   const [wheelSize, setWheelSize] = useState("");
   const [manufacturerId, setManufacturerId] = useState("");

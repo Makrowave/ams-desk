@@ -11,7 +11,7 @@ export default function SellModal({ refetch, bikeId, basePrice }) {
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const { setIsOpen } = useModal();
-  const regex = /^[0-9]{3,5}$/;
+  const PRICE_REGEX = REGEX.PRICE;
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.put(
@@ -32,7 +32,7 @@ export default function SellModal({ refetch, bikeId, basePrice }) {
     },
   });
   function validate() {
-    let result = regex.test(price);
+    let result = PRICE_REGEX.test(price);
     if (!result) setError("Wprowadzono niewłaściwą cenę");
     return result;
   }
