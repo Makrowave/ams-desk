@@ -1,12 +1,12 @@
 "use client";
-import CategoryRow from "./category_row";
+import CategoryRow from "./wheel_row";
 import "../table.css";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/use_axios_private";
-export default function CategoryTable() {
+export default function WheelTable() {
   const axiosPrivate = useAxiosPrivate();
-  const _queryKey = "categories";
-  const _url = "/Categories";
+  const _queryKey = "wheels";
+  const _url = "/WheelSizes";
   const { data, isPending, isError, error } = useQuery({
     queryKey: [_queryKey],
     queryFn: async () => {
@@ -19,17 +19,11 @@ export default function CategoryTable() {
     <table className='table w-full'>
       <thead className='bg-secondary mb-px sticky top-0 z-5 shadow-lg h-10'>
         <tr>
-          <th className='w-20'>Id</th>
-          <th>Nazwa</th>
-          <th></th>
+          <th className='w-20'>Rozmiar</th>
           <th></th>
         </tr>
       </thead>
-      <tbody>
-        {!isPending &&
-          !isError &&
-          data.map((category) => <CategoryRow category={category} key={category.categoryId} />)}
-      </tbody>
+      <tbody>{!isPending && !isError && data.map((wheel) => <CategoryRow wheel={wheel} key={wheel} />)}</tbody>
     </table>
   );
 }

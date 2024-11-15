@@ -62,6 +62,13 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
   function formatOptions() {
     let opt;
     if (options.length > 0) {
+      if (typeof Number(options[0]) === "number") {
+        opt = options.map((option) => ({
+          key: option,
+          value: option,
+        }));
+        if (defaultKey !== null) opt.unshift({ key: defaultKey, value: defaultValue });
+      }
       let optLength = Object.keys(options[0]).length;
       if (optLength == 2) {
         opt = options.map((option) => ({

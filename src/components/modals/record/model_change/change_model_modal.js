@@ -25,7 +25,7 @@ export default function ChangeModelModal({ model }) {
   const FRAME_REGEX = /^[0-9]{1,2}$/;
   const PRICE_REGEX = /^[0-9]{3,5}$/;
   //In-built validation
-  const [wheelSize, setWheelSize] = useState(model.wheelSize.toString());
+  const [wheelSize, setWheelSize] = useState(model.wheelSize);
   const [manufacturerId, setManufacturerId] = useState(model.manufacturerId);
   const [categoryId, setCategoryId] = useState(model.categoryId);
   const [isWoman, setIsWoman] = useState(model.isWoman);
@@ -155,28 +155,16 @@ export default function ChangeModelModal({ model }) {
           />
         </div>
       </div>
-      <div className='flex justify-between'>
-        <div className='flex justify-center self-start'>
-          <span>Rozmiar koła</span>
-          <img className='h-5 self-center px-2' src={wheelSize === "" ? "/red_cross.png" : "/checkmark.png"} />
-        </div>
-        <Select
-          pKey={wheelSize}
-          defaultKey={""}
-          defaultValue={"Wybierz"}
-          options={[
-            { key: "12", value: "12" },
-            { key: "14", value: "14" },
-            { key: "16", value: "16" },
-            { key: "20", value: "20" },
-            { key: "24", value: "24" },
-            { key: "26", value: "26" },
-            { key: "27", value: "27" },
-            { key: "28", value: "28" },
-            { key: "29", value: "29" },
-          ]}
+      <div>
+        <ValidationFetchSelect
+          value={wheelSize}
           onChange={setWheelSize}
-          isRow
+          src='/WheelSizes'
+          queryKey='wheels'
+          title='Rozmiar koła'
+          default_option={""}
+          default_title='Rozmiar koła'
+          useRowStyle={true}
         />
       </div>
       <div>

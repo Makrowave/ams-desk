@@ -1,12 +1,12 @@
 "use client";
-import CategoryRow from "./category_row";
 import "../table.css";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/use_axios_private";
-export default function CategoryTable() {
+import ManufacturerRow from "./manufacturer_row";
+export default function ManufacturerTable() {
   const axiosPrivate = useAxiosPrivate();
-  const _queryKey = "categories";
-  const _url = "/Categories";
+  const _queryKey = "manufacturers";
+  const _url = "/Manufacturers";
   const { data, isPending, isError, error } = useQuery({
     queryKey: [_queryKey],
     queryFn: async () => {
@@ -28,7 +28,7 @@ export default function CategoryTable() {
       <tbody>
         {!isPending &&
           !isError &&
-          data.map((category) => <CategoryRow category={category} key={category.categoryId} />)}
+          data.map((manufacturer) => <ManufacturerRow manufacturer={manufacturer} key={manufacturer.manufacturerId} />)}
       </tbody>
     </table>
   );

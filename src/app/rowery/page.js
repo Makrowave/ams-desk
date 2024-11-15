@@ -101,23 +101,14 @@ export default function Rowery() {
                 {/* Size */}
                 <FilterInput title='Rozmiar' value={size} setValue={setSize} />
                 {/* Wheel size */}
-                <FilterSelect
-                  title='Rozmiar koła'
+                <FetchSelect
                   value={wheel}
-                  defaultKey={defaults.wheel}
-                  defaultValue={"Dowolny"}
-                  options={[
-                    { key: "12", value: "12" },
-                    { key: "14", value: "14" },
-                    { key: "16", value: "16" },
-                    { key: "20", value: "20" },
-                    { key: "24", value: "24" },
-                    { key: "26", value: "26" },
-                    { key: "27", value: "27" },
-                    { key: "28", value: "28" },
-                    { key: "29", value: "29" },
-                  ]}
                   onChange={setWheel}
+                  src='/WheelSizes'
+                  queryKey='wheels'
+                  title='Rozmiar koła'
+                  default_option={defaults.wheel}
+                  default_title='Dowolny'
                 />
                 {/* Frame type (is woman) */}
                 <FilterSelect
