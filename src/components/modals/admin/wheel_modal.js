@@ -3,6 +3,7 @@ import ColorInput from "@/components/input/color_input";
 import ModalTextInput from "@/components/input/modal_text_input";
 import useAxiosAdmin from "@/hooks/use_axios_admin";
 import useModal from "@/hooks/use_modal";
+import { QUERY_KEYS } from "@/util/query_keys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -19,7 +20,7 @@ export default function WheelModal() {
     },
     onSuccess: (response) => {
       queryClient.refetchQueries({
-        queryKey: ["wheels"],
+        queryKey: [QUERY_KEYS.WheelSizes],
         exact: false,
       });
       setIsOpen(false);
@@ -40,7 +41,7 @@ export default function WheelModal() {
   return (
     <div className='modal-basic'>
       <ErrorDisplay message={error} isVisible={!!error} />
-      <ModalTextInput title='Rozmiar koła' value={wheel} setValue={setWheel} />
+      <ModalTextInput title='Rozmiar koła' value={wheel} setValue={setWheel} className='mb-auto' />
       <button className='button-primary mb-4' onClick={() => handleClick()}>
         Dodaj
       </button>

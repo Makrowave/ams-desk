@@ -1,4 +1,4 @@
-const REGEX = {
+export const REGEX = {
   ADMIN_ROUTE: /admin/,
   NAME: /^[A-ZŻÓŁĆĘŚĄŹŃ][a-zżółćęśąźń]{1,15}$/,
   COLOR: /^#[A-Fa-f0-9]{6}$/,

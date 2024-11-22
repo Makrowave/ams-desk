@@ -7,6 +7,7 @@ import AssembleModal from "@/components/modals/record/bike_change/assemble_modal
 import SellModal from "@/components/modals/record/bike_change/sell_modal";
 import StatusModal from "@/components/modals/record/bike_change/status_modal";
 import DeleteModal from "@/components/modals/delete_modal";
+import { QUERY_KEYS } from "@/util/query_keys";
 /**
  * Renders table of bikes with buttons that open modals and allow to edit bikes.
  * @param {Object} props - Props.
@@ -17,7 +18,7 @@ export function SubBikeTable({ model, placeId }) {
   const axiosPrivate = useAxiosPrivate();
   const { setModalChildren, setTitle, setIsOpen } = useModal();
   const { refetch, data, isPending, isError, error } = useQuery({
-    queryKey: ["bikeSubRecord", model.modelId, placeId],
+    queryKey: [QUERY_KEYS.Bikes, model.modelId, placeId],
     queryFn: async () => {
       const response = await axiosPrivate.get(_bikesUrl + model.modelId + "?placeId=" + placeId.toString());
       return response.data;
@@ -116,7 +117,7 @@ export function SubBikeTable({ model, placeId }) {
                 className='button-secondary'
                 onClick={() => {
                   setModalChildren(
-                    <DeleteModal id={bike.id} url='/Bikes/' refetchQueryKey='bikeSubRecord' admin={false} />
+                    <DeleteModal id={bike.id} url='/Bikes/' refetchQueryKey={QUERY_KEYS.Bikes} admin={false} />
                   );
                   setTitle("Usuń rower");
                   setIsOpen(true);

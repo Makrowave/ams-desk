@@ -3,12 +3,12 @@ import CategoryRow from "./category_row";
 import "../table.css";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/use_axios_private";
+import { QUERY_KEYS } from "@/util/query_keys";
 export default function CategoryTable() {
   const axiosPrivate = useAxiosPrivate();
-  const _queryKey = "categories";
   const _url = "/Categories";
   const { data, isPending, isError, error } = useQuery({
-    queryKey: [_queryKey],
+    queryKey: [QUERY_KEYS.Categories],
     queryFn: async () => {
       const response = await axiosPrivate.get(_url);
       return response.data;

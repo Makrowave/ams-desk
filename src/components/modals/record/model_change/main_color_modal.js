@@ -4,6 +4,7 @@ import useAxiosPrivate from "@/hooks/use_axios_private";
 import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
 import ErrorDisplay from "@/components/error/error_display";
 import useModal from "@/hooks/use_modal";
+import { QUERY_KEYS } from "@/util/query_keys";
 
 export default function MainColorModal({ model }) {
   const [color, setColor] = useState("");
@@ -25,7 +26,7 @@ export default function MainColorModal({ model }) {
     },
     onSuccess: (response) => {
       queryClient.refetchQueries({
-        queryKey: ["bikes"],
+        queryKey: [QUERY_KEYS.Models],
         exact: false,
       });
       setIsOpen(false);
@@ -46,7 +47,7 @@ export default function MainColorModal({ model }) {
         value={color}
         onChange={setColor}
         src='/Colors'
-        queryKey='colors'
+        queryKey={QUERY_KEYS.Colors}
         default_option={""}
         title='Kolor'
         default_title='Wybierz z listy'

@@ -5,6 +5,8 @@ import useAxiosAdmin from "@/hooks/use_axios_admin";
 import useModal from "@/hooks/use_modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { REGEX } from "@/util/regex";
+import { QUERY_KEYS } from "@/util/query_keys";
 
 export default function StatusModal({ status, action }) {
   const [name, setName] = useState(status === undefined ? "" : status.statusName);
@@ -31,7 +33,7 @@ export default function StatusModal({ status, action }) {
         );
       } else if (action === "post") {
         return await axiosAdmin.post(
-          "/Status",
+          _url,
           JSON.stringify({
             statusName: name,
             hexCode: color,
@@ -44,7 +46,7 @@ export default function StatusModal({ status, action }) {
     },
     onSuccess: (response) => {
       queryClient.refetchQueries({
-        queryKey: ["statuses"],
+        queryKey: [QUERY_KEYS.Statuses],
         exact: false,
       });
       setIsOpen(false);

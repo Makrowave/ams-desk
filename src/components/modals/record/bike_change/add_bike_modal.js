@@ -4,6 +4,7 @@ import useAxiosPrivate from "@/hooks/use_axios_private";
 import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
 import ErrorDisplay from "@/components/error/error_display";
 import useModal from "@/hooks/use_modal";
+import { QUERY_KEYS } from "@/util/query_keys";
 
 export default function AddBikeModal({ modelId, placeId }) {
   //Change it based on selected location
@@ -31,14 +32,14 @@ export default function AddBikeModal({ modelId, placeId }) {
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: ["bikes"],
+        queryKey: [QUERY_KEYS.Models],
         exact: false,
       });
       setIsOpen(false);
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: ["bikeSubRecord"],
+        queryKey: [QUERY_KEYS.Bikes],
         exact: false,
       });
       setIsOpen(false);
@@ -60,7 +61,7 @@ export default function AddBikeModal({ modelId, placeId }) {
         value={place}
         onChange={setPlace}
         src='/Places'
-        queryKey='places'
+        queryKey={QUERY_KEYS.Places}
         title='Miejsce'
         default_option={""}
         default_title='Wybierz z listy'
@@ -69,7 +70,7 @@ export default function AddBikeModal({ modelId, placeId }) {
         value={status}
         onChange={setStatus}
         src='/Status/NotSold'
-        queryKey='statuses'
+        queryKey={QUERY_KEYS.Statuses}
         title='Status'
         default_option={""}
         default_title='Wybierz z listy'

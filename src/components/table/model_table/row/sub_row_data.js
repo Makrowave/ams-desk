@@ -8,6 +8,9 @@ import ColorModal from "@/components/modals/record/model_change/color_modal";
 import AddLinkModal from "@/components/modals/record/model_change/add_link_modal";
 import AddEanModal from "@/components/modals/record/model_change/add_ean_modal";
 import MainColorModal from "@/components/modals/record/model_change/main_color_modal";
+import { QUERY_KEYS } from "@/util/query_keys";
+import useAuth from "@/hooks/use_auth";
+import DeleteModal from "@/components/modals/delete_modal";
 /**
  * Row containing more data about model and buttons to edit model's data.
  * @param {Object} props - Props.
@@ -17,8 +20,9 @@ import MainColorModal from "@/components/modals/record/model_change/main_color_m
 export function SubRowData({ model, placeId }) {
   const axiosPrivate = useAxiosPrivate();
   const { setModalChildren, setTitle, setIsOpen } = useModal();
+  const { isAdmin } = useAuth();
   const color = useQuery({
-    queryKey: ["color", model.colorId],
+    queryKey: [QUERY_KEYS.Colors, model.colorId],
     queryFn: async () => {
       const response = await axiosPrivate.get("/Colors/" + model.colorId.toString());
       return response.data;
@@ -117,6 +121,22 @@ export function SubRowData({ model, placeId }) {
           Zmień dane
         </button>
       </div>
+      {isAdmin && (
+        <div>
+          <button
+            className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
+            onClick={() => {
+              setModalChildren(
+                <DeleteModal id={model.modelId} admin={true} refetchQueryKey={QUERY_KEYS.Models} url={"/Models/"} />
+              );
+              setTitle("Usuń model");
+              setIsOpen(true);
+            }}
+          >
+            Usuń
+          </button>
+        </div>
+      )}
     </div>
   );
 }

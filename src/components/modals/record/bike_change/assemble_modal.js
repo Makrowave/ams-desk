@@ -4,6 +4,7 @@ import useAxiosPrivate from "@/hooks/use_axios_private";
 import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
 import ErrorDisplay from "@/components/error/error_display";
 import useModal from "@/hooks/use_modal";
+import { QUERY_KEYS } from "@/util/query_keys";
 export default function AssembleModal({ refetch, bikeId }) {
   //Change it based on selected location
   const [employeeId, setEmployeeId] = useState("");
@@ -25,7 +26,7 @@ export default function AssembleModal({ refetch, bikeId }) {
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: ["bikes"],
+        queryKey: [QUERY_KEYS.Models],
         exact: false,
       });
       setIsOpen(false);
@@ -46,7 +47,7 @@ export default function AssembleModal({ refetch, bikeId }) {
         value={employeeId}
         onChange={setEmployeeId}
         src='/Employees'
-        queryKey='employees'
+        queryKey={QUERY_KEYS.Employees}
         default_option={""}
         title='Pracownik'
         default_title='Wybierz z listy'

@@ -1,9 +1,11 @@
 import ColorModal from "@/components/modals/admin/color_modal";
 import DeleteModal from "@/components/modals/delete_modal";
 import useModal from "@/hooks/use_modal";
+import { QUERY_KEYS } from "@/util/query_keys";
 
 export default function ColorRow({ color }) {
   const { setIsOpen, setModalChildren, setTitle } = useModal();
+  const queryKey = QUERY_KEYS.Colors;
   return (
     <tr className='table-row h-14'>
       <td>{color.colorId}</td>
@@ -25,7 +27,7 @@ export default function ColorRow({ color }) {
         <button
           className='button-secondary'
           onClick={() => {
-            setModalChildren(<DeleteModal id={color.colorId} url='/Colors/' refreshQueryKey='colors' admin={true} />);
+            setModalChildren(<DeleteModal id={color.colorId} url='/Colors/' refreshQueryKey={queryKey} admin={true} />);
             setTitle("Usuń kolor");
             setIsOpen(true);
           }}

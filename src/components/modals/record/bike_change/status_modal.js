@@ -4,6 +4,7 @@ import useAxiosPrivate from "@/hooks/use_axios_private";
 import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
 import ErrorDisplay from "@/components/error/error_display";
 import useModal from "@/hooks/use_modal";
+import { QUERY_KEYS } from "@/util/query_keys";
 
 export default function StatusModal({ refetch, bikeId }) {
   const [status, setStatus] = useState("");
@@ -24,7 +25,7 @@ export default function StatusModal({ refetch, bikeId }) {
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: ["bikes"],
+        queryKey: [QUERY_KEYS.Models],
         exact: false,
       });
       setIsOpen(false);
@@ -45,7 +46,7 @@ export default function StatusModal({ refetch, bikeId }) {
         value={status}
         onChange={setStatus}
         src='/Status/NotSold'
-        queryKey='status'
+        queryKey={QUERY_KEYS.Statuses}
         default_option={""}
         title='Status'
         default_title='Wybierz z listy'

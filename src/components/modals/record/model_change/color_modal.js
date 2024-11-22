@@ -1,6 +1,7 @@
 import ColorInput from "@/components/input/color_input";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import useModal from "@/hooks/use_modal";
+import { QUERY_KEYS } from "@/util/query_keys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -27,7 +28,7 @@ export default function ColorModal({ model }) {
     },
     onSuccess: (response) => {
       queryClient.refetchQueries({
-        queryKey: ["bikes"],
+        queryKey: [QUERY_KEYS.Models],
         exact: false,
       });
       setIsOpen(false);

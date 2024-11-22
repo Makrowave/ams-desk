@@ -1,11 +1,12 @@
 import ErrorDisplay from "@/components/error/error_display";
 import SingleCheckbox from "@/components/filtering/single_checkbox";
-import { Select } from "@/components/input/select";
 import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import useModal from "@/hooks/use_modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
+import { REGEX } from "@/util/regex";
+import { QUERY_KEYS } from "@/util/query_keys";
 
 export default function ChangeModelModal({ model }) {
   const modelId = model.modelId;
@@ -23,7 +24,7 @@ export default function ChangeModelModal({ model }) {
   const EAN_REGEX = REGEX.EAN;
   const PRODUCT_REGEX = REGEX.PRODUCT_NAME;
   const FRAME_REGEX = REGEX.FRAME;
-  const PRICE_REGEX = REGEX.PRICE_REGEX;
+  const PRICE_REGEX = REGEX.PRICE;
   //In-built validation
   const [wheelSize, setWheelSize] = useState(model.wheelSize);
   const [manufacturerId, setManufacturerId] = useState(model.manufacturerId);
@@ -77,7 +78,7 @@ export default function ChangeModelModal({ model }) {
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: ["bikes"],
+        queryKey: [QUERY_KEYS.Models],
         exact: false,
       });
       setIsOpen(false);
@@ -160,7 +161,7 @@ export default function ChangeModelModal({ model }) {
           value={wheelSize}
           onChange={setWheelSize}
           src='/WheelSizes'
-          queryKey='wheels'
+          queryKey={QUERY_KEYS.WheelSizes}
           title='Rozmiar koła'
           default_option={""}
           default_title='Rozmiar koła'
@@ -187,7 +188,7 @@ export default function ChangeModelModal({ model }) {
           value={manufacturerId}
           onChange={setManufacturerId}
           src='/Manufacturers'
-          queryKey='manufacturers'
+          queryKey={QUERY_KEYS.Manufacturers}
           title='Producent'
           default_option={""}
           default_title='Wybierz'
@@ -199,7 +200,7 @@ export default function ChangeModelModal({ model }) {
           value={categoryId}
           onChange={setCategoryId}
           src='/Categories'
-          queryKey='categories'
+          queryKey={QUERY_KEYS.Manufacturers}
           title='Kategoria'
           default_option={""}
           default_title='Wybierz'

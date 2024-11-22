@@ -3,13 +3,13 @@ import StatusRow from "./status_row";
 import "../table.css";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import { useQuery } from "@tanstack/react-query";
+import { QUERY_KEYS } from "@/util/query_keys";
 export default function StatusTable() {
   //const data = [{ id: 1, name: "Niezłożony", hexCode: "#fff0c2" }];
   const axiosPrivate = useAxiosPrivate();
-  const _queryKey = "statuses";
   const _url = "/Status";
   const { data, isPending, isError, error } = useQuery({
-    queryKey: [_queryKey],
+    queryKey: [QUERY_KEYS.Statuses],
     queryFn: async () => {
       const response = await axiosPrivate.get(_url);
       return response.data;

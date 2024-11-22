@@ -3,12 +3,12 @@ import "../table.css";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import ManufacturerRow from "./manufacturer_row";
+import { QUERY_KEYS } from "@/util/query_keys";
 export default function ManufacturerTable() {
   const axiosPrivate = useAxiosPrivate();
-  const _queryKey = "manufacturers";
   const _url = "/Manufacturers";
   const { data, isPending, isError, error } = useQuery({
-    queryKey: [_queryKey],
+    queryKey: [QUERY_KEYS.Manufacturers],
     queryFn: async () => {
       const response = await axiosPrivate.get(_url);
       return response.data;

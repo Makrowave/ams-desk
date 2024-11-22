@@ -12,7 +12,7 @@ export default function DeleteModal({ refetchQueryKey, id, url, admin = false })
   const [error, setError] = useState("");
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axios.delete(`${url}/${id}`);
+      return await axios.delete(`${url}${id}`);
     },
     onSuccess: () => {
       queryClient.refetchQueries({

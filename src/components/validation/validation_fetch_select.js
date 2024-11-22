@@ -37,7 +37,7 @@ export default function ValidationFetchSelect({
     );
   };
   const axiosPrivate = useAxiosPrivate();
-  const { data, isPending, isError, error } = useQuery({
+  const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: [queryKey],
     queryFn: async () => {
       const response = await axiosPrivate.get(src);
@@ -48,7 +48,7 @@ export default function ValidationFetchSelect({
   if (isPending) {
     return (
       <Body>
-        <div className=' text-center bg-primary border-2 border-tertiary rounded w-full'>Loading</div>
+        <div className='text-center bg-primary border-2 border-tertiary rounded w-full'>Loading</div>
       </Body>
     );
   }
@@ -56,8 +56,10 @@ export default function ValidationFetchSelect({
   if (isError) {
     return (
       <Body>
-        <div className=' text-center bg-error-light text-error-dark border-2 border-tertiary rounded w-full'>
-          Błąd {error.code}
+        <div className='text-center bg-error-light text-error-dark border-2 border-tertiary rounded w-full'>
+          <button onClick={() => refetch()} className='flex justify-center self-start flex-row w-full'>
+            Błąd {error?.response?.status} <img src='/refresh.png' className='h-5 self-center px-2 rotate-[135deg]' />
+          </button>
         </div>
       </Body>
     );

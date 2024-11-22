@@ -5,8 +5,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import ErrorDisplay from "../../../error/error_display";
 import useModal from "@/hooks/use_modal";
-import { Select } from "../../../input/select";
 import ColorInput from "@/components/input/color_input";
+import { REGEX } from "@/util/regex";
+import { QUERY_KEYS } from "@/util/query_keys";
 
 //Add refetch
 
@@ -34,7 +35,7 @@ export default function AddModelModal() {
   const EAN_REGEX = REGEX.EAN;
   const PRODUCT_REGEX = REGEX.PRODUCT_NAME;
   const FRAME_REGEX = REGEX.FRAME;
-  const PRICE_REGEX = REGEX.PRICE_REGEX;
+  const PRICE_REGEX = REGEX.PRICE;
   // Values that use component with in-built validation render
   const [wheelSize, setWheelSize] = useState("");
   const [manufacturerId, setManufacturerId] = useState("");
@@ -102,7 +103,7 @@ export default function AddModelModal() {
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: ["bikes"],
+        queryKey: [QUERY_KEYS.Models],
         exact: false,
       });
       setIsOpen(false);
@@ -245,7 +246,7 @@ export default function AddModelModal() {
           value={wheelSize}
           onChange={setWheelSize}
           src='/WheelSizes'
-          queryKey='wheels'
+          queryKey={QUERY_KEYS.WheelSizes}
           title='Rozmiar koła'
           default_option={""}
           default_title='Wybierz'
@@ -282,7 +283,7 @@ export default function AddModelModal() {
           value={manufacturerId}
           onChange={setManufacturerId}
           src='/Manufacturers'
-          queryKey='manufacturers'
+          queryKey={QUERY_KEYS.Manufacturers}
           title='Producent'
           default_option={""}
           default_title='Wybierz'
@@ -294,7 +295,7 @@ export default function AddModelModal() {
           value={categoryId}
           onChange={setCategoryId}
           src='/Categories'
-          queryKey='categories'
+          queryKey={QUERY_KEYS.Categories}
           title='Kategoria'
           default_option={""}
           default_title='Wybierz'
@@ -306,7 +307,7 @@ export default function AddModelModal() {
           value={colorId}
           onChange={setColorId}
           src='/Colors'
-          queryKey='colors'
+          queryKey={QUERY_KEYS.Colors}
           title='Kolor'
           default_option={""}
           default_title='Wybierz'

@@ -5,6 +5,8 @@ import useAxiosAdmin from "@/hooks/use_axios_admin";
 import useModal from "@/hooks/use_modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { REGEX } from "@/util/regex";
+import { QUERY_KEYS } from "@/util/query_keys";
 
 export default function ManufacturerModal({ manufacturer, action }) {
   const [name, setName] = useState(manufacturer === undefined ? "" : manufacturer.manufacturerName);
@@ -40,7 +42,7 @@ export default function ManufacturerModal({ manufacturer, action }) {
     },
     onSuccess: (response) => {
       queryClient.refetchQueries({
-        queryKey: ["manufacturers"],
+        queryKey: [QUERY_KEYS.Manufacturers],
         exact: false,
       });
       setIsOpen(false);
@@ -54,7 +56,7 @@ export default function ManufacturerModal({ manufacturer, action }) {
   }
   function validate() {
     if (NAME_REGEX.test(name)) return true;
-    setError("Dane nie przeszły walidacji");
+    setError("Nazwa nie przeszła walidacji");
     return false;
   }
 
@@ -64,7 +66,7 @@ export default function ManufacturerModal({ manufacturer, action }) {
   return (
     <div className='modal-basic'>
       <ErrorDisplay message={error} isVisible={!!error} />
-      <ModalTextInput title='Producent' value={name} setValue={setName} />
+      <ModalTextInput title='Producent' value={name} setValue={setName} className='mb-auto' />
       <button className='button-primary mb-4' onClick={() => handleClick()}>
         {action === "put" ? "Edytuj" : ""}
         {action === "post" ? "Dodaj" : ""}

@@ -4,6 +4,8 @@ import useAxiosAdmin from "@/hooks/use_axios_admin";
 import useModal from "@/hooks/use_modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { REGEX } from "@/util/regex";
+import { QUERY_KEYS } from "@/util/query_keys";
 
 export default function CategoryModal({ category, action }) {
   const [name, setName] = useState(category === undefined ? "" : category.categoryName);
@@ -12,11 +14,12 @@ export default function CategoryModal({ category, action }) {
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
   const { setIsOpen } = useModal();
+  const _url = "/Categories/";
   const mutation = useMutation({
     mutationFn: async () => {
       if (action === "put") {
         return await axiosAdmin.put(
-          "/Categories/" + category.categoryId,
+          _url + category.categoryId,
           JSON.stringify({
             categoryName: name,
           }),
@@ -26,7 +29,7 @@ export default function CategoryModal({ category, action }) {
         );
       } else if (action === "post") {
         return await axiosAdmin.post(
-          "/Categories",
+          _url,
           JSON.stringify({
             categoryName: name,
           }),
@@ -38,7 +41,7 @@ export default function CategoryModal({ category, action }) {
     },
     onSuccess: (response) => {
       queryClient.refetchQueries({
-        queryKey: ["categories"],
+        queryKey: [QUERY_KEYS.Categories],
         exact: false,
       });
       setIsOpen(false);
@@ -63,7 +66,7 @@ export default function CategoryModal({ category, action }) {
   return (
     <div className='modal-basic'>
       <ErrorDisplay message={error} isVisible={!!error} />
-      <ModalTextInput title='Nazwa' value={name} setValue={setName} />
+      <ModalTextInput title='Nazwa' value={name} setValue={setName} className='mb-auto' />
       <button
         className='button-primary mb-4'
         onClick={() => {

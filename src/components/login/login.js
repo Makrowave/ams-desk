@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import LoginForm from "./login_form";
 import axios from "@/api/axios";
 import useRefreshUser from "@/hooks/use_refresh_user";
+import { REGEX } from "@/util/regex";
 export default function Login() {
   const [attemtedLogin, setAttemptedLogin] = useState(false);
   const [error, setError] = useState("");

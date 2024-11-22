@@ -4,7 +4,7 @@ import { useState } from "react";
 import ErrorDisplay from "@/components/error/error_display";
 import useModal from "@/hooks/use_modal";
 import ModalTextInput from "@/components/input/modal_text_input";
-
+import { REGEX } from "@/util/regex";
 export default function SellModal({ refetch, bikeId, basePrice }) {
   //Change it based on selected location
   const [price, setPrice] = useState(basePrice);

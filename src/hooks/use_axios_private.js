@@ -28,7 +28,7 @@ export default function useAxiosPrivate() {
           const newToken = await refresh();
           prevRequest.headers["Authorization"] = `Bearer ${newToken}`;
           return axiosPrivate(prevRequest);
-        } else if (error?.response?.status === 401) {
+        } else if (error?.response?.status === 401 || error?.response?.status == 403) {
           //Logout if can't refresh
           await logoutAdmin();
           await logout();

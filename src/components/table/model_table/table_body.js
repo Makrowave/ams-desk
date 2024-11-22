@@ -2,6 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import BikeRecord from "./row/bike_record";
 import useAxiosPrivate from "@/hooks/use_axios_private";
+import { QUERY_KEYS } from "@/util/query_keys";
 /**
  * ModelTable's body. Queries the backend to get models and maps them to bike records.
  * @param {Object} props - Props.
@@ -15,12 +16,12 @@ import useAxiosPrivate from "@/hooks/use_axios_private";
 export default function TableBody({ src, singlePlace, placeId, sortCriterion }) {
   const axiosPrivate = useAxiosPrivate();
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ["bikes", src],
+    queryKey: [QUERY_KEYS.Models, src],
     queryFn: async () => {
       const response = await axiosPrivate.get(src);
       return response.data;
     },
-    refetchInterval: 5000,
+    refetchInterval: 20000,
   });
   const placeCount = process.env.NEXT_PUBLIC_PLACE_COUNT;
   if (isPending) {
