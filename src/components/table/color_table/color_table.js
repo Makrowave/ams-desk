@@ -25,9 +25,21 @@ export default function ColorTable() {
           <th>Nazwa</th>
           <th></th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
-      <tbody>{!isPending && !isError && data.map((color) => <ColorRow color={color} key={color.colorId} />)}</tbody>
+      <tbody>
+        {!isPending &&
+          !isError &&
+          data.map((color, index) => (
+            <ColorRow
+              color={color}
+              key={color.colorId}
+              prev={data[index - 1]?.colorId}
+              next={data[index + 1]?.colorId}
+            />
+          ))}
+      </tbody>
     </table>
   );
 }
