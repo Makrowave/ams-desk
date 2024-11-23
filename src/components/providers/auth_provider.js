@@ -26,6 +26,8 @@ export function AuthProvider({ children }) {
    * accessToken to default value preventing access.
    */
   async function logout() {
+    setUser({ username: "", token: "" });
+    router.push("/login");
     try {
       const response = await axios.post(
         _logoutUrl,
@@ -36,22 +38,22 @@ export function AuthProvider({ children }) {
         }
       );
       if (response.status === 200) {
-        setUser({ username: "", token: "" });
-        router.push("/login");
+        // setUser({ username: "", token: "" });
+        // router.push("/login");
       } else {
         throw new Error();
       }
     } catch (err) {
-      if (err.response?.status === 401) {
-        setUser({ username: "", token: "" });
-        router.push("/login");
-      } else {
-        console.error(err);
-      }
+      console.error(err);
     }
   }
   async function logoutAdmin(redirect = true) {
     setPrevRoute("");
+    setIsAdmin(false);
+    setAdmin({ username: "", token: "" });
+    if (redirect) {
+      router.push("/admin/login");
+    }
     try {
       const response = await axios.post(
         _adminLogoutUrl,
@@ -62,24 +64,16 @@ export function AuthProvider({ children }) {
         }
       );
       if (response.status === 200) {
-        setIsAdmin(false);
-        setAdmin({ username: "", token: "" });
-        if (redirect) {
-          router.push("/admin/login");
-        }
+        // setIsAdmin(false);
+        // setAdmin({ username: "", token: "" });
+        // if (redirect) {
+        //   router.push("/admin/login");
+        // }
       } else {
         throw new Error();
       }
     } catch (err) {
-      if (err.response?.status === 401) {
-        setIsAdmin(false);
-        setAdmin({ username: "", token: "" });
-        if (redirect) {
-          router.push("/admin/login");
-        }
-      } else {
-        console.error(err);
-      }
+      console.error(err);
     }
   }
 
