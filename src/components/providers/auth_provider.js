@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
           withCredentials: true,
         }
       );
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 401) {
         setUser({ username: "", token: "" });
         router.push("/login");
       } else {
@@ -56,7 +56,7 @@ export function AuthProvider({ children }) {
           withCredentials: true,
         }
       );
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 401) {
         setIsAdmin(false);
         setAdmin({ username: "", token: "" });
         if (redirect) {
