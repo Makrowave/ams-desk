@@ -43,11 +43,8 @@ export function AuthProvider({ children }) {
       }
     } catch (err) {
       if (err.response?.status === 401) {
-        setIsAdmin(false);
-        setAdmin({ username: "", token: "" });
-        if (redirect) {
-          router.push("/admin/login");
-        }
+        setUser({ username: "", token: "" });
+        router.push("/login");
       } else {
         console.error(err);
       }
