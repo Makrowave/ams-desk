@@ -33,19 +33,24 @@ export function AuthProvider({ children }) {
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
-          validateStatus: (status) => {
-            return status < 400 || status === 401;
-          },
         }
       );
-      if (response.status === 200 || response.status === 401) {
+      if (response.status === 200) {
         setUser({ username: "", token: "" });
         router.push("/login");
       } else {
         throw new Error();
       }
     } catch (err) {
-      //console.log(err);
+      if (err.response?.status === 401) {
+        setIsAdmin(false);
+        setAdmin({ username: "", token: "" });
+        if (redirect) {
+          router.push("/admin/login");
+        }
+      } else {
+        console.error(err);
+      }
     }
   }
   async function logoutAdmin(redirect = true) {
@@ -57,12 +62,9 @@ export function AuthProvider({ children }) {
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
-          validateStatus: (status) => {
-            return status < 400 || status === 401;
-          },
         }
       );
-      if (response.status === 200 || response.status === 401) {
+      if (response.status === 200) {
         setIsAdmin(false);
         setAdmin({ username: "", token: "" });
         if (redirect) {
@@ -72,7 +74,15 @@ export function AuthProvider({ children }) {
         throw new Error();
       }
     } catch (err) {
-      //console.log(err);
+      if (err.response?.status === 401) {
+        setIsAdmin(false);
+        setAdmin({ username: "", token: "" });
+        if (redirect) {
+          router.push("/admin/login");
+        }
+      } else {
+        console.error(err);
+      }
     }
   }
 
