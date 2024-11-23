@@ -25,10 +25,20 @@ export default function StatusTable() {
           <th>Nazwa</th>
           <th></th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        {!isPending && !isError && data.map((status) => <StatusRow status={status} key={status.statusId} />)}
+        {!isPending &&
+          !isError &&
+          data.map((status, index) => (
+            <StatusRow
+              status={status}
+              key={status.statusId}
+              prev={data[index - 1]?.statusId}
+              next={data[index + 1]?.statusId}
+            />
+          ))}
       </tbody>
     </table>
   );

@@ -23,12 +23,20 @@ export default function ManufacturerTable() {
           <th>Nazwa</th>
           <th></th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {!isPending &&
           !isError &&
-          data.map((manufacturer) => <ManufacturerRow manufacturer={manufacturer} key={manufacturer.manufacturerId} />)}
+          data.map((manufacturer, index) => (
+            <ManufacturerRow
+              manufacturer={manufacturer}
+              key={manufacturer.manufacturerId}
+              prev={data[index - 1]?.manufacturerId}
+              next={data[index + 1]?.manufacturerId}
+            />
+          ))}
       </tbody>
     </table>
   );

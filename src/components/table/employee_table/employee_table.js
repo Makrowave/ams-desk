@@ -24,12 +24,20 @@ export default function EmployeeTable() {
           <th>Nazwa</th>
           <th></th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {!isPending &&
           !isError &&
-          data.map((employee) => <EmployeeRow employee={employee} key={employee.employeeId} />)}
+          data.map((employee, index) => (
+            <EmployeeRow
+              employee={employee}
+              key={employee.employeeId}
+              prev={data[index - 1]?.employeeId}
+              next={data[index + 1]?.employeeId}
+            />
+          ))}
       </tbody>
     </table>
   );

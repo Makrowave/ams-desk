@@ -2,14 +2,20 @@ import CategoryModal from "@/components/modals/admin/category_modal";
 import DeleteModal from "@/components/modals/delete_modal";
 import useModal from "@/hooks/use_modal";
 import { QUERY_KEYS } from "@/util/query_keys";
+import OrderButton from "../order_button";
 
-export default function CategoryRow({ category }) {
+export default function CategoryRow({ category, prev, next }) {
   const { setIsOpen, setModalChildren, setTitle } = useModal();
   const queryKey = QUERY_KEYS.Categories;
+  const _url = "/Categories/ChangeOrder";
   return (
     <tr className='table-row h-14'>
       <td>{category.categoryId}</td>
       <td>{category.categoryName}</td>
+      <td>
+        {prev && <OrderButton first={prev} last={category.categoryId} url={_url} queryKey={queryKey} up={true} />}
+        {next && <OrderButton first={category.categoryId} last={next} url={_url} queryKey={queryKey} up={false} />}
+      </td>
       <td>
         <button
           className='button-secondary'

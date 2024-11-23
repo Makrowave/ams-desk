@@ -2,15 +2,21 @@ import StatusModal from "@/components/modals/admin/status_modal";
 import DeleteModal from "@/components/modals/delete_modal";
 import useModal from "@/hooks/use_modal";
 import { QUERY_KEYS } from "@/util/query_keys";
+import OrderButton from "../order_button";
 
-export default function StatusRow({ status }) {
+export default function StatusRow({ status, prev, next }) {
   const { setIsOpen, setTitle, setModalChildren } = useModal();
   const queryKey = QUERY_KEYS.Statuses;
+  const _url = "/Status/ChangeOrder";
   return (
     <tr className='table-row h-14'>
       <td>{status.statusId}</td>
       <td className='w-14 h-12' style={{ background: status.hexCode }}></td>
       <td>{status.statusName}</td>
+      <td>
+        {prev && <OrderButton first={prev} last={status.statusId} url={_url} queryKey={queryKey} up={true} />}
+        {next && <OrderButton first={status.statusId} last={next} url={_url} queryKey={queryKey} up={false} />}
+      </td>
       <td>
         <button
           className='button-secondary'

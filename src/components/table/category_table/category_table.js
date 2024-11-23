@@ -23,12 +23,20 @@ export default function CategoryTable() {
           <th>Nazwa</th>
           <th></th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {!isPending &&
           !isError &&
-          data.map((category) => <CategoryRow category={category} key={category.categoryId} />)}
+          data.map((category, index) => (
+            <CategoryRow
+              category={category}
+              key={category.categoryId}
+              prev={data[index - 1]?.categoryId}
+              next={data[index + 1]?.categoryId}
+            />
+          ))}
       </tbody>
     </table>
   );
