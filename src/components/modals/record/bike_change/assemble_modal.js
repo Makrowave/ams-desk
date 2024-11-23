@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
@@ -11,6 +11,7 @@ export default function AssembleModal({ refetch, bikeId }) {
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const { setIsOpen } = useModal();
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.put(
@@ -26,7 +27,7 @@ export default function AssembleModal({ refetch, bikeId }) {
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Models],
+        queryKey: [QUERY_KEYS.Bikes],
         exact: false,
       });
       setIsOpen(false);
