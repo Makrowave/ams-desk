@@ -33,6 +33,9 @@ export function AuthProvider({ children }) {
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
+          validateStatus: (status) => {
+            return status < 400 && status === 401;
+          },
         }
       );
       if (response.status === 200 || response.status === 401) {
@@ -54,6 +57,9 @@ export function AuthProvider({ children }) {
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
+          validateStatus: (status) => {
+            return status < 400 && status === 401;
+          },
         }
       );
       if (response.status === 200 || response.status === 401) {
