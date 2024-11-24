@@ -94,7 +94,7 @@ export default function FilterBlock({ setQuery }) {
   return (
     <div className='col-span-1 h-full overflow-y-auto m-4 bg-primary flex flex-col '>
       {/* Title */}
-      <div className='flex justify-center sticky top-0 bg-primary z-40'>
+      <div className='flex justify-center sticky top-0 bg-primary z-30'>
         <div className='flex justify-center text-2xl w-3/5 border-border border-b pb-1 mb'>
           <h2>
             <b>Filtry</b>
@@ -174,7 +174,13 @@ export default function FilterBlock({ setQuery }) {
           isColored={true}
         />
         {/* Price range */}
-        <RangeInput title='Cena' minValue={minPrice} maxValue={maxPrice} setMin={setMinPrice} setMax={setMaxPrice} />
+        <RangeInput
+          title='Cena'
+          minValue={minPrice}
+          maxValue={maxPrice}
+          setMin={setMinPrice}
+          setMax={setMaxPrice}
+        />
         {/* Avaible */}
         <SingleCheckbox
           checked={avail}
