@@ -1,4 +1,5 @@
 "use client";
+import EmployeeModal from "@/components/modals/admin/employee_modal";
 import LogoutModal from "@/components/modals/admin/logout_modal";
 import UserModal from "@/components/modals/admin/user_modal";
 import Modal from "@/components/modals/modal";
@@ -22,7 +23,16 @@ export default function EmployeesPanel() {
               <EmployeeTable />
             </div>
             <div className='mt-4'>
-              <button className='button-secondary mr-4'>Dodaj</button>
+              <button
+                className='button-secondary mr-4'
+                onClick={() => {
+                  setModalChildren(<EmployeeModal action='post' />);
+                  setTitle("Dodaj pracownika");
+                  setIsOpen(true);
+                }}
+              >
+                Dodaj
+              </button>
             </div>
           </div>
           <div className='w-7/12 min-w-[600px] ml-auto'>
@@ -44,9 +54,9 @@ export default function EmployeesPanel() {
               <button
                 className='button-secondary mr-4'
                 onClick={() => {
-                  setIsOpen(true);
                   setModalChildren(<LogoutModal />);
                   setTitle("Wyloguj wszystkich");
+                  setIsOpen(true);
                 }}
               >
                 Wyloguj wszystkich

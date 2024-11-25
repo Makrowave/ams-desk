@@ -18,7 +18,7 @@ export default function ColorTable() {
   });
   return (
     <table className='table w-full'>
-      <thead className='bg-secondary mb-px sticky top-0 z-5 shadow-lg h-10'>
+      <thead className='bg-secondary mb-px sticky top-0 z-10 shadow-lg h-10'>
         <tr>
           <th className='w-20'>Id</th>
           <th className='w-14'></th>

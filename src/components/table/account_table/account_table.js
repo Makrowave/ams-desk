@@ -17,11 +17,9 @@ export default function AccountTable() {
     refetchInterval: 5000,
   });
   const employees = useEmployeesQuery();
-
-  //const data = [{ userId: 1, username: "Maks S.", employeeId: 1 }];
   return (
     <table className='table w-full'>
-      <thead className='bg-secondary mb-px sticky top-0 z-5 shadow-lg h-10'>
+      <thead className='bg-secondary mb-px sticky top-0 z-10 shadow-lg h-10'>
         <tr>
           <th className='w-20'>Id</th>
           <th>Login</th>
