@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ErrorDisplay from "../error/error_display";
+import Password from "../input/password";
 
 export default function LoginForm({ login, loginError }) {
   const [username, setUsername] = useState("");
@@ -22,7 +23,7 @@ export default function LoginForm({ login, loginError }) {
         <div className='my-6 flex flex-col'>
           <span>Login</span>
           <input
-            className='block text-center bg-primary border-2 border-tertiary rounded-l'
+            className='block text-center bg-primary border-2 border-tertiary rounded-lg'
             value={username}
             onChange={(e) => {
               setUsername(e.target.value);
@@ -32,15 +33,7 @@ export default function LoginForm({ login, loginError }) {
         </div>
         <div className='my-6 flex flex-col'>
           <span>Hasło</span>
-          <input
-            type='password'
-            className='block text-center bg-primary border-2 border-tertiary rounded-l'
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            onKeyDown={handleKeyDown}
-          ></input>
+          <Password value={password} setValue={setPassword} onKeyDown={handleKeyDown} />
         </div>
         <button
           className='block bg-primary rounded-lg px-2 border-border border-2'

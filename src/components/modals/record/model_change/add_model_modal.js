@@ -148,7 +148,7 @@ export default function AddModelModal() {
           <input
             onFocus={() => setNameFocus(true)}
             onBlur={() => setNameFocus(false)}
-            className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-1/2'
+            className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
             value={name}
             onChange={(e) => {
               setName(e.target.value);
@@ -174,7 +174,7 @@ export default function AddModelModal() {
           <input
             onFocus={() => setProductCodeFocus(true)}
             onBlur={() => setProductCodeFocus(false)}
-            className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-1/2'
+            className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
             value={productCode}
             onChange={(e) => {
               setProductCode(e.target.value);
@@ -200,7 +200,7 @@ export default function AddModelModal() {
           <input
             onFocus={() => setEanCodeFocus(true)}
             onBlur={() => setEanCodeFocus(false)}
-            className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-1/2'
+            className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
             value={eanCode}
             onChange={(e) => {
               setEanCode(e.target.value);
@@ -226,7 +226,7 @@ export default function AddModelModal() {
             type='number'
             onFocus={() => setFrameSizeFocus(true)}
             onBlur={() => setFrameSizeFocus(false)}
-            className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-1/2'
+            className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
             value={frameSize}
             onChange={(e) => {
               setFrameSize(e.target.value);
@@ -263,7 +263,7 @@ export default function AddModelModal() {
             type='number'
             onFocus={() => setPriceFocus(true)}
             onBlur={() => setPriceFocus(false)}
-            className='self-end  text-center bg-primary border-2 border-tertiary rounded-l w-1/2'
+            className='self-end  text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
             value={price}
             onChange={(e) => {
               setPrice(e.target.value);

@@ -2,7 +2,15 @@ import ErrorDisplay from "@/components/error/error_display";
 
 import { useEffect, useState } from "react";
 
-export default function PasswordModal({password, setPassword, newPassword, setNewPassword, error, setError, mutation}) {
+export default function PasswordModal({
+  password,
+  setPassword,
+  newPassword,
+  setNewPassword,
+  error,
+  setError,
+  mutation,
+}) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [match, setMatch] = useState(true);
   useEffect(() => {
@@ -28,7 +36,7 @@ export default function PasswordModal({password, setPassword, newPassword, setNe
       <div className='flex flex-col'>
         <span>Stare hasło</span>
         <input
-          className='block text-center bg-primary border-2 border-tertiary rounded-l'
+          className='block text-center bg-primary border-2 border-tertiary rounded-lg'
           type='password'
           value={password}
           onChange={(e) => {
@@ -39,7 +47,7 @@ export default function PasswordModal({password, setPassword, newPassword, setNe
       <div className='flex flex-col'>
         <span>Nowe hasło</span>
         <input
-          className='block text-center bg-primary border-2 border-tertiary rounded-l'
+          className='block text-center bg-primary border-2 border-tertiary rounded-lg'
           type='password'
           value={newPassword}
           onChange={(e) => {
@@ -50,7 +58,7 @@ export default function PasswordModal({password, setPassword, newPassword, setNe
       <div className='flex flex-col'>
         <span>Potwierdź nowe hasło</span>
         <input
-          className='block text-center bg-primary border-2 border-tertiary rounded-l'
+          className='block text-center bg-primary border-2 border-tertiary rounded-lg'
           type='password'
           value={confirmPassword}
           onChange={(e) => {

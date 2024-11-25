@@ -118,7 +118,7 @@ export default function ChangeModelModal({ model }) {
             <img className='h-5 self-center px-2' src={validName ? "/checkmark.png" : "/red_cross.png"} />
           </div>
           <input
-            className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-1/2'
+            className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
             value={name}
             onChange={(e) => {
               setName(e.target.value);
@@ -133,7 +133,7 @@ export default function ChangeModelModal({ model }) {
             <img className='h-5 self-center px-2' src={validProductCode ? "/checkmark.png" : "/red_cross.png"} />
           </div>
           <input
-            className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-1/2'
+            className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
             value={productCode}
             onChange={(e) => {
               setProductCode(e.target.value);
@@ -148,7 +148,7 @@ export default function ChangeModelModal({ model }) {
             <img className='h-5 self-center px-2' src={validFrameSize ? "/checkmark.png" : "/red_cross.png"} />
           </div>
           <input
-            className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-1/2'
+            className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
             value={frameSize}
             onChange={(e) => {
               setFrameSize(e.target.value);
@@ -175,7 +175,7 @@ export default function ChangeModelModal({ model }) {
             <img className='h-5 self-center px-2' src={validPrice ? "/checkmark.png" : "/red_cross.png"} />
           </div>
           <input
-            className='self-end  text-center bg-primary border-2 border-tertiary rounded-l w-1/2'
+            className='self-end  text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
             value={price}
             onChange={(e) => {
               setPrice(e.target.value);

@@ -5,7 +5,7 @@ export default function ModalTextInput({ title, value, setValue, className }) {
         <span>{title}</span>
       </div>
       <input
-        className='self-end text-center bg-primary border-2 border-tertiary rounded-l w-full'
+        className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-full'
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
