@@ -27,7 +27,6 @@ export function AuthProvider({ children }) {
    */
   async function logout() {
     setUser({ username: "", token: "" });
-    router.push("/login");
     try {
       const response = await axios.post(
         _logoutUrl,

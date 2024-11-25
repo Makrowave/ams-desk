@@ -15,7 +15,7 @@ export default function PrivateRoute({ children, login }) {
     if (!login) {
       logoutAdmin(false);
     }
-  });
+  }, [user]);
 
   if (!user.token) {
     return null;
