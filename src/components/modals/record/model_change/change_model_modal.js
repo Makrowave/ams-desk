@@ -200,7 +200,7 @@ export default function ChangeModelModal({ model }) {
           value={categoryId}
           onChange={setCategoryId}
           src='/Categories'
-          queryKey={QUERY_KEYS.Manufacturers}
+          queryKey={QUERY_KEYS.Categories}
           title='Kategoria'
           default_option={""}
           default_title='Wybierz'
