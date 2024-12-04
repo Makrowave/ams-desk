@@ -23,7 +23,9 @@ export default function WheelTable() {
           <th></th>
         </tr>
       </thead>
-      <tbody>{!isPending && !isError && data.map((wheel) => <CategoryRow wheel={wheel} key={wheel} />)}</tbody>
+      <tbody>
+        {!isPending && !isError && data.map((wheel) => <CategoryRow wheel={wheel.value} key={wheel.key} />)}
+      </tbody>
     </table>
   );
 }
