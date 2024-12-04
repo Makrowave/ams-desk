@@ -53,23 +53,23 @@ export default function FilterBlock({ setQuery }) {
   useEffect(() => {
     setQuery(
       `&avaible=${avail}
-        &manufacturerId=${make}
-        &wheelSize=${wheel}
-        &frameSize=${size}
-        &name=${name.trim().toLowerCase()}
-        &electric=${electric}
-        &statusId=${statusId}
-        &isWoman=${isWoman}
-        &isKids=${isKids}
-        &minPrice=${minPrice}
-        &maxPrice=${maxPrice}
-        &colorId=${color}
-        &categoryId=${category}
-        &productCode=${productCode}
-        &noEan=${noEan}
-        &noProductCode=${noProductCode}
-        &noColor=${noColor}
-        &noColorGroup=${noColorGroup}`.replace(/\s+/g, "")
+&manufacturerId=${make}
+&wheelSize=${wheel}
+&frameSize=${size}
+&name=${name.trim().toLowerCase()}
+&electric=${electric}
+&statusId=${statusId}
+&isWoman=${isWoman}
+&isKids=${isKids}
+&minPrice=${minPrice}
+&maxPrice=${maxPrice}
+&colorId=${color}
+&categoryId=${category}
+&productCode=${productCode.trim()}
+&noEan=${noEan}
+&noProductCode=${noProductCode}
+&noColor=${noColor}
+&noColorGroup=${noColorGroup}`
     );
   });
 
@@ -174,13 +174,7 @@ export default function FilterBlock({ setQuery }) {
           isColored={true}
         />
         {/* Price range */}
-        <RangeInput
-          title='Cena'
-          minValue={minPrice}
-          maxValue={maxPrice}
-          setMin={setMinPrice}
-          setMax={setMaxPrice}
-        />
+        <RangeInput title='Cena' minValue={minPrice} maxValue={maxPrice} setMin={setMinPrice} setMax={setMaxPrice} />
         {/* Avaible */}
         <SingleCheckbox
           checked={avail}
