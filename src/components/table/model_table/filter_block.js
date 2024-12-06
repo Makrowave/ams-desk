@@ -166,7 +166,7 @@ export default function FilterBlock({ setQuery }) {
         <FetchSelect
           value={statusId}
           onChange={setStatusId}
-          src='/Status/NotSold'
+          src='/Status/Excluded?exclude=3'
           queryKey={QUERY_KEYS.Statuses}
           title='Status'
           default_option={""}

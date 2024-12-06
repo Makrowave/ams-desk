@@ -15,6 +15,8 @@ import { QUERY_KEYS } from "@/util/query_keys";
  */
 export function SubBikeTable({ model, placeId }) {
   const _bikesUrl = "/Bikes/bikesByModelId/";
+  const _statusUrl = "/Status/";
+  const _placeUrl = "/Places";
   const axiosPrivate = useAxiosPrivate();
   const { setModalChildren, setTitle, setIsOpen } = useModal();
   const { refetch, data, isPending, isError, error } = useQuery({
@@ -24,7 +26,29 @@ export function SubBikeTable({ model, placeId }) {
       return response.data;
     },
   });
+  const {
+    data: placeData,
+    isPending: placeIsPending,
+    isError: placeIsError,
+  } = useQuery({
+    queryKey: [QUERY_KEYS.Places],
+    queryFn: async () => {
+      const response = await axiosPrivate.get(_placeUrl);
+      return response.data;
+    },
+  });
 
+  const {
+    data: statusData,
+    isPending: statusIsPending,
+    isError: statusIsError,
+  } = useQuery({
+    queryKey: [QUERY_KEYS.Statuses],
+    queryFn: async () => {
+      const response = await axiosPrivate.get(_statusUrl);
+      return response.data;
+    },
+  });
   /**
    * @param {number} statusId - Status id - 1 to 6 at the time of writing.
    * @returns {string} Tailwind classes with colors for background and text.
@@ -46,11 +70,11 @@ export function SubBikeTable({ model, placeId }) {
     }
   }
 
-  if (isPending) {
+  if (isPending || placeIsPending || statusIsPending) {
     return;
   }
 
-  if (isError) {
+  if (isError || placeIsError || statusIsError) {
     return <div>{error.message}</div>;
   }
 
@@ -68,8 +92,10 @@ export function SubBikeTable({ model, placeId }) {
       {data.map((bike, index) => (
         <tr key={bike.id} className='border-y border-border last:border-b-0 h-10'>
           <td>{index + 1}</td>
-          <td>{bike.place}</td>
-          <td className={statusColor(bike.statusId) + " border-border border-x border-b"}>{bike.status}</td>
+          <td>{placeData?.find((place) => place.placeId === bike.place)?.placeName}</td>
+          <td className={statusColor(bike.statusId) + " border-border border-x border-b"}>
+            {statusData?.find((status) => status.statusId === bike.statusId)?.statusName}
+          </td>
           <td>{bike.assembledBy}</td>
           <td>
             <div className='flex *:mx-2'>

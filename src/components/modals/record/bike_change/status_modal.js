@@ -46,7 +46,7 @@ export default function StatusModal({ refetch, bikeId }) {
       <ValidationFetchSelect
         value={status}
         onChange={setStatus}
-        src='/Status/NotSold'
+        src='/Status/Excluded?exclude=3'
         queryKey={QUERY_KEYS.Statuses}
         default_option={""}
         title='Status'
