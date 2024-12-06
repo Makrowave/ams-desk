@@ -17,6 +17,7 @@ export function SubBikeTable({ model, placeId }) {
   const _bikesUrl = "/Bikes/bikesByModelId/";
   const _statusUrl = "/Status/";
   const _placeUrl = "/Places";
+  const _employeeUrl = "/Employees";
   const axiosPrivate = useAxiosPrivate();
   const { setModalChildren, setTitle, setIsOpen } = useModal();
   const { refetch, data, isPending, isError, error } = useQuery({
@@ -26,6 +27,7 @@ export function SubBikeTable({ model, placeId }) {
       return response.data;
     },
   });
+  //CONVERT THOSE INTO HOOKS LIKE ON MOBILE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   const {
     data: placeData,
     isPending: placeIsPending,
@@ -46,6 +48,18 @@ export function SubBikeTable({ model, placeId }) {
     queryKey: [QUERY_KEYS.Statuses],
     queryFn: async () => {
       const response = await axiosPrivate.get(_statusUrl);
+      return response.data;
+    },
+  });
+
+  const {
+    data: employeeData,
+    isPending: employeeIsPending,
+    isError: employeeIsError,
+  } = useQuery({
+    queryKey: [QUERY_KEYS.Employees],
+    queryFn: async () => {
+      const response = await axiosPrivate.get(_employeeUrl);
       return response.data;
     },
   });
@@ -70,11 +84,11 @@ export function SubBikeTable({ model, placeId }) {
     }
   }
 
-  if (isPending || placeIsPending || statusIsPending) {
+  if (isPending || placeIsPending || statusIsPending || employeeIsPending) {
     return;
   }
 
-  if (isError || placeIsError || statusIsError) {
+  if (isError || placeIsError || statusIsError || employeeIsError) {
     return <div>{error.message}</div>;
   }
 
@@ -96,7 +110,7 @@ export function SubBikeTable({ model, placeId }) {
           <td className={statusColor(bike.statusId) + " border-border border-x border-b"}>
             {statusData?.find((status) => status.statusId === bike.statusId)?.statusName}
           </td>
-          <td>{bike.assembledBy}</td>
+          <td>{employeeData?.find((employee) => employee.employeeId === bike.assembledBy)?.employeeName ?? "Brak"}</td>
           <td>
             <div className='flex *:mx-2'>
               <button
