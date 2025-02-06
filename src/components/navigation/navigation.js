@@ -6,7 +6,7 @@ import UserDropdown from "./user_dropdown";
 const navigation = [
   // { name: "Strona Główna", href: "/", id: 0},
   { name: "Rowery", href: "/rowery", id: 1 },
-  //{ name: 'Serwis', href: 'serwis', id: 2},
+  { name: "Serwis", href: "/serwis", id: 2 },
   { name: "Zarządzanie", href: "/admin/login", id: 3 },
 ];
 
