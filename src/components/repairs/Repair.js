@@ -39,13 +39,12 @@ unit - there will be table for this. Basically pieces/meters/centimeters abbrevi
   The pieces (pcs. or szt.) unit will be whole number, rest floats
 */
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import PartRecord from "./PartRecord";
-import { useReactToPrint } from "react-to-print";
-import Link from "next/link";
 import { generateRepairCostsDoc, generateRepairNewDoc, printRepairDoc } from "@/util/print";
 import { formatPhone } from "@/util/formatting";
 import { useRouter } from "next/navigation";
+import { FaArrowLeft } from "react-icons/fa6";
 
 //Well it would look the same way if it had catalogue, maybe come category
 export default function Repair({ repair, updateRepair }) {
@@ -72,6 +71,24 @@ export default function Repair({ repair, updateRepair }) {
     });
   };
 
+  const updateService = (value) => {
+    setIsSaved(false);
+    setlocalRepair((prev) => {
+      const newServices = prev.services.map((service) => {
+        return service.id === id ? value.id : service;
+      });
+      return { ...prev, services: newServices };
+    });
+  };
+
+  const deleteService = (id) => {
+    setIsSaved(false);
+    setlocalRepair((prev) => {
+      const newServices = prev.services.filter((service) => service.id !== id);
+      return { ...prev, parts: newServices };
+    });
+  };
+
   const router = useRouter();
 
   const goBack = () => {
@@ -83,10 +100,10 @@ export default function Repair({ repair, updateRepair }) {
   };
 
   return (
-    <div>
-      <div className='flex'>
-        <button className='button-primary' onClick={goBack}>
-          Wróć
+    <div className='flex-col rounded-2xl h-full'>
+      <div className='flex bg-white rounded-t-xl border-gray-400 border-t-2 border-x-2 p-2'>
+        <button className='rounded-lg p-2 hover:bg-gray-300 transition-colors duration-200' onClick={goBack}>
+          <FaArrowLeft />
         </button>
         <div className='ml-auto flex gap-4'>
           <button className='button-primary'>Zapisz</button>
@@ -98,50 +115,85 @@ export default function Repair({ repair, updateRepair }) {
           </button>
         </div>
       </div>
-      <div>
-        <section className='flex-col'>
-          <div className='self-center text-center text-2xl'>
-            <b>
-              <h2>Zgłoszenie serwisowe #{localRepair.id}</h2>
-            </b>
+      <section className='bg-primary mb-10 p-4 rounded-b-xl border-gray-400 border-b-2 border-x-2 shadow-lg'>
+        <div className='text-left text-2xl my-4 pb-2'>
+          <b>
+            <h2>Zgłoszenie serwisowe #{localRepair.id}</h2>
+          </b>
+        </div>
+        <section className='flex place-content-between pb-4 mt-4'>
+          <div className='flex-col flex-1'>
+            <div>
+              <span className='block'>
+                <b>Data</b>
+              </span>
+              <span>{new Date(repair.date).toLocaleDateString("pl-PL")}</span>
+            </div>
+            <div>
+              <span className='block'>
+                <b>Telefon</b>
+              </span>
+              <span>{formatPhone(localRepair.phone)}</span>
+            </div>
+            <div>
+              <span className='block'>
+                <b>Rower</b>
+              </span>
+              <span>{localRepair.bike}</span>
+            </div>
+            <div>
+              <span className='block'>
+                <b>Treść</b>
+              </span>
+              <span>{localRepair.issue}</span>
+            </div>
           </div>
-          <div>
-            <span className='block'>
-              <b>Data</b>
-            </span>
-            <span>{new Date(repair.date).toLocaleDateString("pl-PL")}</span>
-          </div>
-          <div>
-            <span className='block'>
-              <b>Telefon</b>
-            </span>
-            <span>{formatPhone(localRepair.phone)}</span>
-          </div>
-          <div>
-            <span className='block'>
-              <b>Rower</b>
-            </span>
-            <span>{localRepair.bike}</span>
-          </div>
-          <div>
-            <span className='block'>
-              <b>Treść</b>
-            </span>
-            <span>{localRepair.issue}</span>
+          <div className='flex-col flex-1 justify-end'>
+            <div className='ml-auto w-fit'>
+              <b className='block'>Notatka</b>
+              <textarea
+                className='border-border border'
+                cols={50}
+                rows={10}
+                placeholder='Notatka'
+                value={localRepair.note}
+                onChange={(value) => {}}
+              />
+            </div>
           </div>
         </section>
-        <section>
-          <b>Usługi</b>
+      </section>
+      <section className='flex place-content-between gap-10'>
+        <div className='bg-primary w-full p-8 rounded-xl border-gray-400 border-2 shadow-lg'>
+          <b className='bg-secondary p-2 rounded-t-md'>Usługi</b>
           <table>
-            <thead></thead>
-            <tbody></tbody>
+            <thead className='bg-secondary'>
+              <tr className='*:p-2'>
+                <th>Lp.</th>
+                <th>Nazwa</th>
+                <th>Cena</th>
+                <th>Upust</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody className='even:bg-secondary'>
+              {localRepair.parts.map((service, index) => (
+                <PartRecord
+                  index={index}
+                  part={service}
+                  updateItem={updateService}
+                  deleteItem={deleteService}
+                  key={service.id}
+                />
+              ))}
+            </tbody>
           </table>
-        </section>
-        <section>
-          <b>Części</b>
+        </div>
+        <div className='bg-primary w-full p-8 rounded-xl border-gray-400 border-2 shadow-lg'>
+          <b className='bg-secondary p-2 rounded-t-md '>Części</b>
           <table>
-            <thead>
-              <tr>
+            <thead className='bg-secondary'>
+              <tr className='*:p-2'>
                 <th>Lp.</th>
                 <th>Nazwa</th>
                 <th>Cena</th>
@@ -150,15 +202,15 @@ export default function Repair({ repair, updateRepair }) {
                 <th></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className='even:bg-secondary'>
               {localRepair.parts.map((part, index) => (
-                <PartRecord index={index} part={part} updateItem={updatePart} deleteItem={deletePart} />
+                <PartRecord index={index} part={part} updateItem={updatePart} deleteItem={deletePart} key={part.id} />
               ))}
             </tbody>
           </table>
-          <button>Dodaj</button>
-        </section>
-      </div>
+          <button className='button-secondary'>Dodaj</button>
+        </div>
+      </section>
     </div>
   );
 }

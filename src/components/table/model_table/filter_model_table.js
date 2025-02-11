@@ -14,7 +14,7 @@ export default function FitlerModelTable() {
   const [query, setQuery] = useState();
   return (
     <div className='main-div'>
-      <div className='flex-1 grid grid-cols-6 bg-primary py-5 rounded-b-xl overflow-hidden flex-col'>
+      <div className='flex-1 grid grid-cols-6 py-5 rounded-b-xl overflow-hidden flex-col'>
         <FilterBlock setQuery={setQuery} />
         <ModelTable filterSrc={query} />
         <div className='fixed bottom-0 align-center  flex w-full pointer-events-none'>

@@ -2,6 +2,7 @@
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import { useQuery } from "@tanstack/react-query";
 import { Select } from "../input/select";
+import { FaCheck, FaXmark } from "react-icons/fa6";
 
 // Component that turns data fetch from 'src' to <option> list.
 // Data fetched should have unique key as first parameter and name as second
@@ -20,9 +21,9 @@ export default function ValidationFetchSelect({
   const Body = ({ children }) => {
     return (
       <div className={useRowStyle ? "flex flex-row justify-between" : "flex justify-center flex-col"}>
-        <div className='flex justify-center self-start flex-row'>
-          <p>{title}</p>
-          <img className='h-5 self-center px-2' src={value === default_option ? "/red_cross.png" : "/checkmark.png"} />
+        <div className='flex justify-center items-center self-start flex-row'>
+          <span className='mr-1'>{title}</span>
+          {value === default_option ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
         </div>
         <div
           className={

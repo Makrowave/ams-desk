@@ -11,6 +11,8 @@ import MainColorModal from "@/components/modals/record/model_change/main_color_m
 import { QUERY_KEYS } from "@/util/query_keys";
 import useAuth from "@/hooks/use_auth";
 import DeleteModal from "@/components/modals/delete_modal";
+import { FaBan, FaBarcode, FaLink, FaPalette, FaPenToSquare, FaPlus, FaRegCircleXmark } from "react-icons/fa6";
+import ExpandButton from "@/components/buttons/ExpandButton";
 /**
  * Row containing more data about model and buttons to edit model's data.
  * @param {Object} props - Props.
@@ -32,111 +34,101 @@ export function SubRowData({ model, placeId }) {
   return (
     <div className='mx-8 flex border-y-2 space-x-4 border-border py-2 items-center'>
       {color.data === undefined ? (
-        <img className='h-6 w-6 min-h-6 min-w-6 self-center' src='/missing.png' />
+        <FaBan className='h-6 w-6' />
       ) : (
-        <div
-          className='h-6 w-6 min-h-6 min-w-6 rounded-md'
-          style={{
-            background: color.data.hexCode,
-          }}
-        />
+        <div className='h-6 w-6 min-h-6 min-w-6 rounded-md' style={{ background: color.data.hexCode }} />
       )}
-      <div>
-        <span>EAN: </span>
-        <span>{model.eanCode}</span>
-      </div>
-      <div>
-        <span>Kod: </span>
-        <span>{model.productCode}</span>
-      </div>
-      <div>
-        <button
-          className='button-secondary'
-          onClick={() => {
-            setModalChildren(<AddBikeModal modelId={model.modelId} placeId={placeId} />);
-            setTitle("Dodaj rower");
-            setIsOpen(true);
-          }}
-        >
-          Dodaj
-        </button>
-      </div>
-      <div>
-        <button
-          className='button-secondary'
-          onClick={() => {
-            setModalChildren(<ColorModal model={model} />);
-            setTitle("Zmień kolor");
-            setIsOpen(true);
-          }}
-        >
-          Zmień kolor
-        </button>
-      </div>
-      <div>
-        <button
-          className='button-secondary'
-          onClick={() => {
-            setModalChildren(<AddLinkModal model={model} />);
-            setTitle("Zmień link");
-            setIsOpen(true);
-          }}
-        >
-          Zmień link
-        </button>
-      </div>
-      <div>
-        <button
-          className='button-secondary'
-          onClick={() => {
-            setModalChildren(<AddEanModal model={model} />);
-            setTitle("Zmień EAN");
-            setIsOpen(true);
-          }}
-        >
-          Zmień EAN
-        </button>
-      </div>
-      <div>
-        <button
-          className='button-secondary'
-          onClick={() => {
-            setModalChildren(<MainColorModal model={model} />);
-            setTitle("Przydziel Kolor");
-            setIsOpen(true);
-          }}
-        >
-          Przydziel kolor
-        </button>
-      </div>
-      <div>
-        <button
-          className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
-          onClick={() => {
-            setModalChildren(<ChangeModelModal model={model} />);
-            setTitle("Zmień dane roweru");
-            setIsOpen(true);
-          }}
-        >
-          Zmień dane
-        </button>
-      </div>
-      {isAdmin && (
-        <div>
-          <button
-            className='bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary'
-            onClick={() => {
-              setModalChildren(
-                <DeleteModal id={model.modelId} admin={true} refetchQueryKey={QUERY_KEYS.Models} url={"/Models/"} />
-              );
-              setTitle("Usuń model");
-              setIsOpen(true);
-            }}
-          >
-            Usuń
-          </button>
+      <div className='flex justify-between items-center w-full'>
+        <div className='flex'>
+          <div className='flex-col mr-10'>
+            <span className='block text-gray-400 text-left text-sm'>EAN </span>
+            <span className='block'>{model.eanCode}</span>
+          </div>
+          <div className='flex-col'>
+            <span className='block text-gray-400 text-left text-sm'>Kod: </span>
+            <span className='block'>{model.productCode}</span>
+          </div>
         </div>
-      )}
+        <div className='flex'>
+          <div className='border-border border-r px-1'>
+            <ExpandButton
+              text='Dodaj'
+              onClick={() => {
+                setModalChildren(<AddBikeModal modelId={model.modelId} placeId={placeId} />);
+                setTitle("Dodaj rower");
+                setIsOpen(true);
+              }}
+            >
+              <FaPlus />
+            </ExpandButton>
+          </div>
+          <div className='border-border border-r px-1'>
+            <ExpandButton
+              text='Zmień kolor'
+              onClick={() => {
+                setModalChildren(<ColorModal model={model} />);
+                setTitle("Zmień kolor");
+                setIsOpen(true);
+              }}
+            >
+              <FaPalette />
+            </ExpandButton>
+          </div>
+          <div className='border-border border-r px-1'>
+            <ExpandButton
+              text='Zmień link'
+              onClick={() => {
+                setModalChildren(<AddLinkModal model={model} />);
+                setTitle("Zmień link");
+                setIsOpen(true);
+              }}
+            >
+              <FaLink />
+            </ExpandButton>
+          </div>
+          <div className='border-border border-r px-1'>
+            <ExpandButton
+              text='Zmień EAN'
+              onClick={() => {
+                setModalChildren(<AddEanModal model={model} />);
+                setTitle("Zmień EAN");
+                setIsOpen(true);
+              }}
+            >
+              <FaBarcode />
+            </ExpandButton>
+          </div>
+          <div className='px-1'>
+            <ExpandButton
+              text='Zmień dane'
+              onClick={() => {
+                setModalChildren(<ChangeModelModal model={model} />);
+                setTitle("Zmień dane roweru");
+                setIsOpen(true);
+              }}
+            >
+              <FaPenToSquare />
+            </ExpandButton>
+          </div>
+          {isAdmin && (
+            <div className='border-border border-l px-1'>
+              <ExpandButton
+                text='Usuń'
+                className='text-red-600 hover:bg-red-300'
+                onClick={() => {
+                  setModalChildren(
+                    <DeleteModal id={model.modelId} admin={true} refetchQueryKey={QUERY_KEYS.Models} url={"/Models/"} />
+                  );
+                  setTitle("Usuń model");
+                  setIsOpen(true);
+                }}
+              >
+                <FaRegCircleXmark />
+              </ExpandButton>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

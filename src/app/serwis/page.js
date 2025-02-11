@@ -7,8 +7,10 @@ export default function Serwis() {
     <PrivateRoute>
       <Navigation active={2} />
       <main>
-        <div className='main-div bg-primary px-12 py-6'>
-          <RepairTable />
+        <div className='main-div bg-gray-200 px-12 py-6 flex-col items-center'>
+          <div className='mt-4 bg-white rounded-xl p-8 w-fit'>
+            <RepairTable />
+          </div>
         </div>
       </main>
     </PrivateRoute>

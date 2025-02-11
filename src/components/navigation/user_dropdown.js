@@ -4,6 +4,7 @@ import { useState } from "react";
 import PasswordModal from "../modals/auth/password_modal";
 import AdminPasswordModal from "../modals/auth/admin_password_modal";
 import UserPasswordModal from "../modals/auth/user_password_modal";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 //Maybe create admin UserDropdown
 export default function UserDropdown() {
   const { user, admin, logout, logoutAdmin, isAdmin } = useAuth();
@@ -21,7 +22,7 @@ export default function UserDropdown() {
       >
         <div className='flex items-center justify-center h-full'>
           <span className='text-2xl h-full leading-loose'>{isAdmin ? admin.username : user.username}</span>
-          <img src='/chevron.png' className='h-2 ml-2' />
+          {isClicked ? <FaChevronUp className='ml-2' /> : <FaChevronDown className='ml-2' />}
         </div>
       </div>
       {isClicked && (

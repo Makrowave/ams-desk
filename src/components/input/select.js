@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { FaChevronDown } from "react-icons/fa6";
 
 /**
  * @param {Object} props - Props for the select
@@ -95,11 +96,11 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
     <div ref={selectRef} className={isRow ? "flex w-1/2 flex-col relative h-8" : "flex flex-1 flex-col relative h-8"}>
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className={"text-center bg-primary border-2 border-tertiary rounded w-full select-none flex h-8"}
+        className='text-center bg-primary border-2 border-tertiary rounded w-full select-none flex h-8 justify-center items-center px-2'
       >
         {isColored && <div className='w-9 border-tertiary border-r' style={{ background: color }}></div>}
         <span className='mx-auto'>{value}</span>
-        <img src='/chevron.png' className='h-1 self-center mr-2' />
+        <FaChevronDown />
       </div>
       {isOpen && (
         <div className='flex flex-1 flex-col border-border border w-full absolute z-10 max-h-44 overflow-auto'>

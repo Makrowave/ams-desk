@@ -14,8 +14,10 @@ export function BikeSubrecord({ placeCount, model, placeId }) {
     <>
       <tr className='odd:bg-secondary even:bg-primary border-b-2 border-x-2 border-border drop-shadow-md'>
         <td colSpan={5 + placeCount}>
-          <SubRowData model={model} placeId={placeId} />
-          <SubBikeTable model={model} placeId={placeId} />
+          <div>
+            <SubRowData model={model} placeId={placeId} />
+            <SubBikeTable model={model} placeId={placeId} />
+          </div>
         </td>
       </tr>
       <tr>

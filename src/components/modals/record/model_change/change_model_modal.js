@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { REGEX } from "@/util/regex";
 import { QUERY_KEYS } from "@/util/query_keys";
+import { FaCheck, FaXmark } from "react-icons/fa6";
 
 export default function ChangeModelModal({ model }) {
   const modelId = model.modelId;
@@ -113,9 +114,9 @@ export default function ChangeModelModal({ model }) {
       <ErrorDisplay message={error} isVisible={error !== ""} />
       <div>
         <div className='flex justify-between'>
-          <div className='flex'>
-            <span>Nazwa</span>
-            <img className='h-5 self-center px-2' src={validName ? "/checkmark.png" : "/red_cross.png"} />
+          <div className='flex justify-center items-center'>
+            <span className='mr-1'>Nazwa</span>
+            {validName ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
           </div>
           <input
             className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
@@ -128,9 +129,9 @@ export default function ChangeModelModal({ model }) {
       </div>
       <div>
         <div className='flex justify-between'>
-          <div className='flex'>
-            <span className='text-nowrap'>Kod producenta</span>
-            <img className='h-5 self-center px-2' src={validProductCode ? "/checkmark.png" : "/red_cross.png"} />
+          <div className='flex justify-center items-center'>
+            <span className='text-nowrap mr-1'>Kod producenta</span>
+            {validProductCode ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
           </div>
           <input
             className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
@@ -143,9 +144,9 @@ export default function ChangeModelModal({ model }) {
       </div>
       <div>
         <div className='flex justify-between'>
-          <div className='flex'>
-            <span>Rozmiar ramy</span>
-            <img className='h-5 self-center px-2' src={validFrameSize ? "/checkmark.png" : "/red_cross.png"} />
+          <div className='flex items-center justify-center'>
+            <span className='mr-1'>Rozmiar ramy</span>
+            {validFrameSize ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
           </div>
           <input
             className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
@@ -170,9 +171,9 @@ export default function ChangeModelModal({ model }) {
       </div>
       <div>
         <div className='flex justify-between'>
-          <div className='flex'>
-            <span>Cena</span>
-            <img className='h-5 self-center px-2' src={validPrice ? "/checkmark.png" : "/red_cross.png"} />
+          <div className='flex justify-center items-center'>
+            <span className='mr-1'>Cena</span>
+            {validPrice ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
           </div>
           <input
             className='self-end  text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'

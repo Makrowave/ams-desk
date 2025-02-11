@@ -9,7 +9,8 @@ export default function Rowery() {
     //overflow auto main
     <PrivateRoute>
       <Navigation active={1} />
-      <main className='max-h-screen overflow-hidden'>
+      <main>
+        {/* <main className='max-h-screen overflow-hidden'> */}
         <FitlerModelTable />
       </main>
       <Modal />

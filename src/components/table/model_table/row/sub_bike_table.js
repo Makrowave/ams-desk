@@ -8,6 +8,16 @@ import SellModal from "@/components/modals/record/bike_change/sell_modal";
 import StatusModal from "@/components/modals/record/bike_change/status_modal";
 import DeleteModal from "@/components/modals/delete_modal";
 import { QUERY_KEYS } from "@/util/query_keys";
+import ExpandButton from "@/components/buttons/ExpandButton";
+import {
+  FaArrowRight,
+  FaCircleInfo,
+  FaCircleXmark,
+  FaMoneyBill,
+  FaRegCircleXmark,
+  FaWrench,
+  FaXmark,
+} from "react-icons/fa6";
 /**
  * Renders table of bikes with buttons that open modals and allow to edit bikes.
  * @param {Object} props - Props.
@@ -93,83 +103,85 @@ export function SubBikeTable({ model, placeId }) {
   }
 
   return (
-    <table className='table-fixed w-full mx-8'>
-      <thead>
-        <th className='w-10'>Lp.</th>
-        <th className='w-fit'>Miejsce</th>
-        <th className='w-2/12'>Status</th>
-        <th className='w-2/12'>Złożony przez</th>
-        <th className='w-4/12'></th>
-        {/*Move*/}
-        <th></th>
-      </thead>
-      {data.map((bike, index) => (
-        <tr key={bike.id} className='border-y border-border last:border-b-0 h-10'>
-          <td>{index + 1}</td>
-          <td>{placeData?.find((place) => place.placeId === bike.place)?.placeName}</td>
-          <td className={statusColor(bike.statusId) + " border-border border-x border-b"}>
-            {statusData?.find((status) => status.statusId === bike.statusId)?.statusName}
-          </td>
-          <td>{employeeData?.find((employee) => employee.employeeId === bike.assembledBy)?.employeeName ?? "Brak"}</td>
-          <td>
-            <div className='flex *:mx-2'>
-              <button
-                className='button-secondary'
-                onClick={() => {
-                  setModalChildren(<MoveModal refetch={refetch} bikeId={bike.id} />);
-                  setTitle("Przenieś rower");
-                  setIsOpen(true);
-                }}
-              >
-                Przenieś
-              </button>
-              <button
-                className='button-secondary'
-                onClick={() => {
-                  setModalChildren(<AssembleModal refetch={refetch} bikeId={bike.id} />);
-                  setTitle("Złóż rower");
-                  setIsOpen(true);
-                }}
-              >
-                Złóż
-              </button>
-              <button
-                className='button-secondary'
-                onClick={() => {
-                  setModalChildren(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} />);
-                  setTitle("Sprzedaj rower");
-                  setIsOpen(true);
-                }}
-              >
-                Sprzedaj
-              </button>
-              <button
-                className='button-secondary'
-                onClick={() => {
-                  setModalChildren(<StatusModal refetch={refetch} bikeId={bike.id} />);
-                  setTitle("Zmień status");
-                  setIsOpen(true);
-                }}
-              >
-                Zmień status
-              </button>
-              <button
-                className='button-secondary'
-                onClick={() => {
-                  setModalChildren(
-                    <DeleteModal id={bike.id} url='/Bikes/' refetchQueryKey={QUERY_KEYS.Bikes} admin={false} />
-                  );
-                  setTitle("Usuń rower");
-                  setIsOpen(true);
-                }}
-              >
-                Usuń
-              </button>
-            </div>
-          </td>
-          <td></td>
-        </tr>
-      ))}
-    </table>
+    <div className='mx-8'>
+      <table className='table-fixed w-full'>
+        <thead className='*:py-3'>
+          <th className='w-10'>Lp.</th>
+          <th className='w-1/12'>Miejsce</th>
+          <th className='w-2/12'>Status</th>
+          <th className='w-2/12'>Złożony przez</th>
+          <th className='w-fit'></th>
+        </thead>
+        {data.map((bike, index) => (
+          <tr key={bike.id} className='border-y border-gray-400 last:border-b-0 h-10'>
+            <td>{index + 1}</td>
+            <td>{placeData?.find((place) => place.placeId === bike.place)?.placeName}</td>
+            <td className={statusColor(bike.statusId) + " border-gray-400 border-x border-b"}>
+              {statusData?.find((status) => status.statusId === bike.statusId)?.statusName}
+            </td>
+            <td>
+              {employeeData?.find((employee) => employee.employeeId === bike.assembledBy)?.employeeName ?? "Brak"}
+            </td>
+            <td>
+              <div className='flex justify-end space-x-1'>
+                <ExpandButton
+                  text='Przenieś'
+                  onClick={() => {
+                    setModalChildren(<MoveModal refetch={refetch} bikeId={bike.id} />);
+                    setTitle("Przenieś rower");
+                    setIsOpen(true);
+                  }}
+                >
+                  <FaArrowRight />
+                </ExpandButton>
+                <ExpandButton
+                  text='Złóż'
+                  onClick={() => {
+                    setModalChildren(<AssembleModal refetch={refetch} bikeId={bike.id} />);
+                    setTitle("Złóż rower");
+                    setIsOpen(true);
+                  }}
+                >
+                  <FaWrench />
+                </ExpandButton>
+                <ExpandButton
+                  text='Sprzedaj'
+                  onClick={() => {
+                    setModalChildren(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} />);
+                    setTitle("Sprzedaj rower");
+                    setIsOpen(true);
+                  }}
+                >
+                  <FaMoneyBill />
+                </ExpandButton>
+                <ExpandButton
+                  text='Zmień status'
+                  onClick={() => {
+                    setModalChildren(<StatusModal refetch={refetch} bikeId={bike.id} />);
+                    setTitle("Zmień status");
+                    setIsOpen(true);
+                  }}
+                >
+                  <FaCircleInfo />
+                </ExpandButton>
+                <ExpandButton
+                  text='Usuń'
+                  className='text-red-600 hover:bg-red-300 '
+                  onClick={() => {
+                    setModalChildren(
+                      <DeleteModal id={bike.id} url='/Bikes/' refetchQueryKey={QUERY_KEYS.Bikes} admin={false} />
+                    );
+                    setTitle("Usuń rower");
+                    setIsOpen(true);
+                  }}
+                >
+                  <FaRegCircleXmark />
+                </ExpandButton>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </table>
+    </div>
   );
 }

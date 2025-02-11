@@ -1,5 +1,6 @@
 import useModal from "@/hooks/use_modal";
 import "./modal.css";
+import { FaXmark } from "react-icons/fa6";
 /**
  * Modal component which creates a popup with dimmer background.
  * To use modal you have to use it within ModalContextProvider.
@@ -35,8 +36,8 @@ export default function Modal() {
                 <h2 className='leading-10'>
                   <b>{title}</b>
                 </h2>
-                <button className='flex align-center ' onClick={() => handleClose()}>
-                  <img className='h-5 self-center px-1' src='/close.png' />
+                <button className='flex align-center items-center' onClick={() => handleClose()}>
+                  <FaXmark />
                 </button>
               </div>
               {/*Content*/}

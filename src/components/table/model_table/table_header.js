@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 
 /**
  * ModelTable's header. It consists of sortable buttons generated
@@ -107,14 +108,9 @@ function SortButton({ onClick, activeId, id, criterionName, subValue, defeaultIs
   //Renders chevron next to title if active
   return (
     <button className='w-full' onClick={() => handleChange()}>
-      <div className='flex place-content-center'>
+      <div className='flex place-content-center items-center'>
         {title}
-        {activeId === id && (
-          <img
-            className={isAscending ? "h-2 self-center ml-2" : "h-2 self-center ml-2 rotate-180"}
-            src='/chevron.png'
-          />
-        )}
+        {activeId === id && (isAscending ? <FaChevronDown className='ml-1' /> : <FaChevronUp className='ml-1' />)}
       </div>
     </button>
   );

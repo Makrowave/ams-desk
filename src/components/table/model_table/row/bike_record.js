@@ -3,6 +3,7 @@ import { BikeSubrecord } from "./bike_subrecord";
 import { useState } from "react";
 import ExternalLink from "../../../navigation/external_link";
 import "../../table.css";
+import { FaBan } from "react-icons/fa6";
 /**
  * Model preview - when clicked it opens or closes detailed info and bike info <BikeSubrecord>.
  * @param {Object} props - Props
@@ -36,7 +37,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
           setClicked(!clicked);
         }}
       >
-        <td className='text-left pl-8 flex min-h-10 place-center align-center'>
+        <td className='text-left pl-8 flex min-h-10 place-center items-center align-center'>
           <ColorPreview primaryColor={model.primaryColor} secondaryColor={model.secondaryColor} />
           <div className='self-center'>
             <ExternalLink disabled={model.link === null} href={model.link}>
@@ -63,11 +64,7 @@ export default function BikeRecord({ model, placeCount, placeId }) {
  */
 function ColorPreview({ primaryColor, secondaryColor }) {
   return primaryColor === null || secondaryColor === null ? (
-    <img
-      src='/missing.png'
-      className='self-center mr-3'
-      style={{ height: 24, width: 24, minHeight: 24, minWidth: 24 }}
-    />
+    <FaBan className='h-6 w-6 mr-3' />
   ) : (
     <div
       style={{

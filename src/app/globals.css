@@ -18,8 +18,7 @@
 } */
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  @apply bg-gray-200;
   font-size: x-large;
 }
 
@@ -39,6 +38,18 @@ body {
 .button-primary {
   @apply bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary;
 }
-.main-div {
+/* .main-div {
   @apply h-screen flex flex-col overflow-hidden max-w-1920 m-auto;
+} */
+
+.main-div {
+  @apply h-screen flex flex-col max-w-1920 m-auto;
+}
+
+tr:last-child td:first-child {
+  @apply rounded-bl-lg;
+}
+
+tr:last-child td:last-child {
+  @apply rounded-br-lg;
 }

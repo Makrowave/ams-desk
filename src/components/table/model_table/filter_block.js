@@ -92,10 +92,10 @@ export default function FilterBlock({ setQuery }) {
   }
 
   return (
-    <div className='col-span-1 h-full overflow-y-auto m-4 bg-primary flex flex-col '>
+    <div className='mb-10 col-span-1 overflow-y-auto bg-primary flex flex-col pb-4 pr-4 pl-4 rounded-xl border-2 border-gray-400'>
       {/* Title */}
       <div className='flex justify-center sticky top-0 bg-primary z-30'>
-        <div className='flex justify-center text-2xl w-3/5 border-border border-b pb-1 mb'>
+        <div className='flex justify-center text-2xl w-3/5 pb-1 mb pt-4'>
           <h2>
             <b>Filtry</b>
           </h2>

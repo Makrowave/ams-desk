@@ -10,7 +10,7 @@ export default function RepairPage({ params }) {
     <PrivateRoute>
       <Navigation active={2} />
       <main>
-        <div className='main-div bg-primary px-12 py-6'>
+        <div className='main-div bg-gray-200 px-12 py-6'>
           <Repair repair={repair} />
         </div>
       </main>

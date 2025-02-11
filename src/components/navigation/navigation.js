@@ -17,7 +17,7 @@ export default function Navigation({ active }) {
 
   return (
     <nav className=''>
-      <div className='max-w-1920 m-auto flex items-center bg-primary border-b-2 border-tertiary h-12'>
+      <div className='m-auto flex items-center bg-white h-12'>
         <div className='flex items-center h-full'>{navItems}</div>
         <div className='ml-auto h-full'>
           <UserDropdown />
