@@ -1,7 +1,7 @@
 "use client";
-import Navigation from "@/components/navigation/navigation";
+import Navigation from "@/components/navigation/Navigation";
 import Repair from "@/components/repairs/Repair";
-import PrivateRoute from "@/components/routing/private_route";
+import PrivateRoute from "@/components/routing/PrivateRoute";
 
 export default function RepairPage({ params }) {
   const { id } = params;

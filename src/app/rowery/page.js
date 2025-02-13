@@ -1,8 +1,8 @@
 "use client";
-import Navigation from "../../components/navigation/navigation";
-import Modal from "@/components/modals/modal";
-import PrivateRoute from "@/components/routing/private_route";
-import FitlerModelTable from "@/components/table/model_table/filter_model_table";
+import Navigation from "../../components/navigation/Navigation";
+import Modal from "@/components/modals/Modal";
+import PrivateRoute from "@/components/routing/PrivateRoute";
+import FitlerModelTable from "@/components/table/model_table/FilterModelTable";
 
 export default function Rowery() {
   return (

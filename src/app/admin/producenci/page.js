@@ -1,12 +1,12 @@
 "use client";
-import CategoryModal from "@/components/modals/admin/category_modal";
-import ManufacturerModal from "@/components/modals/admin/manufacturer_modal";
-import Modal from "@/components/modals/modal";
-import Navigation from "@/components/navigation/navigation";
-import SideBar from "@/components/navigation/side_bar";
-import AdminRoute from "@/components/routing/admin_route";
-import ManufacturerTable from "@/components/table/manufacturer_table/manufacturer_table";
-import useModal from "@/hooks/use_modal";
+import CategoryModal from "@/components/modals/admin/CategoryModal";
+import ManufacturerModal from "@/components/modals/admin/ManufacturerModal";
+import Modal from "@/components/modals/Modal";
+import Navigation from "@/components/navigation/Navigation";
+import SideBar from "@/components/navigation/SideBar";
+import AdminRoute from "@/components/routing/AdminRoute";
+import ManufacturerTable from "@/components/table/manufacturer/ManufacturerTable";
+import useModal from "@/hooks/useModal";
 
 export default function CategoriesPanel() {
   const { setIsOpen, setModalChildren, setTitle } = useModal();

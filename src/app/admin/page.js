@@ -1,9 +1,9 @@
 "use client";
-import Modal from "@/components/modals/modal";
-import Navigation from "@/components/navigation/navigation";
-import SideBar from "@/components/navigation/side_bar";
-import AdminRoute from "@/components/routing/admin_route";
-import useAuth from "@/hooks/use_auth";
+import Modal from "@/components/modals/Modal";
+import Navigation from "@/components/navigation/Navigation";
+import SideBar from "@/components/navigation/SideBar";
+import AdminRoute from "@/components/routing/AdminRoute";
+import useAuth from "@/hooks/useAuth";
 import Link from "next/link";
 
 export default function AdminPanel() {

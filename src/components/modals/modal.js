@@ -1,4 +1,4 @@
-import useModal from "@/hooks/use_modal";
+import useModal from "@/hooks/useModal";
 import "./modal.css";
 import { FaXmark } from "react-icons/fa6";
 /**

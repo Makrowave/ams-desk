@@ -1,10 +1,10 @@
 "use client";
-import Modal from "@/components/modals/modal";
-import Navigation from "@/components/navigation/navigation";
-import SideBar from "@/components/navigation/side_bar";
-import AdminRoute from "@/components/routing/admin_route";
-import PrivateRoute from "@/components/routing/private_route";
-import FitlerModelTable from "@/components/table/model_table/filter_model_table";
+import Modal from "@/components/modals/Modal";
+import Navigation from "@/components/navigation/Navigation";
+import SideBar from "@/components/navigation/SideBar";
+import AdminRoute from "@/components/routing/AdminRoute";
+import PrivateRoute from "@/components/routing/PrivateRoute";
+import FitlerModelTable from "@/components/table/model_table/FilterModelTable";
 
 export default function BikesPanel() {
   return (

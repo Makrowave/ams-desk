@@ -1,7 +1,7 @@
 "use client";
-import useAuth from "@/hooks/use_auth";
-import NavButton from "../../components/navigation/nav_button";
-import UserDropdown from "./user_dropdown";
+import useAuth from "@/hooks/useAuth";
+import NavButton from "./NavButton";
+import UserDropdown from "./UserDropdown";
 
 const navigation = [
   // { name: "Strona Główna", href: "/", id: 0},

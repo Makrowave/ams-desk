@@ -1,11 +1,11 @@
 "use client";
-import ColorModal from "@/components/modals/admin/color_modal";
-import Modal from "@/components/modals/modal";
-import Navigation from "@/components/navigation/navigation";
-import SideBar from "@/components/navigation/side_bar";
-import AdminRoute from "@/components/routing/admin_route";
-import ColorTable from "@/components/table/color_table/color_table";
-import useModal from "@/hooks/use_modal";
+import ColorModal from "@/components/modals/admin/ColorModal";
+import Modal from "@/components/modals/Modal";
+import Navigation from "@/components/navigation/Navigation";
+import SideBar from "@/components/navigation/SideBar";
+import AdminRoute from "@/components/routing/AdminRoute";
+import ColorTable from "@/components/table/color/ColorTable";
+import useModal from "@/hooks/useModal";
 
 export default function ColorsPanel() {
   const { setIsOpen, setModalChildren, setTitle } = useModal();
@@ -16,7 +16,7 @@ export default function ColorsPanel() {
         <SideBar baseUrl={"/admin"} active={4}></SideBar>
         <div className='main-div bg-primary px-16 py-4'>
           <h2 className='text-3xl'>Kolory</h2>
-          <div className="overflow-y-auto max-h-[600px] w-4/12 min-w-[600px]">
+          <div className='overflow-y-auto max-h-[600px] w-4/12 min-w-[600px]'>
             <ColorTable />
           </div>
           <div className='mt-4'>

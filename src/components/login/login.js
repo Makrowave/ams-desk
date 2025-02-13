@@ -1,10 +1,10 @@
 "use client";
-import useAuth from "@/hooks/use_auth";
+import useAuth from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import LoginForm from "./login_form";
+import LoginForm from "./LoginForm";
 import axios from "@/api/axios";
-import useRefreshUser from "@/hooks/use_refresh_user";
+import useRefreshUser from "@/hooks/useRefreshUser";
 import { REGEX } from "@/util/regex";
 export default function Login() {
   const [attemtedLogin, setAttemptedLogin] = useState(false);

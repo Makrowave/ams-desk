@@ -1,14 +1,14 @@
 "use client";
-import EmployeeModal from "@/components/modals/admin/employee_modal";
-import LogoutModal from "@/components/modals/admin/logout_modal";
-import UserModal from "@/components/modals/admin/user_modal";
-import Modal from "@/components/modals/modal";
-import Navigation from "@/components/navigation/navigation";
-import SideBar from "@/components/navigation/side_bar";
-import AdminRoute from "@/components/routing/admin_route";
-import AccountTable from "@/components/table/account_table/account_table";
-import EmployeeTable from "@/components/table/employee_table/employee_table";
-import useModal from "@/hooks/use_modal";
+import EmployeeModal from "@/components/modals/admin/EmployeeModal";
+import LogoutModal from "@/components/modals/admin/LogoutModal";
+import UserModal from "@/components/modals/admin/UserModal";
+import Modal from "@/components/modals/Modal";
+import Navigation from "@/components/navigation/Navigation";
+import SideBar from "@/components/navigation/SideBar";
+import AdminRoute from "@/components/routing/AdminRoute";
+import AccountTable from "@/components/table/account/AccountTable";
+import EmployeeTable from "@/components/table/employee/EmployeeTable";
+import useModal from "@/hooks/useModal";
 export default function EmployeesPanel() {
   const { setIsOpen, setModalChildren, setTitle } = useModal();
   return (

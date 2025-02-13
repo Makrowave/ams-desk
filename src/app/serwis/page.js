@@ -1,5 +1,5 @@
-import PrivateRoute from "@/components/routing/private_route";
-import Navigation from "../../components/navigation/navigation";
+import PrivateRoute from "@/components/routing/PrivateRoute";
+import Navigation from "../../components/navigation/Navigation";
 import RepairTable from "@/components/repairs/RepairTable";
 
 export default function Serwis() {
