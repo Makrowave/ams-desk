@@ -14,7 +14,7 @@ export default function AddLinkModal({ model }) {
   const { setIsOpen } = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.put("/Models/" + model.modelId, JSON.stringify({ link: link.toString() }), {
+      return await axiosPrivate.put("/Models/" + model.modelId, JSON.stringify({ ...model, link: link.toString() }), {
         headers: { "Content-Type": "application/json" },
       });
     },

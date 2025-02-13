@@ -17,12 +17,12 @@ export default function ColorInput({ title, value, setValue }) {
     };
   }, []);
   return (
-    <div className={"flex justify-between "}>
+    <div className='flex justify-between'>
       <p className='self-center'>{title}</p>
       <div ref={selectRef}>
         <button className='h-10 w-10' onClick={() => setIsOpen(!isOpen)} style={{ background: value }} />
         {isOpen && (
-          <ChromePicker className='absolute' color={value} onChange={(e) => setValue(e.hex)} disableAlpha={true} />
+          <ChromePicker className='absolute z-10' color={value} onChange={(e) => setValue(e.hex)} disableAlpha={true} />
         )}
       </div>
     </div>

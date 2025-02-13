@@ -62,6 +62,7 @@ export default function ChangeModelModal({ model }) {
       return await axiosPrivate.put(
         _url + modelId,
         JSON.stringify({
+          ...model,
           productCode: productCode,
           modelName: name,
           frameSize: frameSize,

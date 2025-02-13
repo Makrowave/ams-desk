@@ -23,7 +23,7 @@ export default function ValidationFetchSelect({
       <div className={useRowStyle ? "flex flex-row justify-between" : "flex justify-center flex-col"}>
         <div className='flex justify-center items-center self-start flex-row'>
           <span className='mr-1'>{title}</span>
-          {value === default_option ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
+          {value === default_option ? <FaXmark className='text-red-600' /> : <FaCheck className='text-green-500' />}
         </div>
         <div
           className={

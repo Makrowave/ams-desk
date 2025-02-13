@@ -1,4 +1,5 @@
 import ColorInput from "@/components/input/color_input";
+import ValidationFetchSelect from "@/components/validation/validation_fetch_select";
 import useAxiosPrivate from "@/hooks/use_axios_private";
 import useModal from "@/hooks/use_modal";
 import { QUERY_KEYS } from "@/util/query_keys";
@@ -10,6 +11,7 @@ import { useState } from "react";
 export default function ColorModal({ model }) {
   const [primaryColor, setPrimaryColor] = useState(!!model.primaryColor ? model.primaryColor : "#FF00FF");
   const [secondaryColor, setSecondaryColor] = useState(!!model.secondaryColor ? model.secondaryColor : "#000000");
+  const [color, setColor] = useState(model.colorId);
   const { setIsOpen } = useModal();
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
@@ -18,6 +20,8 @@ export default function ColorModal({ model }) {
       return await axiosPrivate.put(
         "/Models/" + model.modelId,
         JSON.stringify({
+          ...model,
+          colorId: color,
           primaryColor: primaryColor,
           secondaryColor: secondaryColor,
         }),
@@ -38,6 +42,12 @@ export default function ColorModal({ model }) {
     },
   });
 
+  function validate() {
+    let result = color !== "";
+    if (!result) setError("Nie wybrano koloru z listy");
+    return result;
+  }
+
   return (
     <div className='modal-basic'>
       <div>
@@ -45,10 +55,20 @@ export default function ColorModal({ model }) {
       </div>
       <ColorInput title='Kolor główny' value={primaryColor} setValue={setPrimaryColor} />
       <ColorInput title='Kolor dodatkowy' value={secondaryColor} setValue={setSecondaryColor} />
+      <ValidationFetchSelect
+        value={color}
+        onChange={setColor}
+        src='/Colors'
+        queryKey={QUERY_KEYS.Colors}
+        default_option={""}
+        title='Kolor'
+        default_title='Wybierz z listy'
+        isColored={true}
+      />
       <button
         className='button-secondary self-center mt-auto mb-4'
         onClick={() => {
-          mutation.mutate();
+          if (validate()) mutation.mutate();
         }}
       >
         Zmień kolor
