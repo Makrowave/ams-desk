@@ -1,6 +1,8 @@
+"use client";
 import PrivateRoute from "@/components/routing/PrivateRoute";
 import Navigation from "../../components/navigation/Navigation";
 import RepairTable from "@/components/repairs/RepairTable";
+import Modal from "@/components/modals/Modal";
 
 export default function Serwis() {
   return (
@@ -13,6 +15,7 @@ export default function Serwis() {
           </div>
         </div>
       </main>
+      <Modal />
     </PrivateRoute>
   );
 }

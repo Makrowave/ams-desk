@@ -1,7 +1,11 @@
+"use client";
+import { FaPlus } from "react-icons/fa6";
 import RepairRecord from "./RepairRecord";
+import useModal from "@/hooks/useModal";
+import NewRepairModal from "../modals/record/repair/NewRepairModal";
 
 export default function RepairTable({}) {
-  const sampleData = [
+  const repairs = [
     {
       id: 1,
       phone: "909303303",
@@ -48,25 +52,51 @@ export default function RepairTable({}) {
     },
   ];
 
+  const { setIsOpen, setModalChildren, setTitle } = useModal();
+
   return (
     <div>
-      <table className='w-[1000px] border-separate border-spacing-0 border-lime-600 border rounded-lg *:*:*:p-4'>
-        <thead>
-          <tr className=' *:bg-lime-300'>
-            <th className='rounded-tl-lg'>Nr.</th>
-            <th>Data</th>
-            <th>Telefon</th>
-            <th>Status</th>
-            <th>Miejsce</th>
-            <th className='rounded-tr-lg'></th>
-          </tr>
-        </thead>
-        <tbody className=''>
-          {sampleData.map((row, index) => (
-            <RepairRecord last={index === sampleData.length - 1} repair={row} key={row.id} />
-          ))}
-        </tbody>
-      </table>
+      <div className='flex justify-between items-center h-12'>
+        <div className='flex h-full'>
+          <div className='p-2 bg-secondary w-fit rounded-t-lg h-full'>Wojc</div>
+          <div className='p-2 bg-primary w-fit rounded-t-lg'>Gala</div>
+          <div className='p-2 bg-primary w-fit rounded-t-lg'>Gęsia</div>
+        </div>
+        <div className='flex items-center'>
+          <div className='flex p-2'>
+            <input className='border-border border rounded-lg w-32 text-center' placeholder='Telefon' />
+          </div>
+          <button
+            className='flex justify-center items-center hover:bg-gray-400 transition-colors duration-200 rounded-lg w-fit h-fit p-2'
+            onClick={() => {
+              setIsOpen(true);
+              setModalChildren(<NewRepairModal />);
+              setTitle("Nowe zgłoszenie");
+            }}
+          >
+            <FaPlus className='w-6 h-6' />
+          </button>
+        </div>
+      </div>
+      <div>
+        <table className='w-[1000px] border-separate border-spacing-0 border rounded-b-lg rounded-tr-lg *:*:*:p-3'>
+          <thead>
+            <tr className=' *:bg-secondary'>
+              <th>Nr.</th>
+              <th>Data</th>
+              <th>Telefon</th>
+              <th>Status</th>
+              <th>Miejsce</th>
+              <th className='rounded-tr-lg'></th>
+            </tr>
+          </thead>
+          <tbody className=''>
+            {repairs.map((row, index) => (
+              <RepairRecord last={index === repairs.length - 1} repair={row} key={row.id} />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

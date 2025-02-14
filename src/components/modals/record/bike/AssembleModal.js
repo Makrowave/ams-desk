@@ -5,7 +5,7 @@ import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
 import { QUERY_KEYS } from "@/util/query_keys";
-export default function AssembleModal({ refetch, bikeId }) {
+export default function AssembleModal({ bikeId }) {
   //Change it based on selected location
   const [employeeId, setEmployeeId] = useState("");
   const [error, setError] = useState("");
