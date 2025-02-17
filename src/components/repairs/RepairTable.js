@@ -3,83 +3,66 @@ import { FaPlus } from "react-icons/fa6";
 import RepairRecord from "./RepairRecord";
 import useModal from "@/hooks/useModal";
 import NewRepairModal from "../modals/record/repair/NewRepairModal";
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
-export default function RepairTable({}) {
-  const repairs = [
-    {
-      id: 1,
-      phone: "909303303",
-      bike: "Kross evado",
-      date: Date.now(),
-      place: "Wojc",
-      issue: "Wymiana dętki",
-      status: "Przyjęte",
-      services: [],
-      parts: [],
+export default function RepairTable({ src, addButton }) {
+  const axiosPrivate = useAxiosPrivate();
+  const [place, setPlace] = useState(0);
+  const [phone, setPhone] = useState("");
+  const getSrc = () => `${src}&place=${place}`;
+
+  const { data, isPending, isError, error, refetch } = useQuery({
+    queryKey: [getSrc()],
+    queryFn: async () => {
+      const response = await axiosPrivate.get(getSrc());
+      return response.data;
     },
-    {
-      id: 2,
-      phone: "303404303",
-      bike: "Kross hexagon",
-      date: Date.now(),
-      place: "Wojc",
-      issue: "Wymiana dętki, sprawdzenie opon, wymiana klocków hamulcowych",
-      status: "Przyjęte",
-      services: [],
-      parts: [],
-    },
-    {
-      id: 3,
-      phone: "303404303",
-      bike: "Kross hexagon",
-      date: Date.now(),
-      place: "Wojc",
-      issue: "Wymiana dętki, sprawdzenie opon, wymiana klocków hamulcowych",
-      status: "Przyjęte",
-      services: [],
-      parts: [],
-    },
-    {
-      id: 4,
-      phone: "303404303",
-      bike: "Kross hexagon",
-      date: Date.now(),
-      place: "Wojc",
-      issue: "Wymiana dętki, sprawdzenie opon, wymiana klocków hamulcowych",
-      status: "Przyjęte",
-      services: [],
-      parts: [],
-    },
-  ];
+  });
 
   const { setIsOpen, setModalChildren, setTitle } = useModal();
+  const places = createPlaces();
 
   return (
     <div>
       <div className='flex justify-between items-center h-12'>
         <div className='flex h-full'>
-          <div className='p-2 bg-secondary w-fit rounded-t-lg h-full'>Wojc</div>
-          <div className='p-2 bg-primary w-fit rounded-t-lg'>Gala</div>
-          <div className='p-2 bg-primary w-fit rounded-t-lg'>Gęsia</div>
+          {places.map((p) => (
+            <HeaderButton onClick={setPlace} id={p.placeId} selected={place === p.placeId} text={p.placeName} />
+          ))}
         </div>
         <div className='flex items-center'>
           <div className='flex p-2'>
-            <input className='border-border border rounded-lg w-32 text-center' placeholder='Telefon' />
+            <input
+              className='border-border border rounded-lg w-32 text-center'
+              placeholder='Telefon'
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
           </div>
-          <button
-            className='flex justify-center items-center hover:bg-gray-400 transition-colors duration-200 rounded-lg w-fit h-fit p-2'
-            onClick={() => {
-              setIsOpen(true);
-              setModalChildren(<NewRepairModal />);
-              setTitle("Nowe zgłoszenie");
-            }}
-          >
-            <FaPlus className='w-6 h-6' />
-          </button>
+          {addButton && (
+            <button
+              className='flex justify-center items-center hover:bg-gray-400 transition-colors duration-200 rounded-lg w-fit h-fit p-2'
+              onClick={() => {
+                setIsOpen(true);
+                setModalChildren(<NewRepairModal />);
+                setTitle("Nowe zgłoszenie");
+              }}
+            >
+              <FaPlus className='w-6 h-6' />
+            </button>
+          )}
         </div>
       </div>
       <div>
-        <table className='w-[1000px] border-separate border-spacing-0 border rounded-b-lg rounded-tr-lg *:*:*:p-3'>
+        <table
+          className={
+            place === 0
+              ? "w-[600px] border-separate border-spacing-0 border rounded-b-lg rounded-tr-lg *:*:*:p-3"
+              : "w-[600px] border-separate border-spacing-0 border rounded-b-lg rounded-t-lg *:*:*:p-3"
+          }
+        >
           <thead>
             <tr className=' *:bg-secondary'>
               <th>Nr.</th>
@@ -91,12 +74,31 @@ export default function RepairTable({}) {
             </tr>
           </thead>
           <tbody className=''>
-            {repairs.map((row, index) => (
-              <RepairRecord last={index === repairs.length - 1} repair={row} key={row.id} />
-            ))}
+            {!isPending &&
+              !isError &&
+              data
+                .filter((row) => row.phoneNumber.includes(phone))
+                .map((row, index) => <RepairRecord last={index === data.length - 1} repair={row} key={row.id} />)}
           </tbody>
         </table>
       </div>
     </div>
   );
 }
+
+function HeaderButton({ selected, onClick, id, text }) {
+  return (
+    <button
+      className={selected ? "p-2 w-fit rounded-t-lg h-full bg-secondary" : "p-2 w-fit rounded-t-lg h-full"}
+      onClick={() => onClick(id)}
+    >
+      {text}
+    </button>
+  );
+}
+
+const createPlaces = () => {
+  const places = JSON.parse(process.env.NEXT_PUBLIC_REPAIR_PLACES);
+  places.unshift({ placeId: 0, placeName: "Wszystkie" });
+  return places;
+};

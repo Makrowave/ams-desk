@@ -27,7 +27,7 @@ export default function ModelTable({ filterSrc }) {
   let src = "/Models?placeId=" + place.toString();
 
   return (
-    <div className='mb-10 col-span-5 flex justify-center mx-4 overflow-hidden max-w-full bg-primary p-8 border-2 border-gray-400 rounded-xl'>
+    <div className='mb-10 col-span-5 flex justify-center mx-4 overflow-hidden max-w-full bg-primary p-8  rounded-xl'>
       <div className='flex flex-col w-full h-full overflow-hidden'>
         <ChangeTable changePlaceId={(index) => setPlace(index)} />
         <div className='overflow-y-auto flex-1 h-0'>

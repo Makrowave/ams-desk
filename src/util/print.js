@@ -35,19 +35,19 @@ export const generateRepairNewDoc = (repair, style) => {
     <main>
       <section class="underline">
         <img src='${window.location.origin}/logo.jpg' alt='Logo firmy, public/logo.jpg' />
-        <h3>ZGŁOSZENIE SERWISOWE #${repair.id}</h3>
+        <h3>ZGŁOSZENIE SERWISOWE #${repair.repairId}</h3>
         <div class="pad-children">
           <div>
             <b>Data zgłoszenia:</b>
-            <span>${new Date(repair.date).toLocaleDateString("pl-PL")}</span>
+            <span>${new Date(repair.arrivalDate).toLocaleDateString("pl-PL")}</span>
           </div>
           <div>
             <b>Tel. kontaktowy:</b>
-            <span>${formatPhone(repair.phone)}</span>
+            <span>${formatPhone(repair.phoneNumber)}</span>
           </div>
           <div>
             <b>Model roweru:</b>
-            <span>${repair.bike}</span>
+            <span>${repair.bikeName}</span>
           </div>
           <div>
             <b>Zakres czynności:</b>
@@ -60,19 +60,19 @@ export const generateRepairNewDoc = (repair, style) => {
       </section>
       <section>
         <img src='${window.location.origin}/logo.jpg' alt='Logo firmy, public/logo.jpg' />
-        <h3>ZGŁOSZENIE SERWISOWE #${repair.id}</h3>
+        <h3>ZGŁOSZENIE SERWISOWE #${repair.repairId}</h3>
         <div class="pad-children">
           <div>
             <b>Data zgłoszenia:</b>
-            <span>${new Date(repair.date).toLocaleDateString("pl-PL")}</span>
+            <span>${new Date(repair.arrivalDate).toLocaleDateString("pl-PL")}</span>
           </div>
           <div>
             <b>Tel. kontaktowy:</b>
-            <span>${formatPhone(repair.phone)}</span>
+            <span>${formatPhone(repair.phoneNumber)}</span>
           </div>
           <div>
             <b>Model roweru:</b>
-            <span>${repair.bike}</span>
+            <span>${repair.bikeName}</span>
           </div>
           <div>
             <b>Zakres czynności:</b>
