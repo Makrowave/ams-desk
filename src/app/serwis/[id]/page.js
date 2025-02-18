@@ -19,7 +19,7 @@ export default function RepairPage({ params }) {
   return (
     <PrivateRoute>
       <Navigation active={2} />
-      <main>
+      <main className='overflow-x-auto'>
         <div className='main-div bg-gray-200 px-12 py-6'>{!(isPending || isError) && <Repair repair={data} />}</div>
       </main>
     </PrivateRoute>

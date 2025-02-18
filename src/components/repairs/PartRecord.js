@@ -1,40 +1,35 @@
 import { useState } from "react";
+import { FaRegCircleXmark } from "react-icons/fa6";
 
-export default function PartRecord({ index, part, updateItem, deleteItem }) {
+export default function PartRecord({ index, part, changePrice, deleteFn }) {
   const [localPart, setLocalPart] = useState(part);
-
-  const setName = (value) => {
-    //Validate
-    setLocalPart({ ...localPart, name: value });
-  };
-  const setPrice = (value) => {
-    //Validate
-    setLocalPart({ ...localPart, price: value });
-  };
-  const setAmount = (value) => {
-    //Validate
+  const handlePriceChange = (event) => {
+    const value = event.target.value < 0 ? 0 : event.target.value;
     setLocalPart({ ...localPart, amount: value });
+    changePrice(localPart.partUsedId, value);
   };
-  const setUnit = (value) => {
-    //Validate
-    setLocalPart({ ...localPart, unit: value });
-  };
-
   return (
-    <tr>
+    <tr className='text-center *:p-2 odd:bg-primary'>
       <td>{index + 1}</td>
+      <td>{localPart.part.partName}</td>
+      <td>{localPart.part.price}</td>
       <td>
-        <input type='text' placeholder='nazwa' value={localPart.name} onChange={(value) => setName(value)} />
+        <input
+          className='bg-inherit border border-gray-300 rounded-lg w-20 text-center'
+          type='number'
+          value={localPart.amount}
+          onChange={(e) => handlePriceChange(e)}
+        />
+        {" " + localPart.part.unit.unitName}
       </td>
+      <td>{localPart.part.price * localPart.amount}</td>
       <td>
-        <input type='number' placeholder='cena' value={localPart.name} onChange={(value) => setPrice(value)} />
-      </td>
-      <td>
-        <input type='number' placeholder='ilosc' value={localPart.name} onChange={(value) => setName(value)} />
-      </td>
-      <td>//Select - unit</td>
-      <td>
-        <button>Usuń</button>
+        <button
+          className='p-2 hover:bg-gray-200 transition-colors duration-200 rounded-lg'
+          onClick={() => deleteFn(part.partUsedId)}
+        >
+          <FaRegCircleXmark className='text-red-600' />
+        </button>
       </td>
     </tr>
   );

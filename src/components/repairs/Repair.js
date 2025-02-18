@@ -27,9 +27,10 @@ import { formatPhone } from "@/util/formatting";
 import { useRouter } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa6";
 import ServiceRecord from "./ServiceRecord";
-import InputSelect from "../filtering/ServiceInputSelect";
+import ServiceInputSelect from "../filtering/ServiceInputSelect";
 import { useMutation } from "@tanstack/react-query";
 import { axiosPrivate } from "@/api/axios";
+import PartInputSelect from "../filtering/PartInputSelect";
 
 //Well it would look the same way if it had catalogue, maybe come category
 export default function Repair({ repair, updateRepair }) {
@@ -41,11 +42,26 @@ export default function Repair({ repair, updateRepair }) {
   // PlaceId = repair.PlaceId,
 
   const [isSaved, setIsSaved] = useState("true");
-  const [localRepair, setlocalRepair] = useState(repair);
+  const [localRepair, setLocalRepair] = useState(repair);
 
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.put(`repairs/${localRepair.repairId}`, JSON.stringify(localRepair));
+      return await axiosPrivate.put(
+        `repairs/${localRepair.repairId}`,
+        JSON.stringify({
+          ...localRepair,
+          services: localRepair.services.map((service) => ({
+            serviceDoneId: service.serviceDoneId,
+            serviceId: service.service.serviceId,
+            repairId: localRepair.repairId,
+          })),
+          parts: localRepair.parts.map((part) => ({
+            partUsedId: part.partUsedId,
+            partId: part.part.partId,
+            repairId: localRepair.repairId,
+          })),
+        })
+      );
     },
   });
 
@@ -53,37 +69,38 @@ export default function Repair({ repair, updateRepair }) {
     mutation.mutate();
     if (mutation.isSuccess) setIsSaved(true);
   };
-  const updatePart = (value) => {
+  const updateParts = (value) => {
     setIsSaved(false);
-    setlocalRepair((prev) => {
-      const newParts = prev.parts.map((part) => {
-        return part.id === value.id ? value : part;
-      });
-      return { ...prev, parts: newParts };
-    });
+    const newParts = localRepair.parts;
+    const id = newParts[newParts.length - 1]?.partUsedId + 1;
+    const partUsed = { partUsedId: isNaN(id) ? 0 : id, part: value, amount: 1 };
+    newParts.push(partUsed);
+
+    setLocalRepair({ ...localRepair, parts: newParts });
   };
+
+  const changePartPrice = (id, value) => {};
 
   const deletePart = (id) => {
     setIsSaved(false);
-    setlocalRepair((prev) => {
-      const newParts = prev.parts.filter((part) => part.id !== id);
-      return { ...prev, parts: newParts };
-    });
+    console.log(id);
+    const newParts = localRepair.parts.filter((part) => part.partUsedId !== id);
+    setLocalRepair({ ...localRepair, parts: newParts });
   };
 
   const updateServices = (value) => {
     setIsSaved(false);
     const newServices = localRepair.services;
-    const id = newServices[newServices.length - 1]?.id + 1;
-    const serviceDone = { id: isNaN(id) ? 0 : id, service: value };
+    const id = newServices[newServices.length - 1]?.serviceDoneId + 1;
+    const serviceDone = { serviceDoneId: isNaN(id) ? 0 : id, service: value };
     newServices.push(serviceDone);
-    setlocalRepair({ ...localRepair, services: newServices });
+    setLocalRepair({ ...localRepair, services: newServices });
   };
 
   const deleteService = (id) => {
     setIsSaved(false);
-    const newServices = localRepair.services.filter((service) => service.id !== id);
-    setlocalRepair({ ...localRepair, services: newServices });
+    const newServices = localRepair.services.filter((service) => service.serviceDoneId !== id);
+    setLocalRepair({ ...localRepair, services: newServices });
   };
 
   const router = useRouter();
@@ -103,7 +120,7 @@ export default function Repair({ repair, updateRepair }) {
 
   return (
     <div className='flex-col rounded-2xl h-full'>
-      <div className='flex bg-white rounded-t-xl border-gray-400 border-t-2 border-x-2 p-2'>
+      <div className='flex bg-white rounded-t-xl border-x-2 p-4'>
         <button
           className='rounded-lg p-2 hover:bg-gray-300 transition-colors duration-200'
           onClick={() => router.back()}
@@ -122,7 +139,7 @@ export default function Repair({ repair, updateRepair }) {
           </button>
         </div>
       </div>
-      <section className='bg-primary mb-10 p-4 rounded-b-xl border-gray-400 border-b-2 border-x-2 shadow-lg'>
+      <section className='bg-primary mb-10 p-4 rounded-b-xl border-x-2 shadow-lg'>
         <div className='text-left text-2xl my-4 pb-2'>
           <b>
             <h2>Zgłoszenie serwisowe #{localRepair.repairId}</h2>
@@ -165,7 +182,7 @@ export default function Repair({ repair, updateRepair }) {
                 placeholder='Notatka'
                 value={localRepair.note ?? ""}
                 onChange={(e) => {
-                  setlocalRepair({ ...localRepair, note: e.target.value });
+                  setLocalRepair({ ...localRepair, note: e.target.value });
                 }}
               />
             </div>
@@ -173,51 +190,61 @@ export default function Repair({ repair, updateRepair }) {
         </section>
       </section>
       <section className='flex place-content-between gap-10'>
-        <div className='bg-primary w-5/12 p-8 rounded-xl border-gray-400 border-2 shadow-lg'>
-          <b className='bg-secondary p-2 rounded-t-md'>Usługi</b>
-          <table>
-            <thead className='bg-secondary'>
-              <tr className='*:p-2'>
-                <th>Lp.</th>
-                <th>Nazwa</th>
-                <th>Cena</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody className='even:bg-secondary'>
-              {localRepair.services.map((service, index) => (
-                <ServiceRecord index={index} service={service} key={service.id} deleteFn={deleteService} />
-              ))}
-              <tr>
-                <td></td>
-                <td colSpan='2'>
-                  <InputSelect mutation={updateServices} />
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
+        <div className='bg-primary w-5/12 p-8 rounded-xl  shadow-lg'>
+          <div className='w-full'>
+            <div className='flex items-center justify-between p-2 border-gray-300 border-b rounded-t-lg bg-secondary'>
+              <b className='p-2'>Usługi</b>
+              <ServiceInputSelect mutation={updateServices} />
+            </div>
+
+            <table className='shadow-lg w-full'>
+              <thead className='bg-secondary'>
+                <tr className='*:p-4'>
+                  <th>Lp.</th>
+                  <th>Nazwa</th>
+                  <th>Cena</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody className='even:bg-secondary'>
+                {localRepair.services.map((service, index) => (
+                  <ServiceRecord index={index} service={service} key={service.id} deleteFn={deleteService} />
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div className='bg-primary w-7/12 p-8 rounded-xl border-gray-400 border-2 shadow-lg'>
-          <b className='bg-secondary p-2 rounded-t-md '>Części</b>
-          <table>
-            <thead className='bg-secondary'>
-              <tr className='*:p-2'>
-                <th>Lp.</th>
-                <th>Nazwa</th>
-                <th>Cena</th>
-                <th>Ilość</th>
-                <th>Jednostka</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody className='even:bg-secondary'>
-              {localRepair.parts.map((part, index) => (
-                <PartRecord index={index} part={part} updateItem={updatePart} deleteItem={deletePart} key={part.id} />
-              ))}
-            </tbody>
-          </table>
-          <button className='button-secondary'>Dodaj</button>
+        <div className='bg-primary w-7/12 p-8 rounded-xl  shadow-lg'>
+          <div className='w-full'>
+            <div className='flex items-center justify-between p-2 border-gray-300 border-b rounded-t-lg bg-secondary'>
+              <b className='p-2'>Części</b>
+              <PartInputSelect mutation={updateParts} />
+            </div>
+            <table className='shadow-lg w-full'>
+              <thead className='bg-secondary'>
+                <tr className='*:p-4'>
+                  <th>Lp.</th>
+                  <th>Nazwa</th>
+                  <th>Cena</th>
+                  <th>Ilość</th>
+                  <th>Suma</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody className='even:bg-secondary'>
+                {localRepair.parts.map((part, index) => (
+                  <PartRecord
+                    index={index}
+                    part={part}
+                    changePrice={changePartPrice}
+                    deleteFn={deletePart}
+                    key={part.id}
+                  />
+                ))}
+              </tbody>
+            </table>
+            <button className='button-secondary'>Dodaj</button>
+          </div>
         </div>
       </section>
     </div>

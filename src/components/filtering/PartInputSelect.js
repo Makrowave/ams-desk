@@ -2,12 +2,12 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import { useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 
-export default function ServiceInputSelect({ mutation }) {
+export default function PartInputSelect({ mutation }) {
   const axiosPrivate = useAxiosPrivate();
   const { data, isError, isLoading, error } = useQuery({
-    queryKey: ["Services"],
+    queryKey: ["Parts"],
     queryFn: async () => {
-      const result = await axiosPrivate.get("Services");
+      const result = await axiosPrivate.get("Parts");
       return result.data.data;
     },
   });
@@ -46,14 +46,14 @@ export default function ServiceInputSelect({ mutation }) {
           {!isLoading &&
             !isError &&
             data
-              .filter((record) => strFind(record.serviceName, text))
+              .filter((record) => strFind(record.partName, text))
               .map((record) => (
                 <button
-                  key={record.serviceId}
+                  key={record.partId}
                   className='border-border min-h-10 px-4 border-b w-full last:border-0'
                   onClick={() => handleOnClick(record)}
                 >
-                  {record.serviceName}
+                  {record.partName}
                 </button>
               ))}
         </div>
