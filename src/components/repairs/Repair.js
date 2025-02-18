@@ -118,6 +118,8 @@ export default function Repair({ repair, updateRepair }) {
     };
   }, [isSaved]);
 
+  const [noteFocus, setNoteFocus] = useState(false);
+
   return (
     <div className='flex-col rounded-2xl h-full'>
       <div className='flex bg-white rounded-t-xl border-x-2 p-4'>
@@ -145,44 +147,66 @@ export default function Repair({ repair, updateRepair }) {
             <h2>Zgłoszenie serwisowe #{localRepair.repairId}</h2>
           </b>
         </div>
-        <section className='flex place-content-between pb-4 mt-4'>
-          <div className='flex-col flex-1'>
-            <div>
-              <span className='block'>
-                <b>Data</b>
-              </span>
-              <span>{new Date(repair.arrivalDate).toLocaleDateString("pl-PL")}</span>
+        <section className='flex place-content-between pb-4'>
+          <div className='flex-col flex-1 *:mt-4'>
+            <div className='flex'>
+              <div className='border-gray-300 border-2 rounded-lg p-2 w-40'>
+                <span className='block text-base'>
+                  <b>Data przyjęcia</b>
+                </span>
+                <span>{new Date(repair.arrivalDate).toLocaleDateString("pl-PL")}</span>
+              </div>
+              {localRepair.collectionDate !== null && (
+                <div className='border-gray-300 border-2 rounded-lg p-2 w-40 ml-4'>
+                  <span className='block text-base'>
+                    <b>Data wydania</b>
+                  </span>
+                  <span>{new Date(repair.collectionDate).toLocaleDateString("pl-PL")}</span>
+                </div>
+              )}
             </div>
-            <div>
-              <span className='block'>
+            <div className='border-gray-300 border-2 rounded-lg p-2 w-40'>
+              <span className='block text-base'>
                 <b>Telefon</b>
               </span>
               <span>{formatPhone(localRepair.phoneNumber)}</span>
             </div>
-            <div>
-              <span className='block'>
+            <div className='border-gray-300 border-2 rounded-lg p-2 w-40'>
+              <span className='block text-base'>
                 <b>Rower</b>
               </span>
               <span>{localRepair.bikeName}</span>
             </div>
-            <div>
-              <span className='block'>
+            <div className='border-gray-300 border-2 rounded-lg p-2 max-w-xl'>
+              <span className='block text-base'>
                 <b>Treść</b>
               </span>
               <span>{localRepair.issue}</span>
             </div>
           </div>
-          <div className='flex-col flex-1 justify-end'>
-            <div className='ml-auto w-fit'>
+          <div className='flex-col flex-1 justify-end '>
+            <div
+              className={
+                noteFocus
+                  ? "border-border ml-auto w-fit border p-2 rounded-lg outline-blue-600 outline-double outline-2"
+                  : "border-border ml-auto w-fit border p-2 rounded-lg"
+              }
+            >
               <b className='block'>Notatka</b>
               <textarea
-                className='border-border border'
+                className='focus:outline-none'
                 cols={50}
                 rows={10}
                 placeholder='Notatka'
                 value={localRepair.note ?? ""}
                 onChange={(e) => {
                   setLocalRepair({ ...localRepair, note: e.target.value });
+                }}
+                onFocus={() => {
+                  setNoteFocus(true);
+                }}
+                onBlur={() => {
+                  setNoteFocus(false);
                 }}
               />
             </div>
