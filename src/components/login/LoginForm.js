@@ -6,7 +6,8 @@ export default function LoginForm({ login, loginError }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleSubmit() {
+  function handleSubmit(e) {
+    e.preventDefault();
     login(username, password);
   }
 
@@ -15,35 +16,59 @@ export default function LoginForm({ login, loginError }) {
       handleSubmit();
     }
   }
+
+  const [loginFocus, setLoginFocus] = useState(false);
+  const [passwordFocus, setPasswordFocus] = useState(false);
+
   return (
     <div className='justify-center flex content-center h-full items-center'>
-      <div className='flex flex-col m-auto item-center bg-primary py-6 px-6 border-2 border-border w-80'>
+      <form
+        onSubmit={(e) => handleSubmit(e)}
+        className='flex flex-col m-auto item-center bg-primary py-6 px-6 border-2 shadow-2xl rounded-lg w-80'
+      >
         <span className='self-center text-3xl'>Logowanie</span>
         <ErrorDisplay message={loginError} isVisible={loginError !== ""} />
-        <div className='my-6 flex flex-col'>
-          <span>Login</span>
+        <div
+          className={
+            loginFocus
+              ? "my-6 flex flex-col rounded-lg p-1 border-2 border-border outline outline-blue-600"
+              : "my-6 flex flex-col rounded-lg p-1 border-2 border-border"
+          }
+        >
+          <span className='text-base  border-border w-fit'>Login</span>
           <input
-            className='block text-center bg-primary border-2 border-tertiary rounded-lg'
+            className='block rounded-lg w-full focus:outline-none'
             value={username}
             onChange={(e) => {
               setUsername(e.target.value);
             }}
             onKeyDown={handleKeyDown}
-          ></input>
+            onFocus={() => setLoginFocus(true)}
+            onBlur={() => setLoginFocus(false)}
+            placeholder='Login'
+          />
         </div>
-        <div className='my-6 flex flex-col'>
-          <span>Hasło</span>
-          <Password value={password} setValue={setPassword} onKeyDown={handleKeyDown} />
-        </div>
-        <button
-          className='block bg-primary rounded-lg px-2 border-border border-2'
-          onClick={() => {
-            handleSubmit();
-          }}
+        <div
+          className={
+            passwordFocus
+              ? "my-6 flex flex-col rounded-lg p-1 border-2 border-border outline outline-blue-600"
+              : "my-6 flex flex-col rounded-lg p-1 border-2 border-border"
+          }
         >
+          <span>Hasło</span>
+          <Password
+            value={password}
+            setValue={setPassword}
+            onKeyDown={handleKeyDown}
+            onFocus={() => setPasswordFocus(true)}
+            onBlur={() => setPasswordFocus(false)}
+            className='focus:outline-none'
+          />
+        </div>
+        <button className='button-primary' type='submit'>
           Zaloguj
         </button>
-      </div>
+      </form>
     </div>
   );
 }
