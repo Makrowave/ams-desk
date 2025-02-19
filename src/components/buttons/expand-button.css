@@ -2,8 +2,20 @@
   position: relative;
   transition: width 0.2s ease-in-out;
 }
+.ex-button-disabled {
+  position: relative;
+  transition: width 0.2s ease-in-out;
+}
 
-.ex-button > span {
+.span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.span-disabled {
   position: absolute;
   left: 0;
   width: 100%;
@@ -18,7 +30,7 @@
   opacity: 100;
   transition: opacity 0.2s;
 }
-.ex-button:hover > span {
+.span:hover {
   position: absolute;
   left: 0;
   width: 100%;

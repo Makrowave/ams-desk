@@ -6,8 +6,16 @@ export default function RepairRecord({ repair }) {
     <tr className='*:even:bg-secondary *:border-b-border *:border-b  *:last:border-b-0 *:text-center'>
       <td>{repair.id}</td>
       <td>{new Date(repair.date).toLocaleDateString("pl-PL")}</td>
+      {/* <td>{repair.bikeName}</td> */}
       <td>{formatPhone(repair.phoneNumber)}</td>
-      <td>{repair.statusName}</td>
+      <td>
+        <div
+          className='w-32 max-w-[8rem] truncate overflow-hidden whitespace-nowrap p-1 rounded-lg'
+          style={{ backgroundColor: repair.status.color }}
+        >
+          {repair.status.name}
+        </div>
+      </td>
       <td>{repair.placeName}</td>
       <td>
         <Link href={`/serwis/${repair.id}`}>

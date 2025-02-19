@@ -55,7 +55,7 @@ export default function RepairTable({ src, addButton }) {
           )}
         </div>
       </div>
-      <div>
+      <div className='text-base'>
         <table
           className={
             place === 0
@@ -67,6 +67,7 @@ export default function RepairTable({ src, addButton }) {
             <tr className=' *:bg-secondary'>
               <th>Nr.</th>
               <th>Data</th>
+              {/* <th>Rower</th> */}
               <th>Telefon</th>
               <th>Status</th>
               <th>Miejsce</th>

@@ -1,49 +1,34 @@
-//Service
-/*
-category - a maybe, category of service, ex. wheel - change spoke, change tyre, change tube
-id - db
-repairId - in db object, probably not here, used for relation in ORM
-name - name of service
-price - price of service
-change - change of price - for example something costs 100pln base but can up to 200, so when it's tedious it's 170
-  or some other price was negotiated.
-*/
-//Part - idk if they should be implemented as some constant catalogue, or flexible looking at how much work has to be done every time
-//and that it is a small business. Well let's note if there were no catalogue:
-/*
-id - db, autogen
-repairId - in db object, probably not here, used for relation in ORM
-name - part's name
-price - part's price
-amount - amount of units
-unit - there will be table for this. Basically pieces/meters/centimeters abbreviated. This will be either id or name, same as place.
-  The pieces (pcs. or szt.) unit will be whole number, rest floats
-*/
-
 import { useEffect, useState } from "react";
 import PartRecord from "./PartRecord";
 import { generateRepairCostsDoc, generateRepairNewDoc, printRepairDoc } from "@/util/print";
 import { formatPhone } from "@/util/formatting";
 import { useRouter } from "next/navigation";
-import { FaArrowLeft } from "react-icons/fa6";
+import {
+  FaArrowLeft,
+  FaBoxOpen,
+  FaCheck,
+  FaFlagCheckered,
+  FaFloppyDisk,
+  FaHourglass,
+  FaPhone,
+  FaShield,
+  FaWrench,
+} from "react-icons/fa6";
 import ServiceRecord from "./ServiceRecord";
 import ServiceInputSelect from "../filtering/ServiceInputSelect";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosPrivate } from "@/api/axios";
 import PartInputSelect from "../filtering/PartInputSelect";
+import ExpandButton from "../buttons/ExpandButton";
+import useModal from "@/hooks/useModal";
+import RepairModal from "../modals/repair/RepairModal";
+import Modal from "../modals/Modal";
 
-//Well it would look the same way if it had catalogue, maybe come category
-export default function Repair({ repair, updateRepair }) {
-  // RepairEmployeeId = repair.RepairEmployeeId,
-  // CollectionEmployeeId = repair.CollectionEmployeeId,
-  // Discount = repair.Discount,
-  // AdditionalCosts = repair.AdditionalCosts,
-  // StatusId = repair.StatusId,
-  // PlaceId = repair.PlaceId,
-
+export default function Repair({ repair }) {
   const [isSaved, setIsSaved] = useState("true");
   const [localRepair, setLocalRepair] = useState(repair);
-
+  const { setIsOpen, setModalChildren, setTitle } = useModal();
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.put(
@@ -59,15 +44,23 @@ export default function Repair({ repair, updateRepair }) {
             partUsedId: part.partUsedId,
             partId: part.part.partId,
             repairId: localRepair.repairId,
+            amount: part.amount,
           })),
+          status: null,
         })
       );
+    },
+    onSuccess: () => {
+      setIsSaved(true);
+      queryClient.refetchQueries({
+        queryKey: ["repairs"],
+        exact: false,
+      });
     },
   });
 
   const save = () => {
     mutation.mutate();
-    if (mutation.isSuccess) setIsSaved(true);
   };
   const updateParts = (value) => {
     setIsSaved(false);
@@ -79,11 +72,17 @@ export default function Repair({ repair, updateRepair }) {
     setLocalRepair({ ...localRepair, parts: newParts });
   };
 
-  const changePartPrice = (id, value) => {};
+  const changePartPrice = (id, value) => {
+    setIsSaved(false);
+    console.log(id, value);
+    const newParts = localRepair.parts.map((part) => (part.partUsedId === id ? { ...part, amount: value } : part));
+    console.log(newParts);
+
+    setLocalRepair({ ...localRepair, parts: newParts });
+  };
 
   const deletePart = (id) => {
     setIsSaved(false);
-    console.log(id);
     const newParts = localRepair.parts.filter((part) => part.partUsedId !== id);
     setLocalRepair({ ...localRepair, parts: newParts });
   };
@@ -101,6 +100,21 @@ export default function Repair({ repair, updateRepair }) {
     setIsSaved(false);
     const newServices = localRepair.services.filter((service) => service.serviceDoneId !== id);
     setLocalRepair({ ...localRepair, services: newServices });
+  };
+
+  const changeStatus = (id) => {
+    setLocalRepair({ ...localRepair, statusId: id });
+    save();
+  };
+
+  const handleColEmployeeChange = (employeeId, statusId) => {
+    setLocalRepair({ ...localRepair, collectionEmployeeId: employeeId, statusId: statusId });
+    save();
+  };
+
+  const handleRepEmployeeChange = (employeeId, statusId) => {
+    setLocalRepair({ ...localRepair, repairEmployeeId: employeeId, statusId: statusId });
+    save();
   };
 
   const router = useRouter();
@@ -130,9 +144,9 @@ export default function Repair({ repair, updateRepair }) {
           <FaArrowLeft />
         </button>
         <div className='ml-auto flex gap-4'>
-          <button className='button-primary' onClick={save}>
-            Zapisz
-          </button>
+          <ExpandButton className='button-primary' text={"Zapisz"} onClick={save}>
+            <FaFloppyDisk />
+          </ExpandButton>
           <button className='button-primary' onClick={() => printRepairDoc(generateRepairNewDoc, repair)}>
             Drukuj zgłoszenie
           </button>
@@ -142,10 +156,116 @@ export default function Repair({ repair, updateRepair }) {
         </div>
       </div>
       <section className='bg-primary mb-10 p-4 rounded-b-xl border-x-2 shadow-lg'>
-        <div className='text-left text-2xl my-4 pb-2'>
-          <b>
-            <h2>Zgłoszenie serwisowe #{localRepair.repairId}</h2>
-          </b>
+        <div className='text-left text-2xl my-4 pb-2 flex items-center justify-between'>
+          <div className='flex items-center'>
+            <b>
+              <h2>Zgłoszenie serwisowe #{localRepair.repairId}</h2>
+            </b>
+            <div
+              className='flex ml-2 py-0.5 px-1 text-base rounded-md h-fit items-center'
+              style={{ backgroundColor: repair.status.color }}
+            >
+              {repair.status.name}
+            </div>
+          </div>
+          <div className='flex items-center gap-x-2 text-xl'>
+            <ExpandButton
+              disabled={localRepair.statusId !== 1}
+              className='button-primary'
+              disabledClass='hover:bg-gray-300 bg-gray-300'
+              text='Rozpocznij'
+              onClick={() => {
+                if (localRepair.statusId !== 1) return;
+                setTitle("Rozpocznij naprawę");
+                setModalChildren(
+                  <RepairModal
+                    employeeId={localRepair.status.repairEmployeeId}
+                    label='Kto naprawia'
+                    employeeFn={handleRepEmployeeChange}
+                    statusId={3}
+                  />
+                );
+                setIsOpen(true);
+              }}
+            >
+              <FaWrench />
+            </ExpandButton>
+            <ExpandButton
+              disabled={localRepair.statusId === 7 || localRepair.statusId === 1}
+              className='button-primary'
+              disabledClass='hover:bg-gray-300 bg-gray-300'
+              text='Oczekuj części'
+              onClick={() => {
+                changeStatus(4);
+              }}
+            >
+              <FaHourglass />
+            </ExpandButton>
+            <ExpandButton
+              disabled={localRepair.statusId === 7 || localRepair.statusId === 1}
+              className='button-primary'
+              disabledClass='hover:bg-gray-300 bg-gray-300'
+              text='Gwarancja'
+              onClick={() => {
+                changeStatus(2);
+              }}
+            >
+              <FaShield />
+            </ExpandButton>
+            <ExpandButton
+              disabled={localRepair.statusId === 7 || localRepair.statusId === 1}
+              className='button-primary'
+              disabledClass='hover:bg-gray-300 bg-gray-300'
+              text='Wznów'
+              onClick={() => {
+                changeStatus(3);
+              }}
+            >
+              <FaBoxOpen />
+            </ExpandButton>
+            <ExpandButton
+              disabled={localRepair.statusId === 7 || localRepair.statusId === 1}
+              className='button-primary'
+              disabledClass='hover:bg-gray-300 bg-gray-300'
+              text='Zakończ'
+              onClick={() => {
+                changeStatus(5);
+              }}
+            >
+              <FaCheck />
+            </ExpandButton>
+            <ExpandButton
+              disabled={localRepair.statusId === 7 || localRepair.statusId === 1}
+              className='button-primary'
+              disabledClass='hover:bg-gray-300 bg-gray-300'
+              text='Powiadom'
+              onClick={() => {
+                changeStatus(6);
+              }}
+            >
+              <FaPhone />
+            </ExpandButton>
+            <ExpandButton
+              disabled={localRepair.statusId === 7 || localRepair.statusId === 1}
+              className='button-primary'
+              disabledClass='hover:bg-gray-300 bg-gray-300'
+              text='Wydaj'
+              onClick={() => {
+                setTitle("Wydaj rower");
+                setModalChildren(
+                  <RepairModal
+                    employeeId={localRepair.status.repairEmployeeId}
+                    label='Kto wydaje'
+                    employeeFn={handleColEmployeeChange}
+                    statusId={7}
+                  />
+                );
+                setIsOpen(true);
+              }}
+            >
+              <FaFlagCheckered />
+            </ExpandButton>
+          </div>
         </div>
         <section className='flex place-content-between pb-4'>
           <div className='flex-col flex-1 *:mt-4'>
@@ -185,11 +305,33 @@ export default function Repair({ repair, updateRepair }) {
             </div>
           </div>
           <div className='flex-col flex-1 justify-end '>
+            <div className='flex justify-end mb-4'>
+              {localRepair.repairEmployeeId !== null && (
+                <div className='p-1 border-gray-300 border rounded-lg w-40 flex flex-col'>
+                  <span className='text-base'>
+                    <b>
+                      {localRepair.statusId === 7 || localRepair.statusId === 6 || localRepair.statusId === 5
+                        ? "Kto naprawiał"
+                        : "Kto naprawia"}
+                    </b>
+                  </span>
+                  <span>{localRepair.repairEmployeeName}</span>
+                </div>
+              )}
+              {localRepair.collectionEmployeeId !== null && (
+                <div className='p-1 border-gray-300 border rounded-lg w-40 flex flex-col ml-4'>
+                  <span className='text-base'>
+                    <b>Kto wydał</b>
+                  </span>
+                  <span>{localRepair.collectionEmployeeName}</span>
+                </div>
+              )}
+            </div>
             <div
               className={
                 noteFocus
-                  ? "border-border ml-auto w-fit border p-2 rounded-lg outline-blue-600 outline-double outline-2"
-                  : "border-border ml-auto w-fit border p-2 rounded-lg"
+                  ? "border-gray-300 ml-auto w-fit border p-2 rounded-lg outline-blue-600 outline-double outline-2"
+                  : "border-gray-300 ml-auto w-fit border p-2 rounded-lg"
               }
             >
               <b className='block'>Notatka</b>
@@ -234,6 +376,14 @@ export default function Repair({ repair, updateRepair }) {
                 {localRepair.services.map((service, index) => (
                   <ServiceRecord index={index} service={service} key={service.id} deleteFn={deleteService} />
                 ))}
+                <tr className='text-center *:p-2'>
+                  <td></td>
+                  <td className='text-end'>
+                    <b>Suma:</b>
+                  </td>
+                  <td>{localRepair.services.reduce((acc, s) => acc + s.service.price, 0)}</td>
+                  <td></td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -265,12 +415,22 @@ export default function Repair({ repair, updateRepair }) {
                     key={part.id}
                   />
                 ))}
+                <tr className='text-center *:p-2'>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td className='text-end'>
+                    <b>Suma:</b>
+                  </td>
+                  <td>{localRepair.parts.reduce((acc, p) => acc + p.part.price * p.amount, 0)}</td>
+                  <td></td>
+                </tr>
               </tbody>
             </table>
-            <button className='button-secondary'>Dodaj</button>
           </div>
         </div>
       </section>
+      <Modal />
     </div>
   );
 }
