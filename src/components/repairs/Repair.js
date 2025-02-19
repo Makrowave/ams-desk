@@ -117,7 +117,23 @@ export default function Repair({ repair }) {
     save();
   };
 
+  const changeDiscount = (value) => {
+    setIsSaved(false);
+    setLocalRepair({ ...localRepair, discount: value.replace(/[^0-9]/g, "") });
+  };
+  const changeCosts = (value) => {
+    setIsSaved(false);
+    setLocalRepair({ ...localRepair, additionalCosts: value.replace(/[^0-9]/g, "") });
+  };
+
   const router = useRouter();
+
+  const servicesTotal = () => {
+    return localRepair.services.reduce((acc, s) => acc + s.service.price, 0);
+  };
+  const partsTotal = () => {
+    return localRepair.parts.reduce((acc, p) => acc + p.part.price * p.amount, 0);
+  };
 
   //Handle browser navigation
   useEffect(() => {
@@ -267,6 +283,7 @@ export default function Repair({ repair }) {
             </ExpandButton>
           </div>
         </div>
+
         <section className='flex place-content-between pb-4'>
           <div className='flex-col flex-1 *:mt-4'>
             <div className='flex'>
@@ -285,17 +302,68 @@ export default function Repair({ repair }) {
                 </div>
               )}
             </div>
-            <div className='border-gray-300 border-2 rounded-lg p-2 w-40'>
-              <span className='block text-base'>
-                <b>Telefon</b>
-              </span>
-              <span>{formatPhone(localRepair.phoneNumber)}</span>
-            </div>
-            <div className='border-gray-300 border-2 rounded-lg p-2 w-40'>
-              <span className='block text-base'>
-                <b>Rower</b>
-              </span>
-              <span>{localRepair.bikeName}</span>
+            <div className='flex max-w-xl'>
+              <div className='flex flex-col flex-1 justify-between'>
+                <div className='border-gray-300 border-2 rounded-lg p-2 w-40'>
+                  <span className='block text-base'>
+                    <b>Telefon</b>
+                  </span>
+                  <span>{formatPhone(localRepair.phoneNumber)}</span>
+                </div>
+                <div className='border-gray-300 border-2 rounded-lg p-2 w-40'>
+                  <span className='block text-base'>
+                    <b>Rower</b>
+                  </span>
+                  <span>{localRepair.bikeName}</span>
+                </div>
+              </div>
+              <div className='border-gray-300 border-2 rounded-lg w-full ml-4 flex flex-col p-2'>
+                <span className='text-base border-gray-200 border-b w-fit'>
+                  <b>Całkowite koszty</b>
+                </span>
+                <table className='text-lg'>
+                  <tbody>
+                    <tr>
+                      <td>Usługi</td>
+                      <td className='text-end'>{servicesTotal()}</td>
+                    </tr>
+                    <tr>
+                      <td>Części</td>
+                      <td className='text-end'>{partsTotal()}</td>
+                    </tr>
+                    <tr>
+                      <td>Dodatkowe koszty</td>
+                      <td className='text-end'>
+                        <input
+                          className='w-10 border-gray-300 rounded-lg border text-end'
+                          value={localRepair.additionalCosts}
+                          onChange={(e) => changeCosts(e.target.value)}
+                        />
+                      </td>
+                    </tr>
+                    <tr className='border-b border-gray-300'>
+                      <td>Zniżka</td>
+                      <td className='text-end'>
+                        <span>-</span>
+                        <input
+                          className='w-10 border-gray-300 rounded-lg border text-end'
+                          value={localRepair.discount}
+                          onChange={(e) => changeDiscount(e.target.value)}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Suma</td>
+                      <td className='text-end'>
+                        {servicesTotal() +
+                          partsTotal() +
+                          Number(localRepair.additionalCosts) -
+                          Number(localRepair.discount)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
             <div className='border-gray-300 border-2 rounded-lg p-2 max-w-xl'>
               <span className='block text-base'>
@@ -334,7 +402,7 @@ export default function Repair({ repair }) {
                   : "border-gray-300 ml-auto w-fit border p-2 rounded-lg"
               }
             >
-              <b className='block'>Notatka</b>
+              <b className='block text-base'>Notatka</b>
               <textarea
                 className='focus:outline-none'
                 cols={50}
@@ -381,7 +449,7 @@ export default function Repair({ repair }) {
                   <td className='text-end'>
                     <b>Suma:</b>
                   </td>
-                  <td>{localRepair.services.reduce((acc, s) => acc + s.service.price, 0)}</td>
+                  <td>{servicesTotal()}</td>
                   <td></td>
                 </tr>
               </tbody>
@@ -422,7 +490,7 @@ export default function Repair({ repair }) {
                   <td className='text-end'>
                     <b>Suma:</b>
                   </td>
-                  <td>{localRepair.parts.reduce((acc, p) => acc + p.part.price * p.amount, 0)}</td>
+                  <td>{partsTotal()}</td>
                   <td></td>
                 </tr>
               </tbody>
