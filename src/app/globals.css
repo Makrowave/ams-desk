@@ -43,7 +43,11 @@ body {
 } */
 
 .main-div {
-  @apply h-screen flex flex-col max-w-1920 m-auto;
+  @apply flex flex-col max-w-1920 m-auto overflow-y-auto;
+}
+
+main {
+  @apply overflow-y-auto;
 }
 
 tr:last-child td:first-child {

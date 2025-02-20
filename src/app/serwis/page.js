@@ -8,7 +8,7 @@ export default function Serwis() {
   return (
     <PrivateRoute>
       <Navigation active={2} />
-      <main>
+      <main className='overflow-y-hidden'>
         <div className='main-div px-12 py-6 flex-row items-start justify-center space-x-10'>
           <div className='bg-white rounded-xl p-8 w-fit'>
             <h2 className='mb-4 text-2xl'>W trakcie</h2>

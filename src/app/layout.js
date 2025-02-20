@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
   return (
     //overflow auto
     <html lang='en'>
-      <body className={work_sans.className + " overflow-hidden text-xl h-full text-slate-600"}>
+      <body className={work_sans.className + " overflow-y-hidden text-xl h-100vh text-slate-600"}>
         <ProviderWrapper>{children}</ProviderWrapper>
       </body>
     </html>

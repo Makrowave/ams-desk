@@ -151,7 +151,7 @@ export default function Repair({ repair }) {
   const [noteFocus, setNoteFocus] = useState(false);
 
   return (
-    <div className='flex-col rounded-2xl h-full'>
+    <div className='flex-col rounded-2xl'>
       <div className='flex bg-white rounded-t-xl border-x-2 p-4'>
         <button
           className='rounded-lg p-2 hover:bg-gray-300 transition-colors duration-200'
