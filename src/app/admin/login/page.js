@@ -6,7 +6,9 @@ export default function AdminLoginPage() {
   return (
     <PrivateRoute login={true}>
       <Navigation active={3} />
-      <AdminLogin />
+      <main className='h-[calc(100vh-48px)]'>
+        <AdminLogin />
+      </main>
     </PrivateRoute>
   );
 }

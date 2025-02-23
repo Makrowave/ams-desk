@@ -16,32 +16,60 @@ import {
 } from "react-icons/fa6";
 import ServiceRecord from "./ServiceRecord";
 import ServiceInputSelect from "../filtering/ServiceInputSelect";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosPrivate } from "@/api/axios";
 import PartInputSelect from "../filtering/PartInputSelect";
 import ExpandButton from "../buttons/ExpandButton";
 import useModal from "@/hooks/useModal";
 import RepairModal from "../modals/repair/RepairModal";
 import Modal from "../modals/Modal";
+import { QUERY_KEYS } from "@/util/query_keys";
 
 export default function Repair({ repair }) {
   const [isSaved, setIsSaved] = useState("true");
   const [localRepair, setLocalRepair] = useState(repair);
   const { setIsOpen, setModalChildren, setTitle } = useModal();
-  const queryClient = useQueryClient();
-  const mutation = useMutation({
+
+  const { data, isError, isLoading, error } = useQuery({
+    queryKey: [QUERY_KEYS.Employees],
+    queryFn: async () => {
+      const response = await axiosPrivate.get("Employees");
+      return response.data;
+    },
+  });
+  const statusMutation = useMutation({
+    mutationFn: async (id) => {
+      return await axiosPrivate.put(`repairs/status/${localRepair.repairId}?statusId=${id}`);
+    },
+    onSuccess: (result) => {
+      setLocalRepair(result.data);
+    },
+  });
+
+  const employeeMutation = useMutation({
+    mutationFn: async ([id, collection]) => {
+      return await axiosPrivate.put(
+        `repairs/employee/${localRepair.repairId}?employeeId=${id}&collection=${collection}`
+      );
+    },
+    onSuccess: (result) => {
+      setLocalRepair(result.data);
+    },
+  });
+
+  const repairMutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.put(
         `repairs/${localRepair.repairId}`,
         JSON.stringify({
           ...localRepair,
           services: localRepair.services.map((service) => ({
-            serviceDoneId: service.serviceDoneId,
+            serviceDoneId: service.serviceDoneId > 0 ? service.serviceDoneId : 0,
             serviceId: service.service.serviceId,
             repairId: localRepair.repairId,
           })),
           parts: localRepair.parts.map((part) => ({
-            partUsedId: part.partUsedId,
+            partUsedId: part.partUsedId > 0 ? part.partUsedId : 0,
             partId: part.part.partId,
             repairId: localRepair.repairId,
             amount: part.amount,
@@ -50,25 +78,25 @@ export default function Repair({ repair }) {
         })
       );
     },
-    onSuccess: () => {
+    onSuccess: (result) => {
+      setLocalRepair(result.data);
       setIsSaved(true);
-      queryClient.refetchQueries({
-        queryKey: ["repairs"],
-        exact: false,
-      });
     },
   });
 
   const save = () => {
-    mutation.mutate();
+    repairMutation.mutate();
   };
+
+  const [newPartId, setNewPartId] = useState(-1);
   const updateParts = (value) => {
     setIsSaved(false);
     const newParts = localRepair.parts;
-    const id = newParts[newParts.length - 1]?.partUsedId + 1;
-    const partUsed = { partUsedId: isNaN(id) ? 0 : id, part: value, amount: 1 };
+    const id = newPartId;
+    setNewPartId(id - 1);
+    const partUsed = { partUsedId: isNaN(id) ? -1 : id, part: value, amount: 1 };
     newParts.push(partUsed);
-
+    console.log(newParts);
     setLocalRepair({ ...localRepair, parts: newParts });
   };
 
@@ -86,12 +114,13 @@ export default function Repair({ repair }) {
     const newParts = localRepair.parts.filter((part) => part.partUsedId !== id);
     setLocalRepair({ ...localRepair, parts: newParts });
   };
-
+  const [newServiceId, setNewServiceId] = useState(-1);
   const updateServices = (value) => {
     setIsSaved(false);
     const newServices = localRepair.services;
-    const id = newServices[newServices.length - 1]?.serviceDoneId + 1;
-    const serviceDone = { serviceDoneId: isNaN(id) ? 0 : id, service: value };
+    const id = newServiceId;
+    setNewServiceId(id - 1);
+    const serviceDone = { serviceDoneId: isNaN(id) ? -1 : id, service: value };
     newServices.push(serviceDone);
     setLocalRepair({ ...localRepair, services: newServices });
   };
@@ -103,17 +132,17 @@ export default function Repair({ repair }) {
   };
 
   const changeStatus = (id) => {
-    setLocalRepair({ ...localRepair, statusId: id });
+    statusMutation.mutate(id);
     save();
   };
 
-  const handleColEmployeeChange = (employeeId, statusId) => {
-    setLocalRepair({ ...localRepair, collectionEmployeeId: employeeId, statusId: statusId });
+  const handleColEmployeeChange = (id) => {
+    employeeMutation.mutate([id, true]);
     save();
   };
 
-  const handleRepEmployeeChange = (employeeId, statusId) => {
-    setLocalRepair({ ...localRepair, repairEmployeeId: employeeId, statusId: statusId });
+  const handleRepEmployeeChange = (id) => {
+    employeeMutation.mutate([id, false]);
     save();
   };
 
@@ -163,10 +192,10 @@ export default function Repair({ repair }) {
           <ExpandButton className='button-primary' text={"Zapisz"} onClick={save}>
             <FaFloppyDisk />
           </ExpandButton>
-          <button className='button-primary' onClick={() => printRepairDoc(generateRepairNewDoc, repair)}>
+          <button className='button-primary' onClick={() => printRepairDoc(generateRepairNewDoc, localRepair)}>
             Drukuj zgłoszenie
           </button>
-          <button className='button-primary' onClick={() => printRepairDoc(generateRepairCostsDoc, repair)}>
+          <button className='button-primary' onClick={() => printRepairDoc(generateRepairCostsDoc, localRepair)}>
             Drukuj cennik
           </button>
         </div>
@@ -179,9 +208,9 @@ export default function Repair({ repair }) {
             </b>
             <div
               className='flex ml-2 py-0.5 px-1 text-base rounded-md h-fit items-center'
-              style={{ backgroundColor: repair.status.color }}
+              style={{ backgroundColor: localRepair.status.color }}
             >
-              {repair.status.name}
+              {localRepair.status.name}
             </div>
           </div>
           <div className='flex items-center gap-x-2 text-xl'>
@@ -197,7 +226,10 @@ export default function Repair({ repair }) {
                   <RepairModal
                     employeeId={localRepair.status.repairEmployeeId}
                     label='Kto naprawia'
-                    employeeFn={handleRepEmployeeChange}
+                    onClick={(employee, status) => {
+                      changeStatus(status);
+                      handleRepEmployeeChange(employee);
+                    }}
                     statusId={3}
                   />
                 );
@@ -272,7 +304,10 @@ export default function Repair({ repair }) {
                   <RepairModal
                     employeeId={localRepair.status.repairEmployeeId}
                     label='Kto wydaje'
-                    employeeFn={handleColEmployeeChange}
+                    onClick={(employee, status) => {
+                      handleColEmployeeChange(employee);
+                      changeStatus(status);
+                    }}
                     statusId={7}
                   />
                 );
@@ -291,14 +326,14 @@ export default function Repair({ repair }) {
                 <span className='block text-base'>
                   <b>Data przyjęcia</b>
                 </span>
-                <span>{new Date(repair.arrivalDate).toLocaleDateString("pl-PL")}</span>
+                <span>{new Date(localRepair.arrivalDate).toLocaleDateString("pl-PL")}</span>
               </div>
               {localRepair.collectionDate !== null && (
                 <div className='border-gray-300 border-2 rounded-lg p-2 w-40 ml-4'>
                   <span className='block text-base'>
                     <b>Data wydania</b>
                   </span>
-                  <span>{new Date(repair.collectionDate).toLocaleDateString("pl-PL")}</span>
+                  <span>{new Date(localRepair.collectionDate).toLocaleDateString("pl-PL")}</span>
                 </div>
               )}
             </div>
@@ -383,7 +418,22 @@ export default function Repair({ repair }) {
                         : "Kto naprawia"}
                     </b>
                   </span>
-                  <span>{localRepair.repairEmployeeName}</span>
+                  {localRepair.statusId === 7 || localRepair.statusId === 6 || localRepair.statusId === 5 ? (
+                    <span>{localRepair.repairEmployeeName}</span>
+                  ) : (
+                    <select
+                      value={localRepair.repairEmployeeId}
+                      onChange={(e) => handleRepEmployeeChange(e.target.value)}
+                    >
+                      {!isError &&
+                        !isLoading &&
+                        data.map((employee) => (
+                          <option key={employee.employeeId} value={employee.employeeId}>
+                            {employee.employeeName}
+                          </option>
+                        ))}
+                    </select>
+                  )}
                 </div>
               )}
               {localRepair.collectionEmployeeId !== null && (

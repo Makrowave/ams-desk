@@ -9,4 +9,5 @@ export const QUERY_KEYS = {
   Places: "places",
   Employees: "employees",
   Users: "users",
+  Repairs: "repairs",
 };
