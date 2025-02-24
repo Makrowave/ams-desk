@@ -26,9 +26,11 @@ import useModal from "@/hooks/useModal";
 import RepairModal from "../modals/repair/RepairModal";
 import Modal from "../modals/Modal";
 import { QUERY_KEYS } from "@/util/query_keys";
+import useSavedData from "@/hooks/useSavedData";
+import SavedDataWarning from "../navigation/SavedDataWarning";
 
 export default function Repair({ repair }) {
-  const [isSaved, setIsSaved] = useState("true");
+  const { isSaved, setIsSaved, updateIsUsed } = useSavedData();
   const [localRepair, setLocalRepair] = useState(repair);
   const { setIsOpen, setModalChildren, setTitle } = useModal();
 
@@ -176,6 +178,7 @@ export default function Repair({ repair }) {
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       if (!isSaved) {
+        console.log("test");
         event.preventDefault();
       }
     };
@@ -185,16 +188,25 @@ export default function Repair({ repair }) {
     };
   }, [isSaved]);
 
+  useEffect(() => {
+    updateIsUsed(true);
+    return () => {
+      updateIsUsed(false);
+    };
+  }, []);
+
   const [noteFocus, setNoteFocus] = useState(false);
 
   return (
     <div className='flex-col rounded-2xl'>
       <div className='flex bg-white rounded-t-xl border-x-2 p-4'>
         <button
-          className='rounded-lg p-2 hover:bg-gray-300 transition-colors duration-200'
-          onClick={() => router.replace("/serwis")}
+          className='rounded-lg *:p-2 hover:bg-gray-300 transition-colors duration-200'
+          onClick={() => router.back()}
         >
-          <FaArrowLeft />
+          <SavedDataWarning>
+            <FaArrowLeft />
+          </SavedDataWarning>
         </button>
         <div className='ml-auto flex gap-4'>
           <ExpandButton className='button-primary' text={"Zapisz"} onClick={save}>
@@ -494,6 +506,7 @@ export default function Repair({ repair }) {
                 value={localRepair.note ?? ""}
                 onChange={(e) => {
                   setLocalRepair({ ...localRepair, note: e.target.value });
+                  setIsSaved(false);
                 }}
                 onFocus={() => {
                   setNoteFocus(true);

@@ -5,6 +5,7 @@ import PasswordModal from "../modals/auth/PasswordModal";
 import AdminPasswordModal from "../modals/auth/AdminPasswordModal";
 import UserPasswordModal from "../modals/auth/UserPasswordModal";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
+import SavedDataWarning from "./SavedDataWarning";
 //Maybe create admin UserDropdown
 export default function UserDropdown() {
   const { user, admin, logout, logoutAdmin, isAdmin } = useAuth();
@@ -38,7 +39,9 @@ export default function UserDropdown() {
                 setIsOpen(true);
               }}
             >
-              <span className='text-2xl'>Zmień hasło</span>
+              <SavedDataWarning>
+                <span className='text-2xl'>Zmień hasło</span>
+              </SavedDataWarning>
             </button>
           </li>
           <li className='px-4 py-2 cursor-pointer hover:bg-tertiary border border-border'>
@@ -50,7 +53,9 @@ export default function UserDropdown() {
                 else logout();
               }}
             >
-              <span className='text-2xl'>Wyloguj</span>
+              <SavedDataWarning>
+                <span className='text-2xl'>Wyloguj</span>
+              </SavedDataWarning>
             </button>
           </li>
         </ul>
