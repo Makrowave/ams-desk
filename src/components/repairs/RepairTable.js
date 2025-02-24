@@ -7,9 +7,12 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
-export default function RepairTable({ src, addButton }) {
+export default function RepairTable({ src, addButton, localKey }) {
   const axiosPrivate = useAxiosPrivate();
-  const [place, setPlace] = useState(0);
+  const storageKey = `repairTable.${localKey}`;
+  const [place, setPlace] = useState(
+    isNaN(Number(localStorage.getItem(storageKey))) ? 0 : Number(localStorage.getItem(storageKey))
+  );
   const [phone, setPhone] = useState("");
   const getSrc = () => `${src}&place=${place}`;
 
@@ -29,7 +32,15 @@ export default function RepairTable({ src, addButton }) {
       <div className='flex justify-between items-center h-12'>
         <div className='flex h-full'>
           {places.map((p) => (
-            <HeaderButton onClick={setPlace} id={p.placeId} selected={place === p.placeId} text={p.placeName} />
+            <HeaderButton
+              onClick={(id) => {
+                setPlace(id);
+                localStorage.setItem(storageKey, id);
+              }}
+              id={p.placeId}
+              selected={place === p.placeId}
+              text={p.placeName}
+            />
           ))}
         </div>
         <div className='flex items-center'>

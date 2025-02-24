@@ -5,7 +5,7 @@ export default function ExpandButton({ children, text, onClick, className, disab
       className={
         disabled
           ? `ex-button-disabled flex justify-center items-center p-2 rounded-xl h-10 w-10 ${className} ${disabledClass}`
-          : `ex-button flex justify-center items-center p-2 hover:bg-tertiary rounded-xl h-10 w-10 hover:w-40 ${className}`
+          : `ex-button flex justify-center items-center p-2 hover:bg-tertiary rounded-xl h-10 w-10 hover:w-48 ${className}`
       }
       disabled={disabled}
       onClick={onClick}

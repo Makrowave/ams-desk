@@ -3,10 +3,12 @@ import PartRecord from "./PartRecord";
 import { generateRepairCostsDoc, generateRepairNewDoc, printRepairDoc } from "@/util/print";
 import { formatPhone } from "@/util/formatting";
 import { useRouter } from "next/navigation";
+import { REPAIR_STATUS } from "@/util/repairStatuses";
 import {
   FaArrowLeft,
   FaBoxOpen,
   FaCheck,
+  FaComment,
   FaFlagCheckered,
   FaFloppyDisk,
   FaHourglass,
@@ -29,6 +31,8 @@ export default function Repair({ repair }) {
   const [isSaved, setIsSaved] = useState("true");
   const [localRepair, setLocalRepair] = useState(repair);
   const { setIsOpen, setModalChildren, setTitle } = useModal();
+
+  const queryClient = useQueryClient();
 
   const { data, isError, isLoading, error } = useQuery({
     queryKey: [QUERY_KEYS.Employees],
@@ -86,6 +90,10 @@ export default function Repair({ repair }) {
 
   const save = () => {
     repairMutation.mutate();
+    queryClient.refetchQueries({
+      queryKey: [QUERY_KEYS.Repairs],
+      exact: false,
+    });
   };
 
   const [newPartId, setNewPartId] = useState(-1);
@@ -184,7 +192,7 @@ export default function Repair({ repair }) {
       <div className='flex bg-white rounded-t-xl border-x-2 p-4'>
         <button
           className='rounded-lg p-2 hover:bg-gray-300 transition-colors duration-200'
-          onClick={() => router.back()}
+          onClick={() => router.replace("/serwis")}
         >
           <FaArrowLeft />
         </button>
@@ -215,12 +223,12 @@ export default function Repair({ repair }) {
           </div>
           <div className='flex items-center gap-x-2 text-xl'>
             <ExpandButton
-              disabled={localRepair.statusId !== 1}
+              disabled={localRepair.statusId !== REPAIR_STATUS.Pending}
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
               text='Rozpocznij'
               onClick={() => {
-                if (localRepair.statusId !== 1) return;
+                if (localRepair.statusId !== REPAIR_STATUS.Pending) return;
                 setTitle("Rozpocznij naprawę");
                 setModalChildren(
                   <RepairModal
@@ -230,7 +238,7 @@ export default function Repair({ repair }) {
                       changeStatus(status);
                       handleRepEmployeeChange(employee);
                     }}
-                    statusId={3}
+                    statusId={REPAIR_STATUS.InProgress}
                   />
                 );
                 setIsOpen(true);
@@ -239,29 +247,48 @@ export default function Repair({ repair }) {
               <FaWrench />
             </ExpandButton>
             <ExpandButton
-              disabled={localRepair.statusId === 7 || localRepair.statusId === 1}
+              disabled={
+                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+              }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
               text='Oczekuj części'
               onClick={() => {
-                changeStatus(4);
+                changeStatus(REPAIR_STATUS.AwaitingParts);
               }}
             >
               <FaHourglass />
             </ExpandButton>
             <ExpandButton
-              disabled={localRepair.statusId === 7 || localRepair.statusId === 1}
+              disabled={
+                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+              }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
               text='Gwarancja'
               onClick={() => {
-                changeStatus(2);
+                changeStatus(REPAIR_STATUS.Warranty);
               }}
             >
               <FaShield />
             </ExpandButton>
             <ExpandButton
-              disabled={localRepair.statusId === 7 || localRepair.statusId === 1}
+              disabled={
+                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+              }
+              className='button-primary'
+              disabledClass='hover:bg-gray-300 bg-gray-300'
+              text='Kontakt z klientem'
+              onClick={() => {
+                changeStatus(REPAIR_STATUS.ContactNeeded);
+              }}
+            >
+              <FaComment />
+            </ExpandButton>
+            <ExpandButton
+              disabled={
+                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+              }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
               text='Wznów'
@@ -272,29 +299,35 @@ export default function Repair({ repair }) {
               <FaBoxOpen />
             </ExpandButton>
             <ExpandButton
-              disabled={localRepair.statusId === 7 || localRepair.statusId === 1}
+              disabled={
+                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+              }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
               text='Zakończ'
               onClick={() => {
-                changeStatus(5);
+                changeStatus(REPAIR_STATUS.Finished);
               }}
             >
               <FaCheck />
             </ExpandButton>
             <ExpandButton
-              disabled={localRepair.statusId === 7 || localRepair.statusId === 1}
+              disabled={
+                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+              }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
               text='Powiadom'
               onClick={() => {
-                changeStatus(6);
+                changeStatus(REPAIR_STATUS.Notified);
               }}
             >
               <FaPhone />
             </ExpandButton>
             <ExpandButton
-              disabled={localRepair.statusId === 7 || localRepair.statusId === 1}
+              disabled={
+                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+              }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
               text='Wydaj'
@@ -308,7 +341,7 @@ export default function Repair({ repair }) {
                       handleColEmployeeChange(employee);
                       changeStatus(status);
                     }}
-                    statusId={7}
+                    statusId={REPAIR_STATUS.Collected}
                   />
                 );
                 setIsOpen(true);

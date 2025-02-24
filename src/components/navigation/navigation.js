@@ -12,7 +12,7 @@ const navigation = [
 
 export default function Navigation({ active }) {
   const navItems = navigation.map((item) => (
-    <NavButton key={item.id} title={item.name} href={item.href} current={active == item.id}></NavButton>
+    <NavButton key={item.id} title={item.name} href={item.href} current={active == item.id} />
   ));
 
   return (
