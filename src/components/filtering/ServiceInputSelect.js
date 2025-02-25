@@ -42,7 +42,7 @@ export default function ServiceInputSelect({ mutation }) {
         className='p-1 rounded-lg'
       />
       {shouldDisplay && (
-        <div className='absolute max-h-48 bg-white border border-border rounded-lg w-full' ref={ref}>
+        <div className='absolute max-h-48 bg-white border border-border rounded-lg w-full overflow-y-auto' ref={ref}>
           {!isLoading &&
             !isError &&
             data

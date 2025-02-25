@@ -5,7 +5,7 @@ export default function Password({ className, value, setValue, onKeyDown, onFocu
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <div className='w-fit h-fit bg-inherit transition-all'>
+    <div className='w-fit relative h-fit bg-inherit transition-all flex items-center w-full'>
       <input
         type={isVisible ? "text" : "password"}
         className={className}
@@ -18,7 +18,7 @@ export default function Password({ className, value, setValue, onKeyDown, onFocu
         onBlur={(e) => onBlur(e)}
         placeholder='Hasło'
       />
-      <button type='button' onClick={() => setIsVisible(!isVisible)}>
+      <button className='absolute right-1' type='button' onClick={() => setIsVisible(!isVisible)}>
         {isVisible ? <FaEyeSlash /> : <FaEye />}
       </button>
     </div>

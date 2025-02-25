@@ -62,7 +62,7 @@ export default function LoginForm({ login, loginError }) {
             onKeyDown={handleKeyDown}
             onFocus={() => setPasswordFocus(true)}
             onBlur={() => setPasswordFocus(false)}
-            className='focus:outline-none'
+            className='block rounded-lg w-full focus:outline-none'
           />
         </div>
         <button className='button-primary' type='submit'>

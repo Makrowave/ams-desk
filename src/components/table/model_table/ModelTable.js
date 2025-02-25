@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ChangeTable from "@/components/filtering/ChangeTable";
+import ModelTablePlaceSelector from "@/components/filtering/ModelTablePlaceSelector";
 import ModelTableHeader from "./ModelTableHeader";
 import ModelTableBody from "./ModelTableBody";
 
@@ -29,7 +29,7 @@ export default function ModelTable({ filterSrc }) {
   return (
     <div className='mb-10 col-span-5 flex justify-center mx-4 overflow-hidden max-w-full bg-primary p-8 rounded-xl'>
       <div className='flex flex-col w-full h-full overflow-hidden'>
-        <ChangeTable changePlaceId={(index) => setPlace(index)} />
+        <ModelTablePlaceSelector changePlaceId={(index) => setPlace(index)} />
         <div className='overflow-y-auto flex-1 h-0'>
           <table className='table min-w-full'>
             <ModelTableHeader singlePlace={place !== 0} setCriterion={setCriterion} />
