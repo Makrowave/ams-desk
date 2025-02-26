@@ -8,7 +8,7 @@ export default function PartInputSelect({ mutation }) {
     queryKey: ["Parts"],
     queryFn: async () => {
       const result = await axiosPrivate.get("Parts");
-      return result.data.data;
+      return result.data;
     },
   });
 

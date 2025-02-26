@@ -13,6 +13,7 @@ import {
   FaFloppyDisk,
   FaHourglass,
   FaPhone,
+  FaPlus,
   FaShield,
   FaWrench,
 } from "react-icons/fa6";
@@ -28,6 +29,7 @@ import Modal from "../modals/Modal";
 import { QUERY_KEYS } from "@/util/query_keys";
 import useSavedData from "@/hooks/useSavedData";
 import SavedDataWarning from "../navigation/SavedDataWarning";
+import AddPartModal from "../modals/repair/AddPartModal";
 
 export default function Repair({ repair }) {
   const { isSaved, setIsSaved, updateIsUsed } = useSavedData();
@@ -556,7 +558,19 @@ export default function Repair({ repair }) {
           <div className='w-full'>
             <div className='flex items-center justify-between p-2 border-gray-300 border-b rounded-t-lg bg-secondary'>
               <b className='p-2'>Części</b>
-              <PartInputSelect mutation={updateParts} />
+              <div className='flex flex-row items-center'>
+                <PartInputSelect mutation={updateParts} />
+                <button
+                  className='p-2 mx-2 bg-gray-300 hover:bg-gray-400 transition-colors duration-200 rounded-lg'
+                  onClick={() => {
+                    setModalChildren(<AddPartModal />);
+                    setTitle("Dodaj część");
+                    setIsOpen(true);
+                  }}
+                >
+                  <FaPlus />
+                </button>
+              </div>
             </div>
             <table className='shadow-lg w-full'>
               <thead className='bg-secondary'>

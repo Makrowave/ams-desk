@@ -24,7 +24,7 @@ export default function LoginForm({ login, loginError }) {
     <div className='justify-center flex content-center h-full items-center'>
       <form
         onSubmit={(e) => handleSubmit(e)}
-        className='flex flex-col m-auto item-center bg-primary py-6 px-6 border-2 shadow-2xl rounded-lg w-80'
+        className='flex flex-col m-auto item-center bg-primary p-6 border-2 shadow-2xl rounded-lg w-80'
       >
         <span className='self-center text-3xl'>Logowanie</span>
         <ErrorDisplay message={loginError} isVisible={loginError !== ""} />

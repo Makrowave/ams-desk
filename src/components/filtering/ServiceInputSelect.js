@@ -8,7 +8,7 @@ export default function ServiceInputSelect({ mutation }) {
     queryKey: ["Services"],
     queryFn: async () => {
       const result = await axiosPrivate.get("Services");
-      return result.data.data;
+      return result.data;
     },
   });
 

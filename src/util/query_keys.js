@@ -10,4 +10,6 @@ export const QUERY_KEYS = {
   Employees: "employees",
   Users: "users",
   Repairs: "repairs",
+  Units: "units",
+  Parts: "parts",
 };

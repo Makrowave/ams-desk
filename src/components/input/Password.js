@@ -5,7 +5,7 @@ export default function Password({ className, value, setValue, onKeyDown, onFocu
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <div className='w-fit relative h-fit bg-inherit transition-all flex items-center w-full'>
+    <div className='relative h-fit bg-inherit transition-all flex items-center w-full'>
       <input
         type={isVisible ? "text" : "password"}
         className={className}
