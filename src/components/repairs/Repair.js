@@ -89,15 +89,15 @@ export default function Repair({ repair }) {
     onSuccess: (result) => {
       setLocalRepair(result.data);
       setIsSaved(true);
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEYS.Repairs],
+        exact: false,
+      });
     },
   });
 
   const save = () => {
     repairMutation.mutate();
-    queryClient.refetchQueries({
-      queryKey: [QUERY_KEYS.Repairs],
-      exact: false,
-    });
   };
 
   const [newPartId, setNewPartId] = useState(-1);
@@ -108,15 +108,12 @@ export default function Repair({ repair }) {
     setNewPartId(id - 1);
     const partUsed = { partUsedId: isNaN(id) ? -1 : id, part: value, amount: 1 };
     newParts.push(partUsed);
-    console.log(newParts);
     setLocalRepair({ ...localRepair, parts: newParts });
   };
 
   const changePartPrice = (id, value) => {
     setIsSaved(false);
-    console.log(id, value);
     const newParts = localRepair.parts.map((part) => (part.partUsedId === id ? { ...part, amount: value } : part));
-    console.log(newParts);
 
     setLocalRepair({ ...localRepair, parts: newParts });
   };
@@ -180,7 +177,6 @@ export default function Repair({ repair }) {
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       if (!isSaved) {
-        console.log("test");
         event.preventDefault();
       }
     };

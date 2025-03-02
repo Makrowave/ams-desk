@@ -16,7 +16,6 @@ export const printRepairDoc = async (htmlStringFn, repair) => {
     console.error("Failed to load CSS:", error);
   }
   doc.write(htmlString);
-  console.log(doc);
   doc.close();
 
   iframe.contentWindow.focus();

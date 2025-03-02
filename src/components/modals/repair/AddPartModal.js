@@ -3,8 +3,13 @@ import { QUERY_KEYS } from "@/util/query_keys";
 import { useState } from "react";
 import { FaCheck, FaXmark } from "react-icons/fa6";
 import { REGEX } from "@/util/regex";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+import useModal from "@/hooks/useModal";
 
 export default function AddPartModal({}) {
+  const { setIsOpen } = useModal();
+
   const [category, setCategory] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -12,6 +17,28 @@ export default function AddPartModal({}) {
 
   const [isNameValid, setIsNameValid] = useState(false);
   const [isPriceValid, setIsPriceValid] = useState(false);
+
+  const axiosPrivate = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const result = axiosPrivate.post(
+        "parts",
+        JSON.stringify({
+          partId: 0,
+          partName: name,
+          price: price,
+          partCategoryId: category,
+          unitId: unit,
+        })
+      );
+      return result;
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: [QUERY_KEYS.Parts], exact: false });
+      setIsOpen(false);
+    },
+  });
 
   const updateName = (value) => {
     if (REGEX.POLISH_TEXT.test(value) && value.length <= 40) {
@@ -39,7 +66,7 @@ export default function AddPartModal({}) {
           value={category}
           onChange={setCategory}
           src='/PartCategories'
-          queryKey={QUERY_KEYS.Parts}
+          queryKey={QUERY_KEYS.PartCategories}
           default_option={""}
           title='Kategoria'
           default_title='Wybierz z listy'
@@ -82,7 +109,7 @@ export default function AddPartModal({}) {
         <ValidationFetchSelect
           value={unit}
           onChange={setUnit}
-          src='/units'
+          src='/Units'
           queryKey={QUERY_KEYS.Units}
           default_option={""}
           title='Jednostka'
@@ -91,6 +118,7 @@ export default function AddPartModal({}) {
         <button
           disabled={!(isNameValid && isPriceValid && category !== "" && unit !== "")}
           className='button-primary text-center disabled:bg-gray-400'
+          onClick={() => mutation.mutate()}
         >
           Dodaj
         </button>

@@ -9,7 +9,6 @@ export default function LogoutModal({ id }) {
   const { setIsOpen } = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
-      console.log(url);
       return await axiosAdmin.post(
         url,
         {},

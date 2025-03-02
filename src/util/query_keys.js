@@ -12,4 +12,5 @@ export const QUERY_KEYS = {
   Repairs: "repairs",
   Units: "units",
   Parts: "parts",
+  PartCategories: "partCategories",
 };
