@@ -33,10 +33,11 @@ export default function SideBar({ baseUrl, active }) {
             <SideBarButton href={baseUrl + "/kolory"} title='Kolory' current={active === 4} />
             <SideBarButton href={baseUrl + "/kola"} title='Koła' current={active === 5} />
             <SideBarButton href={baseUrl + "/producenci"} title='Producenci' current={active === 6} />
+            <SideBarButton href={baseUrl + "/kategorie"} title='Kategorie' current={active === 7} />
             <SideBarButton
-              href={baseUrl + "/kategorie"}
-              title='Kategorie'
-              current={active === 7}
+              href={baseUrl + "/serwis"}
+              title='Serwis'
+              current={active === 8}
               className={"rounded-br-xl"}
             />
           </ul>
