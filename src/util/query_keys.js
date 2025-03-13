@@ -6,6 +6,7 @@ export const QUERY_KEYS = {
     Colors: "colors",
     Categories: "categories",
     Statuses: "statuses",
+    StatusesNotSold: "statusesNotSold",
     Places: "places",
     Employees: "employees",
     Users: "users",

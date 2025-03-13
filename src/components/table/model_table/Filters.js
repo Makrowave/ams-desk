@@ -167,7 +167,7 @@ export default function Filters({setQuery}) {
                     value={statusId}
                     onChange={setStatusId}
                     src='/Status/Excluded?exclude=3'
-                    queryKey={QUERY_KEYS.Statuses}
+                    queryKey={QUERY_KEYS.StatusesNotSold}
                     title='Status'
                     default_option={""}
                     default_title='Dowolny'
