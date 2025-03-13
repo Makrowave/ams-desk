@@ -22,7 +22,7 @@ export default function AddPartModal({}) {
     const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: async () => {
-            const result = axiosPrivate.post(
+            return await axiosPrivate.post(
                 "parts",
                 JSON.stringify({
                     partId: 0,
@@ -32,7 +32,6 @@ export default function AddPartModal({}) {
                     unitId: unit,
                 })
             );
-            return result;
         },
         onSuccess: async () => {
             await queryClient.refetchQueries({queryKey: [QUERY_KEYS.Parts], exact: false});

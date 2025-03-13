@@ -21,7 +21,7 @@ export default function ModifyServiceModal({service}) {
     const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: async () => {
-            const result = axiosPrivate.put(
+            return await axiosPrivate.put(
                 `services/${service.serviceId}`,
                 JSON.stringify({
                     serviceId: service.serviceId,
@@ -30,7 +30,6 @@ export default function ModifyServiceModal({service}) {
                     serviceCategoryId: category,
                 })
             );
-            return result;
         },
         onSuccess: async () => {
             await queryClient.refetchQueries({queryKey: [QUERY_KEYS.Services], exact: false});
