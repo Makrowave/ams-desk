@@ -11,7 +11,7 @@ export default function FavoriteModelRecord({model}) {
     }
 
     return (
-        <tr className="*:even:bg-secondary *:border-b-border *:border-b  *:last:border-b-0 *:text-center *:p-2">
+        <tr className="even:bg-secondary  *:last:border-b-0 *:text-center *:p-2">
             <td><ColorPreview primaryColor={model.primaryColor} secondaryColor={model.secondaryColor}/></td>
             <td>{model.modelName}</td>
             <td>{model.frameSize}x{model.wheelSize}</td>
