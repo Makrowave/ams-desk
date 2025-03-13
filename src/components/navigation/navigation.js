@@ -4,7 +4,7 @@ import UserDropdown from "./UserDropdown";
 import {usePathname} from "next/navigation";
 
 const navigation = [
-    // { name: "Strona Główna", href: "/", links: [""]},
+    {name: "Strona Główna", href: "/", links: [""]},
     {name: "Rowery", href: "/rowery", links: ["rowery"]},
     {name: "Serwis", href: "/serwis", links: ["serwis"]},
     {name: "Zarządzanie", href: "/adminlogin", links: ["adminlogin", "admin"]},

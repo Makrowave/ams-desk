@@ -3,7 +3,7 @@ import {ModelSubRecord} from "./ModelSubRecord";
 import {useState} from "react";
 import ExternalLink from "../../../navigation/ExternalLink";
 import "../../table.css";
-import {FaBan} from "react-icons/fa6";
+import ColorPreview from "@/components/table/ColorPreview";
 
 /**
  * Model preview - when clicked it opens or closes detailed info and bike info <BikeSubrecord>.
@@ -52,10 +52,11 @@ export default function ModelRecord({model, placeCount, placeId}) {
                 <td className={colorCount(model.bikeCount)}>{model.bikeCount}</td>
                 {placeId === 0 ? model.placeBikeCount.map((place) => <td key={place.placeId}>
                     <div className='flex justify-center items-center'>{place.name}
-                        <div className="w-fit h-fit relative">
+                        <div
+                            className={place.isAvailable ? "text-green-500 w-fit h-fit relative" : "w-fit h-fit relative"}>
                             {place.count}
                             {place.isAvailable &&
-                                <div className="w-1.5 h-1.5 rounded-[50%] bg-green-500 absolute top-0 -right-2"/>}
+                                <div className="w-1.5 h-1.5 rounded-[50%] bg-green-500 absolute top-0.5 -right-1.5"/>}
                         </div>
 
                     </div>
@@ -66,28 +67,3 @@ export default function ModelRecord({model, placeCount, placeId}) {
     );
 }
 
-/**
- * Renders a square with 2 colors divided diagonally
- * @param {Object} props - Props
- * @param {string} props.primaryColor - Upper right color
- * @param {string} props.secondaryColor - Bottom left color
- * @returns
- */
-function ColorPreview({primaryColor, secondaryColor}) {
-    return primaryColor === null || secondaryColor === null ? (
-        <FaBan className='h-6 w-6 mr-3'/>
-    ) : (
-        <div
-            style={{
-                background: "linear-gradient(225deg, " + primaryColor + " 50%, " + secondaryColor + " 50%)",
-                height: 24,
-                width: 24,
-                minHeight: 24,
-                minWidth: 24,
-                marginRight: 12,
-                alignSelf: "center",
-                borderRadius: "6px",
-            }}
-        />
-    );
-}
