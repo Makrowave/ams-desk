@@ -1,23 +1,23 @@
 import Link from "next/link";
 import React from "react";
-export function SideBarButton({ href, title, current, className }) {
+import { FaBeerMugEmpty } from "react-icons/fa6";
+export function SideBarButton({ href, title, current, className, icon }) {
   return (
     <li
       className={
         current
-          ? "self-center w-full h-10 flex bg-secondary overflow-hidden " + className
-          : "self-center w-full h-10 flex overflow-hidden " + className
+          ? "w-60 self-center h-10 flex bg-secondary overflow-hidden " + className
+          : "w-60 self-center h-10 flex overflow-hidden " + className
       }
     >
-      <button className='w-full flex justify-center h-full'>
-        <Link className='w-full flex justify-center h-full' href={href}>
-          <div className='w-10/12 h-full border-b-2 flex justify-center'>
-            <div className='self-center w-full'>
-              <span className='text-nowrap text-center self-center'>{title}</span>
-            </div>
+      <Link className='w-full flex justify-center h-full' href={href}>
+        <div className='w-full pl-4 h-full border-t flex justify-center'>
+          <div className='w-full flex justify-between items-center'>
+            <span className='text-nowrap'>{title}</span>
+            <div className='flex w-16 justify-center'>{icon}</div>
           </div>
-        </Link>
-      </button>
+        </div>
+      </Link>
     </li>
   );
 }

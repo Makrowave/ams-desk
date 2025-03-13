@@ -6,7 +6,7 @@ export default function FitlerModelTable() {
   const [query, setQuery] = useState();
   return (
     <div className='main-div'>
-      <div className='flex-1 grid grid-cols-6 py-5 rounded-b-xl overflow-hidden flex-col max-h-[calc(100vh-68px)]'>
+      <div className='flex-1 grid grid-cols-6 py-5 rounded-b-xl overflow-hidden flex-col'>
         <Filters setQuery={setQuery} />
         <ModelTable filterSrc={query} />
       </div>

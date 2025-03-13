@@ -7,35 +7,33 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 
-export default function AddPartModal({}) {
+export default function ModifyServiceModal({service}) {
     const {setIsOpen} = useModal();
 
-    const [category, setCategory] = useState("");
-    const [name, setName] = useState("");
-    const [price, setPrice] = useState("");
-    const [unit, setUnit] = useState(1);
+    const [category, setCategory] = useState(service.serviceCategoryId);
+    const [name, setName] = useState(service.serviceName);
+    const [price, setPrice] = useState(service.price);
 
-    const [isNameValid, setIsNameValid] = useState(false);
-    const [isPriceValid, setIsPriceValid] = useState(false);
+    const [isNameValid, setIsNameValid] = useState(true);
+    const [isPriceValid, setIsPriceValid] = useState(true);
 
     const axiosPrivate = useAxiosPrivate();
     const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: async () => {
-            const result = axiosPrivate.post(
-                "parts",
+            const result = axiosPrivate.put(
+                `services/${service.serviceId}`,
                 JSON.stringify({
-                    partId: 0,
-                    partName: name,
+                    serviceId: service.serviceId,
+                    serviceName: name,
                     price: price,
-                    partCategoryId: category,
-                    unitId: unit,
+                    serviceCategoryId: category,
                 })
             );
             return result;
         },
         onSuccess: async () => {
-            await queryClient.refetchQueries({queryKey: [QUERY_KEYS.Parts], exact: false});
+            await queryClient.refetchQueries({queryKey: [QUERY_KEYS.Services], exact: false});
             setIsOpen(false);
         },
     });
@@ -106,21 +104,12 @@ export default function AddPartModal({}) {
                         onChange={(e) => updatePrice(e.target.value)}
                     />
                 </div>
-                <ValidationFetchSelect
-                    value={unit}
-                    onChange={setUnit}
-                    src='/Units'
-                    queryKey={QUERY_KEYS.Units}
-                    default_option={""}
-                    title='Jednostka'
-                    default_title='Wybierz z listy'
-                />
                 <button
-                    disabled={!(isNameValid && isPriceValid && category !== "" && unit !== "")}
+                    disabled={!(isNameValid && isPriceValid && category !== "")}
                     className='button-primary text-center disabled:bg-gray-400'
                     onClick={() => mutation.mutate()}
                 >
-                    Dodaj
+                    Edytuj
                 </button>
             </div>
         </div>

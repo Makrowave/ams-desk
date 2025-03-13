@@ -11,30 +11,26 @@ import useModal from "@/hooks/useModal";
 export default function CategoriesPanel() {
   const { setIsOpen, setModalChildren, setTitle } = useModal();
   return (
-    <AdminRoute>
-      <Navigation active={3} />
-      <main>
-        <SideBar baseUrl={"/admin"} active={5}></SideBar>
-        <div className='main-div bg-primary px-16 py-4'>
-          <h2 className='text-3xl'>Rozmiary kół</h2>
-          <div className='overflow-y-auto max-h-[800px] w-4/12 min-w-[600px]'>
-            <WheelTable />
-          </div>
-          <div className='mt-4'>
-            <button
-              className='button-secondary mr-4'
-              onClick={() => {
-                setIsOpen(true);
-                setModalChildren(<WheelModal />);
-                setTitle("Dodaj rozmiar koła");
-              }}
-            >
-              Dodaj
-            </button>
-          </div>
+    <>
+      <div className='main-div bg-primary px-16 py-4'>
+        <h2 className='text-3xl'>Rozmiary kół</h2>
+        <div className='overflow-y-auto max-h-[800px] w-4/12 min-w-[600px]'>
+          <WheelTable />
         </div>
-        <Modal />
-      </main>
-    </AdminRoute>
+        <div className='mt-4'>
+          <button
+            className='button-secondary mr-4'
+            onClick={() => {
+              setIsOpen(true);
+              setModalChildren(<WheelModal />);
+              setTitle("Dodaj rozmiar koła");
+            }}
+          >
+            Dodaj
+          </button>
+        </div>
+      </div>
+      <Modal />
+    </>
   );
 }

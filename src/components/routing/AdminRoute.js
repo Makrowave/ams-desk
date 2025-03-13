@@ -14,7 +14,7 @@ export default function AdminRoute({ children }) {
     }
     if (!admin.token) {
       setPrevRoute(pathname);
-      router.push("/admin/login");
+      router.push("/adminlogin");
     }
   });
 

@@ -7,4 +7,5 @@
 }
 .table-row {
   @apply even:bg-secondary;
+  @apply odd:bg-primary;
 }

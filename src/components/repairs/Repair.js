@@ -75,12 +75,14 @@ export default function Repair({ repair }) {
             serviceDoneId: service.serviceDoneId > 0 ? service.serviceDoneId : 0,
             serviceId: service.service.serviceId,
             repairId: localRepair.repairId,
+            price: service.price,
           })),
           parts: localRepair.parts.map((part) => ({
             partUsedId: part.partUsedId > 0 ? part.partUsedId : 0,
             partId: part.part.partId,
             repairId: localRepair.repairId,
             amount: part.amount,
+            price: part.price,
           })),
           status: null,
         })
@@ -106,12 +108,12 @@ export default function Repair({ repair }) {
     const newParts = localRepair.parts;
     const id = newPartId;
     setNewPartId(id - 1);
-    const partUsed = { partUsedId: isNaN(id) ? -1 : id, part: value, amount: 1 };
+    const partUsed = { partUsedId: isNaN(id) ? -1 : id, part: value, amount: 1, price: value.price };
     newParts.push(partUsed);
     setLocalRepair({ ...localRepair, parts: newParts });
   };
 
-  const changePartPrice = (id, value) => {
+  const changePartAmount = (id, value) => {
     setIsSaved(false);
     const newParts = localRepair.parts.map((part) => (part.partUsedId === id ? { ...part, amount: value } : part));
 
@@ -129,7 +131,7 @@ export default function Repair({ repair }) {
     const newServices = localRepair.services;
     const id = newServiceId;
     setNewServiceId(id - 1);
-    const serviceDone = { serviceDoneId: isNaN(id) ? -1 : id, service: value };
+    const serviceDone = { serviceDoneId: isNaN(id) ? -1 : id, service: value, price: value.price };
     newServices.push(serviceDone);
     setLocalRepair({ ...localRepair, services: newServices });
   };
@@ -167,10 +169,10 @@ export default function Repair({ repair }) {
   const router = useRouter();
 
   const servicesTotal = () => {
-    return localRepair.services.reduce((acc, s) => acc + s.service.price, 0);
+    return localRepair.services.reduce((acc, s) => acc + s.price, 0);
   };
   const partsTotal = () => {
-    return localRepair.parts.reduce((acc, p) => acc + p.part.price * p.amount, 0);
+    return localRepair.parts.reduce((acc, p) => acc + p.price * p.amount, 0);
   };
 
   //Handle browser navigation
@@ -584,7 +586,7 @@ export default function Repair({ repair }) {
                   <PartRecord
                     index={index}
                     part={part}
-                    changePrice={changePartPrice}
+                    changeAmount={changePartAmount}
                     deleteFn={deletePart}
                     key={part.id}
                   />

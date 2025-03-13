@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { FaRegCircleXmark } from "react-icons/fa6";
 
-export default function PartRecord({ index, part, changePrice, deleteFn }) {
+export default function PartRecord({ index, part, changeAmount, deleteFn }) {
   const [localPart, setLocalPart] = useState(part);
-  const handlePriceChange = (event) => {
+  const handleAmountChange = (event) => {
     const value = event.target.value < 0 ? 0 : event.target.value;
     setLocalPart({ ...localPart, amount: value });
-    changePrice(localPart.partUsedId, value);
+    changeAmount(localPart.partUsedId, value);
   };
   return (
     <tr className='text-center *:p-2 odd:bg-primary'>
@@ -18,7 +18,7 @@ export default function PartRecord({ index, part, changePrice, deleteFn }) {
           className='bg-inherit border border-gray-300 rounded-lg w-20 text-center'
           type='number'
           value={localPart.amount}
-          onChange={(e) => handlePriceChange(e)}
+          onChange={(e) => handleAmountChange(e)}
         />
         {" " + localPart.part.unit.unitName}
       </td>

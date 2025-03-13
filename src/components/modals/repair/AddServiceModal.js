@@ -7,13 +7,12 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 
-export default function AddPartModal({}) {
+export default function AddServiceModal({}) {
     const {setIsOpen} = useModal();
 
     const [category, setCategory] = useState("");
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
-    const [unit, setUnit] = useState(1);
 
     const [isNameValid, setIsNameValid] = useState(false);
     const [isPriceValid, setIsPriceValid] = useState(false);
@@ -22,20 +21,18 @@ export default function AddPartModal({}) {
     const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: async () => {
-            const result = axiosPrivate.post(
-                "parts",
+            return axiosPrivate.post(
+                "services",
                 JSON.stringify({
-                    partId: 0,
-                    partName: name,
+                    serviceId: 0,
+                    serviceName: name,
                     price: price,
-                    partCategoryId: category,
-                    unitId: unit,
+                    serviceCategoryId: category,
                 })
             );
-            return result;
         },
         onSuccess: async () => {
-            await queryClient.refetchQueries({queryKey: [QUERY_KEYS.Parts], exact: false});
+            await queryClient.refetchQueries({queryKey: [QUERY_KEYS.Services], exact: false});
             setIsOpen(false);
         },
     });
@@ -65,8 +62,8 @@ export default function AddPartModal({}) {
                 <ValidationFetchSelect
                     value={category}
                     onChange={setCategory}
-                    src='/PartCategories'
-                    queryKey={QUERY_KEYS.PartCategories}
+                    src='/Services/categories'
+                    queryKey={QUERY_KEYS.ServiceCategories}
                     default_option={""}
                     title='Kategoria'
                     default_title='Wybierz z listy'
@@ -106,17 +103,8 @@ export default function AddPartModal({}) {
                         onChange={(e) => updatePrice(e.target.value)}
                     />
                 </div>
-                <ValidationFetchSelect
-                    value={unit}
-                    onChange={setUnit}
-                    src='/Units'
-                    queryKey={QUERY_KEYS.Units}
-                    default_option={""}
-                    title='Jednostka'
-                    default_title='Wybierz z listy'
-                />
                 <button
-                    disabled={!(isNameValid && isPriceValid && category !== "" && unit !== "")}
+                    disabled={!(isNameValid && isPriceValid && category !== "")}
                     className='button-primary text-center disabled:bg-gray-400'
                     onClick={() => mutation.mutate()}
                 >

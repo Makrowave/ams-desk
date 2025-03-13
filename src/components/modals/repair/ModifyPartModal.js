@@ -7,25 +7,25 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 
-export default function AddPartModal({}) {
+export default function ModifyPartModal({part}) {
     const {setIsOpen} = useModal();
 
-    const [category, setCategory] = useState("");
-    const [name, setName] = useState("");
-    const [price, setPrice] = useState("");
-    const [unit, setUnit] = useState(1);
+    const [category, setCategory] = useState(part.partCategoryId);
+    const [name, setName] = useState(part.partName);
+    const [price, setPrice] = useState(part.price);
+    const [unit, setUnit] = useState(part.unitId);
 
-    const [isNameValid, setIsNameValid] = useState(false);
-    const [isPriceValid, setIsPriceValid] = useState(false);
+    const [isNameValid, setIsNameValid] = useState(true);
+    const [isPriceValid, setIsPriceValid] = useState(true);
 
     const axiosPrivate = useAxiosPrivate();
     const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: async () => {
-            const result = axiosPrivate.post(
-                "parts",
+            const result = axiosPrivate.put(
+                `parts/${part.partId}`,
                 JSON.stringify({
-                    partId: 0,
+                    partId: part.partId,
                     partName: name,
                     price: price,
                     partCategoryId: category,
@@ -120,7 +120,7 @@ export default function AddPartModal({}) {
                     className='button-primary text-center disabled:bg-gray-400'
                     onClick={() => mutation.mutate()}
                 >
-                    Dodaj
+                    Edytuj
                 </button>
             </div>
         </div>

@@ -1,48 +1,63 @@
 "use client";
-import { SideBarButton } from "./SideBarButton";
-import { useState } from "react";
+import {
+  FaBicycle,
+  FaChevronLeft,
+  FaChevronRight,
+  FaCircleInfo,
+  FaHouse,
+  FaIndustry,
+  FaList,
+  FaPalette,
+  FaRegCircle,
+  FaUser,
+  FaWrench,
+} from "react-icons/fa6";
+import {SideBarButton} from "./SideBarButton";
+import {useState} from "react";
+import {usePathname} from "next/navigation";
 
-export default function SideBar({ baseUrl, active }) {
-  const [isClicked, setIsClicked] = useState(false);
-  return (
-    <div className='flex flex-col w-48 absolute z-40'>
-      <div
-        className={
-          isClicked
-            ? " bg-primary flex border-r-2 border-t-2 border-border rounded-tr-xl"
-            : "w-12 bg-primary flex border-r-2 border-t-2 border-b-2 border-border rounded-tr-xl rounded-br-xl"
-        }
-      >
-        <button
-          className='w-full flex content-center justify-center h-10 mx-3'
-          onClick={() => {
-            setIsClicked(!isClicked);
-          }}
+export default function SideBar({baseUrl}) {
+    const [isClicked, setIsClicked] = useState(false);
+    const path = usePathname();
+    return (
+        <div
+            className={
+                isClicked
+                    ? "fixed z-[31] h-full duration-300 transition-all -left-44 translate-x-44"
+                    : "fixed z-[31] h-full duration-300 transition-all -left-44"
+            }
         >
-          {isClicked && <span className='text-2xl self-center'>Zakładki</span>}
-          <img src='/sidebar.png' className={isClicked ? "self-center w-8 ml-auto" : "self-center w-8"} />
-        </button>
-      </div>
-      {isClicked && (
-        <div className='flex bg-primary border-border border-r-2 border-b-2 w-full justify-center rounded-br-xl content-center'>
-          <ul className='w-full last:rounded-br-xl'>
-            <SideBarButton href={baseUrl} title='Strona główna' current={active === 0} />
-            <SideBarButton href={baseUrl + "/rowery"} title='Rowery' current={active === 1} />
-            <SideBarButton href={baseUrl + "/pracownicy"} title='Pracownicy' current={active === 2} />
-            <SideBarButton href={baseUrl + "/statusy"} title='Statusy' current={active === 3} />
-            <SideBarButton href={baseUrl + "/kolory"} title='Kolory' current={active === 4} />
-            <SideBarButton href={baseUrl + "/kola"} title='Koła' current={active === 5} />
-            <SideBarButton href={baseUrl + "/producenci"} title='Producenci' current={active === 6} />
-            <SideBarButton href={baseUrl + "/kategorie"} title='Kategorie' current={active === 7} />
-            <SideBarButton
-              href={baseUrl + "/serwis"}
-              title='Serwis'
-              current={active === 8}
-              className={"rounded-br-xl"}
-            />
-          </ul>
+            <div className='flex w-fit justify-center content-center h-full bg-primary border-r border-border'>
+                <ul className='w-fit h-full pt-2'>
+                    <li className='flex w-full h-10'>
+                        <button className='flex items-center justify-between w-full'
+                                onClick={() => setIsClicked(!isClicked)}>
+                            <span className='ml-4'>Zakładki</span>
+                            {isClicked ? <FaChevronLeft className='w-16'/> : <FaChevronRight className='w-16'/>}
+                        </button>
+                    </li>
+                    {links.map((item) => (
+                        <SideBarButton
+                            href={baseUrl + item.url}
+                            title={item.title}
+                            icon={item.icon}
+                            current={path === baseUrl + item.url}
+                        />
+                    ))}
+                </ul>
+            </div>
         </div>
-      )}
-    </div>
-  );
+    );
 }
+
+const links = [
+    {url: "", icon: <FaHouse/>, title: "Strona główna"},
+    {url: "/rowery", icon: <FaBicycle/>, title: "Rowery"},
+    {url: "/pracownicy", icon: <FaUser/>, title: "Pracownicy"},
+    {url: "/statusy", icon: <FaCircleInfo/>, title: "Statusy"},
+    {url: "/kolory", icon: <FaPalette/>, title: "Kolory"},
+    {url: "/kola", icon: <FaRegCircle/>, title: "Koła"},
+    {url: "/producenci", icon: <FaIndustry/>, title: "Producenci"},
+    {url: "/kategorie", icon: <FaList/>, title: "Kategorie"},
+    {url: "/serwis", icon: <FaWrench/>, title: "Serwis"},
+];
