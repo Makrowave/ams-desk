@@ -1,5 +1,5 @@
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import { useQuery } from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import useModal from "@/hooks/useModal";
 import React from "react";
 import MoveModal from "@/components/modals/record/bike/MoveModal";
@@ -7,22 +7,23 @@ import AssembleModal from "@/components/modals/record/bike/AssembleModal";
 import SellModal from "@/components/modals/record/bike/SellModal";
 import StatusModal from "@/components/modals/record/bike/StatusModal";
 import DeleteModal from "@/components/modals/DeleteModal";
-import { QUERY_KEYS } from "@/util/query_keys";
+import {QUERY_KEYS} from "@/util/query_keys";
 import ExpandButton from "@/components/buttons/ExpandButton";
-import { FaArrowRight, FaCircleInfo, FaMoneyBill, FaRegCircleXmark, FaWrench } from "react-icons/fa6";
+import {FaArrowRight, FaCircleInfo, FaMoneyBill, FaRegCircleXmark, FaWrench} from "react-icons/fa6";
+
 /**
  * Renders table of bikes with buttons that open modals and allow to edit bikes.
  * @param {Object} props - Props.
  * @param {number} placeId - Place id used to filter bikes in query.
  */
-export function BikeTable({ model, placeId }) {
+export function BikeTable({model, placeId}) {
   const _bikesUrl = "/Bikes/bikesByModelId/";
   const _statusUrl = "/Status/";
   const _placeUrl = "/Places";
   const _employeeUrl = "/Employees";
   const axiosPrivate = useAxiosPrivate();
-  const { setModalChildren, setTitle, setIsOpen } = useModal();
-  const { refetch, data, isPending, isError, error } = useQuery({
+  const {setModalChildren, setTitle, setIsOpen} = useModal();
+  const {refetch, data, isPending, isError, error} = useQuery({
     queryKey: [QUERY_KEYS.Bikes, model.modelId, placeId],
     queryFn: async () => {
       const response = await axiosPrivate.get(_bikesUrl + model.modelId + "?placeId=" + placeId.toString());
@@ -65,6 +66,7 @@ export function BikeTable({ model, placeId }) {
       return response.data;
     },
   });
+
   /**
    * @param {number} statusId - Status id - 1 to 6 at the time of writing.
    * @returns {string} Tailwind classes with colors for background and text.
@@ -98,11 +100,11 @@ export function BikeTable({ model, placeId }) {
     <div className='mx-8'>
       <table className='table-fixed w-full'>
         <thead className='*:py-3'>
-          <th className='w-10'>Lp.</th>
-          <th className='w-1/12'>Miejsce</th>
-          <th className='w-2/12'>Status</th>
-          <th className='w-2/12'>Złożony przez</th>
-          <th className='w-fit'></th>
+        <th className='w-10'>Lp.</th>
+        <th className='w-1/12'>Miejsce</th>
+        <th className='w-2/12'>Status</th>
+        <th className='w-2/12'>Złożony przez</th>
+        <th className='w-fit'></th>
         </thead>
         {data.map((bike, index) => (
           <tr key={bike.id} className='border-y border-gray-400 last:border-b-0 h-10'>
@@ -119,55 +121,55 @@ export function BikeTable({ model, placeId }) {
                 <ExpandButton
                   text='Przenieś'
                   onClick={() => {
-                    setModalChildren(<MoveModal refetch={refetch} bikeId={bike.id} />);
+                    setModalChildren(<MoveModal refetch={refetch} bikeId={bike.id}/>);
                     setTitle("Przenieś rower");
                     setIsOpen(true);
                   }}
                 >
-                  <FaArrowRight />
+                  <FaArrowRight/>
                 </ExpandButton>
                 <ExpandButton
                   text='Złóż'
                   onClick={() => {
-                    setModalChildren(<AssembleModal refetch={refetch} bikeId={bike.id} />);
+                    setModalChildren(<AssembleModal refetch={refetch} bikeId={bike.id}/>);
                     setTitle("Złóż rower");
                     setIsOpen(true);
                   }}
                 >
-                  <FaWrench />
+                  <FaWrench/>
                 </ExpandButton>
                 <ExpandButton
                   text='Sprzedaj'
                   onClick={() => {
-                    setModalChildren(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} />);
+                    setModalChildren(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price}/>);
                     setTitle("Sprzedaj rower");
                     setIsOpen(true);
                   }}
                 >
-                  <FaMoneyBill />
+                  <FaMoneyBill/>
                 </ExpandButton>
                 <ExpandButton
                   text='Zmień status'
                   onClick={() => {
-                    setModalChildren(<StatusModal refetch={refetch} bikeId={bike.id} />);
+                    setModalChildren(<StatusModal refetch={refetch} bikeId={bike.id}/>);
                     setTitle("Zmień status");
                     setIsOpen(true);
                   }}
                 >
-                  <FaCircleInfo />
+                  <FaCircleInfo/>
                 </ExpandButton>
                 <ExpandButton
                   text='Usuń'
                   className='text-red-600 hover:bg-red-300 '
                   onClick={() => {
                     setModalChildren(
-                      <DeleteModal id={bike.id} url='/Bikes/' refetchQueryKey={QUERY_KEYS.Bikes} admin={false} />
+                      <DeleteModal id={bike.id} url='/Bikes/' refetchQueryKey={QUERY_KEYS.Bikes} admin={false}/>
                     );
                     setTitle("Usuń rower");
                     setIsOpen(true);
                   }}
                 >
-                  <FaRegCircleXmark />
+                  <FaRegCircleXmark/>
                 </ExpandButton>
               </div>
             </td>

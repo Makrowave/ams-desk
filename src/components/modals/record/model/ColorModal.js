@@ -2,17 +2,17 @@ import ColorInput from "@/components/input/ColorInput";
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
-import { QUERY_KEYS } from "@/util/query_keys";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import {QUERY_KEYS} from "@/util/query_keys";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useState} from "react";
 
 //primaryColor and secondaryColor can be null in DB
 //(for example if not specified by manufacturer and bike inserts are automated)
-export default function ColorModal({ model }) {
+export default function ColorModal({model}) {
   const [primaryColor, setPrimaryColor] = useState(!!model.primaryColor ? model.primaryColor : "#FF00FF");
   const [secondaryColor, setSecondaryColor] = useState(!!model.secondaryColor ? model.secondaryColor : "#000000");
   const [color, setColor] = useState(model.colorId);
-  const { setIsOpen } = useModal();
+  const {setIsOpen} = useModal();
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
@@ -26,7 +26,7 @@ export default function ColorModal({ model }) {
           secondaryColor: secondaryColor,
         }),
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {"Content-Type": "application/json"},
         }
       );
     },
@@ -53,8 +53,8 @@ export default function ColorModal({ model }) {
       <div>
         <h2>Kliknij na kolor aby go zmienić</h2>
       </div>
-      <ColorInput title='Kolor główny' value={primaryColor} setValue={setPrimaryColor} />
-      <ColorInput title='Kolor dodatkowy' value={secondaryColor} setValue={setSecondaryColor} />
+      <ColorInput title='Kolor główny' value={primaryColor} setValue={setPrimaryColor}/>
+      <ColorInput title='Kolor dodatkowy' value={secondaryColor} setValue={setSecondaryColor}/>
       <ValidationFetchSelect
         value={color}
         onChange={setColor}

@@ -13,63 +13,63 @@ import {FaChevronDown, FaChevronUp} from "react-icons/fa6";
  *  set sorting criterion. For criterion object refer to ModelTable.
  */
 export default function ModelTableHeader({singlePlace, setCriterion}) {
-    const [active, setActive] = useState(1);
+  const [active, setActive] = useState(1);
 
-    function handleOptionButton(criterion, id) {
-        setActive(id);
-        setCriterion(criterion);
-    }
+  function handleOptionButton(criterion, id) {
+    setActive(id);
+    setCriterion(criterion);
+  }
 
-    //Map of places from .env to sortable buttons
-    let tableHeaders = JSON.parse(process.env.NEXT_PUBLIC_PLACES)
-        .sort((a, b) => a.placeId - b.placeId)
-        .map((place, index) => {
-            return (
-                <th className={`w-24 ${place.color}`} key={place.placeId}>
-                    <SortButton
-                        onClick={handleOptionButton}
-                        activeId={active}
-                        id={index + 6}
-                        criterionName='amount'
-                        subValue={index + 1}
-                        defeaultIsAscending={false}
-                        title={place.placeName}
-                    />
-                </th>
-            );
-        });
+  //Map of places from .env to sortable buttons
+  let tableHeaders = JSON.parse(process.env.NEXT_PUBLIC_PLACES)
+    .sort((a, b) => a.placeId - b.placeId)
+    .map((place, index) => {
+      return (
+        <th className={`w-24 ${place.color}`} key={place.placeId}>
+          <SortButton
+            onClick={handleOptionButton}
+            activeId={active}
+            id={index + 6}
+            criterionName='amount'
+            subValue={index + 1}
+            defeaultIsAscending={false}
+            title={place.placeName}
+          />
+        </th>
+      );
+    });
 
-    return (
-        <thead className='bg-secondary mb-px sticky top-0 z-10 shadow-lg h-10'>
-        <tr>
-            {/* Standard buttons */}
-            <th className='w-96 pl-8'>
-                <SortButton onClick={handleOptionButton} activeId={active} id={1} criterionName='name' title='Rower'/>
-            </th>
-            <th className='w-24'>
-                <SortButton onClick={handleOptionButton} activeId={active} id={2} criterionName='size' title='Rozmiar'/>
-            </th>
-            <th className='w-24'>
-                <SortButton onClick={handleOptionButton} activeId={active} id={3} criterionName='wheel' title='Koła'/>
-            </th>
-            <th className='w-24'>
-                <SortButton onClick={handleOptionButton} activeId={active} id={4} criterionName='price' title='Cena'/>
-            </th>
-            <th className='w-24'>
-                <SortButton
-                    onClick={handleOptionButton}
-                    activeId={active}
-                    id={5}
-                    criterionName='total'
-                    title='Ilość'
-                    defeaultIsAscending={false}
-                />
-            </th>
-            {/* Mapped buttons */}
-            {!singlePlace && tableHeaders}
-        </tr>
-        </thead>
-    );
+  return (
+    <thead className='bg-secondary mb-px sticky top-0 z-10 shadow-lg h-10'>
+    <tr>
+      {/* Standard buttons */}
+      <th className='w-96 pl-8'>
+        <SortButton onClick={handleOptionButton} activeId={active} id={1} criterionName='name' title='Rower'/>
+      </th>
+      <th className='w-24'>
+        <SortButton onClick={handleOptionButton} activeId={active} id={2} criterionName='size' title='Rozmiar'/>
+      </th>
+      <th className='w-24'>
+        <SortButton onClick={handleOptionButton} activeId={active} id={3} criterionName='wheel' title='Koła'/>
+      </th>
+      <th className='w-24'>
+        <SortButton onClick={handleOptionButton} activeId={active} id={4} criterionName='price' title='Cena'/>
+      </th>
+      <th className='w-24'>
+        <SortButton
+          onClick={handleOptionButton}
+          activeId={active}
+          id={5}
+          criterionName='total'
+          title='Ilość'
+          defeaultIsAscending={false}
+        />
+      </th>
+      {/* Mapped buttons */}
+      {!singlePlace && tableHeaders}
+    </tr>
+    </thead>
+  );
 }
 
 /**
@@ -84,37 +84,37 @@ export default function ModelTableHeader({singlePlace, setCriterion}) {
  * @param {subValue} props.title - Button's title
  */
 function SortButton({onClick, activeId, id, criterionName, subValue, defeaultIsAscending = true, title}) {
-    const [isAscending, setIsAscending] = useState(defeaultIsAscending);
+  const [isAscending, setIsAscending] = useState(defeaultIsAscending);
 
-    /**
-     * If not pressed - sets order to default and button to active.
-     * If pressed - reverses ordering.
-     * Calls onClick.
-     */
-    function handleChange() {
-        let order;
-        if (activeId === id) {
-            order = !isAscending;
-            setIsAscending(order);
-        } else {
-            order = defeaultIsAscending;
-            setIsAscending(defeaultIsAscending);
-        }
-        let criterion = {
-            name: criterionName,
-            isAscending: order,
-            key: subValue,
-        };
-        onClick(criterion, id);
+  /**
+   * If not pressed - sets order to default and button to active.
+   * If pressed - reverses ordering.
+   * Calls onClick.
+   */
+  function handleChange() {
+    let order;
+    if (activeId === id) {
+      order = !isAscending;
+      setIsAscending(order);
+    } else {
+      order = defeaultIsAscending;
+      setIsAscending(defeaultIsAscending);
     }
+    let criterion = {
+      name: criterionName,
+      isAscending: order,
+      key: subValue,
+    };
+    onClick(criterion, id);
+  }
 
-    //Renders chevron next to title if active
-    return (
-        <button className='w-full' onClick={() => handleChange()}>
-            <div className='flex place-content-center items-center'>
-                {title}
-                {activeId === id && (isAscending ? <FaChevronDown className='ml-1'/> : <FaChevronUp className='ml-1'/>)}
-            </div>
-        </button>
-    );
+  //Renders chevron next to title if active
+  return (
+    <button className='w-full' onClick={() => handleChange()}>
+      <div className='flex place-content-center items-center'>
+        {title}
+        {activeId === id && (isAscending ? <FaChevronDown className='ml-1'/> : <FaChevronUp className='ml-1'/>)}
+      </div>
+    </button>
+  );
 }

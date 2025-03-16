@@ -1,4 +1,4 @@
-import { formatPhone } from "./formatting";
+import {formatPhone} from "./formatting";
 
 export const printRepairDoc = async (htmlStringFn, repair) => {
   const iframe = document.createElement("iframe");

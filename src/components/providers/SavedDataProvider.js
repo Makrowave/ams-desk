@@ -1,8 +1,8 @@
-const { createContext, useState } = require("react");
+const {createContext, useState} = require("react");
 
 const SavedDataContext = createContext();
 
-export function SavedDataProvider({ children }) {
+export function SavedDataProvider({children}) {
   const [isSaved, setIsSaved] = useState(true);
   const [isUsed, setIsUsed] = useState(false);
   const updateIsUsed = (value) => {
@@ -10,7 +10,7 @@ export function SavedDataProvider({ children }) {
     setIsSaved(true);
   };
   return (
-    <SavedDataContext.Provider value={{ isSaved, setIsSaved, isUsed, updateIsUsed }}>
+    <SavedDataContext.Provider value={{isSaved, setIsSaved, isUsed, updateIsUsed}}>
       {children}
     </SavedDataContext.Provider>
   );

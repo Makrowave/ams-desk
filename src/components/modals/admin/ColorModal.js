@@ -3,11 +3,12 @@ import ColorInput from "@/components/input/ColorInput";
 import ModalTextInput from "@/components/input/ModalTextInput";
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
 import useModal from "@/hooks/useModal";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { REGEX } from "@/util/regex";
-import { QUERY_KEYS } from "@/util/query_keys";
-export default function ColorModal({ colorData, action }) {
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useState} from "react";
+import {REGEX} from "@/util/regex";
+import {QUERY_KEYS} from "@/util/query_keys";
+
+export default function ColorModal({colorData, action}) {
   const [name, setName] = useState(colorData === undefined ? "" : colorData.colorName);
   const [color, setColor] = useState(colorData === undefined ? "#000000" : colorData.hexCode);
   const [error, setError] = useState("");
@@ -15,7 +16,7 @@ export default function ColorModal({ colorData, action }) {
   const COLOR_REGEX = REGEX.COLOR;
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
-  const { setIsOpen } = useModal();
+  const {setIsOpen} = useModal();
   const _url = "/Colors/";
   const mutation = useMutation({
     mutationFn: async () => {
@@ -27,7 +28,7 @@ export default function ColorModal({ colorData, action }) {
             hexCode: color,
           }),
           {
-            headers: { "Content-Type": "application/json" },
+            headers: {"Content-Type": "application/json"},
           }
         );
       } else if (action === "post") {
@@ -38,7 +39,7 @@ export default function ColorModal({ colorData, action }) {
             hexCode: color,
           }),
           {
-            headers: { "Content-Type": "application/json" },
+            headers: {"Content-Type": "application/json"},
           }
         );
       }
@@ -54,9 +55,11 @@ export default function ColorModal({ colorData, action }) {
       setError(error.message);
     },
   });
+
   function handleClick() {
     if (validate()) mutation.mutate();
   }
+
   function validate() {
     if (NAME_REGEX.test(name) && COLOR_REGEX.test(color)) return true;
     setError("Dane nie przeszły walidacji");
@@ -68,9 +71,9 @@ export default function ColorModal({ colorData, action }) {
   }
   return (
     <div className='modal-basic'>
-      <ErrorDisplay message={error} isVisible={!!error} />
-      <ModalTextInput title='Nazwa' value={name} setValue={setName} />
-      <ColorInput title='Kolor' value={color} setValue={setColor} className='mb-auto mt-4' />
+      <ErrorDisplay message={error} isVisible={!!error}/>
+      <ModalTextInput title='Nazwa' value={name} setValue={setName}/>
+      <ColorInput title='Kolor' value={color} setValue={setColor} className='mb-auto mt-4'/>
       <button className='button-primary mb-4' onClick={() => handleClick()}>
         {action === "put" ? "Edytuj" : ""}
         {action === "post" ? "Dodaj" : ""}

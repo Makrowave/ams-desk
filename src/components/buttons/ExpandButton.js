@@ -1,5 +1,6 @@
 import "./expand-button.css";
-export default function ExpandButton({ children, text, onClick, className, disabled, disabledClass = " " }) {
+
+export default function ExpandButton({children, text, onClick, className, disabled, disabledClass = " "}) {
   return (
     <button
       className={

@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { AuthProvider } from "./AuthProvider";
-import { ModalProvider } from "./ModalContext";
-import { SavedDataProvider } from "./SavedDataProvider";
-export default function ProviderWrapper({ children }) {
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {AuthProvider} from "./AuthProvider";
+import {ModalProvider} from "./ModalContext";
+import {SavedDataProvider} from "./SavedDataProvider";
+
+export default function ProviderWrapper({children}) {
   const queryClient = new QueryClient();
 
   return (

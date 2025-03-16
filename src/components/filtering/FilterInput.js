@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import {useEffect, useRef, useState} from "react";
 
 //Input field that updates passed value with onChange function
 //after a timeout when last character is changed.
@@ -8,7 +8,7 @@ import { useEffect, useState, useRef } from "react";
 //multiple queries for every single letter of for example name.
 //If used in modyfing params which are passed to be sent later,
 //it might cause to send the old state value.
-export default function FilterInput({ setValue, value, title }) {
+export default function FilterInput({setValue, value, title}) {
   const [realValue, setRealValue] = useState(value);
   const prevValue = useRef(realValue);
 

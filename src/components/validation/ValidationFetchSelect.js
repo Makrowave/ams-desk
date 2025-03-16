@@ -1,29 +1,29 @@
 "use client";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import { useQuery } from "@tanstack/react-query";
-import { Select } from "../input/Select";
-import { FaCheck, FaXmark } from "react-icons/fa6";
+import {useQuery} from "@tanstack/react-query";
+import {Select} from "../input/Select";
+import {FaCheck, FaXmark} from "react-icons/fa6";
 
 // Component that turns data fetch from 'src' to <option> list.
 // Data fetched should have unique key as first parameter and name as second
 // Shows an icon if value other than default is chosen
 export default function ValidationFetchSelect({
-  src,
-  queryKey,
-  value,
-  onChange,
-  title,
-  default_option,
-  default_title,
-  useRowStyle,
-  isColored,
-}) {
-  const Body = ({ children }) => {
+                                                src,
+                                                queryKey,
+                                                value,
+                                                onChange,
+                                                title,
+                                                default_option,
+                                                default_title,
+                                                useRowStyle,
+                                                isColored,
+                                              }) {
+  const Body = ({children}) => {
     return (
       <div className={useRowStyle ? "flex flex-row justify-between" : "flex justify-center flex-col"}>
         <div className='flex justify-center items-center self-start flex-row'>
           <span className='mr-1'>{title}</span>
-          {value === default_option ? <FaXmark className='text-red-600' /> : <FaCheck className='text-green-500' />}
+          {value === default_option ? <FaXmark className='text-red-600'/> : <FaCheck className='text-green-500'/>}
         </div>
         <div
           className={
@@ -38,7 +38,7 @@ export default function ValidationFetchSelect({
     );
   };
   const axiosPrivate = useAxiosPrivate();
-  const { data, isPending, isError, error, refetch } = useQuery({
+  const {data, isPending, isError, error, refetch} = useQuery({
     queryKey: [queryKey],
     queryFn: async () => {
       const response = await axiosPrivate.get(src);
@@ -59,7 +59,7 @@ export default function ValidationFetchSelect({
       <Body>
         <div className='text-center bg-error-light text-error-dark border-2 border-tertiary rounded w-full'>
           <button onClick={() => refetch()} className='flex justify-center self-start flex-row w-full'>
-            Błąd {error?.response?.status} <img src='/refresh.png' className='h-5 self-center px-2 rotate-[135deg]' />
+            Błąd {error?.response?.status} <img src='/refresh.png' className='h-5 self-center px-2 rotate-[135deg]'/>
           </button>
         </div>
       </Body>

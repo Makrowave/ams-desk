@@ -1,16 +1,16 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useState} from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
-import { QUERY_KEYS } from "@/util/query_keys";
+import {QUERY_KEYS} from "@/util/query_keys";
 
-export default function StatusModal({ refetch, bikeId }) {
+export default function StatusModal({refetch, bikeId}) {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
-  const { setIsOpen } = useModal();
+  const {setIsOpen} = useModal();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
@@ -20,7 +20,7 @@ export default function StatusModal({ refetch, bikeId }) {
           statusId: status.toString(),
         }),
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {"Content-Type": "application/json"},
         }
       );
     },
@@ -35,14 +35,16 @@ export default function StatusModal({ refetch, bikeId }) {
       setError(error.message);
     },
   });
+
   function validate() {
     let result = status !== "";
     if (!result) setError("Nie wybrano statusu z listy");
     return result;
   }
+
   return (
     <div className='modal-basic'>
-      <ErrorDisplay message={error} isVisible={error !== ""} />
+      <ErrorDisplay message={error} isVisible={error !== ""}/>
       <ValidationFetchSelect
         value={status}
         onChange={setStatus}

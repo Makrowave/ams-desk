@@ -1,7 +1,7 @@
 import useSavedData from "@/hooks/useSavedData";
 
-export default function SavedDataWarning({ children }) {
-  const { isSaved, isUsed } = useSavedData();
+export default function SavedDataWarning({children}) {
+  const {isSaved, isUsed} = useSavedData();
   const handleNavigation = (event) => {
     if (!isSaved && isUsed) {
       const confirmAction = window.confirm("Na stronie są niezapisane zmiany, czy na pewno chcesz ją opóścić?");

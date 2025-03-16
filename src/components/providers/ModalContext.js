@@ -1,5 +1,4 @@
-const { createContext, useState } = require("react");
-
+const {createContext, useState} = require("react");
 
 
 const ModalContext = createContext();

@@ -1,4 +1,4 @@
-export default function ModalTextInput({ title, value, setValue, className }) {
+export default function ModalTextInput({title, value, setValue, className}) {
   return (
     <div className={className}>
       <div className='flex flex-col'>

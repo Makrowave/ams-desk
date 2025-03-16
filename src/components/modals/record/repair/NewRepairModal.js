@@ -1,17 +1,17 @@
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
-import { QUERY_KEYS } from "@/util/query_keys";
-import { REGEX } from "@/util/regex";
-import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { FaCheck, FaXmark } from "react-icons/fa6";
+import {QUERY_KEYS} from "@/util/query_keys";
+import {REGEX} from "@/util/regex";
+import {useMutation} from "@tanstack/react-query";
+import {useRouter} from "next/navigation";
+import {useState} from "react";
+import {FaCheck, FaXmark} from "react-icons/fa6";
 
 export default function NewRepairModal({}) {
   const axios = useAxiosPrivate();
   const router = useRouter();
-  const { setIsOpen } = useModal();
+  const {setIsOpen} = useModal();
   const [phone, setPhone] = useState("");
   const [place, setPlace] = useState("");
   const [bike, setBike] = useState("");
@@ -40,7 +40,7 @@ export default function NewRepairModal({}) {
     mutationFn: async () => {
       return await axios.post(
         "/Repairs",
-        JSON.stringify({ phoneNumber: phone, issue: issue, bikeName: bike, placeId: place })
+        JSON.stringify({phoneNumber: phone, issue: issue, bikeName: bike, placeId: place})
       );
     },
     onSuccess: (response) => {
@@ -69,7 +69,7 @@ export default function NewRepairModal({}) {
       <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>
         <div className='border-b border-gray-400 w-fit flex items-center'>
           <span className='text-xs text-gray-400 mr-1'>Telefon</span>
-          {isPhoneValid ? <FaCheck className='text-green-500 text-sm' /> : <FaXmark className='text-red-600 text-sm' />}
+          {isPhoneValid ? <FaCheck className='text-green-500 text-sm'/> : <FaXmark className='text-red-600 text-sm'/>}
         </div>
         <input
           type='text'
@@ -82,7 +82,7 @@ export default function NewRepairModal({}) {
       <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>
         <div className='border-b border-gray-400 w-fit flex items-center'>
           <span className='text-xs text-gray-400 mr-1'>Rower</span>
-          {isBikeValid ? <FaCheck className='text-green-500 text-sm' /> : <FaXmark className='text-red-600 text-sm' />}
+          {isBikeValid ? <FaCheck className='text-green-500 text-sm'/> : <FaXmark className='text-red-600 text-sm'/>}
         </div>
         <input
           type='text'
@@ -97,7 +97,7 @@ export default function NewRepairModal({}) {
       <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>
         <div className='border-b border-gray-400 w-fit flex items-center'>
           <span className='text-xs text-gray-400 mr-1'>Problem</span>
-          {isIssueValid ? <FaCheck className='text-green-500 text-sm' /> : <FaXmark className='text-red-600 text-sm' />}
+          {isIssueValid ? <FaCheck className='text-green-500 text-sm'/> : <FaXmark className='text-red-600 text-sm'/>}
         </div>
         <textarea
           type='text'

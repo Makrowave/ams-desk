@@ -3,13 +3,13 @@ import SingleCheckbox from "@/components/filtering/SingleCheckbox";
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
-import { REGEX } from "@/util/regex";
-import { QUERY_KEYS } from "@/util/query_keys";
-import { FaCheck, FaXmark } from "react-icons/fa6";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useEffect, useState} from "react";
+import {REGEX} from "@/util/regex";
+import {QUERY_KEYS} from "@/util/query_keys";
+import {FaCheck, FaXmark} from "react-icons/fa6";
 
-export default function ChangeModelModal({ model }) {
+export default function ChangeModelModal({model}) {
   const modelId = model.modelId;
   const [name, setName] = useState(model.modelName);
   const [productCode, setProductCode] = useState(model.productCode);
@@ -35,7 +35,7 @@ export default function ChangeModelModal({ model }) {
   const _url = "/Models/";
   //Other
   const [error, setError] = useState("");
-  const { setIsOpen } = useModal();
+  const {setIsOpen} = useModal();
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
 
@@ -74,7 +74,7 @@ export default function ChangeModelModal({ model }) {
           isElectric: isElectric,
         }),
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {"Content-Type": "application/json"},
         }
       );
     },
@@ -110,14 +110,15 @@ export default function ChangeModelModal({ model }) {
     if (!result) setError("Wprowadzono niepoprawne dane");
     return result;
   }
+
   return (
     <div className='flex flex-col gap-y-2 w-[600px]'>
-      <ErrorDisplay message={error} isVisible={error !== ""} />
+      <ErrorDisplay message={error} isVisible={error !== ""}/>
       <div>
         <div className='flex justify-between'>
           <div className='flex justify-center items-center'>
             <span className='mr-1'>Nazwa</span>
-            {validName ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
+            {validName ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
           </div>
           <input
             className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
@@ -132,7 +133,7 @@ export default function ChangeModelModal({ model }) {
         <div className='flex justify-between'>
           <div className='flex justify-center items-center'>
             <span className='text-nowrap mr-1'>Kod producenta</span>
-            {validProductCode ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
+            {validProductCode ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
           </div>
           <input
             className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
@@ -147,7 +148,7 @@ export default function ChangeModelModal({ model }) {
         <div className='flex justify-between'>
           <div className='flex items-center justify-center'>
             <span className='mr-1'>Rozmiar ramy</span>
-            {validFrameSize ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
+            {validFrameSize ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
           </div>
           <input
             className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
@@ -174,7 +175,7 @@ export default function ChangeModelModal({ model }) {
         <div className='flex justify-between'>
           <div className='flex justify-center items-center'>
             <span className='mr-1'>Cena</span>
-            {validPrice ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
+            {validPrice ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
           </div>
           <input
             className='self-end  text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'

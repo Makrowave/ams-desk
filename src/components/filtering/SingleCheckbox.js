@@ -1,6 +1,6 @@
 "use client";
 
-export default function SingleCheckbox({ onChange, checked, title }) {
+export default function SingleCheckbox({onChange, checked, title}) {
   return (
     <div className='flex justify-center self-start'>
       <div className='flex justify-center items-center'>

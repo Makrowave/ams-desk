@@ -1,12 +1,12 @@
-import { axiosPrivate } from "@/api/axios";
-import { useEffect } from "react";
+import {axiosPrivate} from "@/api/axios";
+import {useEffect} from "react";
 import useAuth from "./useAuth";
 import useRefreshUser from "./useRefreshUser";
 
 //Code for including Authorization header in request
 //And resending requests when Access Token expires
 export default function useAxiosPrivate() {
-  const { user, logout, logoutAdmin } = useAuth();
+  const {user, logout, logoutAdmin} = useAuth();
   const refresh = useRefreshUser();
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(

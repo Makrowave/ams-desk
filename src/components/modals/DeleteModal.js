@@ -1,13 +1,13 @@
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import ErrorDisplay from "../error/ErrorDisplay";
-import { useState } from "react";
+import {useState} from "react";
 
-export default function DeleteModal({ refetchQueryKey, id, url, admin = false }) {
+export default function DeleteModal({refetchQueryKey, id, url, admin = false}) {
   const axios = admin ? useAxiosAdmin() : useAxiosPrivate();
-  const { setIsOpen } = useModal();
+  const {setIsOpen} = useModal();
   const queryClient = useQueryClient();
   const [error, setError] = useState("");
   const mutation = useMutation({
@@ -28,7 +28,7 @@ export default function DeleteModal({ refetchQueryKey, id, url, admin = false })
 
   return (
     <div className='modal-basic'>
-      <ErrorDisplay message={error} isVisible={error !== ""} />
+      <ErrorDisplay message={error} isVisible={error !== ""}/>
       <div className='w-full *:py-2'>
         <h2>
           <b>Czy na pewno?</b>

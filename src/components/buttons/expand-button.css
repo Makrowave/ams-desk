@@ -1,47 +1,49 @@
 .ex-button {
-  position: relative;
-  transition: width 0.2s ease-in-out;
+    position: relative;
+    transition: width 0.2s ease-in-out;
 }
+
 .ex-button-disabled {
-  position: relative;
-  transition: width 0.2s ease-in-out;
+    position: relative;
+    transition: width 0.2s ease-in-out;
 }
 
 .span {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  opacity: 0;
-  transition: opacity 0.2s;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.2s;
 }
 
 .span-disabled {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  opacity: 0;
-  transition: opacity 0.2s;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.2s;
 }
 
 .ex-button > svg {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  opacity: 100;
-  transition: opacity 0.2s;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    opacity: 100;
+    transition: opacity 0.2s;
 }
+
 .span:hover {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  opacity: 100;
-  transition: opacity 0.7s;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    opacity: 100;
+    transition: opacity 0.7s;
 }
 
 .ex-button:hover > svg {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  opacity: 0;
-  transition: opacity 0.2s;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.2s;
 }

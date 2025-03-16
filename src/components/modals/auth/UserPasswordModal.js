@@ -1,17 +1,17 @@
 import useAuth from "@/hooks/useAuth";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
-import { useMutation } from "@tanstack/react-query";
+import {useMutation} from "@tanstack/react-query";
 import PasswordModal from "./PasswordModal";
-import { useState } from "react";
+import {useState} from "react";
 
 export default function UserPasswordModal() {
   const axiosPrivate = useAxiosPrivate();
-  const { username, logout } = useAuth();
+  const {username, logout} = useAuth();
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const { setIsOpen, setModalChildren, setTitle } = useModal();
+  const {setIsOpen, setModalChildren, setTitle} = useModal();
   const _url = "/Auth/ChangePassword";
   const mutation = useMutation({
     mutationFn: async () => {
@@ -22,7 +22,7 @@ export default function UserPasswordModal() {
           password: password,
           newPassword: newPassword,
         }),
-        { headers: { "Content-Type": "application/json" } }
+        {headers: {"Content-Type": "application/json"}}
       );
     },
     onSuccess: () => {

@@ -1,8 +1,9 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import ModelRecord from "./row/ModelRecord";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import { QUERY_KEYS } from "@/util/query_keys";
+import {QUERY_KEYS} from "@/util/query_keys";
+
 /**
  * ModelTable's body. Queries the backend to get models and maps them to bike records.
  * @param {Object} props - Props.
@@ -13,9 +14,9 @@ import { QUERY_KEYS } from "@/util/query_keys";
  * @param {criterion: {name: string, boolean: isAscending, key: number}} props.sortCriterion
  * @returns
  */
-export default function ModelTableBody({ src, singlePlace, placeId, sortCriterion }) {
+export default function ModelTableBody({src, singlePlace, placeId, sortCriterion}) {
   const axiosPrivate = useAxiosPrivate();
-  const { data, isPending, isError, error } = useQuery({
+  const {data, isPending, isError, error} = useQuery({
     queryKey: [QUERY_KEYS.Models, src],
     queryFn: async () => {
       const response = await axiosPrivate.get(src);
@@ -27,9 +28,9 @@ export default function ModelTableBody({ src, singlePlace, placeId, sortCriterio
   if (isPending) {
     return (
       <tbody>
-        <tr>
-          <td colSpan={5 + (singlePlace ? 0 : placeCount)}>Ładowanie...</td>
-        </tr>
+      <tr>
+        <td colSpan={5 + (singlePlace ? 0 : placeCount)}>Ładowanie...</td>
+      </tr>
       </tbody>
     );
   }
@@ -37,14 +38,15 @@ export default function ModelTableBody({ src, singlePlace, placeId, sortCriterio
   if (isError) {
     return (
       <tbody>
-        <tr>
-          <td className='bg-error-light text-error-dark' colSpan={5 + (singlePlace ? 0 : placeCount)}>
-            {error.message}
-          </td>
-        </tr>
+      <tr>
+        <td className='bg-error-light text-error-dark' colSpan={5 + (singlePlace ? 0 : placeCount)}>
+          {error.message}
+        </td>
+      </tr>
       </tbody>
     );
   }
+
   /**
    * Used for sorting to convert centimeters to inches.
    * If size is over 32 and wheel is small (not child bike) - converts value to inches.
@@ -55,6 +57,7 @@ export default function ModelTableBody({ src, singlePlace, placeId, sortCriterio
   function calculateFrameSize(size, wheelSize) {
     return size > 32 && wheelSize >= 26 ? Math.round(size / 2.54) : size;
   }
+
   /**
    * Should be used in iterable objects like lists.
    * @param {{name: string, isAscending: Boolean, key: Number}} criterion - Sorting criterion.
@@ -80,6 +83,7 @@ export default function ModelTableBody({ src, singlePlace, placeId, sortCriterio
         return (a, b) => order * a.toLowerCase().localeCompare(b.toLowerCase());
     }
   }
+
   /**
    * Checks for null before returning bike count. With current endpoint - most likely redundant.
    * @param {Object} model - Bike model
@@ -93,9 +97,9 @@ export default function ModelTableBody({ src, singlePlace, placeId, sortCriterio
 
   return (
     <tbody>
-      {data.sort(sortPredicate(sortCriterion)).map((record) => (
-        <ModelRecord key={record.modelId} model={record} placeCount={singlePlace ? 0 : 6} placeId={placeId} />
-      ))}
+    {data.sort(sortPredicate(sortCriterion)).map((record) => (
+      <ModelRecord key={record.modelId} model={record} placeCount={singlePlace ? 0 : 6} placeId={placeId}/>
+    ))}
     </tbody>
   );
 }

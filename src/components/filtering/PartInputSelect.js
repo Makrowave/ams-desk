@@ -1,11 +1,11 @@
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import { QUERY_KEYS } from "@/util/query_keys";
-import { useQuery } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import {QUERY_KEYS} from "@/util/query_keys";
+import {useQuery} from "@tanstack/react-query";
+import {useRef, useState} from "react";
 
-export default function PartInputSelect({ mutation }) {
+export default function PartInputSelect({mutation}) {
   const axiosPrivate = useAxiosPrivate();
-  const { data, isError, isLoading, error } = useQuery({
+  const {data, isError, isLoading, error} = useQuery({
     queryKey: [QUERY_KEYS.Parts],
     queryFn: async () => {
       const result = await axiosPrivate.get("Parts");

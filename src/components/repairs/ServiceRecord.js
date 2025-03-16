@@ -1,6 +1,6 @@
-import { FaRegCircleXmark } from "react-icons/fa6";
+import {FaRegCircleXmark} from "react-icons/fa6";
 
-export default function ServiceRecord({ index, service, deleteFn }) {
+export default function ServiceRecord({index, service, deleteFn}) {
   return (
     <tr className='text-center *:p-2 odd:bg-primary'>
       <td>{index + 1}</td>
@@ -11,7 +11,7 @@ export default function ServiceRecord({ index, service, deleteFn }) {
           className='p-2 hover:bg-gray-200 transition-colors duration-200 rounded-lg'
           onClick={() => deleteFn(service.serviceDoneId)}
         >
-          <FaRegCircleXmark className='text-red-600' />
+          <FaRegCircleXmark className='text-red-600'/>
         </button>
       </td>
     </tr>

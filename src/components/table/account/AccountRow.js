@@ -2,10 +2,10 @@ import LogoutModal from "@/components/modals/admin/LogoutModal";
 import UserModal from "@/components/modals/admin/UserModal";
 import DeleteModal from "@/components/modals/DeleteModal";
 import useModal from "@/hooks/useModal";
-import { QUERY_KEYS } from "@/util/query_keys";
+import {QUERY_KEYS} from "@/util/query_keys";
 
-export default function AccountRow({ user, employeeName }) {
-  const { setIsOpen, setModalChildren, setTitle } = useModal();
+export default function AccountRow({user, employeeName}) {
+  const {setIsOpen, setModalChildren, setTitle} = useModal();
   return (
     <tr className='table-row h-14'>
       <td>{user.userId}</td>
@@ -16,7 +16,7 @@ export default function AccountRow({ user, employeeName }) {
           className='button-secondary'
           onClick={() => {
             setTitle("Edytuj konto");
-            setModalChildren(<UserModal user={user} action={"put"} />);
+            setModalChildren(<UserModal user={user} action={"put"}/>);
             setIsOpen(true);
           }}
         >
@@ -28,7 +28,7 @@ export default function AccountRow({ user, employeeName }) {
           className='button-secondary'
           onClick={() => {
             setTitle("Wyloguj");
-            setModalChildren(<LogoutModal id={user.userId} />);
+            setModalChildren(<LogoutModal id={user.userId}/>);
             setIsOpen(true);
           }}
         >
@@ -41,7 +41,7 @@ export default function AccountRow({ user, employeeName }) {
           onClick={() => {
             setTitle("Usuń konto");
             setModalChildren(
-              <DeleteModal id={user.userId} refetchQueryKey={QUERY_KEYS.Users} admin={true} url={"/Users/"} />
+              <DeleteModal id={user.userId} refetchQueryKey={QUERY_KEYS.Users} admin={true} url={"/Users/"}/>
             );
             setIsOpen(true);
           }}

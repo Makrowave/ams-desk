@@ -1,16 +1,16 @@
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 export default function PasswordModal({
-  password,
-  setPassword,
-  newPassword,
-  setNewPassword,
-  error,
-  setError,
-  mutation,
-}) {
+                                        password,
+                                        setPassword,
+                                        newPassword,
+                                        setNewPassword,
+                                        error,
+                                        setError,
+                                        mutation,
+                                      }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [match, setMatch] = useState(true);
   useEffect(() => {
@@ -20,6 +20,7 @@ export default function PasswordModal({
       setMatch(false);
     }
   }, [newPassword, confirmPassword]);
+
   function handleClick() {
     if (!match) {
       setError("Hasła nie są identyczne");
@@ -32,7 +33,7 @@ export default function PasswordModal({
 
   return (
     <div className='flex flex-col justify-self-center w-full mx-16'>
-      <ErrorDisplay isVisible={error !== ""} message={error} />
+      <ErrorDisplay isVisible={error !== ""} message={error}/>
       <div className='flex flex-col'>
         <span>Stare hasło</span>
         <input

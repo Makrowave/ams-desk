@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import { ChromePicker } from "react-color";
+import {useEffect, useRef, useState} from "react";
+import {ChromePicker} from "react-color";
 
-export default function ColorInput({ title, value, setValue }) {
+export default function ColorInput({title, value, setValue}) {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
 
@@ -10,6 +10,7 @@ export default function ColorInput({ title, value, setValue }) {
       setIsOpen(false);
     }
   }
+
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -20,9 +21,9 @@ export default function ColorInput({ title, value, setValue }) {
     <div className='flex justify-between'>
       <p className='self-center'>{title}</p>
       <div ref={selectRef}>
-        <button className='h-10 w-10' onClick={() => setIsOpen(!isOpen)} style={{ background: value }} />
+        <button className='h-10 w-10' onClick={() => setIsOpen(!isOpen)} style={{background: value}}/>
         {isOpen && (
-          <ChromePicker className='absolute z-10' color={value} onChange={(e) => setValue(e.hex)} disableAlpha={true} />
+          <ChromePicker className='absolute z-10' color={value} onChange={(e) => setValue(e.hex)} disableAlpha={true}/>
         )}
       </div>
     </div>

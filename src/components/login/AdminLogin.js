@@ -1,13 +1,14 @@
 "use client";
 import useAuth from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import {useRouter} from "next/navigation";
+import {useEffect, useState} from "react";
 import LoginForm from "./LoginForm";
 import useRefreshAdmin from "@/hooks/useRefreshAdmin";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+
 export default function AdminLogin() {
   const [error, setError] = useState("");
-  const { admin, setIsAdmin } = useAuth();
+  const {admin, setIsAdmin} = useAuth();
   const refresh = useRefreshAdmin();
   const axiosPrivate = useAxiosPrivate();
   const router = useRouter();
@@ -24,8 +25,8 @@ export default function AdminLogin() {
   async function login(username, password) {
     setError("");
     try {
-      const response = await axiosPrivate.post(_loginUrl, JSON.stringify({ username, password }), {
-        headers: { "Content-Type": "application/json" },
+      const response = await axiosPrivate.post(_loginUrl, JSON.stringify({username, password}), {
+        headers: {"Content-Type": "application/json"},
         withCredentials: true,
       });
       if (response.status === 200) {
@@ -36,5 +37,6 @@ export default function AdminLogin() {
       setError(error.message);
     }
   }
-  return <LoginForm login={login} loginError={error} />;
+
+  return <LoginForm login={login} loginError={error}/>;
 }

@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import ValidationFetchSelect from "../../../validation/ValidationFetchSelect";
 import SingleCheckbox from "../../../filtering/SingleCheckbox";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ErrorDisplay from "../../../error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
 import ColorInput from "@/components/input/ColorInput";
-import { REGEX } from "@/util/regex";
-import { QUERY_KEYS } from "@/util/query_keys";
-import { FaCheck, FaXmark } from "react-icons/fa6";
+import {REGEX} from "@/util/regex";
+import {QUERY_KEYS} from "@/util/query_keys";
+import {FaCheck, FaXmark} from "react-icons/fa6";
 
 //Add refetch
 
@@ -50,7 +50,7 @@ export default function AddModelModal() {
   //Other
   const _url = "/Models";
   const [error, setError] = useState("");
-  const { setIsOpen } = useModal();
+  const {setIsOpen} = useModal();
 
   //Validation logic
   //Name
@@ -98,7 +98,7 @@ export default function AddModelModal() {
           categoryId: categoryId,
         }),
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {"Content-Type": "application/json"},
         }
       );
     },
@@ -113,6 +113,7 @@ export default function AddModelModal() {
       setError(error.message);
     },
   });
+
   function validate() {
     let result =
       validName &&
@@ -137,14 +138,15 @@ export default function AddModelModal() {
   function handleClick() {
     if (validate()) mutation.mutate();
   }
+
   return (
     <div className='flex flex-col gap-y-2 w-[600px]'>
-      <ErrorDisplay message={error} isVisible={error !== ""} />
+      <ErrorDisplay message={error} isVisible={error !== ""}/>
       <div>
         <div className='flex justify-between'>
           <div className='flex justify-center items-center'>
             <span className='mr-1'>Nazwa</span>
-            {validName ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
+            {validName ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
           </div>
           <input
             onFocus={() => setNameFocus(true)}
@@ -170,7 +172,7 @@ export default function AddModelModal() {
         <div className='flex justify-between'>
           <div className='flex justify-center items-center'>
             <span className='text-nowrap mr-1'>Kod producenta</span>
-            {validProductCode ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
+            {validProductCode ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
           </div>
           <input
             onFocus={() => setProductCodeFocus(true)}
@@ -196,7 +198,7 @@ export default function AddModelModal() {
         <div className='flex justify-between'>
           <div className='flex justify-center items-center'>
             <span className='mr-1'>Kod EAN</span>
-            {validEanCode ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
+            {validEanCode ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
           </div>
           <input
             onFocus={() => setEanCodeFocus(true)}
@@ -221,7 +223,7 @@ export default function AddModelModal() {
         <div className='flex justify-between'>
           <div className='flex items-center justify-center'>
             <span className='mr-1'>Rozmiar ramy</span>
-            {validFrameSize ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
+            {validFrameSize ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
           </div>
           <input
             type='number'
@@ -258,7 +260,7 @@ export default function AddModelModal() {
         <div className='flex justify-between'>
           <div className='flex justify-center items-center'>
             <span className='mr-1'>Cena</span>
-            {validPrice ? <FaCheck className='text-green-500' /> : <FaXmark className='text-red-600' />}
+            {validPrice ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
           </div>
           <input
             type='number'
@@ -316,8 +318,8 @@ export default function AddModelModal() {
           isColored={true}
         />
       </div>
-      <ColorInput title='Kolor główny' value={primaryColor} setValue={setPrimaryColor} />
-      <ColorInput title='Kolor dodatkowy' value={secondaryColor} setValue={setSecondaryColor} />
+      <ColorInput title='Kolor główny' value={primaryColor} setValue={setPrimaryColor}/>
+      <ColorInput title='Kolor dodatkowy' value={secondaryColor} setValue={setSecondaryColor}/>
       <SingleCheckbox
         checked={isWoman}
         onChange={(e) => {

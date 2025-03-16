@@ -1,11 +1,11 @@
 import FetchSelect from "@/components/filtering/FetchSelect";
 import useModal from "@/hooks/useModal";
-import { QUERY_KEYS } from "@/util/query_keys";
-import { useState } from "react";
+import {QUERY_KEYS} from "@/util/query_keys";
+import {useState} from "react";
 
-export default function RepairModal({ employeeId, onClick, statusId, label }) {
+export default function RepairModal({employeeId, onClick, statusId, label}) {
   const [employee, setEmployee] = useState(employeeId);
-  const { setIsOpen } = useModal();
+  const {setIsOpen} = useModal();
   const handleClick = () => {
     if (employee) {
       onClick(employee, statusId);

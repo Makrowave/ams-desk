@@ -3,18 +3,18 @@ import FetchSelect from "@/components/filtering/FetchSelect";
 import ModalTextInput from "@/components/input/ModalTextInput";
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
 import useModal from "@/hooks/useModal";
-import { QUERY_KEYS } from "@/util/query_keys";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import {QUERY_KEYS} from "@/util/query_keys";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useState} from "react";
 
-export default function UserModal({ user, action }) {
+export default function UserModal({user, action}) {
   const [username, setUsername] = useState(user === undefined ? "" : user.username);
   const [password, setPassword] = useState("");
   const [employeeId, setEmployeeId] = useState(user === undefined ? "" : user.employeeId);
   const [error, setError] = useState("");
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
-  const { setIsOpen } = useModal();
+  const {setIsOpen} = useModal();
   const _url = "/Users/";
   const mutation = useMutation({
     mutationFn: async () => {
@@ -27,7 +27,7 @@ export default function UserModal({ user, action }) {
             employeeId: employeeId,
           }),
           {
-            headers: { "Content-Type": "application/json" },
+            headers: {"Content-Type": "application/json"},
           }
         );
       } else if (action === "post") {
@@ -39,7 +39,7 @@ export default function UserModal({ user, action }) {
             employeeId: employeeId ? employeeId : null,
           }),
           {
-            headers: { "Content-Type": "application/json" },
+            headers: {"Content-Type": "application/json"},
           }
         );
       }
@@ -55,15 +55,16 @@ export default function UserModal({ user, action }) {
       setError(error.message);
     },
   });
+
   function handleClick() {
     mutation.mutate();
   }
 
   return (
     <div className='modal-basic'>
-      <ErrorDisplay message={error} isVisible={!!error} />
-      <ModalTextInput title='Login' value={username} setValue={setUsername} />
-      <ModalTextInput title='Hasło' value={password} setValue={setPassword} />
+      <ErrorDisplay message={error} isVisible={!!error}/>
+      <ModalTextInput title='Login' value={username} setValue={setUsername}/>
+      <ModalTextInput title='Hasło' value={password} setValue={setPassword}/>
       <FetchSelect
         value={employeeId}
         onChange={setEmployeeId}

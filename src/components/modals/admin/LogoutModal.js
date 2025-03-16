@@ -1,19 +1,19 @@
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
 import useModal from "@/hooks/useModal";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 
-export default function LogoutModal({ id }) {
+export default function LogoutModal({id}) {
   const url = "/Users/Logout" + (id ? "/" + id : "");
   const axiosAdmin = useAxiosAdmin();
   const queryClient = useQueryClient();
-  const { setIsOpen } = useModal();
+  const {setIsOpen} = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosAdmin.post(
         url,
         {},
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {"Content-Type": "application/json"},
         }
       );
     },

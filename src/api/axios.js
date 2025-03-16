@@ -6,7 +6,7 @@ export default axios.create({
 
 export const axiosPrivate = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
-  headers: { "Content-Type": "application/json" },
+  headers: {"Content-Type": "application/json"},
   withCredentials: true,
 });
 

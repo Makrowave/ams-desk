@@ -1,17 +1,17 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useState} from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
-import { QUERY_KEYS } from "@/util/query_keys";
+import {QUERY_KEYS} from "@/util/query_keys";
 
-export default function AddBikeModal({ modelId, placeId }) {
+export default function AddBikeModal({modelId, placeId}) {
   //Change it based on selected location
   const [place, setPlace] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
-  const { setIsOpen } = useModal();
+  const {setIsOpen} = useModal();
   const queryClient = useQueryClient();
   const _url = "/Bikes";
 
@@ -26,7 +26,7 @@ export default function AddBikeModal({ modelId, placeId }) {
           statusId: status,
         }),
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {"Content-Type": "application/json"},
         }
       );
     },
@@ -48,6 +48,7 @@ export default function AddBikeModal({ modelId, placeId }) {
       setError(error.message);
     },
   });
+
   function validate() {
     let result = place !== "" && status !== "";
     if (!result) setError("Nie wybrano wszystkich pól");
@@ -56,7 +57,7 @@ export default function AddBikeModal({ modelId, placeId }) {
 
   return (
     <div className='flex flex-col justify-between w-72 mx-auto'>
-      <ErrorDisplay message={error} isVisible={error !== ""} />
+      <ErrorDisplay message={error} isVisible={error !== ""}/>
       <ValidationFetchSelect
         value={place}
         onChange={setPlace}

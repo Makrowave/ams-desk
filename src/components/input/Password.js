@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import {useState} from "react";
+import {FaEye, FaEyeSlash} from "react-icons/fa6";
 
-export default function Password({ className, value, setValue, onKeyDown, onFocus, onBlur }) {
+export default function Password({className, value, setValue, onKeyDown, onFocus, onBlur}) {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
@@ -19,7 +19,7 @@ export default function Password({ className, value, setValue, onKeyDown, onFocu
         placeholder='Hasło'
       />
       <button className='absolute right-1' type='button' onClick={() => setIsVisible(!isVisible)}>
-        {isVisible ? <FaEyeSlash /> : <FaEye />}
+        {isVisible ? <FaEyeSlash/> : <FaEye/>}
       </button>
     </div>
   );

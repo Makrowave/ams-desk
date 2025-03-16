@@ -1,11 +1,11 @@
 import ManufacturerModal from "@/components/modals/admin/ManufacturerModal";
 import DeleteModal from "@/components/modals/DeleteModal";
 import useModal from "@/hooks/useModal";
-import { QUERY_KEYS } from "@/util/query_keys";
+import {QUERY_KEYS} from "@/util/query_keys";
 import OrderButton from "../OrderButton";
 
-export default function ManufacturerRow({ manufacturer, prev, next }) {
-  const { setIsOpen, setModalChildren, setTitle } = useModal();
+export default function ManufacturerRow({manufacturer, prev, next}) {
+  const {setIsOpen, setModalChildren, setTitle} = useModal();
   const queryKey = QUERY_KEYS.Manufacturers;
   const _url = "/Manufacturers/ChangeOrder";
   return (
@@ -14,10 +14,10 @@ export default function ManufacturerRow({ manufacturer, prev, next }) {
       <td>{manufacturer.manufacturerName}</td>
       <td>
         {prev && (
-          <OrderButton first={prev} last={manufacturer.manufacturerId} url={_url} queryKey={queryKey} up={true} />
+          <OrderButton first={prev} last={manufacturer.manufacturerId} url={_url} queryKey={queryKey} up={true}/>
         )}
         {next && (
-          <OrderButton first={manufacturer.manufacturerId} last={next} url={_url} queryKey={queryKey} up={false} />
+          <OrderButton first={manufacturer.manufacturerId} last={next} url={_url} queryKey={queryKey} up={false}/>
         )}
       </td>
       <td>
@@ -25,7 +25,7 @@ export default function ManufacturerRow({ manufacturer, prev, next }) {
           className='button-secondary'
           onClick={() => {
             setIsOpen(true);
-            setModalChildren(<ManufacturerModal manufacturer={manufacturer} action='put' />);
+            setModalChildren(<ManufacturerModal manufacturer={manufacturer} action='put'/>);
             setTitle("Edytuj producenta");
           }}
         >

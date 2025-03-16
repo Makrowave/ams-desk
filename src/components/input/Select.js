@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FaChevronDown } from "react-icons/fa6";
+import React, {useEffect, useRef, useState} from "react";
+import {FaChevronDown} from "react-icons/fa6";
 
 /**
  * @param {Object} props - Props for the select
@@ -16,7 +16,7 @@ import { FaChevronDown } from "react-icons/fa6";
  *  because internal function converts options to specified format.
  * @param {boolean} props.isRow - changes css style
  */
-export function Select({ pKey, defaultKey, defaultValue, className, onChange, options, isColored, isRow }) {
+export function Select({pKey, defaultKey, defaultValue, className, onChange, options, isColored, isRow}) {
   const fOptions = formatOptions();
   const [isOpen, setIsOpen] = useState(false);
   const [key, setKey] = useState(pKey);
@@ -37,11 +37,13 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
       }
     }
   }, [pKey]);
+
   function handleClickOutside(event) {
     if (selectRef.current && !selectRef.current.contains(event.target)) {
       setIsOpen(false);
     }
   }
+
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -56,7 +58,7 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
    */
   function findOption() {
     if (fOptions.find((obj) => obj.key === pKey) === undefined)
-      return { key: defaultKey, value: defaultValue, color: "#FF00FF" };
+      return {key: defaultKey, value: defaultValue, color: "#FF00FF"};
     else return fOptions.find((obj) => obj.key === pKey);
   }
 
@@ -69,14 +71,14 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
           key: Object.values(option)[0],
           value: Object.values(option)[1],
         }));
-        if (defaultKey !== null) opt.unshift({ key: defaultKey, value: defaultValue });
+        if (defaultKey !== null) opt.unshift({key: defaultKey, value: defaultValue});
       } else if (optLength == 3) {
         opt = options.map((option) => ({
           key: Object.values(option)[0],
           value: Object.values(option)[1],
           color: Object.values(option)[2],
         }));
-        if (defaultKey !== null) opt.unshift({ key: defaultKey, value: defaultValue, color: "#FFFFFF" });
+        if (defaultKey !== null) opt.unshift({key: defaultKey, value: defaultValue, color: "#FFFFFF"});
       }
     }
     return opt;
@@ -101,23 +103,24 @@ export function Select({ pKey, defaultKey, defaultValue, className, onChange, op
         {isColored && (
           <div
             className='absolute left-0 rounded-l w-7 h-7 border-tertiary border-r'
-            style={{ background: color }}
+            style={{background: color}}
           ></div>
         )}
         <span className='mx-auto'>{value}</span>
-        <FaChevronDown className='absolute right-0 mr-2' />
+        <FaChevronDown className='absolute right-0 mr-2'/>
       </div>
       {isOpen && (
         <div className='flex flex-1 flex-col border-border border w-full absolute z-10 max-h-44 overflow-auto'>
           {fOptions.map((option) => {
-            return <Option key={option.key} isColored={isColored} option={option} onClick={handleChange} />;
+            return <Option key={option.key} isColored={isColored} option={option} onClick={handleChange}/>;
           })}
         </div>
       )}
     </div>
   );
 }
-function Option({ option, isColored, onClick }) {
+
+function Option({option, isColored, onClick}) {
   const [isHovered, setIsHovered] = useState(false);
   return (
     <div

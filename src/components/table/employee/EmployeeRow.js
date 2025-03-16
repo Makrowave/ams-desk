@@ -1,11 +1,11 @@
 import useModal from "@/hooks/useModal";
-import { QUERY_KEYS } from "@/util/query_keys";
+import {QUERY_KEYS} from "@/util/query_keys";
 import OrderButton from "../OrderButton";
 import DeleteModal from "@/components/modals/DeleteModal";
 import EmployeeModal from "@/components/modals/admin/EmployeeModal";
 
-export default function EmployeeRow({ employee, prev, next }) {
-  const { setIsOpen, setModalChildren, setTitle } = useModal();
+export default function EmployeeRow({employee, prev, next}) {
+  const {setIsOpen, setModalChildren, setTitle} = useModal();
   const _url = "/Employees/ChangeOrder";
   const queryKey = QUERY_KEYS.Employees;
   return (
@@ -23,14 +23,14 @@ export default function EmployeeRow({ employee, prev, next }) {
             up={true}
           />
         )}
-        {next && <OrderButton first={employee.employeeId} last={next} url={_url} queryKey={queryKey} up={false} />}
+        {next && <OrderButton first={employee.employeeId} last={next} url={_url} queryKey={queryKey} up={false}/>}
       </td>
       <td>
         <button
           className='button-secondary'
           onClick={() => {
             setTitle();
-            setModalChildren(<EmployeeModal employee={employee} action='put' />);
+            setModalChildren(<EmployeeModal employee={employee} action='put'/>);
             setIsOpen(true);
           }}
         >

@@ -1,12 +1,12 @@
-import { axiosAdmin } from "@/api/axios";
-import { useEffect } from "react";
+import {axiosAdmin} from "@/api/axios";
+import {useEffect} from "react";
 import useAuth from "./useAuth";
 import useRefreshAdmin from "./useRefreshAdmin";
 
 //Axios private duplicate - try to read into docs and refactor it later
 export default function useAxiosAdmin() {
   //refactor access token
-  const { admin, logoutAdmin } = useAuth();
+  const {admin, logoutAdmin} = useAuth();
   const refresh = useRefreshAdmin();
   useEffect(() => {
     const requestIntercept = axiosAdmin.interceptors.request.use(

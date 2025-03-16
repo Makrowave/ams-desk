@@ -1,23 +1,26 @@
-import { useState } from "react";
+import {useState} from "react";
 import useModal from "@/hooks/useModal";
 import AddModelModal from "@/components/modals/record/model/AddModelModal";
 import ExpandButton from "../buttons/ExpandButton";
-import { FaPlus } from "react-icons/fa6";
+import {FaPlus} from "react-icons/fa6";
 // Switches places for frontend user. Buttons change placeId in query
-export default function ModelTablePlaceSelector({ changePlaceId }) {
+export default function ModelTablePlaceSelector({changePlaceId}) {
   const [active, setActive] = useState(0);
   const places = load();
-  const { setIsOpen, setModalChildren, setTitle } = useModal();
+  const {setIsOpen, setModalChildren, setTitle} = useModal();
+
   function openModal() {
-    setModalChildren(<AddModelModal />);
+    setModalChildren(<AddModelModal/>);
     setTitle("Dodaj rower");
     setIsOpen(true);
   }
+
   function load() {
     let arr = JSON.parse(process.env.NEXT_PUBLIC_PLACES);
-    arr.unshift({ placeId: 0, placeName: "Wszystkie" });
+    arr.unshift({placeId: 0, placeName: "Wszystkie"});
     return arr;
   }
+
   function handleClick(index) {
     changePlaceId(index);
     setActive(index);
@@ -36,13 +39,13 @@ export default function ModelTablePlaceSelector({ changePlaceId }) {
         ))}
       </div>
       <ExpandButton className='bg-gray-200' text='Dodaj model' onClick={openModal}>
-        <FaPlus />
+        <FaPlus/>
       </ExpandButton>
     </div>
   );
 }
 
-function ChangeTableButton({ isActive, title, onClick }) {
+function ChangeTableButton({isActive, title, onClick}) {
   return (
     <button
       className={

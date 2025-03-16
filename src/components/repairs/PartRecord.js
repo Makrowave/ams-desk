@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { FaRegCircleXmark } from "react-icons/fa6";
+import {useState} from "react";
+import {FaRegCircleXmark} from "react-icons/fa6";
 
-export default function PartRecord({ index, part, changeAmount, deleteFn }) {
+export default function PartRecord({index, part, changeAmount, deleteFn}) {
   const [localPart, setLocalPart] = useState(part);
   const handleAmountChange = (event) => {
     const value = event.target.value < 0 ? 0 : event.target.value;
-    setLocalPart({ ...localPart, amount: value });
+    setLocalPart({...localPart, amount: value});
     changeAmount(localPart.partUsedId, value);
   };
   return (
@@ -28,7 +28,7 @@ export default function PartRecord({ index, part, changeAmount, deleteFn }) {
           className='p-2 hover:bg-gray-200 transition-colors duration-200 rounded-lg'
           onClick={() => deleteFn(part.partUsedId)}
         >
-          <FaRegCircleXmark className='text-red-600' />
+          <FaRegCircleXmark className='text-red-600'/>
         </button>
       </td>
     </tr>

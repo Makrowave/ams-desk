@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import {useEffect, useRef, useState} from "react";
 
 //Component that contains 2 input fields that
 //represend range (most likely price range).
@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react";
 //multiple queries for every single number.
 //If used in modyfing params which are passed to be sent later,
 //it might cause to send the old state values.
-export default function RangeInput({ minValue, maxValue, title, setMin, setMax }) {
+export default function RangeInput({minValue, maxValue, title, setMin, setMax}) {
   const [realMin, setRealMin] = useState(minValue);
   const [realMax, setRealMax] = useState(maxValue);
 

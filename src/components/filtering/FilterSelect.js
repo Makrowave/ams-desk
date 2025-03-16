@@ -1,9 +1,9 @@
 "use client";
 
-import { Select } from "../input/Select";
+import {Select} from "../input/Select";
 
 // Children should be <option> element
-export default function FilterSelect({ onChange, value, title, defaultKey, defaultValue, options, isColored }) {
+export default function FilterSelect({onChange, value, title, defaultKey, defaultValue, options, isColored}) {
   return (
     <div className='flex justify-center flex-col'>
       <div className='flex justify-center self-start'>

@@ -1,8 +1,8 @@
-import { useState } from "react";
+import {useState} from "react";
 import ErrorDisplay from "../error/ErrorDisplay";
 import Password from "../input/Password";
 
-export default function LoginForm({ login, loginError }) {
+export default function LoginForm({login, loginError}) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -27,7 +27,7 @@ export default function LoginForm({ login, loginError }) {
         className='flex flex-col m-auto item-center bg-primary p-6 border-2 shadow-2xl rounded-lg w-80'
       >
         <span className='self-center text-3xl'>Logowanie</span>
-        <ErrorDisplay message={loginError} isVisible={loginError !== ""} />
+        <ErrorDisplay message={loginError} isVisible={loginError !== ""}/>
         <div
           className={
             loginFocus

@@ -1,10 +1,10 @@
 "use client";
 import useAuth from "@/hooks/useAuth";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import {usePathname, useRouter} from "next/navigation";
+import {useEffect} from "react";
 
-export default function AdminRoute({ children }) {
-  const { user, admin, setPrevRoute } = useAuth();
+export default function AdminRoute({children}) {
+  const {user, admin, setPrevRoute} = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   useEffect(() => {

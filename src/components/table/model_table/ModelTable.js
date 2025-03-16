@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState} from "react";
 import ModelTablePlaceSelector from "@/components/filtering/ModelTablePlaceSelector";
 import ModelTableHeader from "./ModelTableHeader";
 import ModelTableBody from "./ModelTableBody";
@@ -14,7 +14,7 @@ import ModelTableBody from "./ModelTableBody";
  *  used to filter
  * @returns
  */
-export default function ModelTable({ filterSrc }) {
+export default function ModelTable({filterSrc}) {
   const [place, setPlace] = useState(0);
   /**
    * Sorting critetion object.
@@ -23,17 +23,17 @@ export default function ModelTable({ filterSrc }) {
    * key (number) - used for criterion "amount". It specifies by what place's amount sort.
    *  Should be a valid placeId
    */
-  const [criterion, setCriterion] = useState({ name: "name", isAscending: true, key: null });
+  const [criterion, setCriterion] = useState({name: "name", isAscending: true, key: null});
   let src = "/Models?placeId=" + place.toString();
 
   return (
     <div className='mb-10 col-span-5 flex justify-center mx-4 overflow-hidden max-w-full bg-primary p-8 rounded-xl'>
       <div className='flex flex-col w-full h-full overflow-hidden'>
-        <ModelTablePlaceSelector changePlaceId={(index) => setPlace(index)} />
+        <ModelTablePlaceSelector changePlaceId={(index) => setPlace(index)}/>
         <div className='overflow-y-auto flex-1 h-0 bg-secondary'>
           <table className='table min-w-full'>
-            <ModelTableHeader singlePlace={place !== 0} setCriterion={setCriterion} />
-            <ModelTableBody singlePlace={place !== 0} placeId={place} src={src + filterSrc} sortCriterion={criterion} />
+            <ModelTableHeader singlePlace={place !== 0} setCriterion={setCriterion}/>
+            <ModelTableBody singlePlace={place !== 0} placeId={place} src={src + filterSrc} sortCriterion={criterion}/>
           </table>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React from "react";
-import { BikeRow } from "./BikeRow";
-import { BikeTable } from "./BikeTable";
+import {BikeRow} from "./BikeRow";
+import {BikeTable} from "./BikeTable";
+
 /**
  * Renders additional model data <SubRowData> and bikes tied to model <SubBikeTable>.
  * Bikes are queried inside <SubBikeTable> with use of model and placeId.
@@ -9,14 +10,14 @@ import { BikeTable } from "./BikeTable";
  * @param {Object} props.model - Model mapped to record.
  * @param {number} props.placeId - Place Id from query.
  */
-export function ModelSubRecord({ placeCount, model, placeId }) {
+export function ModelSubRecord({placeCount, model, placeId}) {
   return (
     <>
       <tr className='odd:bg-secondary even:bg-primary border-b-2 border-x-2 border-border drop-shadow-md'>
         <td colSpan={5 + placeCount}>
           <div>
-            <BikeRow model={model} placeId={placeId} />
-            <BikeTable model={model} placeId={placeId} />
+            <BikeRow model={model} placeId={placeId}/>
+            <BikeTable model={model} placeId={placeId}/>
           </div>
         </td>
       </tr>

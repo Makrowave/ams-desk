@@ -1,10 +1,10 @@
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import { useQuery } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import {useQuery} from "@tanstack/react-query";
+import {useRef, useState} from "react";
 
-export default function ServiceInputSelect({ mutation }) {
+export default function ServiceInputSelect({mutation}) {
   const axiosPrivate = useAxiosPrivate();
-  const { data, isError, isLoading, error } = useQuery({
+  const {data, isError, isLoading, error} = useQuery({
     queryKey: ["Services"],
     queryFn: async () => {
       const result = await axiosPrivate.get("Services");

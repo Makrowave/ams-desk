@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { formatPhone } from "@/util/formatting";
-import { FaChevronRight } from "react-icons/fa6";
-export default function RepairRecord({ repair }) {
+import {formatPhone} from "@/util/formatting";
+import {FaChevronRight} from "react-icons/fa6";
+
+export default function RepairRecord({repair}) {
   return (
     <tr className='*:even:bg-secondary *:border-b-border *:border-b  *:last:border-b-0 *:text-center'>
       <td>{repair.id}</td>
@@ -11,7 +12,7 @@ export default function RepairRecord({ repair }) {
       <td>
         <div
           className='w-32 max-w-[8rem] truncate overflow-hidden whitespace-nowrap p-1 rounded-lg'
-          style={{ backgroundColor: repair.status.color }}
+          style={{backgroundColor: repair.status.color}}
         >
           {repair.status.name}
         </div>
@@ -19,8 +20,9 @@ export default function RepairRecord({ repair }) {
       <td>{repair.placeName}</td>
       <td>
         <Link href={`/serwis/${repair.id}`}>
-          <div className='flex justify-center items-center hover:bg-gray-200 transition-colors duration-200 rounded-lg w-fit h-fit p-1'>
-            <FaChevronRight />
+          <div
+            className='flex justify-center items-center hover:bg-gray-200 transition-colors duration-200 rounded-lg w-fit h-fit p-1'>
+            <FaChevronRight/>
           </div>
         </Link>
       </td>

@@ -1,5 +1,5 @@
-import { QUERY_KEYS } from "@/util/query_keys";
-import { useQuery } from "@tanstack/react-query";
+import {QUERY_KEYS} from "@/util/query_keys";
+import {useQuery} from "@tanstack/react-query";
 import useAxiosPrivate from "../useAxiosPrivate";
 
 export default function useEmployeesQuery() {

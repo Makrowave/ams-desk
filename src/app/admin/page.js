@@ -3,7 +3,7 @@ import useAuth from "@/hooks/useAuth";
 import Link from "next/link";
 
 export default function AdminPanel() {
-  const { admin } = useAuth();
+  const {admin} = useAuth();
   return (
     <div className='px-12 py-6 h-fit'>
       <h2 className='text-3xl'>Witaj {admin.username}!</h2>

@@ -1,4 +1,4 @@
-export default function ExternalLink({ href, disabled, className, children }) {
+export default function ExternalLink({href, disabled, className, children}) {
   return (
     <a
       href={href}
