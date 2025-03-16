@@ -1,16 +1,16 @@
 "use client";
 import {
-  FaBicycle,
-  FaChevronLeft,
-  FaChevronRight,
-  FaCircleInfo,
-  FaHouse,
-  FaIndustry,
-  FaList,
-  FaPalette,
-  FaRegCircle,
-  FaUser,
-  FaWrench,
+    FaBicycle,
+    FaChevronLeft,
+    FaChevronRight,
+    FaCircleInfo,
+    FaHouse,
+    FaIndustry,
+    FaList,
+    FaPalette,
+    FaRegCircle,
+    FaUser,
+    FaWrench,
 } from "react-icons/fa6";
 import {SideBarButton} from "./SideBarButton";
 import {useState} from "react";
@@ -42,6 +42,7 @@ export default function SideBar({baseUrl}) {
                             title={item.title}
                             icon={item.icon}
                             current={path === baseUrl + item.url}
+                            key={item.url}
                         />
                     ))}
                 </ul>

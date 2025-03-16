@@ -37,6 +37,7 @@ export default function RepairTable({src, addButton, localKey}) {
                                 setPlace(id);
                                 localStorage.setItem(storageKey, id);
                             }}
+                            key={p.placeId}
                             id={p.placeId}
                             selected={place === p.placeId}
                             text={p.placeName}

@@ -13,7 +13,7 @@ const navigation = [
 export default function Navigation() {
     const path = usePathname().split("/")[1];
     const navItems = navigation.map((item) => (
-        <NavButton key={item.id} title={item.name} href={item.href} current={item.links.includes(path)}/>
+        <NavButton key={item.name} title={item.name} href={item.href} current={item.links.includes(path)}/>
     ));
 
     return (
