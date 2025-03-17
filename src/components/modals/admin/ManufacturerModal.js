@@ -18,7 +18,7 @@ export default function ManufacturerModal({manufacturer, action}) {
   const mutation = useMutation({
     mutationFn: async () => {
       if (action === "put") {
-        return await axiosAdmin.put(
+        const result = await axiosAdmin.put(
           _url + manufacturer.manufacturerId,
           JSON.stringify({
             manufacturerName: name,
@@ -27,8 +27,9 @@ export default function ManufacturerModal({manufacturer, action}) {
             headers: {"Content-Type": "application/json"},
           }
         );
+        return result.data;
       } else if (action === "post") {
-        return await axiosAdmin.post(
+        const result = await axiosAdmin.post(
           _url,
           JSON.stringify({
             manufacturerName: name,
@@ -37,13 +38,19 @@ export default function ManufacturerModal({manufacturer, action}) {
             headers: {"Content-Type": "application/json"},
           }
         );
+        return result.data;
       }
     },
-    onSuccess: (response) => {
-      queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Manufacturers],
-        exact: false,
-      });
+    onSuccess: (data) => {
+      if (action === "put") {
+        queryClient.setQueryData([QUERY_KEYS.Manufacturers], (oldData) => (
+          oldData.map(man => man.manufacturerId === manufacturer.manufacturerId ? data : man)
+        ));
+      } else if (action === "post") {
+        queryClient.setQueryData([QUERY_KEYS.Manufacturers], (oldData) => (
+          [...oldData, data]
+        ));
+      }
       setIsOpen(false);
     },
     onError: (error) => {

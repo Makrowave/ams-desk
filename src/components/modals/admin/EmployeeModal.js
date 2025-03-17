@@ -18,7 +18,7 @@ export default function EmployeeModal({employee, action}) {
   const mutation = useMutation({
     mutationFn: async () => {
       if (action === "put") {
-        return await axiosAdmin.put(
+        const response = await axiosAdmin.put(
           _url + employee.employeeId,
           JSON.stringify({
             employeeName: name,
@@ -27,8 +27,9 @@ export default function EmployeeModal({employee, action}) {
             headers: {"Content-Type": "application/json"},
           }
         );
+        return response.data;
       } else if (action === "post") {
-        return await axiosAdmin.post(
+        const response = await axiosAdmin.post(
           _url,
           JSON.stringify({
             employeeName: name,
@@ -37,13 +38,19 @@ export default function EmployeeModal({employee, action}) {
             headers: {"Content-Type": "application/json"},
           }
         );
+        return response.data;
       }
     },
-    onSuccess: (response) => {
-      queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Employees],
-        exact: false,
-      });
+    onSuccess: (data) => {
+      if (action === "put") {
+        queryClient.setQueryData([QUERY_KEYS.Employees], (oldData) => (
+          oldData.map(emp => emp.employeeId === employee.employeeId ? data : emp)
+        ));
+      } else if (action === "post") {
+        queryClient.setQueryData([QUERY_KEYS.Employees], (oldData) => (
+          [...oldData, data]
+        ));
+      }
       setIsOpen(false);
     },
     onError: (error) => {

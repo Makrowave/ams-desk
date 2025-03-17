@@ -21,7 +21,7 @@ export default function ColorModal({colorData, action}) {
   const mutation = useMutation({
     mutationFn: async () => {
       if (action === "put") {
-        return await axiosAdmin.put(
+        const response = await axiosAdmin.put(
           _url + colorData.colorId,
           JSON.stringify({
             colorName: name,
@@ -31,8 +31,9 @@ export default function ColorModal({colorData, action}) {
             headers: {"Content-Type": "application/json"},
           }
         );
+        return response.data
       } else if (action === "post") {
-        return await axiosAdmin.post(
+        const response = await axiosAdmin.post(
           _url,
           JSON.stringify({
             colorName: name,
@@ -42,13 +43,19 @@ export default function ColorModal({colorData, action}) {
             headers: {"Content-Type": "application/json"},
           }
         );
+        return response.data
       }
     },
-    onSuccess: (response) => {
-      queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Colors],
-        exact: false,
-      });
+    onSuccess: (data) => {
+      if (action === "put") {
+        queryClient.setQueryData([QUERY_KEYS.Colors], (oldData) => (
+          oldData.map(col => col.colorId === colorData.colorId ? data : col)
+        ));
+      } else if (action === "post") {
+        queryClient.setQueryData([QUERY_KEYS.Colors], (oldData) => (
+          [...oldData, data]
+        ));
+      }
       setIsOpen(false);
     },
     onError: (error) => {

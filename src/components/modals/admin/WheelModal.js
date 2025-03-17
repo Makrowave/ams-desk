@@ -15,13 +15,14 @@ export default function WheelModal() {
   const _url = "/WheelSizes/";
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosAdmin.post(_url + wheel);
+      const response = await axiosAdmin.post(_url + wheel);
+      return response.data;
     },
-    onSuccess: (response) => {
-      queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.WheelSizes],
-        exact: false,
-      });
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        [QUERY_KEYS.WheelSizes], (oldData) => {
+          return [...oldData, {key: data, value: data}].sort((a, b) => (Number(a.value) - Number(b.value)))
+        });
       setIsOpen(false);
     },
     onError: (error) => {

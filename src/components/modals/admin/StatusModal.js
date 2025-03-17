@@ -44,11 +44,16 @@ export default function StatusModal({status, action}) {
         );
       }
     },
-    onSuccess: (response) => {
-      queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Statuses],
-        exact: false,
-      });
+    onSuccess: (data) => {
+      if (action === "put") {
+        queryClient.setQueriesData({queryKey: [QUERY_KEYS.Statuses], exact: false}, (oldData) => (
+          oldData.map(st => st.statusId === status.statusId ? data : st)
+        ));
+      } else if (action === "post") {
+        queryClient.setQueryData([QUERY_KEYS.Statuses], (oldData) => (
+          [...oldData, data]
+        ));
+      }
       setIsOpen(false);
     },
     onError: (error) => {
