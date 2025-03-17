@@ -16,7 +16,7 @@ import {FaChevronDown} from "react-icons/fa6";
  *  because internal function converts options to specified format.
  * @param {boolean} props.isRow - changes css style
  */
-export function Select({pKey, defaultKey, defaultValue, className, onChange, options, isColored, isRow}) {
+export function Select({pKey, defaultKey, defaultValue, onChange, options, isColored, isRow}) {
   const fOptions = formatOptions();
   const [isOpen, setIsOpen] = useState(false);
   const [key, setKey] = useState(pKey);
@@ -52,8 +52,6 @@ export function Select({pKey, defaultKey, defaultValue, className, onChange, opt
   }, []);
 
   /**
-   *
-   * @returns {Array<{string, string, string}>|Array<{string | string}>} - an array of objects:
    *  {key, value} for isColored=false, {key, value, color} for isColored=true
    */
   function findOption() {
@@ -63,16 +61,16 @@ export function Select({pKey, defaultKey, defaultValue, className, onChange, opt
   }
 
   function formatOptions() {
-    let opt;
+    let opt = [];
     if (options.length > 0) {
       let optLength = Object.keys(options[0]).length;
-      if (optLength == 2) {
+      if (optLength === 2) {
         opt = options.map((option) => ({
           key: Object.values(option)[0],
           value: Object.values(option)[1],
         }));
         if (defaultKey !== null) opt.unshift({key: defaultKey, value: defaultValue});
-      } else if (optLength == 3) {
+      } else if (optLength === 3) {
         opt = options.map((option) => ({
           key: Object.values(option)[0],
           value: Object.values(option)[1],
