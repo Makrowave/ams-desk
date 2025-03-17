@@ -9,12 +9,20 @@ export default function OrderButton({up, first, last, url, queryKey}) {
     mutationFn: async () => {
       return await axiosAdmin.put(`${url}?first=${first}&last=${last}`);
     },
-    onSuccess: (response) => {
-      queryClient.refetchQueries({
-        queryKey: [queryKey],
-        exact: false,
-      });
-      setIsOpen(false);
+    onSuccess: () => {
+      //Swap values on old query client-side
+      queryClient.setQueriesData({queryKey: [queryKey], exact: false}, (oldData) => {
+        const firstItem = oldData.find((item) => Object.values(item)[0] === first)
+        const lastItem = oldData.find((item) => Object.values(item)[0] === last)
+        return oldData.map((item) => {
+          if (Object.values(item)[0] === first) {
+            return lastItem;
+          } else if (Object.values(item)[0] === last) {
+            return firstItem;
+          }
+          return item;
+        })
+      })
     },
   });
   return (

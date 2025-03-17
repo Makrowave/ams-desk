@@ -15,10 +15,8 @@ export default function DeleteModal({refetchQueryKey, id, url, admin = false}) {
       return await axios.delete(`${url}${id}`);
     },
     onSuccess: () => {
-      queryClient.refetchQueries({
-        queryKey: [refetchQueryKey],
-        exact: false,
-      });
+      queryClient.setQueriesData({queryKey: [refetchQueryKey], exact: false},
+        (oldData) => oldData.filter((item) => Object.values(item)[0] !== id));
       setIsOpen(false);
     },
     onError: (error) => {
