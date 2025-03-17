@@ -16,9 +16,9 @@ export default function CategoryModal({category, action}) {
   const {setIsOpen} = useModal();
   const _url = "/Categories/";
   const mutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (action) => {
       if (action === "put") {
-        return await axiosAdmin.put(
+        const result = await axiosAdmin.put(
           _url + category.categoryId,
           JSON.stringify({
             categoryName: name,
@@ -27,8 +27,9 @@ export default function CategoryModal({category, action}) {
             headers: {"Content-Type": "application/json"},
           }
         );
+        return result.data
       } else if (action === "post") {
-        return await axiosAdmin.post(
+        const result =  await axiosAdmin.post(
           _url,
           JSON.stringify({
             categoryName: name,
@@ -37,13 +38,13 @@ export default function CategoryModal({category, action}) {
             headers: {"Content-Type": "application/json"},
           }
         );
+        return result.data
       }
     },
-    onSuccess: (response) => {
-      queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Categories],
-        exact: false,
-      });
+    onSuccess: (data) => {
+      queryClient.setQueryData([QUERY_KEYS.Categories], (oldData) => (
+          oldData.map(cat => cat.categoryId === category.categoryId ? data : cat )
+      ));
       setIsOpen(false);
     },
     onError: (error) => {
@@ -52,7 +53,7 @@ export default function CategoryModal({category, action}) {
   });
 
   function handleClick() {
-    if (validate()) mutation.mutate();
+    if (validate()) mutation.mutate(action);
   }
 
   function validate() {

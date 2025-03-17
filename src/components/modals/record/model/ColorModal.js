@@ -17,7 +17,7 @@ export default function ColorModal({model}) {
   const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.put(
+      const result = await axiosPrivate.put(
         "/Models/" + model.modelId,
         JSON.stringify({
           ...model,
@@ -29,11 +29,16 @@ export default function ColorModal({model}) {
           headers: {"Content-Type": "application/json"},
         }
       );
+      return result.data;
     },
-    onSuccess: (response) => {
-      queryClient.refetchQueries({
+    onSuccess: (data) => {
+      queryClient.setQueriesData({
         queryKey: [QUERY_KEYS.Models],
         exact: false,
+      }, (oldData) => {
+        return oldData ? oldData.map((m) => m.modelId === data.modelId ?
+          {...data, bikeCount: m.bikeCount, placeBikeCount: m.placeBikeCount} : m)
+          : oldData
       });
       setIsOpen(false);
     },

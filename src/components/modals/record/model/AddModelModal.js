@@ -79,12 +79,11 @@ export default function AddModelModal() {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.post(
+      const result = await axiosPrivate.post(
         _url,
         JSON.stringify({
           productCode: productCode,
           eanCode: eanCode,
-          frameSize: frameSize,
           modelName: name,
           frameSize: Number(frameSize),
           isWoman: isWoman,
@@ -101,12 +100,15 @@ export default function AddModelModal() {
           headers: {"Content-Type": "application/json"},
         }
       );
+      return result.data;
     },
-    onSuccess: () => {
-      queryClient.refetchQueries({
+    onSuccess: (data) => {
+      queryClient.setQueriesData({
         queryKey: [QUERY_KEYS.Models],
         exact: false,
-      });
+      }, (oldData) => (
+        [...oldData, data]
+      ));
       setIsOpen(false);
     },
     onError: (error) => {

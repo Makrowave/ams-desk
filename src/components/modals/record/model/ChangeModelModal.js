@@ -59,7 +59,7 @@ export default function ChangeModelModal({model}) {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.put(
+      const result = await axiosPrivate.put(
         _url + modelId,
         JSON.stringify({
           ...model,
@@ -77,11 +77,16 @@ export default function ChangeModelModal({model}) {
           headers: {"Content-Type": "application/json"},
         }
       );
+      return result.data;
     },
-    onSuccess: () => {
-      queryClient.refetchQueries({
+    onSuccess: (data) => {
+      queryClient.setQueriesData({
         queryKey: [QUERY_KEYS.Models],
         exact: false,
+      }, (oldData) => {
+        return oldData ? oldData.map((m) => m.modelId === data.modelId ?
+            {...data, bikeCount: m.bikeCount, placeBikeCount: m.placeBikeCount} : m)
+          : oldData
       });
       setIsOpen(false);
     },
