@@ -27,8 +27,8 @@ export default function ModelTablePlaceSelector({changePlaceId}) {
   }
 
   return (
-    <div className='flex justify-between items-center'>
-      <div className='flex *:px-5 '>
+    <div className='flex justify-between items-center h-fit'>
+      <div className='flex *:px-5 h-12'>
         {places.map((place, index) => (
           <ChangeTableButton
             key={place.placeId}
@@ -38,7 +38,7 @@ export default function ModelTablePlaceSelector({changePlaceId}) {
           />
         ))}
       </div>
-      <ExpandButton className='bg-gray-200' text='Dodaj model' onClick={openModal}>
+      <ExpandButton className='bg-gray-200 mb-2' text='Dodaj model' onClick={openModal}>
         <FaPlus/>
       </ExpandButton>
     </div>
@@ -49,7 +49,7 @@ function ChangeTableButton({isActive, title, onClick}) {
   return (
     <button
       className={
-        isActive ? "bg-secondary rounded-t-lg h-10 hover:bg-tertiary" : "bg-primary rounded-t-lg h-10 hover:bg-tertiary"
+        isActive ? "bg-secondary rounded-t-lg h-full hover:bg-tertiary" : "bg-primary rounded-t-lg h-full hover:bg-tertiary"
       }
       onClick={onClick}
     >

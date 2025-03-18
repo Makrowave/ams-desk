@@ -28,9 +28,9 @@ export default function ModelTable({filterSrc}) {
 
   return (
     <div className='mb-10 col-span-5 flex justify-center mx-4 overflow-hidden max-w-full bg-primary p-8 rounded-xl'>
-      <div className='flex flex-col w-full h-full overflow-hidden'>
+      <div className='flex flex-col w-full overflow-hidden'>
         <ModelTablePlaceSelector changePlaceId={(index) => setPlace(index)}/>
-        <div className='overflow-y-auto flex-1 h-0 bg-secondary'>
+        <div className='overflow-y-auto flex-1 h-0 bg-secondary rounded-b-lg rounded-tr-lg'>
           <table className='table min-w-full'>
             <ModelTableHeader singlePlace={place !== 0} setCriterion={setCriterion}/>
             <ModelTableBody singlePlace={place !== 0} placeId={place} src={src + filterSrc} sortCriterion={criterion}/>

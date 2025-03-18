@@ -100,12 +100,15 @@ export function BikeTable({model, placeId}) {
     <div className='mx-8'>
       <table className='table-fixed w-full'>
         <thead className='*:py-3'>
-        <th className='w-10'>Lp.</th>
-        <th className='w-1/12'>Miejsce</th>
-        <th className='w-2/12'>Status</th>
-        <th className='w-2/12'>Złożony przez</th>
-        <th className='w-fit'></th>
+        <tr>
+          <th className='w-10'>Lp.</th>
+          <th className='w-1/12'>Miejsce</th>
+          <th className='w-2/12'>Status</th>
+          <th className='w-2/12'>Złożony przez</th>
+          <th className='w-fit'></th>
+        </tr>
         </thead>
+        <tbody>
         {data.map((bike, index) => (
           <tr key={bike.id} className='border-y border-gray-400 last:border-b-0 h-10'>
             <td>{index + 1}</td>
@@ -175,6 +178,7 @@ export function BikeTable({model, placeId}) {
             </td>
           </tr>
         ))}
+        </tbody>
       </table>
     </div>
   );

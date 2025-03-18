@@ -96,10 +96,21 @@ export default function ModelTableBody({src, singlePlace, placeId, sortCriterion
   }
 
   return (
-    <tbody>
+    <tbody className="relative">
     {data.sort(sortPredicate(sortCriterion)).map((record) => (
       <ModelRecord key={record.modelId} model={record} placeCount={singlePlace ? 0 : 6} placeId={placeId}/>
     ))}
+    <tr className="sticky bottom-0 bg-slate-200 h-10">
+      <td colSpan={4}>Suma</td>
+      <td>{data.reduce((acc, model) => (acc + model.bikeCount), 0)}</td>
+      {singlePlace ?
+        <></> :
+        new Array(6).fill(0).map((_, i) => (
+          <td key={i}>
+            {data.reduce((acc, model) => (acc + model.placeBikeCount[i].count), 0)}
+          </td>
+        ))}
+    </tr>
     </tbody>
   );
 }
