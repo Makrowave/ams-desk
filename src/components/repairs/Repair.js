@@ -5,17 +5,17 @@ import {formatPhone} from "@/util/formatting";
 import {useRouter} from "next/navigation";
 import {REPAIR_STATUS} from "@/util/repairStatuses";
 import {
-    FaArrowLeft,
-    FaBoxOpen,
-    FaCheck,
-    FaComment,
-    FaFlagCheckered,
-    FaFloppyDisk,
-    FaHourglass,
-    FaPhone,
-    FaPlus,
-    FaShield,
-    FaWrench,
+  FaArrowLeft,
+  FaBoxOpen,
+  FaCheck,
+  FaComment,
+  FaFlagCheckered,
+  FaFloppyDisk,
+  FaHourglass,
+  FaPhone,
+  FaPlus,
+  FaShield,
+  FaWrench,
 } from "react-icons/fa6";
 import ServiceRecord from "./ServiceRecord";
 import ServiceInputSelect from "../filtering/ServiceInputSelect";
@@ -45,29 +45,51 @@ export default function Repair({repair}) {
       return response.data;
     },
   });
+
   const statusMutation = useMutation({
     mutationFn: async (id) => {
-      return await axiosPrivate.put(`repairs/status/${localRepair.repairId}?statusId=${id}`);
+      const response = await axiosPrivate.put(`repairs/status/${localRepair.repairId}?statusId=${id}`);
+      return response.data;
     },
-    onSuccess: (result) => {
-      setLocalRepair(result.data);
+    onSuccess: async (data) => {
+      queryClient.setQueryData([QUERY_KEYS.Repairs, repair.repairId], (oldData) => {
+        const result = {
+          ...oldData,
+          statusId: data.statusId,
+          status: data.status,
+        };
+        setLocalRepair(result);
+        return result;
+      })
     },
   });
 
   const employeeMutation = useMutation({
     mutationFn: async ([id, collection]) => {
-      return await axiosPrivate.put(
+      const response = await axiosPrivate.put(
         `repairs/employee/${localRepair.repairId}?employeeId=${id}&collection=${collection}`
       );
+      return response.data;
     },
-    onSuccess: (result) => {
-      setLocalRepair(result.data);
+    onSuccess: async (data) => {
+      setIsSaved(true);
+      queryClient.setQueryData([QUERY_KEYS.Repairs, repair.repairId], (oldData) => {
+        const result = {
+          ...oldData,
+          repairEmployeeName: data.repairEmployeeName,
+          repairEmployeeId: data.repairEmployeeId,
+          collectionEmployeeName: data.collectionEmployeeName,
+          collectionEmployeeId: data.collectionEmployeeId,
+        };
+        setLocalRepair(result);
+        return result;
+      })
     },
   });
 
   const repairMutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.put(
+      const response = await axiosPrivate.put(
         `repairs/${localRepair.repairId}`,
         JSON.stringify({
           ...localRepair,
@@ -87,14 +109,14 @@ export default function Repair({repair}) {
           status: null,
         })
       );
+      return response.data;
     },
-    onSuccess: (result) => {
-      setLocalRepair(result.data);
+    onSuccess: async (data) => {
+      setLocalRepair(data);
       setIsSaved(true);
-      queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Repairs],
-        exact: false,
-      });
+      queryClient.setQueryData([QUERY_KEYS.Repairs, repair.repairId], () => {
+        return data;
+      })
     },
   });
 
@@ -144,17 +166,14 @@ export default function Repair({repair}) {
 
   const changeStatus = (id) => {
     statusMutation.mutate(id);
-    save();
   };
 
   const handleColEmployeeChange = (id) => {
     employeeMutation.mutate([id, true]);
-    save();
   };
 
   const handleRepEmployeeChange = (id) => {
     employeeMutation.mutate([id, false]);
-    save();
   };
 
   const changeDiscount = (value) => {
@@ -246,7 +265,7 @@ export default function Repair({repair}) {
                 setTitle("Rozpocznij naprawę");
                 setModalChildren(
                   <RepairModal
-                    employeeId={localRepair.status.repairEmployeeId}
+                    employeeId={localRepair.repairEmployeeId}
                     label='Kto naprawia'
                     onClick={(employee, status) => {
                       changeStatus(status);
@@ -349,7 +368,7 @@ export default function Repair({repair}) {
                 setTitle("Wydaj rower");
                 setModalChildren(
                   <RepairModal
-                    employeeId={localRepair.status.repairEmployeeId}
+                    employeeId={localRepair.repairEmployeeId}
                     label='Kto wydaje'
                     onClick={(employee, status) => {
                       handleColEmployeeChange(employee);
@@ -456,8 +475,14 @@ export default function Repair({repair}) {
           </div>
           <div className='flex-col flex-1 justify-end '>
             <div className='flex justify-end mb-4'>
+              <div className='p-1 border-gray-300 border rounded-lg w-40 flex flex-col'>
+                  <span className='text-base'>
+                    <b>Kto przyjmował</b>
+                  </span>
+                <span>{localRepair.takeInEmployeeName}</span>
+              </div>
               {localRepair.repairEmployeeId !== null && (
-                <div className='p-1 border-gray-300 border rounded-lg w-40 flex flex-col'>
+                <div className='p-1 border-gray-300 border rounded-lg w-40 flex flex-col ml-4'>
                   <span className='text-base'>
                     <b>
                       {localRepair.statusId === 7 || localRepair.statusId === 6 || localRepair.statusId === 5

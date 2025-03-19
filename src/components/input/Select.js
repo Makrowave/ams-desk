@@ -6,7 +6,6 @@ import {FaChevronDown} from "react-icons/fa6";
  *  @param {String} props.pKey - Current key (parent's current value)
  * @param {String} props.defaultKey - Key of the default option
  * @param {String} props.defaultValue - Value (text shown) - of the default option
- * @param {String} props.className - Inline tailwindcss styling for the div with selected option
  * @param {(String) => ()} props.onChange - Function that executes when any of the options is selected.
  *  Should be a reference to parent's changeKey function.
  * @param {boolean} props.isColored - Defines if options should be colored or not
@@ -55,9 +54,9 @@ export function Select({pKey, defaultKey, defaultValue, onChange, options, isCol
    *  {key, value} for isColored=false, {key, value, color} for isColored=true
    */
   function findOption() {
-    if (fOptions.find((obj) => obj.key === pKey) === undefined)
-      return {key: defaultKey, value: defaultValue, color: "#FF00FF"};
-    else return fOptions.find((obj) => obj.key === pKey);
+    if (fOptions.find((obj) => obj.key === Number(pKey)) === undefined)
+      return {key: defaultKey, value: defaultValue, color: "#FFFFFF"};
+    else return fOptions.find((obj) => obj.key === Number(pKey));
   }
 
   function formatOptions() {

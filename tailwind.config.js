@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   //I wish I knew about this from the start
-  safelist: ["bg-shop1", "bg-shop2", "bg-shop3", "rounded-xl", "bg-gray-300"],
+  safelist: ["bg-shop1", "bg-shop2", "bg-shop3", "rounded-xl", "bg-gray-300", "hover:bg-gray-300"],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",

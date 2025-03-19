@@ -10,9 +10,13 @@ import {useState} from "react";
 export default function RepairTable({src, addButton, localKey}) {
   const axiosPrivate = useAxiosPrivate();
   const storageKey = `repairTable.${localKey}`;
-  const [place, setPlace] = useState(
-    isNaN(Number(localStorage.getItem(storageKey))) ? 0 : Number(localStorage.getItem(storageKey))
-  );
+  const [place, setPlace] = useState(() => {
+    if (typeof window !== "undefined") {
+      const storedValue = localStorage.getItem(storageKey);
+      return isNaN(Number(storedValue)) ? 0 : Number(storedValue);
+    }
+    return 0;
+  });
   const [phone, setPhone] = useState("");
   const getSrc = () => `${src}&place=${place}`;
 
@@ -87,6 +91,12 @@ export default function RepairTable({src, addButton, localKey}) {
           </tr>
           </thead>
           <tbody className=''>
+          {isPending && <tr>
+            <td colSpan={6} className="text-center">Ładowanie...</td>
+          </tr>}
+          {!isPending && !isError && data.length === 0 && <tr>
+            <td colSpan={6} className="text-center">Brak zgłoszeń</td>
+          </tr>}
           {!isPending &&
             !isError &&
             data

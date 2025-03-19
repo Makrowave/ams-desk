@@ -13,9 +13,10 @@ export default function NewRepairModal({}) {
   const router = useRouter();
   const {setIsOpen} = useModal();
   const [phone, setPhone] = useState("");
-  const [place, setPlace] = useState("");
+  const [place, setPlace] = useState(localStorage.getItem("repairModal:defaultPlace") ?? "");
   const [bike, setBike] = useState("");
   const [issue, setIssue] = useState("");
+  const [employee, setEmployee] = useState("");
 
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [isBikeValid, setIsBikeValid] = useState(false);
@@ -40,7 +41,7 @@ export default function NewRepairModal({}) {
     mutationFn: async () => {
       return await axios.post(
         "/Repairs",
-        JSON.stringify({phoneNumber: phone, issue: issue, bikeName: bike, placeId: place})
+        JSON.stringify({phoneNumber: phone, issue: issue, bikeName: bike, placeId: place, takeInEmployeeId: employee}),
       );
     },
     onSuccess: (response) => {
@@ -54,15 +55,27 @@ export default function NewRepairModal({}) {
   });
 
   return (
-    <div className='*:mb-2 w-full'>
+    <div className='*:mb-2 w-full flex flex-col'>
       <div>
         <ValidationFetchSelect
           value={place}
-          onChange={setPlace}
+          onChange={(value) => {
+            setPlace(value);
+            localStorage.setItem("repairModal:defaultPlace", value)
+          }}
           src='/Places'
           queryKey={QUERY_KEYS.Places}
           default_option={""}
           title='Miejsce przyjęcia'
+          default_title='Wybierz z listy'
+        />
+        <ValidationFetchSelect
+          value={employee}
+          onChange={setEmployee}
+          src='/Employees'
+          queryKey={QUERY_KEYS.Employees}
+          title={"Kto przyjmuje"}
+          default_option={""}
           default_title='Wybierz z listy'
         />
       </div>
@@ -100,7 +113,6 @@ export default function NewRepairModal({}) {
           {isIssueValid ? <FaCheck className='text-green-500 text-sm'/> : <FaXmark className='text-red-600 text-sm'/>}
         </div>
         <textarea
-          type='text'
           className='w-full focus:outline-none'
           placeholder='Problem'
           value={issue}
@@ -110,8 +122,8 @@ export default function NewRepairModal({}) {
         />
       </div>
       <button
-        disabled={!(isBikeValid && isIssueValid && isPhoneValid && place !== "")}
-        className='button-primary'
+        disabled={!(isBikeValid && isIssueValid && isPhoneValid && place !== "" && employee !== "")}
+        className='button-primary w-full self-center'
         onClick={() => mutation.mutate()}
       >
         Stwórz
