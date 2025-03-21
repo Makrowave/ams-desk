@@ -6,7 +6,7 @@ export default function LogoutModal({id}) {
   const url = "/Users/Logout" + (id ? "/" + id : "");
   const axiosAdmin = useAxiosAdmin();
   const queryClient = useQueryClient();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosAdmin.post(
@@ -22,7 +22,7 @@ export default function LogoutModal({id}) {
         queryKey: [QUERY_KEYS.Users],
         exact: false,
       });
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
   });
 

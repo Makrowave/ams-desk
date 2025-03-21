@@ -11,7 +11,7 @@ export default function MoveModal({refetch, bikeId}) {
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.put(
@@ -29,7 +29,7 @@ export default function MoveModal({refetch, bikeId}) {
         queryKey: [QUERY_KEYS.Bikes],
         exact: false,
       });
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

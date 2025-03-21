@@ -5,7 +5,7 @@ import {QUERY_KEYS} from "@/util/query_keys";
 import OrderButton from "../OrderButton";
 
 export default function ManufacturerRow({manufacturer, prev, next}) {
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const queryKey = QUERY_KEYS.Manufacturers;
   const _url = "/Manufacturers/ChangeOrder";
   return (
@@ -24,9 +24,9 @@ export default function ManufacturerRow({manufacturer, prev, next}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setIsOpen(true);
-            setModalChildren(<ManufacturerModal manufacturer={manufacturer} action='put'/>);
-            setTitle("Edytuj producenta");
+            setIsModalOpen(true);
+            setModalContent(<ManufacturerModal manufacturer={manufacturer} action='put'/>);
+            setModalTitle("Edytuj producenta");
           }}
         >
           Zmień nazwę
@@ -36,7 +36,7 @@ export default function ManufacturerRow({manufacturer, prev, next}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setModalChildren(
+            setModalContent(
               <DeleteModal
                 id={manufacturer.manufacturerId}
                 url={"/Manufacturers/"}
@@ -44,8 +44,8 @@ export default function ManufacturerRow({manufacturer, prev, next}) {
                 admin={true}
               />
             );
-            setTitle("Usuń producenta");
-            setIsOpen(true);
+            setModalTitle("Usuń producenta");
+            setIsModalOpen(true);
           }}
         >
           Usuń

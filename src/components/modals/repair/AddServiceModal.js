@@ -8,7 +8,7 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 
 export default function AddServiceModal({}) {
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
 
   const [category, setCategory] = useState("");
   const [name, setName] = useState("");
@@ -33,7 +33,7 @@ export default function AddServiceModal({}) {
     },
     onSuccess: async () => {
       await queryClient.refetchQueries({queryKey: [QUERY_KEYS.Services], exact: false});
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
   });
 

@@ -11,7 +11,7 @@ export default function AddBikeModal({modelId, placeId}) {
   const [place, setPlace] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const queryClient = useQueryClient();
   const _url = "/Bikes";
 
@@ -35,14 +35,11 @@ export default function AddBikeModal({modelId, placeId}) {
         queryKey: [QUERY_KEYS.Models],
         exact: false,
       });
-      setIsOpen(false);
-    },
-    onSuccess: () => {
       queryClient.refetchQueries({
         queryKey: [QUERY_KEYS.Bikes],
         exact: false,
       });
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

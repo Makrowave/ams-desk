@@ -15,7 +15,7 @@ import ModifyServiceModal from "@/components/modals/repair/ModifyServiceModal";
 
 export default function AdminRepairs() {
   const axiosPrivate = useAxiosPrivate();
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const {
     isError: isServicesError,
     isLoading: isServicesLoading,
@@ -85,9 +85,9 @@ export default function AdminRepairs() {
                   <div className="flex w-full justify-end">
                     <button className="p-2 bg-gray-300 rounded-lg hover:bg-gray-400"
                             onClick={() => {
-                              setTitle("Dodaj część")
-                              setModalChildren(<AddPartModal/>)
-                              setIsOpen(true);
+                              setModalTitle("Dodaj część")
+                              setModalContent(<AddPartModal/>)
+                              setIsModalOpen(true);
                             }}>
                       <FaPlus/>
                     </button>
@@ -115,20 +115,20 @@ export default function AdminRepairs() {
                     <td>
                       <div className="flex flex-nowrap">
                         <button className="mr-4 hover:bg-gray-400 p-2 rounded-lg" onClick={() => {
-                          setTitle("Edytuj część")
-                          setModalChildren(<ModifyPartModal part={part}/>)
-                          setIsOpen(true);
+                          setModalTitle("Edytuj część")
+                          setModalContent(<ModifyPartModal part={part}/>)
+                          setIsModalOpen(true);
                         }}>
                           <FaPenToSquare/>
                         </button>
                         <button className="text-red-600 hover:bg-gray-400 p-2 rounded-lg"
                                 onClick={() => {
-                                  setTitle("Usuń usługę")
-                                  setModalChildren(<DeleteModal id={part.partId}
-                                                                refetchQueryKey={QUERY_KEYS.Parts}
-                                                                admin
-                                                                url="parts/"/>)
-                                  setIsOpen(true);
+                                  setModalTitle("Usuń usługę")
+                                  setModalContent(<DeleteModal id={part.partId}
+                                                               refetchQueryKey={QUERY_KEYS.Parts}
+                                                               admin
+                                                               url="parts/"/>)
+                                  setIsModalOpen(true);
                                 }}>
                           <FaRegCircleXmark/>
                         </button>
@@ -165,9 +165,9 @@ export default function AdminRepairs() {
                   <div className="flex w-full justify-end">
                     <button className="p-2 bg-gray-300 rounded-lg hover:bg-gray-400"
                             onClick={() => {
-                              setTitle("Dodaj usługę")
-                              setModalChildren(<AddServiceModal/>)
-                              setIsOpen(true);
+                              setModalTitle("Dodaj usługę")
+                              setModalContent(<AddServiceModal/>)
+                              setIsModalOpen(true);
                             }}>
                       <FaPlus/>
                     </button>
@@ -194,20 +194,20 @@ export default function AdminRepairs() {
                     <td>
                       <div className="flex flex-nowrap">
                         <button className="mr-4 hover:bg-gray-400 p-2 rounded-lg" onClick={() => {
-                          setTitle("Edytuj usługę")
-                          setModalChildren(<ModifyServiceModal service={service}/>)
-                          setIsOpen(true);
+                          setModalTitle("Edytuj usługę")
+                          setModalContent(<ModifyServiceModal service={service}/>)
+                          setIsModalOpen(true);
                         }}>
                           <FaPenToSquare/>
                         </button>
                         <button className="text-red-600 hover:bg-gray-400 p-2 rounded-lg"
                                 onClick={() => {
-                                  setTitle("Usuń usługę")
-                                  setModalChildren(<DeleteModal id={service.serviceId}
-                                                                refetchQueryKey={QUERY_KEYS.Services}
-                                                                admin
-                                                                url="services/"/>)
-                                  setIsOpen(true);
+                                  setModalTitle("Usuń usługę")
+                                  setModalContent(<DeleteModal id={service.serviceId}
+                                                               refetchQueryKey={QUERY_KEYS.Services}
+                                                               admin
+                                                               url="services/"/>)
+                                  setIsModalOpen(true);
                                 }}>
                           <FaRegCircleXmark/>
                         </button>

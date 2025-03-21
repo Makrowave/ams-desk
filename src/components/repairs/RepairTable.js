@@ -28,7 +28,7 @@ export default function RepairTable({src, addButton, localKey}) {
     },
   });
 
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const places = createPlaces();
 
   return (
@@ -61,9 +61,9 @@ export default function RepairTable({src, addButton, localKey}) {
             <button
               className='flex justify-center items-center hover:bg-gray-400 transition-colors duration-200 rounded-lg w-fit h-fit p-2'
               onClick={() => {
-                setIsOpen(true);
-                setModalChildren(<NewRepairModal/>);
-                setTitle("Nowe zgłoszenie");
+                setIsModalOpen(true);
+                setModalContent(<NewRepairModal/>);
+                setModalTitle("Nowe zgłoszenie");
               }}
             >
               <FaPlus className='w-6 h-6'/>

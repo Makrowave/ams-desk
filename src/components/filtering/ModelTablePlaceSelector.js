@@ -7,12 +7,12 @@ import {FaPlus} from "react-icons/fa6";
 export default function ModelTablePlaceSelector({changePlaceId}) {
   const [active, setActive] = useState(0);
   const places = load();
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
 
   function openModal() {
-    setModalChildren(<AddModelModal/>);
-    setTitle("Dodaj rower");
-    setIsOpen(true);
+    setModalContent(<AddModelModal/>);
+    setModalTitle("Dodaj rower");
+    setIsModalOpen(true);
   }
 
   function load() {

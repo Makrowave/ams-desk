@@ -10,7 +10,7 @@ export default function StatusModal({refetch, bikeId}) {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
@@ -29,7 +29,7 @@ export default function StatusModal({refetch, bikeId}) {
         queryKey: [QUERY_KEYS.Bikes],
         exact: false,
       });
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

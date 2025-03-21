@@ -11,7 +11,7 @@ import {FaCheck, FaXmark} from "react-icons/fa6";
 export default function NewRepairModal({}) {
   const axios = useAxiosPrivate();
   const router = useRouter();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const [phone, setPhone] = useState("");
   const [place, setPlace] = useState(localStorage.getItem("repairModal:defaultPlace") ?? "");
   const [bike, setBike] = useState("");
@@ -46,7 +46,7 @@ export default function NewRepairModal({}) {
     },
     onSuccess: (response) => {
       const id = response.data;
-      setIsOpen(false);
+      setIsModalOpen(false);
       router.push(`/serwis/${id}`);
     },
     onError: (error) => {

@@ -37,9 +37,11 @@ export default function ValidationFetchSelect({
       </div>
     );
   };
+  const createQueryKey = () => (Array.isArray(queryKey) ? queryKey : [queryKey])
+
   const axiosPrivate = useAxiosPrivate();
   const {data, isPending, isError, error, refetch} = useQuery({
-    queryKey: [queryKey],
+    queryKey: [...createQueryKey()],
     queryFn: async () => {
       const response = await axiosPrivate.get(src);
       return response.data;

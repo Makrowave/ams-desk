@@ -50,7 +50,8 @@ body {
 
 main {
     @apply overflow-y-auto;
-    height: 100%;
+    /*height: 100%;*/
+    height: calc(100vh - 48px);
 }
 
 tr:last-child td:first-child {

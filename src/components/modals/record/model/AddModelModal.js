@@ -50,7 +50,7 @@ export default function AddModelModal() {
   //Other
   const _url = "/Models";
   const [error, setError] = useState("");
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
 
   //Validation logic
   //Name
@@ -109,7 +109,7 @@ export default function AddModelModal() {
       }, (oldData) => (
         [...oldData, data]
       ));
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

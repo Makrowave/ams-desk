@@ -21,7 +21,7 @@ import ExpandButton from "@/components/buttons/ExpandButton";
  */
 export function BikeRow({model, placeId}) {
   const axiosPrivate = useAxiosPrivate();
-  const {setModalChildren, setTitle, setIsOpen} = useModal();
+  const {setModalContent, setModalTitle, setIsModalOpen} = useModal();
   const {isAdmin} = useAuth();
   const queryClient = useQueryClient();
   const color = useQuery({
@@ -75,9 +75,9 @@ export function BikeRow({model, placeId}) {
             <ExpandButton
               text='Dodaj'
               onClick={() => {
-                setModalChildren(<AddBikeModal modelId={model.modelId} placeId={placeId}/>);
-                setTitle("Dodaj rower");
-                setIsOpen(true);
+                setModalContent(<AddBikeModal modelId={model.modelId} placeId={placeId}/>);
+                setModalTitle("Dodaj rower");
+                setIsModalOpen(true);
               }}
             >
               <FaPlus/>
@@ -87,9 +87,9 @@ export function BikeRow({model, placeId}) {
             <ExpandButton
               text='Zmień kolor'
               onClick={() => {
-                setModalChildren(<ColorModal model={model}/>);
-                setTitle("Zmień kolor");
-                setIsOpen(true);
+                setModalContent(<ColorModal model={model}/>);
+                setModalTitle("Zmień kolor");
+                setIsModalOpen(true);
               }}
             >
               <FaPalette/>
@@ -99,9 +99,9 @@ export function BikeRow({model, placeId}) {
             <ExpandButton
               text='Zmień link'
               onClick={() => {
-                setModalChildren(<AddLinkModal model={model}/>);
-                setTitle("Zmień link");
-                setIsOpen(true);
+                setModalContent(<AddLinkModal model={model}/>);
+                setModalTitle("Zmień link");
+                setIsModalOpen(true);
               }}
             >
               <FaLink/>
@@ -111,9 +111,9 @@ export function BikeRow({model, placeId}) {
             <ExpandButton
               text='Zmień EAN'
               onClick={() => {
-                setModalChildren(<AddEanModal model={model}/>);
-                setTitle("Zmień EAN");
-                setIsOpen(true);
+                setModalContent(<AddEanModal model={model}/>);
+                setModalTitle("Zmień EAN");
+                setIsModalOpen(true);
               }}
             >
               <FaBarcode/>
@@ -123,9 +123,9 @@ export function BikeRow({model, placeId}) {
             <ExpandButton
               text='Zmień dane'
               onClick={() => {
-                setModalChildren(<ChangeModelModal model={model}/>);
-                setTitle("Zmień dane roweru");
-                setIsOpen(true);
+                setModalContent(<ChangeModelModal model={model}/>);
+                setModalTitle("Zmień dane roweru");
+                setIsModalOpen(true);
               }}
             >
               <FaPenToSquare/>
@@ -137,12 +137,12 @@ export function BikeRow({model, placeId}) {
                 text='Usuń'
                 className='text-red-600 hover:bg-red-300'
                 onClick={() => {
-                  setModalChildren(
+                  setModalContent(
                     <DeleteModal id={model.modelId} admin={true} refetchQueryKey={QUERY_KEYS.Models}
                                  url={"/Models/"}/>
                   );
-                  setTitle("Usuń model");
-                  setIsOpen(true);
+                  setModalTitle("Usuń model");
+                  setIsModalOpen(true);
                 }}
               >
                 <FaRegCircleXmark/>

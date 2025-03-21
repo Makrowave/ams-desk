@@ -11,7 +11,7 @@ export default function UserPasswordModal() {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const _url = "/Auth/ChangePassword";
   const mutation = useMutation({
     mutationFn: async () => {
@@ -26,9 +26,9 @@ export default function UserPasswordModal() {
       );
     },
     onSuccess: () => {
-      setIsOpen(false);
-      setModalChildren(<></>);
-      setTitle("");
+      setIsModalOpen(false);
+      setModalContent(<></>);
+      setModalTitle("");
       logout();
     },
     onError: (error) => {

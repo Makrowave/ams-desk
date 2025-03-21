@@ -5,7 +5,7 @@ import {QUERY_KEYS} from "@/util/query_keys";
 import OrderButton from "../OrderButton";
 
 export default function CategoryRow({category, prev, next}) {
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const queryKey = QUERY_KEYS.Categories;
   const _url = "/Categories/ChangeOrder";
   return (
@@ -20,9 +20,9 @@ export default function CategoryRow({category, prev, next}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setIsOpen(true);
-            setModalChildren(<CategoryModal category={category} action='put'/>);
-            setTitle("Edytuj kategorię");
+            setIsModalOpen(true);
+            setModalContent(<CategoryModal category={category} action='put'/>);
+            setModalTitle("Edytuj kategorię");
           }}
         >
           Zmień nazwę
@@ -32,11 +32,11 @@ export default function CategoryRow({category, prev, next}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setModalChildren(
+            setModalContent(
               <DeleteModal id={category.categoryId} url={"/Categories/"} refetchQueryKey={queryKey} admin={true}/>
             );
-            setTitle("Usuń kategorię");
-            setIsOpen(true);
+            setModalTitle("Usuń kategorię");
+            setIsModalOpen(true);
           }}
         >
           Usuń

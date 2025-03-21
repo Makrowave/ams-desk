@@ -18,10 +18,8 @@ import {
   FaWrench,
 } from "react-icons/fa6";
 import ServiceRecord from "./ServiceRecord";
-import ServiceInputSelect from "../filtering/ServiceInputSelect";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {axiosPrivate} from "@/api/axios";
-import PartInputSelect from "../filtering/PartInputSelect";
 import ExpandButton from "../buttons/ExpandButton";
 import useModal from "@/hooks/useModal";
 import RepairModal from "../modals/repair/RepairModal";
@@ -29,12 +27,14 @@ import Modal from "../modals/Modal";
 import {QUERY_KEYS} from "@/util/query_keys";
 import useSavedData from "@/hooks/useSavedData";
 import SavedDataWarning from "../navigation/SavedDataWarning";
-import AddPartModal from "../modals/repair/AddPartModal";
+import ServiceSelect from "@/components/filtering/ServiceSelect";
+import PartSelect from "@/components/filtering/PartSelect";
+import AddPartModal from "@/components/modals/repair/AddPartModal";
 
 export default function Repair({repair}) {
   const {isSaved, setIsSaved, updateIsUsed} = useSavedData();
   const [localRepair, setLocalRepair] = useState(repair);
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
 
   const queryClient = useQueryClient();
 
@@ -73,19 +73,57 @@ export default function Repair({repair}) {
     },
     onSuccess: async (data) => {
       setIsSaved(true);
+      console.log(data);
       queryClient.setQueryData([QUERY_KEYS.Repairs, repair.repairId], (oldData) => {
         const result = {
           ...oldData,
           repairEmployeeName: data.repairEmployeeName,
           repairEmployeeId: data.repairEmployeeId,
-          collectionEmployeeName: data.collectionEmployeeName,
-          collectionEmployeeId: data.collectionEmployeeId,
         };
         setLocalRepair(result);
         return result;
       })
     },
   });
+
+  const handleStartOrCollect = async (data) => {
+    setIsSaved(true);
+    console.log(data);
+    queryClient.setQueryData([QUERY_KEYS.Repairs, repair.repairId], (oldData) => {
+      const result = {
+        ...oldData,
+        repairEmployeeName: data.repairEmployeeName,
+        repairEmployeeId: data.repairEmployeeId,
+        collectionEmployeeName: data.collectionEmployeeName,
+        collectionEmployeeId: data.collectionEmployeeId,
+        statusId: data.statusId,
+        status: data.status,
+        collectionDate: data.collectionDate,
+      };
+      setLocalRepair(result);
+      return result;
+    })
+  }
+
+  const startMutation = useMutation({
+    mutationFn: async (id) => {
+      const response = await axiosPrivate.put(
+        `repairs/Start/${localRepair.repairId}?employeeId=${id}`
+      );
+      return response.data;
+    },
+    onSuccess: handleStartOrCollect
+  })
+  const collectMutation = useMutation({
+    mutationFn: async (id) => {
+      const response = await axiosPrivate.put(
+        `repairs/Collect/${localRepair.repairId}?employeeId=${id}`
+      );
+      return response.data;
+    },
+    onSuccess: handleStartOrCollect
+  })
+
 
   const repairMutation = useMutation({
     mutationFn: async () => {
@@ -120,8 +158,8 @@ export default function Repair({repair}) {
     },
   });
 
-  const save = () => {
-    repairMutation.mutate();
+  const save = async () => {
+    await repairMutation.mutate();
   };
 
   const [newPartId, setNewPartId] = useState(-1);
@@ -164,16 +202,16 @@ export default function Repair({repair}) {
     setLocalRepair({...localRepair, services: newServices});
   };
 
-  const changeStatus = (id) => {
-    statusMutation.mutate(id);
+  const changeStatus = async (id) => {
+    await statusMutation.mutate(id);
   };
 
-  const handleColEmployeeChange = (id) => {
-    employeeMutation.mutate([id, true]);
+  const handleColEmployeeChange = async (id) => {
+    await employeeMutation.mutate([id, true]);
   };
 
-  const handleRepEmployeeChange = (id) => {
-    employeeMutation.mutate([id, false]);
+  const handleRepEmployeeChange = async (id) => {
+    await employeeMutation.mutate([id, false]);
   };
 
   const changeDiscount = (value) => {
@@ -262,19 +300,17 @@ export default function Repair({repair}) {
               text='Rozpocznij'
               onClick={() => {
                 if (localRepair.statusId !== REPAIR_STATUS.Pending) return;
-                setTitle("Rozpocznij naprawę");
-                setModalChildren(
+                setModalTitle("Rozpocznij naprawę");
+                setModalContent(
                   <RepairModal
                     employeeId={localRepair.repairEmployeeId}
                     label='Kto naprawia'
-                    onClick={(employee, status) => {
-                      changeStatus(status);
-                      handleRepEmployeeChange(employee);
+                    onClick={(employee) => {
+                      startMutation.mutate(employee);
                     }}
-                    statusId={REPAIR_STATUS.InProgress}
                   />
                 );
-                setIsOpen(true);
+                setIsModalOpen(true);
               }}
             >
               <FaWrench/>
@@ -365,19 +401,17 @@ export default function Repair({repair}) {
               disabledClass='hover:bg-gray-300 bg-gray-300'
               text='Wydaj'
               onClick={() => {
-                setTitle("Wydaj rower");
-                setModalChildren(
+                setModalTitle("Wydaj rower");
+                setModalContent(
                   <RepairModal
                     employeeId={localRepair.repairEmployeeId}
                     label='Kto wydaje'
-                    onClick={(employee, status) => {
-                      handleColEmployeeChange(employee);
-                      changeStatus(status);
+                    onClick={(employee) => {
+                      collectMutation.mutate(employee);
                     }}
-                    statusId={REPAIR_STATUS.Collected}
                   />
                 );
-                setIsOpen(true);
+                setIsModalOpen(true);
               }}
             >
               <FaFlagCheckered/>
@@ -552,12 +586,12 @@ export default function Repair({repair}) {
             <div
               className='flex items-center justify-between p-2 border-gray-300 border-b rounded-t-lg bg-secondary'>
               <b className='p-2'>Usługi</b>
-              <ServiceInputSelect mutation={updateServices}/>
+              <ServiceSelect mutation={updateServices}/>
             </div>
 
-            <table className='shadow-lg w-full'>
+            <table className='shadow-lg w-full text-lg'>
               <thead className='bg-secondary'>
-              <tr className='*:p-4'>
+              <tr className='*:p-2'>
                 <th>Lp.</th>
                 <th>Nazwa</th>
                 <th>Cena</th>
@@ -587,22 +621,22 @@ export default function Repair({repair}) {
               className='flex items-center justify-between p-2 border-gray-300 border-b rounded-t-lg bg-secondary'>
               <b className='p-2'>Części</b>
               <div className='flex flex-row items-center'>
-                <PartInputSelect mutation={updateParts}/>
+                <PartSelect mutation={updateParts}/>
                 <button
-                  className='p-2 mx-2 bg-gray-300 hover:bg-gray-400 transition-colors duration-200 rounded-lg'
+                  className='absolute -top-3 right-1 p-2 mx-2 bg-gray-300 hover:bg-gray-400 transition-colors duration-200 rounded-lg'
                   onClick={() => {
-                    setModalChildren(<AddPartModal/>);
-                    setTitle("Dodaj część");
-                    setIsOpen(true);
+                    setModalContent(<AddPartModal/>);
+                    setModalTitle("Dodaj część");
+                    setIsModalOpen(true);
                   }}
                 >
                   <FaPlus/>
                 </button>
               </div>
             </div>
-            <table className='shadow-lg w-full'>
+            <table className='shadow-lg w-full text-lg'>
               <thead className='bg-secondary'>
-              <tr className='*:p-4'>
+              <tr className='*:p-2'>
                 <th>Lp.</th>
                 <th>Nazwa</th>
                 <th>Cena</th>

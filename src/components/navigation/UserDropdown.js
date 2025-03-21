@@ -9,7 +9,7 @@ import SavedDataWarning from "./SavedDataWarning";
 export default function UserDropdown() {
   const {user, admin, logout, logoutAdmin, isAdmin} = useAuth();
   const [isClicked, setIsClicked] = useState(false);
-  const {setIsOpen, setTitle, setModalChildren} = useModal();
+  const {setIsModalOpen, setModalTitle, setModalContent} = useModal();
   return (
     <div className='relative inline-block w-60 h-full justify-center'>
       <div
@@ -32,10 +32,10 @@ export default function UserDropdown() {
               className='h-full w-full'
               onClick={() => {
                 setIsClicked(false);
-                setTitle("Zmień hasło");
-                if (isAdmin) setModalChildren(<AdminPasswordModal/>);
-                else setModalChildren(<UserPasswordModal/>);
-                setIsOpen(true);
+                setModalTitle("Zmień hasło");
+                if (isAdmin) setModalContent(<AdminPasswordModal/>);
+                else setModalContent(<UserPasswordModal/>);
+                setIsModalOpen(true);
               }}
             >
               <SavedDataWarning>

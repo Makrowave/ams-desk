@@ -11,7 +11,7 @@ export default function SellModal({refetch, bikeId, basePrice}) {
   const [price, setPrice] = useState(basePrice);
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const PRICE_REGEX = REGEX.PRICE;
   const mutation = useMutation({
     mutationFn: async () => {
@@ -26,7 +26,7 @@ export default function SellModal({refetch, bikeId, basePrice}) {
     },
     onSuccess: () => {
       refetch();
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

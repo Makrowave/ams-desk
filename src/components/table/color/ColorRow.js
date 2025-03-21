@@ -5,7 +5,7 @@ import {QUERY_KEYS} from "@/util/query_keys";
 import OrderButton from "../OrderButton";
 
 export default function ColorRow({color, prev, next}) {
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const queryKey = QUERY_KEYS.Colors;
   const _url = "/Colors/ChangeOrder";
   return (
@@ -17,9 +17,9 @@ export default function ColorRow({color, prev, next}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setIsOpen(true);
-            setModalChildren(<ColorModal colorData={color} action='put'/>);
-            setTitle("Edytuj kolor");
+            setIsModalOpen(true);
+            setModalContent(<ColorModal colorData={color} action='put'/>);
+            setModalTitle("Edytuj kolor");
           }}
         >
           Edytuj
@@ -33,9 +33,9 @@ export default function ColorRow({color, prev, next}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setModalChildren(<DeleteModal id={color.colorId} url='/Colors/' refreshQueryKey={queryKey} admin={true}/>);
-            setTitle("Usuń kolor");
-            setIsOpen(true);
+            setModalContent(<DeleteModal id={color.colorId} url='/Colors/' refreshQueryKey={queryKey} admin={true}/>);
+            setModalTitle("Usuń kolor");
+            setIsModalOpen(true);
           }}
         >
           Usuń

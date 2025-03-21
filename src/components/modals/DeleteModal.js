@@ -7,7 +7,7 @@ import {useState} from "react";
 
 export default function DeleteModal({refetchQueryKey, id, url, admin = false}) {
   const axios = admin ? useAxiosAdmin() : useAxiosPrivate();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const queryClient = useQueryClient();
   const [error, setError] = useState("");
   const mutation = useMutation({
@@ -17,7 +17,7 @@ export default function DeleteModal({refetchQueryKey, id, url, admin = false}) {
     onSuccess: () => {
       queryClient.setQueriesData({queryKey: [refetchQueryKey], exact: false},
         (oldData) => oldData.filter((item) => Object.values(item)[0] !== id));
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

@@ -13,7 +13,7 @@ export default function EmployeeModal({employee, action}) {
   const NAME_REGEX = REGEX.NAME;
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const _url = "/Employees/";
   const mutation = useMutation({
     mutationFn: async () => {
@@ -51,7 +51,7 @@ export default function EmployeeModal({employee, action}) {
           [...oldData, data]
         ));
       }
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

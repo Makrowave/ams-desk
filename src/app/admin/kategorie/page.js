@@ -5,7 +5,7 @@ import CategoryTable from "@/components/table/category/CategoryTable";
 import useModal from "@/hooks/useModal";
 
 export default function CategoriesPanel() {
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   return (
     <div>
       <div className='bg-primary px-16 py-4'>
@@ -17,9 +17,9 @@ export default function CategoriesPanel() {
           <button
             className='button-secondary mr-4'
             onClick={() => {
-              setIsOpen(true);
-              setModalChildren(<CategoryModal action='post'/>);
-              setTitle("Dodaj kategorię");
+              setIsModalOpen(true);
+              setModalContent(<CategoryModal action='post'/>);
+              setModalTitle("Dodaj kategorię");
             }}
           >
             Dodaj kategorię

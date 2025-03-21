@@ -92,7 +92,7 @@ export default function Filters({setQuery}) {
   }
 
   return (
-    <div className='mb-10 col-span-1 overflow-y-auto bg-primary flex flex-col pb-4 pr-4 pl-4 rounded-xl ml-4'>
+    <div className='col-span-1 overflow-y-auto bg-primary flex flex-col pb-4 pr-4 pl-4 rounded-xl ml-4'>
       {/* Title */}
       <div className='flex justify-center sticky top-0 bg-primary z-30'>
         <div className='flex justify-center text-2xl w-3/5 pb-1 mb pt-4'>

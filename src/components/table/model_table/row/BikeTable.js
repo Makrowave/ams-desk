@@ -22,7 +22,7 @@ export function BikeTable({model, placeId}) {
   const _placeUrl = "/Places";
   const _employeeUrl = "/Employees";
   const axiosPrivate = useAxiosPrivate();
-  const {setModalChildren, setTitle, setIsOpen} = useModal();
+  const {setModalContent, setModalTitle, setIsModalOpen} = useModal();
   const {refetch, data, isPending, isError, error} = useQuery({
     queryKey: [QUERY_KEYS.Bikes, model.modelId, placeId],
     queryFn: async () => {
@@ -124,9 +124,9 @@ export function BikeTable({model, placeId}) {
                 <ExpandButton
                   text='Przenieś'
                   onClick={() => {
-                    setModalChildren(<MoveModal refetch={refetch} bikeId={bike.id}/>);
-                    setTitle("Przenieś rower");
-                    setIsOpen(true);
+                    setModalContent(<MoveModal refetch={refetch} bikeId={bike.id}/>);
+                    setModalTitle("Przenieś rower");
+                    setIsModalOpen(true);
                   }}
                 >
                   <FaArrowRight/>
@@ -134,9 +134,9 @@ export function BikeTable({model, placeId}) {
                 <ExpandButton
                   text='Złóż'
                   onClick={() => {
-                    setModalChildren(<AssembleModal refetch={refetch} bikeId={bike.id}/>);
-                    setTitle("Złóż rower");
-                    setIsOpen(true);
+                    setModalContent(<AssembleModal refetch={refetch} bikeId={bike.id}/>);
+                    setModalTitle("Złóż rower");
+                    setIsModalOpen(true);
                   }}
                 >
                   <FaWrench/>
@@ -144,9 +144,9 @@ export function BikeTable({model, placeId}) {
                 <ExpandButton
                   text='Sprzedaj'
                   onClick={() => {
-                    setModalChildren(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price}/>);
-                    setTitle("Sprzedaj rower");
-                    setIsOpen(true);
+                    setModalContent(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price}/>);
+                    setModalTitle("Sprzedaj rower");
+                    setIsModalOpen(true);
                   }}
                 >
                   <FaMoneyBill/>
@@ -154,9 +154,9 @@ export function BikeTable({model, placeId}) {
                 <ExpandButton
                   text='Zmień status'
                   onClick={() => {
-                    setModalChildren(<StatusModal refetch={refetch} bikeId={bike.id}/>);
-                    setTitle("Zmień status");
-                    setIsOpen(true);
+                    setModalContent(<StatusModal refetch={refetch} bikeId={bike.id}/>);
+                    setModalTitle("Zmień status");
+                    setIsModalOpen(true);
                   }}
                 >
                   <FaCircleInfo/>
@@ -165,11 +165,11 @@ export function BikeTable({model, placeId}) {
                   text='Usuń'
                   className='text-red-600 hover:bg-red-300 '
                   onClick={() => {
-                    setModalChildren(
+                    setModalContent(
                       <DeleteModal id={bike.id} url='/Bikes/' refetchQueryKey={QUERY_KEYS.Bikes} admin={false}/>
                     );
-                    setTitle("Usuń rower");
-                    setIsOpen(true);
+                    setModalTitle("Usuń rower");
+                    setIsModalOpen(true);
                   }}
                 >
                   <FaRegCircleXmark/>

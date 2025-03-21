@@ -11,7 +11,7 @@ export default function AssembleModal({bikeId}) {
   const [employeeId, setEmployeeId] = useState("");
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
@@ -31,7 +31,7 @@ export default function AssembleModal({bikeId}) {
         queryKey: [QUERY_KEYS.Bikes],
         exact: false,
       });
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

@@ -3,7 +3,7 @@ import useModal from "@/hooks/useModal";
 import {QUERY_KEYS} from "@/util/query_keys";
 
 export default function CategoryRow({wheel}) {
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const queryKey = QUERY_KEYS.WheelSizes;
   return (
     <tr className='table-row h-14'>
@@ -12,9 +12,9 @@ export default function CategoryRow({wheel}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setModalChildren(<DeleteModal id={wheel} url={"/WheelSizes/"} refetchQueryKey={queryKey} admin={true}/>);
-            setTitle("Usuń koło");
-            setIsOpen(true);
+            setModalContent(<DeleteModal id={wheel} url={"/WheelSizes/"} refetchQueryKey={queryKey} admin={true}/>);
+            setModalTitle("Usuń koło");
+            setIsModalOpen(true);
           }}
         >
           Usuń

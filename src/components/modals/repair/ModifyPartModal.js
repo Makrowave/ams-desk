@@ -8,7 +8,7 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 
 export default function ModifyPartModal({part}) {
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
 
   const [category, setCategory] = useState(part.partCategoryId);
   const [name, setName] = useState(part.partName);
@@ -36,7 +36,7 @@ export default function ModifyPartModal({part}) {
     },
     onSuccess: async () => {
       await queryClient.refetchQueries({queryKey: [QUERY_KEYS.Parts], exact: false});
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
   });
 

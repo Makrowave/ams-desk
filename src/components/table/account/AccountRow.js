@@ -5,7 +5,7 @@ import useModal from "@/hooks/useModal";
 import {QUERY_KEYS} from "@/util/query_keys";
 
 export default function AccountRow({user, employeeName}) {
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   return (
     <tr className='table-row h-14'>
       <td>{user.userId}</td>
@@ -15,9 +15,9 @@ export default function AccountRow({user, employeeName}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setTitle("Edytuj konto");
-            setModalChildren(<UserModal user={user} action={"put"}/>);
-            setIsOpen(true);
+            setModalTitle("Edytuj konto");
+            setModalContent(<UserModal user={user} action={"put"}/>);
+            setIsModalOpen(true);
           }}
         >
           Edytuj
@@ -27,9 +27,9 @@ export default function AccountRow({user, employeeName}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setTitle("Wyloguj");
-            setModalChildren(<LogoutModal id={user.userId}/>);
-            setIsOpen(true);
+            setModalTitle("Wyloguj");
+            setModalContent(<LogoutModal id={user.userId}/>);
+            setIsModalOpen(true);
           }}
         >
           Wyloguj
@@ -39,11 +39,11 @@ export default function AccountRow({user, employeeName}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setTitle("Usuń konto");
-            setModalChildren(
+            setModalTitle("Usuń konto");
+            setModalContent(
               <DeleteModal id={user.userId} refetchQueryKey={QUERY_KEYS.Users} admin={true} url={"/Users/"}/>
             );
-            setIsOpen(true);
+            setIsModalOpen(true);
           }}
         >
           Usuń

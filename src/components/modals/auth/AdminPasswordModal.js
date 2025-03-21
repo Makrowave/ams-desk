@@ -11,7 +11,7 @@ export default function AdminPasswordModal() {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const _url = "/AdminAuth/ChangePassword";
   const mutation = useMutation({
     mutationFn: async () => {
@@ -26,9 +26,9 @@ export default function AdminPasswordModal() {
       );
     },
     onSuccess: () => {
-      setIsOpen(false);
-      setModalChildren(<></>);
-      setTitle("");
+      setIsModalOpen(false);
+      setModalContent(<></>);
+      setModalTitle("");
       logoutAdmin();
       if (admin.username == user.username) logout();
     },

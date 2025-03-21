@@ -11,7 +11,7 @@ export default function WheelModal() {
   const [error, setError] = useState("");
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const _url = "/WheelSizes/";
   const mutation = useMutation({
     mutationFn: async () => {
@@ -23,7 +23,7 @@ export default function WheelModal() {
         [QUERY_KEYS.WheelSizes], (oldData) => {
           return [...oldData, {key: data, value: data}].sort((a, b) => (Number(a.value) - Number(b.value)))
         });
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

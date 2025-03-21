@@ -16,7 +16,7 @@ export default function StatusModal({status, action}) {
   const COLOR_REGEX = REGEX.COLOR;
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const _url = "/Status/";
   const mutation = useMutation({
     mutationFn: async () => {
@@ -54,7 +54,7 @@ export default function StatusModal({status, action}) {
           [...oldData, data]
         ));
       }
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

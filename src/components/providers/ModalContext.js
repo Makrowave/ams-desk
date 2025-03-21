@@ -4,12 +4,19 @@ const {createContext, useState} = require("react");
 const ModalContext = createContext();
 
 export function ModalProvider({children}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalChildren, setModalChildren] = useState(<></>);
-  const [title, setTitle] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(<></>);
+  const [modalTitle, setModalTitle] = useState("");
 
   return (
-    <ModalContext.Provider value={{isOpen, setIsOpen, modalChildren, setModalChildren, title, setTitle}}>
+    <ModalContext.Provider value={{
+      isModalOpen,
+      setIsModalOpen,
+      modalContent,
+      setModalContent,
+      modalTitle,
+      setModalTitle
+    }}>
       {children}
     </ModalContext.Provider>
   )

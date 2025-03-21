@@ -3,13 +3,13 @@ import useModal from "@/hooks/useModal";
 import {QUERY_KEYS} from "@/util/query_keys";
 import {useState} from "react";
 
-export default function RepairModal({employeeId, onClick, statusId, label}) {
+export default function RepairModal({employeeId, onClick, label}) {
   const [employee, setEmployee] = useState(employeeId);
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const handleClick = () => {
     if (employee) {
-      onClick(employee, statusId);
-      setIsOpen(false);
+      onClick(employee);
+      setIsModalOpen(false);
     }
   };
 

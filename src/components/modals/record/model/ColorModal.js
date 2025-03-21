@@ -12,7 +12,7 @@ export default function ColorModal({model}) {
   const [primaryColor, setPrimaryColor] = useState(!!model.primaryColor ? model.primaryColor : "#FF00FF");
   const [secondaryColor, setSecondaryColor] = useState(!!model.secondaryColor ? model.secondaryColor : "#000000");
   const [color, setColor] = useState(model.colorId);
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
@@ -37,10 +37,10 @@ export default function ColorModal({model}) {
         exact: false,
       }, (oldData) => {
         return oldData ? oldData.map((m) => m.modelId === data.modelId ?
-          {...data, bikeCount: m.bikeCount, placeBikeCount: m.placeBikeCount} : m)
+            {...data, bikeCount: m.bikeCount, placeBikeCount: m.placeBikeCount} : m)
           : oldData
       });
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

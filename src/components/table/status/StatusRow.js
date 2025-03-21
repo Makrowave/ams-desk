@@ -5,7 +5,7 @@ import {QUERY_KEYS} from "@/util/query_keys";
 import OrderButton from "../OrderButton";
 
 export default function StatusRow({status, prev, next}) {
-  const {setIsOpen, setTitle, setModalChildren} = useModal();
+  const {setIsModalOpen, setModalTitle, setModalContent} = useModal();
   const queryKey = QUERY_KEYS.Statuses;
   const _url = "/Status/ChangeOrder";
   return (
@@ -21,9 +21,9 @@ export default function StatusRow({status, prev, next}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setTitle("Edytuj status");
-            setModalChildren(<StatusModal status={status} action='put'/>);
-            setIsOpen(true);
+            setModalTitle("Edytuj status");
+            setModalContent(<StatusModal status={status} action='put'/>);
+            setIsModalOpen(true);
           }}
         >
           Edytuj
@@ -33,11 +33,11 @@ export default function StatusRow({status, prev, next}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setModalChildren(
+            setModalContent(
               <DeleteModal id={status.statusId} url={"/Status/"} refetchQueryKey={queryKey} admin={true}/>
             );
-            setTitle("Usuń status");
-            setIsOpen(true);
+            setModalTitle("Usuń status");
+            setIsModalOpen(true);
           }}
         >
           Usuń

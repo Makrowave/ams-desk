@@ -39,3 +39,4 @@ next-env.d.ts
 
 #assets that shouldn't be in repo
 public/logo.jpg
+public/favicon.ico

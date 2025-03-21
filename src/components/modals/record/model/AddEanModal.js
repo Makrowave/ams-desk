@@ -11,10 +11,13 @@ export default function AddEanModal({model}) {
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
-      const result = await axiosPrivate.put("/Models/" + model.modelId, JSON.stringify({...model, eanCode: ean.toString()}), {
+      const result = await axiosPrivate.put("/Models/" + model.modelId, JSON.stringify({
+        ...model,
+        eanCode: ean.toString()
+      }), {
         headers: {"Content-Type": "application/json"},
       });
       return result.data;
@@ -28,7 +31,7 @@ export default function AddEanModal({model}) {
             {...data, bikeCount: m.bikeCount, placeBikeCount: m.placeBikeCount} : m)
           : oldData
       });
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

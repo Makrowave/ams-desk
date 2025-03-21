@@ -8,7 +8,7 @@ import EmployeeTable from "@/components/table/employee/EmployeeTable";
 import useModal from "@/hooks/useModal";
 
 export default function EmployeesPanel() {
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   return (
     <>
       <div className='flex-row main-div bg-primary px-16 py-4'>
@@ -21,9 +21,9 @@ export default function EmployeesPanel() {
             <button
               className='button-secondary mr-4'
               onClick={() => {
-                setModalChildren(<EmployeeModal action='post'/>);
-                setTitle("Dodaj pracownika");
-                setIsOpen(true);
+                setModalContent(<EmployeeModal action='post'/>);
+                setModalTitle("Dodaj pracownika");
+                setIsModalOpen(true);
               }}
             >
               Dodaj
@@ -39,9 +39,9 @@ export default function EmployeesPanel() {
             <button
               className='button-secondary mr-4'
               onClick={() => {
-                setIsOpen(true);
-                setModalChildren(<UserModal action='post'/>);
-                setTitle("Utwórz konto");
+                setIsModalOpen(true);
+                setModalContent(<UserModal action='post'/>);
+                setModalTitle("Utwórz konto");
               }}
             >
               Dodaj
@@ -49,9 +49,9 @@ export default function EmployeesPanel() {
             <button
               className='button-secondary mr-4'
               onClick={() => {
-                setModalChildren(<LogoutModal/>);
-                setTitle("Wyloguj wszystkich");
-                setIsOpen(true);
+                setModalContent(<LogoutModal/>);
+                setModalTitle("Wyloguj wszystkich");
+                setIsModalOpen(true);
               }}
             >
               Wyloguj wszystkich

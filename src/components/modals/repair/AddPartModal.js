@@ -8,9 +8,10 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 
 export default function AddPartModal({}) {
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
 
   const [category, setCategory] = useState("");
+  const [type, setType] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [unit, setUnit] = useState(1);
@@ -28,14 +29,14 @@ export default function AddPartModal({}) {
           partId: 0,
           partName: name,
           price: price,
-          partCategoryId: category,
+          partTypeId: type,
           unitId: unit,
         })
       );
     },
     onSuccess: async () => {
       await queryClient.refetchQueries({queryKey: [QUERY_KEYS.Parts], exact: false});
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
   });
 
@@ -58,18 +59,35 @@ export default function AddPartModal({}) {
     setPrice(value);
   };
 
+  const handleCategoryChange = (value) => {
+    setCategory(value);
+    setType("");
+  }
+
   return (
     <div className='flex flex-col w-full justify-between items-center py-2'>
       <div className='w-full *:w-full *:mb-4'>
         <ValidationFetchSelect
           value={category}
-          onChange={setCategory}
-          src='/PartCategories'
+          onChange={handleCategoryChange}
+          src='/partTypes/categories'
           queryKey={QUERY_KEYS.PartCategories}
           default_option={""}
           title='Kategoria'
           default_title='Wybierz z listy'
         />
+        {category !== "" &&
+          <ValidationFetchSelect
+            value={type}
+            onChange={setType}
+            src={`/partTypes/${category}`}
+            queryKey={[QUERY_KEYS.PartTypes, "category", category]}
+            default_option={""}
+            title='Typ'
+            default_title='Wybierz z listy'
+          />
+
+        }
 
         <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>
           <div className='border-b border-gray-400 w-fit flex items-center'>

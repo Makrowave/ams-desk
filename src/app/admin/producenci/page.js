@@ -5,7 +5,7 @@ import ManufacturerTable from "@/components/table/manufacturer/ManufacturerTable
 import useModal from "@/hooks/useModal";
 
 export default function CategoriesPanel() {
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   return (
     <>
       <div className='main-div bg-primary px-16 py-4'>
@@ -17,9 +17,9 @@ export default function CategoriesPanel() {
           <button
             className='button-secondary mr-4'
             onClick={() => {
-              setIsOpen(true);
-              setModalChildren(<ManufacturerModal action='post'/>);
-              setTitle("Dodaj producenta");
+              setIsModalOpen(true);
+              setModalContent(<ManufacturerModal action='post'/>);
+              setModalTitle("Dodaj producenta");
             }}
           >
             Dodaj producenta

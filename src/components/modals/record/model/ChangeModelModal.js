@@ -35,7 +35,7 @@ export default function ChangeModelModal({model}) {
   const _url = "/Models/";
   //Other
   const [error, setError] = useState("");
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
 
@@ -88,7 +88,7 @@ export default function ChangeModelModal({model}) {
             {...data, bikeCount: m.bikeCount, placeBikeCount: m.placeBikeCount} : m)
           : oldData
       });
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

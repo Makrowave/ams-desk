@@ -15,6 +15,7 @@ export const QUERY_KEYS = {
   Units: "units",
   Parts: "parts",
   PartCategories: "partCategories",
+  PartTypes: "partTypes",
   ServiceCategories: "serviceCategories",
   Favorites: "favorites",
 };

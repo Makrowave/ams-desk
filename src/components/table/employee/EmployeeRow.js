@@ -5,7 +5,7 @@ import DeleteModal from "@/components/modals/DeleteModal";
 import EmployeeModal from "@/components/modals/admin/EmployeeModal";
 
 export default function EmployeeRow({employee, prev, next}) {
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const _url = "/Employees/ChangeOrder";
   const queryKey = QUERY_KEYS.Employees;
   return (
@@ -29,9 +29,9 @@ export default function EmployeeRow({employee, prev, next}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setTitle();
-            setModalChildren(<EmployeeModal employee={employee} action='put'/>);
-            setIsOpen(true);
+            setModalTitle();
+            setModalContent(<EmployeeModal employee={employee} action='put'/>);
+            setIsModalOpen(true);
           }}
         >
           Zmień nazwę
@@ -41,8 +41,8 @@ export default function EmployeeRow({employee, prev, next}) {
         <button
           className='button-secondary'
           onClick={() => {
-            setTitle("Usuń pracownika");
-            setModalChildren(
+            setModalTitle("Usuń pracownika");
+            setModalContent(
               <DeleteModal
                 id={employee.employeeId}
                 url={"/Employees/"}
@@ -50,7 +50,7 @@ export default function EmployeeRow({employee, prev, next}) {
                 refetchQueryKey={QUERY_KEYS.Employees}
               />
             );
-            setIsOpen(true);
+            setIsModalOpen(true);
           }}
         >
           Usuń

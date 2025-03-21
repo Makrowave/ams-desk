@@ -14,7 +14,7 @@ export default function UserModal({user, action}) {
   const [error, setError] = useState("");
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const _url = "/Users/";
   const mutation = useMutation({
     mutationFn: async () => {
@@ -49,7 +49,7 @@ export default function UserModal({user, action}) {
         queryKey: [QUERY_KEYS.Users],
         exact: false,
       });
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

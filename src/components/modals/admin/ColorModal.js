@@ -16,7 +16,7 @@ export default function ColorModal({colorData, action}) {
   const COLOR_REGEX = REGEX.COLOR;
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
-  const {setIsOpen} = useModal();
+  const {setIsModalOpen} = useModal();
   const _url = "/Colors/";
   const mutation = useMutation({
     mutationFn: async () => {
@@ -56,7 +56,7 @@ export default function ColorModal({colorData, action}) {
           [...oldData, data]
         ));
       }
-      setIsOpen(false);
+      setIsModalOpen(false);
     },
     onError: (error) => {
       setError(error.message);

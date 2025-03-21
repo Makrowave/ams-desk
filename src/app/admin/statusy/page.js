@@ -5,7 +5,7 @@ import StatusTable from "@/components/table/status/StatusTable";
 import useModal from "@/hooks/useModal";
 
 export default function StatusPanel() {
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   return (
     <>
       <div className='main-div bg-primary py-4 px-16'>
@@ -17,9 +17,9 @@ export default function StatusPanel() {
           <button
             className='button-secondary mr-4'
             onClick={() => {
-              setIsOpen(true);
-              setModalChildren(<StatusModal action='post'/>);
-              setTitle("Dodaj staus");
+              setIsModalOpen(true);
+              setModalContent(<StatusModal action='post'/>);
+              setModalTitle("Dodaj staus");
             }}
           >
             Dodaj status

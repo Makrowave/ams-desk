@@ -5,7 +5,7 @@ import ColorTable from "@/components/table/color/ColorTable";
 import useModal from "@/hooks/useModal";
 
 export default function ColorsPanel() {
-  const {setIsOpen, setModalChildren, setTitle} = useModal();
+  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   return (
     <>
       <div className=' bg-primary px-16 py-4'>
@@ -17,9 +17,9 @@ export default function ColorsPanel() {
           <button
             className='button-secondary mr-4'
             onClick={() => {
-              setIsOpen(true);
-              setModalChildren(<ColorModal action='post'/>);
-              setTitle("Edytuj kolor");
+              setIsModalOpen(true);
+              setModalContent(<ColorModal action='post'/>);
+              setModalTitle("Edytuj kolor");
             }}
           >
             Dodaj kolor
