@@ -70,9 +70,10 @@ export default function ServiceSelect({mutation}) {
         >
           <div className="flex">
             {/* Category List */}
-            <div className="w-1/3 pr-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden">
-              <h3 className="text-sm font-semibold mb-2 text-gray-700">Kategoria</h3>
-              <ul className="space-y-1 max-h-60 overflow-y-auto">
+            <div
+              className="w-1/3 pr-2 border-r border-gray-300 overflow-hidden *:overflow-x-hidden max-h-80 flex flex-col">
+              <h3 className="text-sm font-semibold mb-2 text-gray-700 min-h-5">Kategoria</h3>
+              <ul className="space-y-1 overflow-y-auto child-1">
                 {catIsLoading && <li className="text-gray-500 text-sm text-center">Ładowanie...</li>}
                 {!catIsLoading &&
                   !catIsError &&
@@ -93,37 +94,35 @@ export default function ServiceSelect({mutation}) {
             </div>
 
             {/* Services List */}
-            <div className="w-2/3 pl-2 overflow-x-hidden *:overflow-x-hidden">
-              <h3 className="text-sm font-semibold mb-2 text-gray-700">Usługa</h3>
+            <div className="w-2/3 pl-2 overflow-x-hidden *:overflow-x-hidden max-h-80 flex flex-col">
+              <h3 className="text-sm font-semibold mb-2 text-gray-700 min-h-5">Usługa</h3>
               <input type="text" className="w-full rounded-lg p-1 text-sm border-gray-300 border" placeholder="Usługa"
                      onChange={(e) => setText(e.target.value)}
               />
-              <div className="max-h-60 overflow-y-auto">
-                <ul>
-                  {serIsLoading && <li className="text-gray-500 text-sm text-center">
-                    Ładowanie...
-                  </li>}
-                  {!serIsLoading &&
-                    !serIsError &&
-                    serData.filter(service => (strFind(service.serviceName, text)))
-                      .map((service) => (
-                        <li key={service.serviceId}>
-                          <button
-                            className="flex justify-between w-full p-2 rounded-md text-sm cursor-pointer hover:bg-gray-100 text-gray-700 transition-all items-center"
-                            onClick={() => handleOnClick(service)}
-                          >
-                            <div className="border-r border-gray-300 w-full text-start">
-                              {categoryId === 0 && <span className="block text-[11px] text-gray-400 underline">
+              <ul className="overflow-y-auto">
+                {serIsLoading && <li className="text-gray-500 text-sm text-center">
+                  Ładowanie...
+                </li>}
+                {!serIsLoading &&
+                  !serIsError &&
+                  serData.filter(service => (strFind(service.serviceName, text)))
+                    .map((service) => (
+                      <li key={service.serviceId}>
+                        <button
+                          className="flex justify-between w-full p-2 rounded-md text-sm cursor-pointer hover:bg-gray-100 text-gray-700 transition-all items-center"
+                          onClick={() => handleOnClick(service)}
+                        >
+                          <div className="border-r border-gray-300 w-full text-start">
+                            {categoryId === 0 && <span className="block text-[11px] text-gray-400 underline">
                                 {service.serviceCategory.serviceCategoryName}
                               </span>}
-                              {service.serviceName}
-                            </div>
-                            <div className="ml-2 min-w-6 text-end">{service.price}</div>
-                          </button>
-                        </li>
-                      ))}
-                </ul>
-              </div>
+                            {service.serviceName}
+                          </div>
+                          <div className="ml-2 min-w-6 text-end">{service.price}</div>
+                        </button>
+                      </li>
+                    ))}
+              </ul>
             </div>
           </div>
           <button className="p-0.5 rounded-lg hover:bg-gray-300 absolute top-1 right-1"

@@ -21,8 +21,8 @@ export default function RepairPage({params}) {
     <PrivateRoute>
       <Navigation active={2}/>
       <main className='h-[calc(100vh - 48px)] overflow-y-auto'>
-        <div className='w-full h-fit overflow-y-hidden'>
-        <div className='main-div bg-gray-200 px-12 py-6 h-full overflow-hidden'>
+        <div className='w-full h-full'>
+        <div className='main-div bg-gray-200 px-12 py-6 h-fit'>
           {!(isPending || isError) && <Repair repair={data}/>}
         </div>
         </div>
