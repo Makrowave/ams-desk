@@ -26,6 +26,7 @@ export function BikeTable({model, placeId}) {
   const {refetch, data, isPending, isError, error} = useQuery({
     queryKey: [QUERY_KEYS.Bikes, model.modelId, placeId],
     queryFn: async () => {
+      console.log([QUERY_KEYS.Bikes, model.modelId, placeId])
       const response = await axiosPrivate.get(_bikesUrl + model.modelId + "?placeId=" + placeId.toString());
       return response.data;
     },
@@ -144,7 +145,7 @@ export function BikeTable({model, placeId}) {
                 <ExpandButton
                   text='Sprzedaj'
                   onClick={() => {
-                    setModalContent(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price}/>);
+                    setModalContent(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} placeId={placeId}/>);
                     setModalTitle("Sprzedaj rower");
                     setIsModalOpen(true);
                   }}
