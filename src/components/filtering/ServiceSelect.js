@@ -66,11 +66,11 @@ export default function ServiceSelect({mutation}) {
       {isOpen && (
         <div
           ref={boxRef}
-          className="absolute top-0 right-0 bg-white rounded-lg shadow-xl w-96 p-4 z-50 border border-gray-200"
+          className="absolute top-0 right-0 bg-white rounded-lg shadow-xl w-[400px] p-4 z-50 border border-gray-200"
         >
           <div className="flex">
             {/* Category List */}
-            <div className="w-1/3 pr-2 border-r border-gray-300">
+            <div className="w-1/3 pr-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden">
               <h3 className="text-sm font-semibold mb-2 text-gray-700">Kategoria</h3>
               <ul className="space-y-1 max-h-60 overflow-y-auto">
                 {catIsLoading && <li className="text-gray-500 text-sm text-center">Ładowanie...</li>}
@@ -93,7 +93,7 @@ export default function ServiceSelect({mutation}) {
             </div>
 
             {/* Services List */}
-            <div className="w-2/3 pl-2">
+            <div className="w-2/3 pl-2 overflow-x-hidden *:overflow-x-hidden">
               <div className="relative justify-between items-center">
                 <h3 className="text-sm font-semibold mb-2 text-gray-700">Usługa</h3>
                 <button className="p-0.5 rounded-lg hover:bg-gray-300 absolute -top-3 -right-3"
