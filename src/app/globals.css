@@ -45,7 +45,7 @@ body {
 } */
 
 .main-div {
-    @apply flex flex-col max-w-1920 m-auto overflow-y-auto h-full;
+    @apply flex flex-col max-w-1920 m-auto h-full;
 }
 
 main {

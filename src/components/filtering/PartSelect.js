@@ -85,9 +85,10 @@ export default function PartSelect({mutation}) {
         >
           <div className="flex">
             {/* Category List */}
-            <div className="w-1/5 pr-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden">
-              <h3 className="text-sm font-semibold mb-2 text-gray-700">Kategoria</h3>
-              <ul className="space-y-1 max-h-60 overflow-y-auto">
+            <div
+              className="w-1/5 pr-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden max-h-80 flex flex-col">
+              <h3 className="text-sm font-semibold mb-2 text-gray-700 min-h-5">Kategoria</h3>
+              <ul className="space-y-1 overflow-y-auto child-1">
                 {catIsLoading && <li className="text-gray-500 text-sm text-center">Ładowanie...</li>}
                 {!catIsLoading &&
                   !catIsError &&
@@ -111,9 +112,10 @@ export default function PartSelect({mutation}) {
             </div>
 
             {/* Type List */}
-            <div className="w-2/5 px-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden">
-              <h3 className="text-sm font-semibold mb-2 text-gray-700">Typ</h3>
-              <ul className="space-y-1 max-h-60 overflow-y-auto">
+            <div
+              className="w-2/5 px-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden max-h-80 flex flex-col">
+              <h3 className="text-sm font-semibold mb-2 text-gray-700 min-h-5">Typ</h3>
+              <ul className="space-y-1 max-h-60 overflow-y-auto child-1">
                 {typeIsLoading && <li className="text-gray-500 text-sm text-center">Ładowanie...</li>}
                 {!typeIsLoading &&
                   !typeIsError &&
@@ -134,55 +136,54 @@ export default function PartSelect({mutation}) {
             </div>
 
 
-            {/* Part type List */}
-            <div className="w-2/5 pl-2 overflow-x-hidden *:overflow-x-hidden">
-              <h3 className="text-sm font-semibold mb-2 text-gray-700">Część</h3>
+            {/* Part List */}
+            <div className="w-2/5 pl-2 overflow-x-hidden *:overflow-x-hidden max-h-80 flex flex-col">
+              <h3 className="text-sm font-semibold mb-2 text-gray-700 min-h-5">Część</h3>
               <input type="text" className="w-full rounded-lg p-1 text-sm border-gray-300 border" placeholder="Usługa"
                      onChange={(e) => setText(e.target.value)}
               />
-              <div className="max-h-60 overflow-y-auto">
-                <ul>
-                  {partIsLoading && <li className="text-gray-500 text-sm text-center">
-                    Ładowanie...
-                  </li>}
-                  {!partIsLoading &&
-                    !partIsError &&
-                    partData.filter(part => (strFind(part.partName, text)))
-                      .map((part) => (
-                        <li key={part.partId}>
-                          <button
-                            className="flex justify-between w-full p-2 rounded-md text-sm cursor-pointer hover:bg-gray-100 text-gray-700 transition-all items-center"
-                            onClick={() => handleOnClick(part)}
-                          >
-                            <div className="border-r border-gray-300 w-full text-start">
-                              {categoryId === 0 &&
-                                <span className="inline text-[11px] text-gray-400 underline">
+
+              <ul className="overflow-y-auto child-1">
+                {partIsLoading && <li className="text-gray-500 text-sm text-center">
+                  Ładowanie...
+                </li>}
+                {!partIsLoading &&
+                  !partIsError &&
+                  partData.filter(part => (strFind(part.partName, text)))
+                    .map((part) => (
+                      <li key={part.partId}>
+                        <button
+                          className="flex justify-between w-full p-2 rounded-md text-sm cursor-pointer hover:bg-gray-100 text-gray-700 transition-all items-center"
+                          onClick={() => handleOnClick(part)}
+                        >
+                          <div className="border-r border-gray-300 w-full text-start">
+                            {categoryId === 0 &&
+                              <span className="inline text-[11px] text-gray-400 underline">
                                   {part.partType.partCategory.partCategoryName}
                                 </span>
-                              }
-                              {
-                                typeId === 0 && categoryId === 0 &&
-                                <span className="inline text-[11px] text-gray-400">
+                            }
+                            {
+                              typeId === 0 && categoryId === 0 &&
+                              <span className="inline text-[11px] text-gray-400">
                                   {" - "}
                                 </span>
-                              }
-                              {typeId === 0 &&
-                                <span className="inline text-[11px] text-gray-400 underline text-ellipsis">
+                            }
+                            {typeId === 0 &&
+                              <span className="inline text-[11px] text-gray-400 underline text-ellipsis">
                                   {part.partType.partTypeName}
                                 </span>
-                              }
-                              <span className="block">
+                            }
+                            <span className="block">
                                 {part.partName}
                               </span>
-                            </div>
-                            <div className="ml-2 min-w-6 text-end">
-                              {part.price}
-                            </div>
-                          </button>
-                        </li>
-                      ))}
-                </ul>
-              </div>
+                          </div>
+                          <div className="ml-2 min-w-6 text-end">
+                            {part.price}
+                          </div>
+                        </button>
+                      </li>
+                    ))}
+              </ul>
             </div>
           </div>
           <button
