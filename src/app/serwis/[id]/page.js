@@ -20,9 +20,11 @@ export default function RepairPage({params}) {
   return (
     <PrivateRoute>
       <Navigation active={2}/>
-      <main className='overflow-scroll h-[calc(100vh - 48px)]'>
-        <div className='main-div bg-gray-200 px-12 py-6 h-fit'>
+      <main className='h-[calc(100vh - 48px)] overflow-y-auto'>
+        <div className='w-full h-fit overflow-y-hidden'>
+        <div className='main-div bg-gray-200 px-12 py-6 h-full overflow-hidden'>
           {!(isPending || isError) && <Repair repair={data}/>}
+        </div>
         </div>
       </main>
     </PrivateRoute>

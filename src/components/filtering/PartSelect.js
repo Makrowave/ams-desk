@@ -85,7 +85,7 @@ export default function PartSelect({mutation}) {
         >
           <div className="flex">
             {/* Category List */}
-            <div className="w-1/5 pr-2 border-r border-gray-300">
+            <div className="w-1/5 pr-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden">
               <h3 className="text-sm font-semibold mb-2 text-gray-700">Kategoria</h3>
               <ul className="space-y-1 max-h-60 overflow-y-auto">
                 {catIsLoading && <li className="text-gray-500 text-sm text-center">Ładowanie...</li>}
@@ -111,7 +111,7 @@ export default function PartSelect({mutation}) {
             </div>
 
             {/* Type List */}
-            <div className="w-2/5 px-2 border-r border-gray-300">
+            <div className="w-2/5 px-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden">
               <h3 className="text-sm font-semibold mb-2 text-gray-700">Typ</h3>
               <ul className="space-y-1 max-h-60 overflow-y-auto">
                 {typeIsLoading && <li className="text-gray-500 text-sm text-center">Ładowanie...</li>}
@@ -135,24 +135,8 @@ export default function PartSelect({mutation}) {
 
 
             {/* Part type List */}
-            <div className="w-2/5 pl-2">
-              <div className="relative justify-between items-center">
-                <h3 className="text-sm font-semibold mb-2 text-gray-700">Część</h3>
-                <button
-                  className='absolute -top-3 right-1.5 p-0.5 mx-2 hover:bg-gray-300 transition-colors duration-200 rounded-lg'
-                  onClick={() => {
-                    setModalContent(<AddPartModal/>);
-                    setModalTitle("Dodaj część");
-                    setIsModalOpen(true);
-                  }}
-                >
-                  <FaPlus/>
-                </button>
-                <button className="p-0.5 rounded-lg hover:bg-gray-300 absolute -top-3 -right-3"
-                        onClick={() => setIsOpen(false)}>
-                  <FaXmark/>
-                </button>
-              </div>
+            <div className="w-2/5 pl-2 overflow-x-hidden *:overflow-x-hidden">
+              <h3 className="text-sm font-semibold mb-2 text-gray-700">Część</h3>
               <input type="text" className="w-full rounded-lg p-1 text-sm border-gray-300 border" placeholder="Usługa"
                      onChange={(e) => setText(e.target.value)}
               />
@@ -201,6 +185,20 @@ export default function PartSelect({mutation}) {
               </div>
             </div>
           </div>
+          <button
+            className='absolute top-1 right-5 p-0.5 mx-2 hover:bg-gray-300 transition-colors duration-200 rounded-lg'
+            onClick={() => {
+              setModalContent(<AddPartModal/>);
+              setModalTitle("Dodaj część");
+              setIsModalOpen(true);
+            }}
+          >
+            <FaPlus/>
+          </button>
+          <button className="p-0.5 rounded-lg hover:bg-gray-300 absolute top-1 right-1"
+                  onClick={() => setIsOpen(false)}>
+            <FaXmark/>
+          </button>
         </div>
       )}
     </div>
