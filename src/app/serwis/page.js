@@ -11,20 +11,18 @@ export default function Serwis() {
       <Navigation active={2}/>
       <main className='overflow-y-hidden'>
         <div
-          className='flex flex-row max-w-1920 m-auto overflow-y-auto h-full px-12 py-6 items-start justify-center space-x-10'>
+          className='flex flex-col max-w-1920 m-auto overflow-y-auto h-full px-12 py-6 items-center space-y-10'>
           <div className='bg-white rounded-xl p-8'>
             <h2 className='mb-4 text-2xl'>W trakcie</h2>
             <RepairTable src={createTableSrc(inProgress)} addButton localKey='inProgress'/>
           </div>
-          <div className='flex-col space-y-10'>
-            <div className='bg-white rounded-xl p-8 max-h-1/2'>
-              <h2 className='mb-4 text-2xl'>Ukończone</h2>
-              <RepairTable src={createTableSrc(finished)} localKey='finished'/>
-            </div>
-            <div className='bg-white rounded-xl p-8 max-h-1/2'>
-              <h2 className='mb-4 text-2xl'>Wydane</h2>
-              <RepairTable src={createTableSrc(collected)} localKey='collected'/>
-            </div>
+          <div className='bg-white rounded-xl p-8 max-h-1/2'>
+            <h2 className='mb-4 text-2xl'>Ukończone</h2>
+            <RepairTable src={createTableSrc(finished)} localKey='finished'/>
+          </div>
+          <div className='bg-white rounded-xl p-8 max-h-1/2'>
+            <h2 className='mb-4 text-2xl'>Wydane</h2>
+            <RepairTable src={createTableSrc(collected)} localKey='collected'/>
           </div>
         </div>
       </main>

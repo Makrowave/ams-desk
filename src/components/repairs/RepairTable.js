@@ -75,8 +75,8 @@ export default function RepairTable({src, addButton, localKey}) {
         <table
           className={
             place === 0
-              ? "w-[600px] border-separate border-spacing-0 border rounded-b-lg rounded-tr-lg *:*:*:p-3"
-              : "w-[600px] border-separate border-spacing-0 border rounded-b-lg rounded-t-lg *:*:*:p-3"
+              ? "w-[900px] border-separate border-spacing-0 border rounded-b-lg rounded-tr-lg *:*:*:p-3"
+              : "w-[900px] border-separate border-spacing-0 border rounded-b-lg rounded-t-lg *:*:*:p-3"
           }
         >
           <thead>
@@ -85,6 +85,7 @@ export default function RepairTable({src, addButton, localKey}) {
             <th>Data</th>
             {/* <th>Rower</th> */}
             <th>Telefon</th>
+            <th>Rower</th>
             <th>Status</th>
             <th>Miejsce</th>
             <th className='rounded-tr-lg'></th>
