@@ -504,7 +504,7 @@ export default function Repair({repair}) {
               <span className='block text-base'>
                 <b>Treść</b>
               </span>
-              <span>{localRepair.issue}</span>
+              <span className="whitespace-pre-wrap">{localRepair.issue}</span>
             </div>
           </div>
           <div className='flex-col flex-1 justify-end '>
