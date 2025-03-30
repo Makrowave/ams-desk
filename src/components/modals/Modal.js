@@ -29,7 +29,7 @@ export default function Modal() {
   return (
     <>
       {isModalOpen && (
-        <div className=''>
+        <div className='' onClick={(e) => e.stopPropagation()}>
           <div className='fixed top-0 bottom-0 left-0 right-0 pointer-events-auto transparent-bg z-50'>
             <div
               className='bg-primary flex flex-col h-fit absolute top-0 bottom-0 left-0 right-0 m-auto rounded-2xl border-border border-2 min-h-80 min-w-[430px] max-w-[700px] w-fit'>

@@ -57,7 +57,7 @@ export default function PartSelect({mutation}) {
         && !buttonRef.current.contains(event.target)
 
       ) {
-        setIsOpen(false);
+        // setIsOpen(false);
       }
     };
     document.addEventListener("click", handleClick);
@@ -79,127 +79,129 @@ export default function PartSelect({mutation}) {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div
-          ref={boxRef}
-          className="absolute top-0 right-0 bg-white rounded-lg shadow-xl w-[600px] p-4 z-50 border border-gray-200"
-        >
-          <div className="flex">
-            {/* Category List */}
-            <div
-              className="w-1/5 pr-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden max-h-80 flex flex-col">
-              <h3 className="text-sm font-semibold mb-2 text-gray-700 min-h-5">Kategoria</h3>
-              <ul className="space-y-1 overflow-y-auto child-1">
-                {catIsLoading && <li className="text-gray-500 text-sm text-center">Ładowanie...</li>}
-                {!catIsLoading &&
-                  !catIsError &&
-                  [{id: 0, name: "Wszystkie"}, ...catData].map((category) => (
-                    <li
-                      key={category.id}
-                      className={`p-2 rounded-md text-sm cursor-pointer transition-all ${
-                        categoryId === category.id
-                          ? "bg-blue-500 text-white"
-                          : "hover:bg-gray-100 text-gray-700"
-                      }`}
-                      onClick={() => {
-                        setCategoryId(category.id);
-                        setTypeId(0)
-                      }}
-                    >
-                      {category.name}
-                    </li>
-                  ))}
-              </ul>
-            </div>
-
-            {/* Type List */}
-            <div
-              className="w-2/5 px-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden max-h-80 flex flex-col">
-              <h3 className="text-sm font-semibold mb-2 text-gray-700 min-h-5">Typ</h3>
-              <ul className="space-y-1 overflow-y-auto child-1">
-                {typeIsLoading && <li className="text-gray-500 text-sm text-center">Ładowanie...</li>}
-                {!typeIsLoading &&
-                  !typeIsError &&
-                  [{id: 0, name: "Wszystkie"}, ...typeData].map((type) => (
-                    <li
-                      key={type.id}
-                      className={`p-2 rounded-md text-sm cursor-pointer transition-all ${
-                        typeId === type.id
-                          ? "bg-emerald-400 text-white"
-                          : "hover:bg-gray-100 text-gray-700"
-                      }`}
-                      onClick={() => setTypeId(type.id)}
-                    >
-                      {type.name}
-                    </li>
-                  ))}
-              </ul>
-            </div>
-
-
-            {/* Part List */}
-            <div className="w-2/5 pl-2 overflow-x-hidden *:overflow-x-hidden max-h-80 flex flex-col">
-              <h3 className="text-sm font-semibold mb-2 text-gray-700 min-h-5">Część</h3>
-              <input type="text" className="w-full rounded-lg p-1 text-sm border-gray-300 border" placeholder="Usługa"
-                     onChange={(e) => setText(e.target.value)}
-              />
-
-              <ul className="overflow-y-auto child-1">
-                {partIsLoading && <li className="text-gray-500 text-sm text-center">
-                  Ładowanie...
-                </li>}
-                {!partIsLoading &&
-                  !partIsError &&
-                  partData.filter(part => (strFind(part.partName, text)))
-                    .map((part) => (
-                      <li key={part.partId}>
-                        <button
-                          className="flex justify-between w-full p-2 rounded-md text-sm cursor-pointer hover:bg-gray-100 text-gray-700 transition-all items-center"
-                          onClick={() => handleOnClick(part)}
-                        >
-                          <div className="border-r border-gray-300 w-full text-start">
-                            {categoryId === 0 &&
-                              <span className="inline text-[11px] text-gray-400 underline">
-                                  {part.partType.partCategory.partCategoryName}
-                                </span>
-                            }
-                            {
-                              typeId === 0 && categoryId === 0 &&
-                              <span className="inline text-[11px] text-gray-400">
-                                  {" - "}
-                                </span>
-                            }
-                            {typeId === 0 &&
-                              <span className="inline text-[11px] text-gray-400 underline text-ellipsis">
-                                  {part.partType.partTypeName}
-                                </span>
-                            }
-                            <span className="block">
-                                {part.partName}
-                              </span>
-                          </div>
-                          <div className="ml-2 min-w-6 text-end">
-                            {part.price}
-                          </div>
-                        </button>
+        <div className="fixed top-0 left-0 w-screen h-screen bg-[rgba(0,0,0,0.6)] transpa rounded-lg z-40">
+          <div
+            ref={boxRef}
+            className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2  bg-white rounded-lg shadow-xl w-[800px] p-4 z-50 border border-gray-200"
+          >
+            <div className="flex">
+              {/* Category List */}
+              <div
+                className="w-1/5 pr-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden max-h-[500px] flex flex-col">
+                <h3 className="font-semibold mb-2 text-gray-700 min-h-7">Kategoria</h3>
+                <ul className="space-y-1 overflow-y-auto child-1">
+                  {catIsLoading && <li className="text-gray-500 text-center">Ładowanie...</li>}
+                  {!catIsLoading &&
+                    !catIsError &&
+                    [{id: 0, name: "Wszystkie"}, ...catData].map((category) => (
+                      <li
+                        key={category.id}
+                        className={`p-2 rounded-md cursor-pointer transition-all ${
+                          categoryId === category.id
+                            ? "bg-blue-500 text-white"
+                            : "hover:bg-gray-100 text-gray-700"
+                        }`}
+                        onClick={() => {
+                          setCategoryId(category.id);
+                          setTypeId(0)
+                        }}
+                      >
+                        {category.name}
                       </li>
                     ))}
-              </ul>
+                </ul>
+              </div>
+
+              {/* Type List */}
+              <div
+                className="w-2/5 px-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden max-h-[500px] flex flex-col">
+                <h3 className="font-semibold mb-2 text-gray-700 min-h-7">Typ</h3>
+                <ul className="space-y-1 overflow-y-auto child-1">
+                  {typeIsLoading && <li className="text-gray-500 text-center">Ładowanie...</li>}
+                  {!typeIsLoading &&
+                    !typeIsError &&
+                    [{id: 0, name: "Wszystkie"}, ...typeData].map((type) => (
+                      <li
+                        key={type.id}
+                        className={`p-2 rounded-md cursor-pointer transition-all ${
+                          typeId === type.id
+                            ? "bg-emerald-400 text-white"
+                            : "hover:bg-gray-100 text-gray-700"
+                        }`}
+                        onClick={() => setTypeId(type.id)}
+                      >
+                        {type.name}
+                      </li>
+                    ))}
+                </ul>
+              </div>
+
+
+              {/* Part List */}
+              <div className="w-2/5 pl-2 overflow-x-hidden *:overflow-x-hidden max-h-[500px] flex flex-col">
+                <h3 className="font-semibold mb-2 text-gray-700 min-h-7">Część</h3>
+                <input type="text" className="w-full rounded-lg p-1 border-gray-300 border" placeholder="Usługa"
+                       onChange={(e) => setText(e.target.value)}
+                />
+
+                <ul className="overflow-y-auto child-1">
+                  {partIsLoading && <li className="text-gray-500 text-center">
+                    Ładowanie...
+                  </li>}
+                  {!partIsLoading &&
+                    !partIsError &&
+                    partData.filter(part => (strFind(part.partName, text)))
+                      .map((part) => (
+                        <li key={part.partId}>
+                          <button
+                            className="flex justify-between w-full p-2 rounded-md cursor-pointer hover:bg-gray-100 text-gray-700 transition-all items-center"
+                            onClick={() => handleOnClick(part)}
+                          >
+                            <div className="border-r border-gray-300 w-full text-start">
+                              {categoryId === 0 &&
+                                <span className="inline text-[11px] text-gray-400 underline">
+                                  {part.partType.partCategory.partCategoryName}
+                                </span>
+                              }
+                              {
+                                typeId === 0 && categoryId === 0 &&
+                                <span className="inline text-[11px] text-gray-400">
+                                  {" - "}
+                                </span>
+                              }
+                              {typeId === 0 &&
+                                <span className="inline text-[11px] text-gray-400 underline text-ellipsis">
+                                  {part.partType.partTypeName}
+                                </span>
+                              }
+                              <span className="block">
+                                {part.partName}
+                              </span>
+                            </div>
+                            <div className="ml-2 min-w-6 text-end">
+                              {part.price}
+                            </div>
+                          </button>
+                        </li>
+                      ))}
+                </ul>
+              </div>
             </div>
+            <button
+              className='absolute top-1 right-5 p-0.5 mx-2 hover:bg-gray-300 transition-colors duration-200 rounded-lg'
+              onClick={() => {
+                setModalContent(<AddPartModal/>);
+                setModalTitle("Dodaj część");
+                setIsModalOpen(true);
+              }}
+            >
+              <FaPlus/>
+            </button>
+            <button className="p-0.5 rounded-lg hover:bg-gray-300 absolute top-1 right-1"
+                    onClick={() => setIsOpen(false)}>
+              <FaXmark/>
+            </button>
           </div>
-          <button
-            className='absolute top-1 right-5 p-0.5 mx-2 hover:bg-gray-300 transition-colors duration-200 rounded-lg'
-            onClick={() => {
-              setModalContent(<AddPartModal/>);
-              setModalTitle("Dodaj część");
-              setIsModalOpen(true);
-            }}
-          >
-            <FaPlus/>
-          </button>
-          <button className="p-0.5 rounded-lg hover:bg-gray-300 absolute top-1 right-1"
-                  onClick={() => setIsOpen(false)}>
-            <FaXmark/>
-          </button>
         </div>
       )}
     </div>
