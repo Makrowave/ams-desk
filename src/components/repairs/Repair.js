@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import PartRecord from "./PartRecord";
-import {generateRepairCostsDoc, generateRepairNewDoc, printRepairDoc} from "@/util/print";
+import {generateRepairCostDoc, generateRepairNewDoc, printRepairCostDoc, printRepairDoc} from "@/util/print";
 import {formatPhone} from "@/util/formatting";
 import {useRouter} from "next/navigation";
 import {REPAIR_STATUS} from "@/util/repairStatuses";
@@ -274,7 +274,7 @@ export default function Repair({repair}) {
             Drukuj zgłoszenie
           </button>
           <button className='button-primary'
-                  onClick={() => printRepairDoc(generateRepairCostsDoc, localRepair)}>
+                  onClick={() => printRepairCostDoc(generateRepairCostDoc, localRepair)}>
             Drukuj cennik
           </button>
         </div>
