@@ -71,7 +71,7 @@ export default function RepairTable({src, addButton, localKey}) {
           )}
         </div>
       </div>
-      <div className='text-base'>
+      <div className='text-base max-h-[500px] overflow-y-auto'>
         <table
           className={
             place === 0

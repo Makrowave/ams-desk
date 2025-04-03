@@ -7,4 +7,5 @@ export const REPAIR_STATUS = {
   Notified: 6,
   Collected: 7,
   ContactNeeded: 8,
+  Cancelled: 9,
 };

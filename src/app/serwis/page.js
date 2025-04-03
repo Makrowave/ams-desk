@@ -11,16 +11,16 @@ export default function Serwis() {
       <Navigation active={2}/>
       <main className='overflow-y-hidden'>
         <div
-          className='flex flex-col max-w-1920 m-auto overflow-y-auto h-full px-12 py-6 items-center space-y-10'>
+          className='flex flex-col m-auto overflow-y-auto h-full px-12 py-6 items-center space-y-10'>
           <div className='bg-white rounded-xl p-8'>
             <h2 className='mb-4 text-2xl'>W trakcie</h2>
             <RepairTable src={createTableSrc(inProgress)} addButton localKey='inProgress'/>
           </div>
-          <div className='bg-white rounded-xl p-8 max-h-1/2'>
+          <div className='bg-white rounded-xl p-8'>
             <h2 className='mb-4 text-2xl'>Ukończone</h2>
             <RepairTable src={createTableSrc(finished)} localKey='finished'/>
           </div>
-          <div className='bg-white rounded-xl p-8 max-h-1/2'>
+          <div className='bg-white rounded-xl p-8'>
             <h2 className='mb-4 text-2xl'>Wydane</h2>
             <RepairTable src={createTableSrc(collected)} localKey='collected'/>
           </div>
@@ -43,7 +43,7 @@ const collected = [
   REPAIR_STATUS.AwaitingParts,
   REPAIR_STATUS.Finished,
   REPAIR_STATUS.Notified,
-  REPAIR_STATUS.ContactNeeded,
+  REPAIR_STATUS.ContactNeeded
 ];
 
 const finished = [
@@ -53,6 +53,7 @@ const finished = [
   REPAIR_STATUS.AwaitingParts,
   REPAIR_STATUS.Collected,
   REPAIR_STATUS.ContactNeeded,
+  REPAIR_STATUS.Cancelled
 ];
 
-const inProgress = [REPAIR_STATUS.Collected, REPAIR_STATUS.Finished, REPAIR_STATUS.Notified];
+const inProgress = [REPAIR_STATUS.Collected, REPAIR_STATUS.Finished, REPAIR_STATUS.Notified, REPAIR_STATUS.Cancelled];

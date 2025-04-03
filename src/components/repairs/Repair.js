@@ -14,8 +14,9 @@ import {
   FaHourglass,
   FaPhone,
   FaPlus,
+  FaRegCircleXmark,
   FaShield,
-  FaWrench,
+  FaWrench
 } from "react-icons/fa6";
 import ServiceRecord from "./ServiceRecord";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
@@ -30,6 +31,7 @@ import SavedDataWarning from "../navigation/SavedDataWarning";
 import ServiceSelect from "@/components/filtering/ServiceSelect";
 import PartSelect from "@/components/filtering/PartSelect";
 import AddPartModal from "@/components/modals/repair/AddPartModal";
+import CancelRepairModal from "@/components/modals/repair/CancelRepairModal";
 
 export default function Repair({repair}) {
   const {isSaved, setIsSaved, updateIsUsed} = useSavedData();
@@ -294,7 +296,7 @@ export default function Repair({repair}) {
           </div>
           <div className='flex items-center gap-x-2 text-xl'>
             <ExpandButton
-              disabled={localRepair.statusId !== REPAIR_STATUS.Pending}
+              disabled={localRepair.statusId !== REPAIR_STATUS.Pending || localRepair.statusId === REPAIR_STATUS.Cancelled}
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
               text='Rozpocznij'
@@ -317,7 +319,9 @@ export default function Repair({repair}) {
             </ExpandButton>
             <ExpandButton
               disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+                localRepair.statusId === REPAIR_STATUS.Collected
+                || localRepair.statusId === REPAIR_STATUS.Pending
+                || localRepair.statusId === REPAIR_STATUS.Cancelled
               }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
@@ -330,7 +334,9 @@ export default function Repair({repair}) {
             </ExpandButton>
             <ExpandButton
               disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+                localRepair.statusId === REPAIR_STATUS.Collected
+                || localRepair.statusId === REPAIR_STATUS.Pending
+                || localRepair.statusId === REPAIR_STATUS.Cancelled
               }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
@@ -343,7 +349,9 @@ export default function Repair({repair}) {
             </ExpandButton>
             <ExpandButton
               disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+                localRepair.statusId === REPAIR_STATUS.Collected
+                || localRepair.statusId === REPAIR_STATUS.Pending
+                || localRepair.statusId === REPAIR_STATUS.Cancelled
               }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
@@ -356,7 +364,9 @@ export default function Repair({repair}) {
             </ExpandButton>
             <ExpandButton
               disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+                localRepair.statusId === REPAIR_STATUS.Collected
+                || localRepair.statusId === REPAIR_STATUS.Pending
+                || localRepair.statusId === REPAIR_STATUS.Cancelled
               }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
@@ -369,7 +379,9 @@ export default function Repair({repair}) {
             </ExpandButton>
             <ExpandButton
               disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+                localRepair.statusId === REPAIR_STATUS.Collected
+                || localRepair.statusId === REPAIR_STATUS.Pending
+                || localRepair.statusId === REPAIR_STATUS.Cancelled
               }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
@@ -382,7 +394,9 @@ export default function Repair({repair}) {
             </ExpandButton>
             <ExpandButton
               disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+                localRepair.statusId === REPAIR_STATUS.Collected
+                || localRepair.statusId === REPAIR_STATUS.Pending
+                || localRepair.statusId === REPAIR_STATUS.Cancelled
               }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
@@ -395,7 +409,9 @@ export default function Repair({repair}) {
             </ExpandButton>
             <ExpandButton
               disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Pending
+                localRepair.statusId === REPAIR_STATUS.Collected
+                || localRepair.statusId === REPAIR_STATUS.Pending
+                || localRepair.statusId === REPAIR_STATUS.Cancelled
               }
               className='button-primary'
               disabledClass='hover:bg-gray-300 bg-gray-300'
@@ -415,6 +431,24 @@ export default function Repair({repair}) {
               }}
             >
               <FaFlagCheckered/>
+            </ExpandButton>
+            <ExpandButton
+              disabled={
+                localRepair.statusId === REPAIR_STATUS.Collected
+                || localRepair.statusId === REPAIR_STATUS.Cancelled
+              }
+              className='button-primary'
+              disabledClass='hover:bg-gray-300 bg-gray-300'
+              text='Anuluj'
+              onClick={() => {
+                setModalTitle("Anuluj");
+                setModalContent(
+                  <CancelRepairModal onClick={changeStatus}/>
+                );
+                setIsModalOpen(true);
+              }}
+            >
+              <FaRegCircleXmark className={"text-red-600"}/>
             </ExpandButton>
           </div>
         </div>
