@@ -175,8 +175,8 @@ export default function PartRepairsPage() {
                                 </button>
                                 <button className='button-primary w-10 h-10' onClick={() => {
                                   setModalTitle("Usuń część");
-                                  setModalContent(<DeleteModal id={part.id} refetchQueryKey={QUERY_KEYS.Parts}
-                                                               url={"Parts"}/>)
+                                  setModalContent(<DeleteModal id={part.partId} refetchQueryKey={QUERY_KEYS.Parts}
+                                                               url={"Parts/"}/>)
                                   setIsModalOpen(true);
                                 }}>
                                   <FaCircleXmark className="text-red-600"/>

@@ -20,7 +20,12 @@ export default function DeleteModal({refetchQueryKey, id, url, admin = false}) {
       setIsModalOpen(false);
     },
     onError: (error) => {
-      setError(error.message);
+      if (error.status === 500) {
+        setError("Dany przedmiot jest do czegoś przypisany");
+      } else {
+        setError(error.message);
+      }
+
     },
   });
 
