@@ -9,12 +9,14 @@ export default function RepairRecord({repair}) {
       <td>{new Date(repair.date).toLocaleDateString("pl-PL")}</td>
       <td>{formatPhone(repair.phoneNumber)}</td>
       <td className={'text-ellipsis'}>{repair.bikeName}</td>
-      <td className={'flex items-center justify-center'}>
-        <div
-          className='w-32 max-w-[8rem] truncate overflow-hidden whitespace-nowrap p-1 rounded-lg'
-          style={{backgroundColor: repair.status.color}}
-        >
-          {repair.status.name}
+      <td>
+        <div className='flex items-center justify-center'>
+          <span
+            className='w-32 max-w-[8rem] truncate overflow-hidden whitespace-nowrap p-1 rounded-lg'
+            style={{backgroundColor: repair.status.color}}
+          >
+            {repair.status.name}
+          </span>
         </div>
       </td>
       <td>{repair.placeName}</td>

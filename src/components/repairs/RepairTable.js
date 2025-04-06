@@ -83,8 +83,7 @@ export default function RepairTable({src, addButton, localKey}) {
           <tr className='*:bg-secondary'>
             <th>Nr.</th>
             <th>Data</th>
-            {/* <th>Rower</th> */}
-            <th>Telefon</th>
+            <th className={"min-w-40"}>Telefon</th>
             <th>Rower</th>
             <th>Status</th>
             <th>Miejsce</th>
