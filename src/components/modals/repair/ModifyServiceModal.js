@@ -4,8 +4,8 @@ import {useState} from "react";
 import {FaCheck, FaXmark} from "react-icons/fa6";
 import {REGEX} from "@/util/regex";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
+import useAxiosAdmin from "@/hooks/useAxiosAdmin";
 
 export default function ModifyServiceModal({service}) {
   const {setIsModalOpen} = useModal();
@@ -17,18 +17,19 @@ export default function ModifyServiceModal({service}) {
   const [isNameValid, setIsNameValid] = useState(true);
   const [isPriceValid, setIsPriceValid] = useState(true);
 
-  const axiosPrivate = useAxiosPrivate();
+  const axiosAdmin = useAxiosAdmin();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.put(
+      return await axiosAdmin.put(
         `services/${service.serviceId}`,
         JSON.stringify({
           serviceId: service.serviceId,
           serviceName: name,
           price: price,
           serviceCategoryId: category,
-        })
+        }),
+        {headers: {"Content-Type": "application/json"}}
       );
     },
     onSuccess: async () => {
@@ -62,8 +63,8 @@ export default function ModifyServiceModal({service}) {
         <ValidationFetchSelect
           value={category}
           onChange={setCategory}
-          src='/PartCategories'
-          queryKey={QUERY_KEYS.PartCategories}
+          src='/Services/categories'
+          queryKey={QUERY_KEYS.ServiceCategories}
           default_option={""}
           title='Kategoria'
           default_title='Wybierz z listy'

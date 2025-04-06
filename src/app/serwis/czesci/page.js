@@ -113,80 +113,83 @@ export default function PartRepairsPage() {
 
 
                 {/* Part List */}
-                <div className="min-w-[400px] pl-2 overflow-x-hidden *:overflow-x-hidden max-h-[500px] flex flex-col">
+                <div
+                  className="min-w-[400px] pl-2 overflow-x-hidden *:overflow-x-hidden flex flex-col">
                   <h3 className="font-semibold mb-2 text-gray-700 min-h-7">Część</h3>
-                  <input type="text" className="w-full rounded-lg p-1 border-gray-300 border" placeholder="Część"
+                  <input type="text" className="w-full rounded-lg p-1 border-gray-300 border"
+                         placeholder="Część"
                          onChange={(e) => setText(e.target.value)}
                   />
-
-                  <table className="overflow-y-auto child-1">
-                    <thead>
-                    <tr>
-                      <th>Część</th>
-                      <th>Cena</th>
-                      <th>Jedn.</th>
-                      <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {partIsLoading && <tr className="text-gray-500 text-center">
-                      Ładowanie...
-                    </tr>}
-                    {!partIsLoading &&
-                      !partIsError &&
-                      partData.filter(part => (strFind(part.partName, text)))
-                        .map((part) => (
-                          <tr key={part.partId}>
-                            <td>
-                              {categoryId === 0 &&
-                                <span className="inline text-[11px] text-gray-400 underline">
+                  <div className="max-h-[430px]">
+                    <table className="overflow-y-auto child-1">
+                      <thead className="sticky top-0 bg-white pb-2">
+                      <tr>
+                        <th>Część</th>
+                        <th>Cena</th>
+                        <th>Jedn.</th>
+                        <th></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {partIsLoading && <tr className="text-gray-500 text-center">
+                        Ładowanie...
+                      </tr>}
+                      {!partIsLoading &&
+                        !partIsError &&
+                        partData.filter(part => (strFind(part.partName, text)))
+                          .map((part) => (
+                            <tr key={part.partId}>
+                              <td>
+                                {categoryId === 0 &&
+                                  <span className="inline text-[11px] text-gray-400 underline">
                                   {part.partType.partCategory.partCategoryName}
                                 </span>
-                              }
-                              {
-                                typeId === 0 && categoryId === 0 &&
-                                <span className="inline text-[11px] text-gray-400">
+                                }
+                                {
+                                  typeId === 0 && categoryId === 0 &&
+                                  <span className="inline text-[11px] text-gray-400">
                                   {" - "}
                                 </span>
-                              }
-                              {typeId === 0 &&
-                                <span className="inline text-[11px] text-gray-400 underline text-ellipsis">
+                                }
+                                {typeId === 0 &&
+                                  <span className="inline text-[11px] text-gray-400 underline text-ellipsis">
                                   {part.partType.partTypeName}
                                 </span>
-                              }
-                              <span className="block">
+                                }
+                                <span className="block">
                                 {part.partName}
                               </span>
-                            </td>
-                            <td className="text-center">
-                              {part.price}
-                            </td>
-                            <td className="text-center">
-                              {part.unit.unitName}
-                            </td>
-                            <td>
-                              <div className={"flex *:mx-1"}>
-                                <button className='button-primary w-10 h-10' onClick={() => {
-                                  setModalTitle("Edytuj część");
-                                  setModalContent(<ModifyPartModal part={part}/>)
-                                  setIsModalOpen(true);
-                                }}>
-                                  <FaPencil/>
-                                </button>
-                                <button className='button-primary w-10 h-10' onClick={() => {
-                                  setModalTitle("Usuń część");
-                                  setModalContent(<DeleteModal id={part.partId} refetchQueryKey={QUERY_KEYS.Parts}
-                                                               url={"Parts/"}/>)
-                                  setIsModalOpen(true);
-                                }}>
-                                  <FaCircleXmark className="text-red-600"/>
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
+                              </td>
+                              <td className="text-center">
+                                {part.price}
+                              </td>
+                              <td className="text-center">
+                                {part.unit.unitName}
+                              </td>
+                              <td>
+                                <div className={"flex *:mx-1"}>
+                                  <button className='button-primary w-10 h-10' onClick={() => {
+                                    setModalTitle("Edytuj część");
+                                    setModalContent(<ModifyPartModal part={part}/>)
+                                    setIsModalOpen(true);
+                                  }}>
+                                    <FaPencil/>
+                                  </button>
+                                  <button className='button-primary w-10 h-10' onClick={() => {
+                                    setModalTitle("Usuń część");
+                                    setModalContent(<DeleteModal id={part.partId} refetchQueryKey={QUERY_KEYS.Parts}
+                                                                 url={"Parts/"}/>)
+                                    setIsModalOpen(true);
+                                  }}>
+                                    <FaCircleXmark className="text-red-600"/>
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
               <button
@@ -223,4 +226,16 @@ const strFind = (where, what) => {
     .join("");
 
   return where.includes(what);
+};
+
+const polishDict = {
+  ż: "z",
+  ź: "z",
+  ę: "e",
+  ó: "o",
+  ą: "a",
+  ś: "s",
+  ł: "l",
+  ć: "c",
+  ń: "n",
 };

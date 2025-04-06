@@ -4,8 +4,8 @@ import {useState} from "react";
 import {FaCheck, FaXmark} from "react-icons/fa6";
 import {REGEX} from "@/util/regex";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
+import useAxiosAdmin from "@/hooks/useAxiosAdmin";
 
 export default function AddServiceModal({}) {
   const {setIsModalOpen} = useModal();
@@ -17,18 +17,19 @@ export default function AddServiceModal({}) {
   const [isNameValid, setIsNameValid] = useState(false);
   const [isPriceValid, setIsPriceValid] = useState(false);
 
-  const axiosPrivate = useAxiosPrivate();
+  const axiosAdmin = useAxiosAdmin();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
-      return axiosPrivate.post(
+      return axiosAdmin.post(
         "services",
         JSON.stringify({
           serviceId: 0,
           serviceName: name,
           price: price,
           serviceCategoryId: category,
-        })
+        }),
+        {headers: {"Content-Type": "application/json"}}
       );
     },
     onSuccess: async () => {
