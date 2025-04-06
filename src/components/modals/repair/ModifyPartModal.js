@@ -1,22 +1,34 @@
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import {QUERY_KEYS} from "@/util/query_keys";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FaCheck, FaXmark} from "react-icons/fa6";
 import {REGEX} from "@/util/regex";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
+import FetchSelect from "@/components/filtering/FetchSelect";
 
 export default function ModifyPartModal({part}) {
   const {setIsModalOpen} = useModal();
 
-  const [category, setCategory] = useState(part.partCategoryId);
+  const [type, setType] = useState(part.partTypeId);
+  const [category, setCategory] = useState(part.partType.partCategoryId);
   const [name, setName] = useState(part.partName);
   const [price, setPrice] = useState(part.price);
   const [unit, setUnit] = useState(part.unitId);
+  const [firstLoad, setFirstLoad] = useState(true);
 
   const [isNameValid, setIsNameValid] = useState(true);
   const [isPriceValid, setIsPriceValid] = useState(true);
+
+  useEffect(() => {
+    if (!firstLoad) {
+      setType("")
+    } else {
+      setFirstLoad(false);
+    }
+
+  }, [category])
 
   const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
@@ -28,7 +40,7 @@ export default function ModifyPartModal({part}) {
           partId: part.partId,
           partName: name,
           price: price,
-          partCategoryId: category,
+          partTypeId: type,
           unitId: unit,
         })
       );
@@ -62,13 +74,22 @@ export default function ModifyPartModal({part}) {
   return (
     <div className='flex flex-col w-full justify-between items-center py-2'>
       <div className='w-full *:w-full *:mb-4'>
-        <ValidationFetchSelect
+        <FetchSelect
           value={category}
           onChange={setCategory}
-          src='/PartCategories'
+          src={`/partTypes/categories`}
           queryKey={QUERY_KEYS.PartCategories}
-          default_option={""}
+          default_option={"0"}
           title='Kategoria'
+          default_title='Wybierz z listy'
+        />
+        <ValidationFetchSelect
+          value={type}
+          onChange={setType}
+          src={`/partTypes/${category}`}
+          queryKey={[QUERY_KEYS.PartTypes, category]}
+          default_option={""}
+          title='Typ części'
           default_title='Wybierz z listy'
         />
 
@@ -116,7 +137,7 @@ export default function ModifyPartModal({part}) {
           default_title='Wybierz z listy'
         />
         <button
-          disabled={!(isNameValid && isPriceValid && category !== "" && unit !== "")}
+          disabled={!(isNameValid && isPriceValid && type !== "" && unit !== "")}
           className='button-primary text-center disabled:bg-gray-400'
           onClick={() => mutation.mutate()}
         >

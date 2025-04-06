@@ -1,22 +1,10 @@
 "use client";
-import {
-  FaBicycle,
-  FaChevronLeft,
-  FaChevronRight,
-  FaCircleInfo,
-  FaHouse,
-  FaIndustry,
-  FaList,
-  FaPalette,
-  FaRegCircle,
-  FaUser,
-  FaWrench,
-} from "react-icons/fa6";
+import {FaChevronLeft, FaChevronRight,} from "react-icons/fa6";
 import {SideBarButton} from "./SideBarButton";
 import {useState} from "react";
 import {usePathname} from "next/navigation";
 
-export default function SideBar({baseUrl}) {
+export default function SideBar({baseUrl, links}) {
   const [isClicked, setIsClicked] = useState(false);
   const path = usePathname();
   return (
@@ -50,15 +38,3 @@ export default function SideBar({baseUrl}) {
     </div>
   );
 }
-
-const links = [
-  {url: "", icon: <FaHouse/>, title: "Strona główna"},
-  {url: "/rowery", icon: <FaBicycle/>, title: "Rowery"},
-  {url: "/pracownicy", icon: <FaUser/>, title: "Pracownicy"},
-  {url: "/statusy", icon: <FaCircleInfo/>, title: "Statusy"},
-  {url: "/kolory", icon: <FaPalette/>, title: "Kolory"},
-  {url: "/kola", icon: <FaRegCircle/>, title: "Koła"},
-  {url: "/producenci", icon: <FaIndustry/>, title: "Producenci"},
-  {url: "/kategorie", icon: <FaList/>, title: "Kategorie"},
-  {url: "/serwis", icon: <FaWrench/>, title: "Serwis"},
-];

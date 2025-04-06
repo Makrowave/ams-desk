@@ -140,7 +140,7 @@ export default function PartSelect({mutation}) {
               {/* Part List */}
               <div className="w-2/5 pl-2 overflow-x-hidden *:overflow-x-hidden max-h-[500px] flex flex-col">
                 <h3 className="font-semibold mb-2 text-gray-700 min-h-7">Część</h3>
-                <input type="text" className="w-full rounded-lg p-1 border-gray-300 border" placeholder="Usługa"
+                <input type="text" className="w-full rounded-lg p-1 border-gray-300 border" placeholder="Część"
                        onChange={(e) => setText(e.target.value)}
                 />
 
