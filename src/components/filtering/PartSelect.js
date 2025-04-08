@@ -178,8 +178,8 @@ export default function PartSelect({mutation}) {
                                 {part.partName}
                               </span>
                             </div>
-                            <div className="ml-2 min-w-6 text-end">
-                              {part.price}
+                            <div className="ml-2 min-w-16 text-end">
+                              {part.price.toFixed(2)}
                             </div>
                           </button>
                         </li>

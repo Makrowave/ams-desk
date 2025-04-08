@@ -494,11 +494,11 @@ export default function Repair({repair}) {
                   <tbody>
                   <tr>
                     <td>Usługi</td>
-                    <td className='text-end'>{servicesTotal()}</td>
+                    <td className='text-end'>{servicesTotal().toFixed(2)}</td>
                   </tr>
                   <tr>
                     <td>Części</td>
-                    <td className='text-end'>{partsTotal()}</td>
+                    <td className='text-end'>{partsTotal().toFixed(2)}</td>
                   </tr>
                   <tr>
                     <td>Dodatkowe koszty</td>
@@ -524,10 +524,10 @@ export default function Repair({repair}) {
                   <tr>
                     <td>Suma</td>
                     <td className='text-end'>
-                      {servicesTotal() +
+                      {(servicesTotal() +
                         partsTotal() +
                         Number(localRepair.additionalCosts) -
-                        Number(localRepair.discount)}
+                        Number(localRepair.discount)).toFixed(2)}
                     </td>
                   </tr>
                   </tbody>
@@ -642,7 +642,7 @@ export default function Repair({repair}) {
                 <td className='text-end'>
                   <b>Suma:</b>
                 </td>
-                <td>{servicesTotal()}</td>
+                <td>{servicesTotal().toFixed(2)}</td>
                 <td></td>
               </tr>
               </tbody>
@@ -696,7 +696,7 @@ export default function Repair({repair}) {
                 <td className='text-end'>
                   <b>Suma:</b>
                 </td>
-                <td>{partsTotal()}</td>
+                <td>{partsTotal().toFixed(2)}</td>
                 <td></td>
               </tr>
               </tbody>

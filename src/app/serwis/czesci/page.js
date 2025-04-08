@@ -161,7 +161,7 @@ export default function PartRepairsPage() {
                               </span>
                               </td>
                               <td className="text-center">
-                                {part.price}
+                                {part.price.toFixed(2)}
                               </td>
                               <td className="text-center">
                                 {part.unit.unitName}
