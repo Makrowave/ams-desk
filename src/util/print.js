@@ -83,6 +83,11 @@ export const generateRepairNewDoc = (repair, style) => {
         </div>
       </section>
     </main>
+    <footer>
+    W przypadku rezygnacji z naprawy po dokonaniu wyceny, naliczana jest opłata serwisowa w wysokości 20–50 zł.<br/>
+    Po upływie 3 dni od powiadomienia o zakończeniu naprawy, naliczana jest opłata magazynowa w wysokości 10 zł za każdy dzień przechowywania roweru.
+    </footer>
+
   </body>
 </html>
 `;
