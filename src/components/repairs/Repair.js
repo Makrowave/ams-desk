@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import PartRecord from "./PartRecord";
 import {generateRepairCostDoc, generateRepairNewDoc, printRepairCostDoc, printRepairDoc} from "@/util/print";
 import {formatPhone} from "@/util/formatting";
@@ -157,7 +157,11 @@ export default function Repair({repair}) {
       queryClient.setQueryData([QUERY_KEYS.Repairs, repair.repairId], () => {
         return data;
       })
+      startSaveTimeout("success")
     },
+    onError: () => {
+      startSaveTimeout("failure")
+    }
   });
 
   const save = async () => {
@@ -253,9 +257,31 @@ export default function Repair({repair}) {
       updateIsUsed(false);
     };
   }, []);
-
+  ///SAVE - refactor this later and the whole component too
   const [noteFocus, setNoteFocus] = useState(false);
-
+  const [saveStatus, setSaveStatus] = useState("primary");
+  const saveTimeout = useRef(null);
+  const startSaveTimeout = (status) => {
+    if (saveTimeout.current) {
+      clearTimeout(saveTimeout.current);
+    }
+    setSaveStatus(status);
+    saveTimeout.current = setTimeout(() => {
+      setSaveStatus("primary");
+    }, 2000); // 2000ms = 2 seconds
+  };
+  const getButtonStyle = (variant = "primary") => {
+    switch (variant) {
+      case "success":
+        return "bg-green-500 text-white rounded-lg px-2 border-green-600 border-2 shadow-lg border-b-4 hover:bg-green-600";
+      case "failure":
+        return "bg-red-500 text-white rounded-lg px-2 border-red-600 border-2 shadow-lg border-b-4 hover:bg-red-600";
+      case "primary":
+      default:
+        return "bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary";
+    }
+  };
+  ///END SAVE
   return (
     <div className='flex-col rounded-2xl'>
       <div className='flex bg-white rounded-t-xl border-x-2 p-4'>
@@ -268,7 +294,7 @@ export default function Repair({repair}) {
           </SavedDataWarning>
         </button>
         <div className='ml-auto flex gap-4'>
-          <ExpandButton className='button-primary' text={"Zapisz"} onClick={save}>
+          <ExpandButton className={getButtonStyle(saveStatus)} text={"Zapisz"} onClick={save}>
             <FaFloppyDisk/>
           </ExpandButton>
           <button className='button-primary'
