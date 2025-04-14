@@ -157,10 +157,6 @@ export default function Repair({repair}) {
     repairMutation.mutate();
   };
 
-  const handleColEmployeeChange = async (id) => {
-    await employeeMutation.mutate([id, true]);
-  };
-
   const handleRepEmployeeChange = async (id) => {
     await employeeMutation.mutate([id, false]);
   };
@@ -205,7 +201,6 @@ export default function Repair({repair}) {
     };
   }, []);
   const [noteFocus, setNoteFocus] = useState(false);
-  const saveTimeout = useRef(null);
 
   return (
     <div className='flex-col rounded-2xl'>
