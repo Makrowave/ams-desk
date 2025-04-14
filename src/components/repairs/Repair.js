@@ -3,27 +3,12 @@ import PartRecord from "./PartRecord";
 import {generateRepairCostDoc, generateRepairNewDoc, printRepairCostDoc, printRepairDoc} from "@/util/print";
 import {formatPhone} from "@/util/formatting";
 import {useRouter} from "next/navigation";
-import {REPAIR_STATUS} from "@/util/repairStatuses";
-import {
-  FaArrowLeft,
-  FaBoxOpen,
-  FaCheck,
-  FaComment,
-  FaFlagCheckered,
-  FaFloppyDisk,
-  FaHourglass,
-  FaPhone,
-  FaPlus,
-  FaRegCircleXmark,
-  FaShield,
-  FaWrench
-} from "react-icons/fa6";
+import {FaArrowLeft, FaFloppyDisk, FaPlus} from "react-icons/fa6";
 import ServiceRecord from "./ServiceRecord";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {axiosPrivate} from "@/api/axios";
 import ExpandButton from "../buttons/ExpandButton";
 import useModal from "@/hooks/useModal";
-import RepairModal from "../modals/repair/RepairModal";
 import Modal from "../modals/Modal";
 import {QUERY_KEYS} from "@/util/query_keys";
 import useSavedData from "@/hooks/useSavedData";
@@ -31,7 +16,7 @@ import SavedDataWarning from "../navigation/SavedDataWarning";
 import ServiceSelect from "@/components/filtering/ServiceSelect";
 import PartSelect from "@/components/filtering/PartSelect";
 import AddPartModal from "@/components/modals/repair/AddPartModal";
-import CancelRepairModal from "@/components/modals/repair/CancelRepairModal";
+import StatusButtons from "@/components/repairs/StatusButtons";
 
 export default function Repair({repair}) {
   const {isSaved, setIsSaved, updateIsUsed} = useSavedData();
@@ -48,23 +33,6 @@ export default function Repair({repair}) {
     },
   });
 
-  const statusMutation = useMutation({
-    mutationFn: async (id) => {
-      const response = await axiosPrivate.put(`repairs/status/${localRepair.repairId}?statusId=${id}`);
-      return response.data;
-    },
-    onSuccess: async (data) => {
-      queryClient.setQueryData([QUERY_KEYS.Repairs, repair.repairId], (oldData) => {
-        const result = {
-          ...oldData,
-          statusId: data.statusId,
-          status: data.status,
-        };
-        setLocalRepair(result);
-        return result;
-      })
-    },
-  });
 
   const employeeMutation = useMutation({
     mutationFn: async ([id, collection]) => {
@@ -87,44 +55,6 @@ export default function Repair({repair}) {
       })
     },
   });
-
-  const handleStartOrCollect = async (data) => {
-    setIsSaved(true);
-    console.log(data);
-    queryClient.setQueryData([QUERY_KEYS.Repairs, repair.repairId], (oldData) => {
-      const result = {
-        ...oldData,
-        repairEmployeeName: data.repairEmployeeName,
-        repairEmployeeId: data.repairEmployeeId,
-        collectionEmployeeName: data.collectionEmployeeName,
-        collectionEmployeeId: data.collectionEmployeeId,
-        statusId: data.statusId,
-        status: data.status,
-        collectionDate: data.collectionDate,
-      };
-      setLocalRepair(result);
-      return result;
-    })
-  }
-
-  const startMutation = useMutation({
-    mutationFn: async (id) => {
-      const response = await axiosPrivate.put(
-        `repairs/Start/${localRepair.repairId}?employeeId=${id}`
-      );
-      return response.data;
-    },
-    onSuccess: handleStartOrCollect
-  })
-  const collectMutation = useMutation({
-    mutationFn: async (id) => {
-      const response = await axiosPrivate.put(
-        `repairs/Collect/${localRepair.repairId}?employeeId=${id}`
-      );
-      return response.data;
-    },
-    onSuccess: handleStartOrCollect
-  })
 
 
   const repairMutation = useMutation({
@@ -206,10 +136,6 @@ export default function Repair({repair}) {
     setIsSaved(false);
     const newServices = localRepair.services.filter((service) => service.serviceDoneId !== id);
     setLocalRepair({...localRepair, services: newServices});
-  };
-
-  const changeStatus = async (id) => {
-    await statusMutation.mutate(id);
   };
 
   const handleColEmployeeChange = async (id) => {
@@ -320,163 +246,7 @@ export default function Repair({repair}) {
               {localRepair.status.name}
             </div>
           </div>
-          <div className='flex items-center gap-x-2 text-xl'>
-            <ExpandButton
-              disabled={localRepair.statusId !== REPAIR_STATUS.Pending || localRepair.statusId === REPAIR_STATUS.Cancelled}
-              className='button-primary'
-              disabledClass='hover:bg-gray-300 bg-gray-300'
-              text='Rozpocznij'
-              onClick={() => {
-                if (localRepair.statusId !== REPAIR_STATUS.Pending) return;
-                setModalTitle("Rozpocznij naprawę");
-                setModalContent(
-                  <RepairModal
-                    employeeId={localRepair.repairEmployeeId}
-                    label='Kto naprawia'
-                    onClick={(employee) => {
-                      startMutation.mutate(employee);
-                    }}
-                  />
-                );
-                setIsModalOpen(true);
-              }}
-            >
-              <FaWrench/>
-            </ExpandButton>
-            <ExpandButton
-              disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected
-                || localRepair.statusId === REPAIR_STATUS.Pending
-                || localRepair.statusId === REPAIR_STATUS.Cancelled
-              }
-              className='button-primary'
-              disabledClass='hover:bg-gray-300 bg-gray-300'
-              text='Oczekuj części'
-              onClick={() => {
-                changeStatus(REPAIR_STATUS.AwaitingParts);
-              }}
-            >
-              <FaHourglass/>
-            </ExpandButton>
-            <ExpandButton
-              disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected
-                || localRepair.statusId === REPAIR_STATUS.Pending
-                || localRepair.statusId === REPAIR_STATUS.Cancelled
-              }
-              className='button-primary'
-              disabledClass='hover:bg-gray-300 bg-gray-300'
-              text='Gwarancja'
-              onClick={() => {
-                changeStatus(REPAIR_STATUS.Warranty);
-              }}
-            >
-              <FaShield/>
-            </ExpandButton>
-            <ExpandButton
-              disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected
-                || localRepair.statusId === REPAIR_STATUS.Pending
-                || localRepair.statusId === REPAIR_STATUS.Cancelled
-              }
-              className='button-primary'
-              disabledClass='hover:bg-gray-300 bg-gray-300'
-              text='Kontakt z klientem'
-              onClick={() => {
-                changeStatus(REPAIR_STATUS.ContactNeeded);
-              }}
-            >
-              <FaComment/>
-            </ExpandButton>
-            <ExpandButton
-              disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected
-                || localRepair.statusId === REPAIR_STATUS.Pending
-                || localRepair.statusId === REPAIR_STATUS.Cancelled
-              }
-              className='button-primary'
-              disabledClass='hover:bg-gray-300 bg-gray-300'
-              text='Wznów'
-              onClick={() => {
-                changeStatus(3);
-              }}
-            >
-              <FaBoxOpen/>
-            </ExpandButton>
-            <ExpandButton
-              disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected
-                || localRepair.statusId === REPAIR_STATUS.Pending
-                || localRepair.statusId === REPAIR_STATUS.Cancelled
-              }
-              className='button-primary'
-              disabledClass='hover:bg-gray-300 bg-gray-300'
-              text='Zakończ'
-              onClick={() => {
-                changeStatus(REPAIR_STATUS.Finished);
-              }}
-            >
-              <FaCheck/>
-            </ExpandButton>
-            <ExpandButton
-              disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected
-                || localRepair.statusId === REPAIR_STATUS.Pending
-                || localRepair.statusId === REPAIR_STATUS.Cancelled
-              }
-              className='button-primary'
-              disabledClass='hover:bg-gray-300 bg-gray-300'
-              text='Powiadom'
-              onClick={() => {
-                changeStatus(REPAIR_STATUS.Notified);
-              }}
-            >
-              <FaPhone/>
-            </ExpandButton>
-            <ExpandButton
-              disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected
-                || localRepair.statusId === REPAIR_STATUS.Pending
-                || localRepair.statusId === REPAIR_STATUS.Cancelled
-              }
-              className='button-primary'
-              disabledClass='hover:bg-gray-300 bg-gray-300'
-              text='Wydaj'
-              onClick={() => {
-                setModalTitle("Wydaj rower");
-                setModalContent(
-                  <RepairModal
-                    employeeId={localRepair.repairEmployeeId}
-                    label='Kto wydaje'
-                    onClick={(employee) => {
-                      collectMutation.mutate(employee);
-                    }}
-                  />
-                );
-                setIsModalOpen(true);
-              }}
-            >
-              <FaFlagCheckered/>
-            </ExpandButton>
-            <ExpandButton
-              disabled={
-                localRepair.statusId === REPAIR_STATUS.Collected
-                || localRepair.statusId === REPAIR_STATUS.Cancelled
-              }
-              className='button-primary'
-              disabledClass='hover:bg-gray-300 bg-gray-300'
-              text='Anuluj'
-              onClick={() => {
-                setModalTitle("Anuluj");
-                setModalContent(
-                  <CancelRepairModal onClick={changeStatus}/>
-                );
-                setIsModalOpen(true);
-              }}
-            >
-              <FaRegCircleXmark className={"text-red-600"}/>
-            </ExpandButton>
-          </div>
+          <StatusButtons localRepair={localRepair} setIsSaved={setIsSaved} setLocalRepair={setLocalRepair}/>
         </div>
 
         <section className='flex place-content-between pb-4'>
