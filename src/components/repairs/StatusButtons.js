@@ -18,11 +18,12 @@ import {QUERY_KEYS} from "@/util/query_keys";
 import useModal from "@/hooks/useModal";
 
 
-export default function StatusButtons({localRepair, setIsSaved, setLocalRepair}) {
+export default function StatusButtons({localRepair, setIsSaved, setLocalRepair, setSaveStatus}) {
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const queryClient = useQueryClient();
 
   const handleStartOrCollect = async (data) => {
+    setSaveStatus("success");
     setIsSaved(true);
     console.log(data);
     queryClient.setQueryData([QUERY_KEYS.Repairs, localRepair.repairId], (oldData) => {
@@ -43,30 +44,40 @@ export default function StatusButtons({localRepair, setIsSaved, setLocalRepair})
 
   const startMutation = useMutation({
     mutationFn: async (id) => {
+      setSaveStatus("");
       const response = await axiosPrivate.put(
         `repairs/Start/${localRepair.repairId}?employeeId=${id}`
       );
       return response.data;
     },
-    onSuccess: handleStartOrCollect
+    onSuccess: handleStartOrCollect,
+    onError: async (error) => {
+      setSaveStatus("error");
+    }
   })
 
   const collectMutation = useMutation({
     mutationFn: async (id) => {
+      setSaveStatus("");
       const response = await axiosPrivate.put(
         `repairs/Collect/${localRepair.repairId}?employeeId=${id}`
       );
       return response.data;
     },
-    onSuccess: handleStartOrCollect
+    onSuccess: handleStartOrCollect,
+    onError: async (error) => {
+      setSaveStatus("error");
+    }
   })
 
   const statusMutation = useMutation({
     mutationFn: async (id) => {
+      setSaveStatus("");
       const response = await axiosPrivate.put(`repairs/status/${localRepair.repairId}?statusId=${id}`);
       return response.data;
     },
     onSuccess: async (data) => {
+      setSaveStatus("success");
       queryClient.setQueryData([QUERY_KEYS.Repairs, localRepair.repairId], (oldData) => {
         const result = {
           ...oldData,
@@ -77,6 +88,9 @@ export default function StatusButtons({localRepair, setIsSaved, setLocalRepair})
         return result;
       })
     },
+    onError: async (error) => {
+      setSaveStatus("error");
+    }
   });
 
   const changeStatus = async (id) => {

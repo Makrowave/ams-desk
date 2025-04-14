@@ -7,7 +7,6 @@ import {FaArrowLeft, FaFloppyDisk, FaPlus} from "react-icons/fa6";
 import ServiceRecord from "./ServiceRecord";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {axiosPrivate} from "@/api/axios";
-import ExpandButton from "../buttons/ExpandButton";
 import useModal from "@/hooks/useModal";
 import Modal from "../modals/Modal";
 import {QUERY_KEYS} from "@/util/query_keys";
@@ -17,14 +16,25 @@ import ServiceSelect from "@/components/filtering/ServiceSelect";
 import PartSelect from "@/components/filtering/PartSelect";
 import AddPartModal from "@/components/modals/repair/AddPartModal";
 import StatusButtons from "@/components/repairs/StatusButtons";
+import SaveIndicator from "@/components/repairs/SaveIndicator";
 
 export default function Repair({repair}) {
   const {isSaved, setIsSaved, updateIsUsed} = useSavedData();
   const [localRepair, setLocalRepair] = useState(repair);
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
+  const noteTimeoutRef = useRef(null);
+
+  const setChangeTimeoutRef = () => {
+    setSaveStatus("");
+    clearTimeout(noteTimeoutRef.current);
+    noteTimeoutRef.current = setTimeout(() => {
+      repairMutation.mutate()
+    }, 2000)
+
+  }
 
   const queryClient = useQueryClient();
-
+  const [saveStatus, setSaveStatus] = useState("success");
   const {data, isError, isLoading, error} = useQuery({
     queryKey: [QUERY_KEYS.Employees],
     queryFn: async () => {
@@ -36,6 +46,7 @@ export default function Repair({repair}) {
 
   const employeeMutation = useMutation({
     mutationFn: async ([id, collection]) => {
+      setSaveStatus("");
       const response = await axiosPrivate.put(
         `repairs/employee/${localRepair.repairId}?employeeId=${id}&collection=${collection}`
       );
@@ -43,7 +54,6 @@ export default function Repair({repair}) {
     },
     onSuccess: async (data) => {
       setIsSaved(true);
-      console.log(data);
       queryClient.setQueryData([QUERY_KEYS.Repairs, repair.repairId], (oldData) => {
         const result = {
           ...oldData,
@@ -51,14 +61,19 @@ export default function Repair({repair}) {
           repairEmployeeId: data.repairEmployeeId,
         };
         setLocalRepair(result);
+        setSaveStatus("success");
         return result;
       })
     },
+    onError: async (error) => {
+      setSaveStatus("error");
+    }
   });
 
 
   const repairMutation = useMutation({
     mutationFn: async () => {
+      setSaveStatus("");
       const response = await axiosPrivate.put(
         `repairs/${localRepair.repairId}`,
         JSON.stringify({
@@ -87,10 +102,10 @@ export default function Repair({repair}) {
       queryClient.setQueryData([QUERY_KEYS.Repairs, repair.repairId], () => {
         return data;
       })
-      startSaveTimeout("success")
+      setSaveStatus("success");
     },
     onError: () => {
-      startSaveTimeout("failure")
+      setSaveStatus("error");
     }
   });
 
@@ -107,19 +122,21 @@ export default function Repair({repair}) {
     const partUsed = {partUsedId: isNaN(id) ? -1 : id, part: value, amount: 1, price: value.price};
     newParts.push(partUsed);
     setLocalRepair({...localRepair, parts: newParts});
+    repairMutation.mutate();
   };
 
   const changePartAmount = (id, value) => {
     setIsSaved(false);
     const newParts = localRepair.parts.map((part) => (part.partUsedId === id ? {...part, amount: value} : part));
-
     setLocalRepair({...localRepair, parts: newParts});
+    repairMutation.mutate();
   };
 
   const deletePart = (id) => {
     setIsSaved(false);
     const newParts = localRepair.parts.filter((part) => part.partUsedId !== id);
     setLocalRepair({...localRepair, parts: newParts});
+    repairMutation.mutate();
   };
   const [newServiceId, setNewServiceId] = useState(-1);
   const updateServices = (value) => {
@@ -130,12 +147,14 @@ export default function Repair({repair}) {
     const serviceDone = {serviceDoneId: isNaN(id) ? -1 : id, service: value, price: value.price};
     newServices.push(serviceDone);
     setLocalRepair({...localRepair, services: newServices});
+    repairMutation.mutate();
   };
 
   const deleteService = (id) => {
     setIsSaved(false);
     const newServices = localRepair.services.filter((service) => service.serviceDoneId !== id);
     setLocalRepair({...localRepair, services: newServices});
+    repairMutation.mutate();
   };
 
   const handleColEmployeeChange = async (id) => {
@@ -149,10 +168,12 @@ export default function Repair({repair}) {
   const changeDiscount = (value) => {
     setIsSaved(false);
     setLocalRepair({...localRepair, discount: value.replace(/[^0-9]/g, "")});
+    setChangeTimeoutRef()
   };
   const changeCosts = (value) => {
     setIsSaved(false);
     setLocalRepair({...localRepair, additionalCosts: value.replace(/[^0-9]/g, "")});
+    setChangeTimeoutRef()
   };
 
   const router = useRouter();
@@ -183,31 +204,9 @@ export default function Repair({repair}) {
       updateIsUsed(false);
     };
   }, []);
-  ///SAVE - refactor this later and the whole component too
   const [noteFocus, setNoteFocus] = useState(false);
-  const [saveStatus, setSaveStatus] = useState("primary");
   const saveTimeout = useRef(null);
-  const startSaveTimeout = (status) => {
-    if (saveTimeout.current) {
-      clearTimeout(saveTimeout.current);
-    }
-    setSaveStatus(status);
-    saveTimeout.current = setTimeout(() => {
-      setSaveStatus("primary");
-    }, 2000); // 2000ms = 2 seconds
-  };
-  const getButtonStyle = (variant = "primary") => {
-    switch (variant) {
-      case "success":
-        return "bg-green-500 text-white rounded-lg px-2 border-green-600 border-2 shadow-lg border-b-4 hover:bg-green-600";
-      case "failure":
-        return "bg-red-500 text-white rounded-lg px-2 border-red-600 border-2 shadow-lg border-b-4 hover:bg-red-600";
-      case "primary":
-      default:
-        return "bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary";
-    }
-  };
-  ///END SAVE
+
   return (
     <div className='flex-col rounded-2xl'>
       <div className='flex bg-white rounded-t-xl border-x-2 p-4'>
@@ -220,9 +219,10 @@ export default function Repair({repair}) {
           </SavedDataWarning>
         </button>
         <div className='ml-auto flex gap-4'>
-          <ExpandButton className={getButtonStyle(saveStatus)} text={"Zapisz"} onClick={save}>
+          <button onClick={save} className="button-primary">
             <FaFloppyDisk/>
-          </ExpandButton>
+          </button>
+          <SaveIndicator status={saveStatus}/>
           <button className='button-primary'
                   onClick={() => printRepairDoc(generateRepairNewDoc, localRepair)}>
             Drukuj zgłoszenie
@@ -246,7 +246,8 @@ export default function Repair({repair}) {
               {localRepair.status.name}
             </div>
           </div>
-          <StatusButtons localRepair={localRepair} setIsSaved={setIsSaved} setLocalRepair={setLocalRepair}/>
+          <StatusButtons localRepair={localRepair} setIsSaved={setIsSaved} setLocalRepair={setLocalRepair}
+                         setSaveStatus={setSaveStatus}/>
         </div>
 
         <section className='flex place-content-between pb-4'>
@@ -398,6 +399,7 @@ export default function Repair({repair}) {
                 onChange={(e) => {
                   setLocalRepair({...localRepair, note: e.target.value});
                   setIsSaved(false);
+                  setChangeTimeoutRef()
                 }}
                 onFocus={() => {
                   setNoteFocus(true);
