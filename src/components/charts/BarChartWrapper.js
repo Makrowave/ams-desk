@@ -1,12 +1,17 @@
 import {useQuery} from "@tanstack/react-query";
-import {cloneElement, useState} from "react";
+import {cloneElement, useEffect, useRef, useState} from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+import {FaChevronDown, FaChevronUp} from "react-icons/fa6";
 
 export default function BarChartWrapper({url, queryObject, children, isStacked, title, className}) {
   const [prevData, setPrevData] = useState([]);
   const queryKeys = Object.keys(queryObject);
   const queryValues = Object.values(queryObject);
   const [seriesToggles, setSeriesToggles] = useState({});
+  const [height, setHeight] = useState();
+  const [isOpen, setIsOpen] = useState(true);
+  const contentRef = useRef(null);
+
   const createQuery = (keys, values) => {
     let result = "?"
     for (let i = 0; i < keys.length; i++) {
@@ -41,6 +46,13 @@ export default function BarChartWrapper({url, queryObject, children, isStacked, 
         ({dataKey: key, label: key, color: chartColors[index], ...(isStacked && {stack: ""})}))
       .filter(item => item.dataKey !== 'date' && blacklist[item.dataKey])
   }
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setHeight(isOpen ? `${contentRef.current.scrollHeight}px` : "0px");
+    }
+  }, [isOpen]);
+
   const ChildComponent = () => {
     return cloneElement(children,
       {
@@ -55,18 +67,25 @@ export default function BarChartWrapper({url, queryObject, children, isStacked, 
 
   return (
     <div className={`${className} flex flex-col`}>
-      <div className={`flex`}>
-        <h2>{title}</h2>
-        <div>
+      <div className="flex justify-between">
+        <div className={"flex"}>
+          <button onClick={() => setIsOpen(!isOpen)} className={"pr-2"}>
+            {isOpen ? <FaChevronDown/> : <FaChevronUp/>}
+          </button>
+          <h2>{title}</h2>
+        </div>
+        <div className="flex gap-2">
           {
-            Object.keys(seriesToggles).map((series) => (
+            Object.keys(seriesToggles).map((series, index) => (
               <div key={series}>
-                <input type={"checkbox"} checked={seriesToggles[series]} onChange={() => {
-                  setSeriesToggles(
-                    {...seriesToggles, [series]: !seriesToggles[series]}
-                  );
-                  console.log(seriesToggles)
-                }}/>
+                <input type={"checkbox"} className="scale-150 m-2" style={{accentColor: chartColors[index + 1]}}
+                       checked={seriesToggles[series]}
+                       onChange={() => {
+                         setSeriesToggles(
+                           {...seriesToggles, [series]: !seriesToggles[series]}
+                         );
+                         console.log(seriesToggles)
+                       }}/>
                 {series}
               </div>
             ))
@@ -74,7 +93,9 @@ export default function BarChartWrapper({url, queryObject, children, isStacked, 
 
         </div>
       </div>
-      <ChildComponent/>
+      <div style={{height}} ref={contentRef} className="transition-all duration-300 ease-in-out overflow-hidden">
+        <ChildComponent/>
+      </div>
     </div>
   )
 }

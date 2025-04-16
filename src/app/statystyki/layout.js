@@ -15,7 +15,7 @@ export default function AdminLayout({children}) {
   return (
     <PrivateRoute>
       <Navigation active={3}/>
-      <main className='flex flex-col ml-16 h-[calc(100vh-48px)] overflow-y-scroll px-8'>
+      <main className='flex flex-col ml-16 h-[calc(100vh-48px)] overflow-y-scroll px-8 relative'>
         <SideBar baseUrl={"/statystyki"} links={links}/>
         {children}
       </main>
