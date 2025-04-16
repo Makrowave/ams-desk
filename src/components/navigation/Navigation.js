@@ -8,6 +8,7 @@ const navigation = [
   {name: "Rowery", href: "/rowery", links: ["rowery"]},
   {name: "Serwis", href: "/serwis", links: ["serwis"]},
   {name: "Zarządzanie", href: "/adminlogin", links: ["adminlogin", "admin"]},
+  {name: "Statystyki", href: "/statystyki", links: ["statystyki"]},
 ];
 
 export default function Navigation() {
