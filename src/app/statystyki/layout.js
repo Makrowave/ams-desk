@@ -10,6 +10,7 @@ export default function AdminLayout({children}) {
     {url: "/historia", icon: <FaBicycle/>, title: "Historia"},
     {url: "/serwis", icon: <FaUser/>, title: "Serwis"},
     {url: "/sprzedaz", icon: <FaUser/>, title: "Sprzedaż"},
+    {url: "/kategorie", icon: <FaUser/>, title: "Kategorie"},
 
   ];
   return (

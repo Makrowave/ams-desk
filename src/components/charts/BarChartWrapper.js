@@ -1,15 +1,26 @@
 import {useQuery} from "@tanstack/react-query";
 import {cloneElement, useEffect, useRef, useState} from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import {FaChevronDown, FaChevronUp} from "react-icons/fa6";
+import {FaChartBar, FaChartColumn, FaChevronDown, FaChevronUp} from "react-icons/fa6";
 
-export default function BarChartWrapper({url, queryObject, children, isStacked, title, className}) {
+export default function BarChartWrapper({
+                                          url,
+                                          queryObject,
+                                          children,
+                                          isStackedByDefault,
+                                          title,
+                                          className,
+                                          collapsible,
+                                          dataKey,
+                                          hideSelectors
+                                        }) {
   const [prevData, setPrevData] = useState([]);
   const queryKeys = Object.keys(queryObject);
   const queryValues = Object.values(queryObject);
   const [seriesToggles, setSeriesToggles] = useState({});
   const [height, setHeight] = useState();
   const [isOpen, setIsOpen] = useState(true);
+  const [isStacked, setIsStacked] = useState(isStackedByDefault);
   const contentRef = useRef(null);
 
   const createQuery = (keys, values) => {
@@ -24,15 +35,14 @@ export default function BarChartWrapper({url, queryObject, children, isStacked, 
     queryKey: [url, ...queryValues],
     queryFn: async () => {
       const response = await axiosPrivate.get(`${url}${createQuery(queryKeys, queryValues)}`);
-      if (prevData.length === 0) {
-        setSeriesToggles(
-          Object.keys(response.data[0])
-            .filter(key => key !== 'date')
-            .reduce((acc, key) => {
-              acc[key] = true
-              return acc;
-            }, {})
-        )
+      const newToggles = Object.keys(response.data[0])
+        .reduce((acc, key) => {
+          acc[key] = true
+          return acc;
+        }, {})
+      delete newToggles[dataKey];
+      if (prevData.length === 0 || newToggles !== seriesToggles) {
+        setSeriesToggles(newToggles);
       }
       setPrevData(response.data);
       return response.data;
@@ -42,9 +52,10 @@ export default function BarChartWrapper({url, queryObject, children, isStacked, 
 
   const createSeries = (data, blacklist) => {
     return Object.keys(data[0] ?? {})
+      .filter(item => item !== dataKey)
       .map((key, index) =>
         ({dataKey: key, label: key, color: chartColors[index], ...(isStacked && {stack: ""})}))
-      .filter(item => item.dataKey !== 'date' && blacklist[item.dataKey])
+      .filter(item => blacklist[item.dataKey])
   }
 
   useEffect(() => {
@@ -58,27 +69,29 @@ export default function BarChartWrapper({url, queryObject, children, isStacked, 
       {
         ...children.props,
         dataset: data ?? prevData,
-        xAxis: [{scaleType: 'band', dataKey: 'date'}],
+        xAxis: [{scaleType: 'band', dataKey: "place"}],
         series: createSeries(prevData, seriesToggles),
-        legend: {hidden: true}
+        legend: {hidden: !hideSelectors},
       }
     )
   }
 
   return (
     <div className={`${className} flex flex-col`}>
-      <div className="flex justify-between">
+      <div className="flex items-center justify-between flex-wrap relative">
         <div className={"flex"}>
-          <button onClick={() => setIsOpen(!isOpen)} className={"pr-2"}>
-            {isOpen ? <FaChevronDown/> : <FaChevronUp/>}
-          </button>
+          {collapsible &&
+            <button onClick={() => setIsOpen(!isOpen)} className={"pr-2"}>
+              {isOpen ? <FaChevronDown/> : <FaChevronUp/>}
+            </button>
+          }
           <h2>{title}</h2>
         </div>
-        <div className="flex gap-2">
-          {
+        <div className="flex gap-2 pr-12">
+          {!hideSelectors &&
             Object.keys(seriesToggles).map((series, index) => (
-              <div key={series}>
-                <input type={"checkbox"} className="scale-150 m-2" style={{accentColor: chartColors[index + 1]}}
+              <div key={series} className={"flex items-center"}>
+                <input type={"checkbox"} className="scale-150 m-2" style={{accentColor: chartColors[index]}}
                        checked={seriesToggles[series]}
                        onChange={() => {
                          setSeriesToggles(
@@ -90,8 +103,10 @@ export default function BarChartWrapper({url, queryObject, children, isStacked, 
               </div>
             ))
           }
-
         </div>
+        <button className="button-primary h-9 w-9 absolute right-0" onClick={() => setIsStacked(!isStacked)}>
+          {isStacked ? <FaChartBar/> : <FaChartColumn/>}
+        </button>
       </div>
       <div style={{height}} ref={contentRef} className="transition-all duration-300 ease-in-out overflow-hidden">
         <ChildComponent/>
@@ -102,7 +117,7 @@ export default function BarChartWrapper({url, queryObject, children, isStacked, 
 
 const chartColors = [
   '#3366CC', '#DC3912', '#FF9900', '#109618',
-  '#990099', '#3B3EAC', '#0099C6', '#DD4477',
+  '#990099', '#DD4477', '#0099C6', '#3B3EAC',
   '#66AA00', '#B82E2E', '#316395', '#994499',
   '#22AA99', '#AAAA11', '#6633CC', '#E67300',
   '#8B0707', '#651067', '#329262', '#5574A6',

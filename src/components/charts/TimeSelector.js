@@ -19,42 +19,70 @@ export default function TimeSelector({interval, setInterval, since, setSince, un
         <span className="pr-1">Od</span>
         <input type={"date"} value={until} onChange={(e) => setUntil(e.target.value)}/>
       </div>
-      <button className="button-primary" onClick={() => {
-        setLatestInterval(0)
-      }}>
-        Dziś
-      </button>
-      <button className="button-primary" onClick={() => {
-        setLatestInterval(7)
-      }}>
-        Tydzień
-      </button>
-      <button className="button-primary" onClick={() => {
-        setLatestInterval(30)
-      }}>
-        30 dni
-      </button>
-      <button className="button-primary" onClick={() => {
-        setLatestInterval(60)
-      }}>
-        60 dni
-      </button>
-      <button className="button-primary" onClick={() => {
-        setLatestInterval(90)
-      }}>
-        90 dni
-      </button>
-      <button className="button-primary" onClick={() => {
-        setLatestInterval(365)
-      }}>
-        Rok
-      </button>
-      <button className="button-primary" onClick={() => {
-        setSince("")
-        setUntil("")
-      }}>
-        Zawsze
-      </button>
+      <div className={"flex flex-wrap gap-2"}>
+        <button className="button-primary" onClick={() => {
+          setLatestInterval(0)
+        }}>
+          Dziś
+        </button>
+        <button className="button-primary" onClick={() => {
+          setLatestInterval(7)
+        }}>
+          Tydzień
+        </button>
+        <button className="button-primary" onClick={() => {
+          setLatestInterval(30)
+        }}>
+          30 dni
+        </button>
+        <button className="button-primary" onClick={() => {
+          setLatestInterval(60)
+        }}>
+          60 dni
+        </button>
+        <button className="button-primary" onClick={() => {
+          setLatestInterval(90)
+        }}>
+          90 dni
+        </button>
+        <button className="button-primary" onClick={() => {
+          setLatestInterval(365)
+        }}>
+          Rok
+        </button>
+        <button className="button-primary" onClick={() => {
+          setSince("")
+          setUntil("")
+        }}>
+          Zawsze
+        </button>
+        <button
+          className="button-primary"
+          onClick={() => {
+
+            const firstCurrent = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toLocaleDateString('sv-SE');
+            const lastCurrent = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).toLocaleDateString('sv-SE');
+            console.log(firstCurrent)
+            console.log(lastCurrent)
+            setSince(firstCurrent);
+            setUntil(lastCurrent);
+          }}
+        >
+          Bieżący miesiąc
+        </button>
+        <button
+          className="button-primary"
+          onClick={() => {
+            const firstPrev = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1).toLocaleDateString('sv-SE');
+            const lastPrev = new Date(new Date().getFullYear(), new Date().getMonth(), 0).toLocaleDateString('sv-SE');
+            setSince(firstPrev);
+            setUntil(lastPrev);
+          }}
+        >
+          Poprzedni miesiąc
+        </button>
+      </div>
     </div>
   )
 }
+

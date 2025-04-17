@@ -1,9 +1,9 @@
 import {useEffect, useRef, useState} from "react";
 import {FaChevronDown, FaChevronUp} from "react-icons/fa6";
 
-export default function Collapsible({children, title, className}) {
+export default function Collapsible({children, title, className, initialOpen = true}) {
   const [height, setHeight] = useState();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(initialOpen);
   const contentRef = useRef(null);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function Collapsible({children, title, className}) {
 
   return (
     <div className={`${className} flex flex-col`}>
-      <div className={"flex"}>
+      <div className={"flex items-start self-start"}>
         <button onClick={() => setIsOpen(!isOpen)} className={"pr-2"}>
           {isOpen ? <FaChevronDown/> : <FaChevronUp/>}
         </button>
