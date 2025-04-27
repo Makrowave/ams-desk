@@ -24,13 +24,12 @@ export default function Repair({repair}) {
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const noteTimeoutRef = useRef(null);
 
-  const setChangeTimeoutRef = () => {
+  const setChangeTimeoutRef = (repair) => {
     setSaveStatus("");
     clearTimeout(noteTimeoutRef.current);
     noteTimeoutRef.current = setTimeout(() => {
-      repairMutation.mutate()
+      repairMutation.mutate(repair)
     }, 2000)
-
   }
 
   const queryClient = useQueryClient();
@@ -72,23 +71,23 @@ export default function Repair({repair}) {
 
 
   const repairMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (repair) => {
       setSaveStatus("");
       const response = await axiosPrivate.put(
-        `repairs/${localRepair.repairId}`,
+        `repairs/${repair.repairId}`,
         JSON.stringify({
-          ...localRepair,
-          services: localRepair.services.map((service) => ({
+          ...repair,
+          services: repair.services.map((service) => ({
             serviceDoneId: service.serviceDoneId > 0 ? service.serviceDoneId : 0,
             serviceId: service.service.serviceId,
-            repairId: localRepair.repairId,
+            repairId: repair.repairId,
             price: service.price,
           })),
-          parts: localRepair.parts.map((part) => ({
+          parts: repair.parts.map((part) => ({
             partUsedId: part.partUsedId > 0 ? part.partUsedId : 0,
             partId: part.part.partId,
-            repairId: localRepair.repairId,
-            amount: part.amount,
+            repairId: repair.repairId,
+            amount: Number(part.amount),
             price: part.price,
           })),
           status: null,
@@ -110,7 +109,7 @@ export default function Repair({repair}) {
   });
 
   const save = async () => {
-    await repairMutation.mutate();
+    await repairMutation.mutate(localRepair);
   };
 
   const [newPartId, setNewPartId] = useState(-1);
@@ -121,22 +120,25 @@ export default function Repair({repair}) {
     setNewPartId(id - 1);
     const partUsed = {partUsedId: isNaN(id) ? -1 : id, part: value, amount: 1, price: value.price};
     newParts.push(partUsed);
-    setLocalRepair({...localRepair, parts: newParts});
-    repairMutation.mutate();
+    const updatedRepair = {...localRepair, parts: newParts}
+    setLocalRepair(updatedRepair);
+    repairMutation.mutate(updatedRepair);
   };
 
   const changePartAmount = (id, value) => {
     setIsSaved(false);
     const newParts = localRepair.parts.map((part) => (part.partUsedId === id ? {...part, amount: value} : part));
-    setLocalRepair({...localRepair, parts: newParts});
-    repairMutation.mutate();
+    const updatedRepair = {...localRepair, parts: newParts}
+    setLocalRepair(updatedRepair);
+    repairMutation.mutate(updatedRepair);
   };
 
   const deletePart = (id) => {
     setIsSaved(false);
     const newParts = localRepair.parts.filter((part) => part.partUsedId !== id);
-    setLocalRepair({...localRepair, parts: newParts});
-    repairMutation.mutate();
+    const updatedRepair = {...localRepair, parts: newParts}
+    setLocalRepair(updatedRepair);
+    repairMutation.mutate(updatedRepair);
   };
   const [newServiceId, setNewServiceId] = useState(-1);
   const updateServices = (value) => {
@@ -146,15 +148,17 @@ export default function Repair({repair}) {
     setNewServiceId(id - 1);
     const serviceDone = {serviceDoneId: isNaN(id) ? -1 : id, service: value, price: value.price};
     newServices.push(serviceDone);
-    setLocalRepair({...localRepair, services: newServices});
-    repairMutation.mutate();
+    const updatedRepair = {...localRepair, services: newServices};
+    setLocalRepair(updatedRepair);
+    repairMutation.mutate(updatedRepair);
   };
 
   const deleteService = (id) => {
     setIsSaved(false);
     const newServices = localRepair.services.filter((service) => service.serviceDoneId !== id);
-    setLocalRepair({...localRepair, services: newServices});
-    repairMutation.mutate();
+    const updatedRepair = {...localRepair, services: newServices};
+    setLocalRepair(updatedRepair);
+    repairMutation.mutate(updatedRepair);
   };
 
   const handleRepEmployeeChange = async (id) => {
@@ -163,13 +167,15 @@ export default function Repair({repair}) {
 
   const changeDiscount = (value) => {
     setIsSaved(false);
-    setLocalRepair({...localRepair, discount: value.replace(/[^0-9]/g, "")});
-    setChangeTimeoutRef()
+    const repair = {...localRepair, discount: Number(value.replace(/[^0-9]/g, ""))};
+    setLocalRepair(repair);
+    setChangeTimeoutRef(repair)
   };
   const changeCosts = (value) => {
     setIsSaved(false);
-    setLocalRepair({...localRepair, additionalCosts: value.replace(/[^0-9]/g, "")});
-    setChangeTimeoutRef()
+    const repair = {...localRepair, additionalCosts: Number(value.replace(/[^0-9]/g, ""))};
+    setLocalRepair(repair);
+    setChangeTimeoutRef(repair)
   };
 
   const router = useRouter();
@@ -394,7 +400,7 @@ export default function Repair({repair}) {
                 onChange={(e) => {
                   setLocalRepair({...localRepair, note: e.target.value});
                   setIsSaved(false);
-                  setChangeTimeoutRef()
+                  setChangeTimeoutRef({...localRepair, note: e.target.value})
                 }}
                 onFocus={() => {
                   setNoteFocus(true);
