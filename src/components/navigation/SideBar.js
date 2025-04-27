@@ -26,6 +26,7 @@ export default function SideBar({baseUrl, links}) {
           </li>
           {links.map((item) => (
             <SideBarButton
+              onClick={() => setIsClicked(false)}
               href={baseUrl + item.url}
               title={item.title}
               icon={item.icon}

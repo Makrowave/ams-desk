@@ -69,7 +69,7 @@ export default function BarChartWrapper({
       {
         ...children.props,
         dataset: data ?? prevData,
-        xAxis: [{scaleType: 'band', dataKey: "place"}],
+        xAxis: [{scaleType: 'band', dataKey: dataKey}],
         series: createSeries(prevData, seriesToggles),
         legend: {hidden: !hideSelectors},
       }

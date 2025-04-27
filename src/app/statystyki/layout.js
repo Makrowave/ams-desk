@@ -1,16 +1,17 @@
 "use client"
 import Navigation from "@/components/navigation/Navigation";
 import SideBar from "@/components/navigation/SideBar";
-import {FaBicycle, FaHouse, FaUser} from "react-icons/fa6";
+import {FaChartSimple, FaClock, FaHouse, FaScrewdriverWrench} from "react-icons/fa6";
 import PrivateRoute from "@/components/routing/PrivateRoute";
 
 export default function AdminLayout({children}) {
   const links = [
     {url: "", icon: <FaHouse/>, title: "Strona główna"},
-    {url: "/historia", icon: <FaBicycle/>, title: "Historia"},
-    {url: "/serwis", icon: <FaUser/>, title: "Serwis"},
-    {url: "/sprzedaz", icon: <FaUser/>, title: "Sprzedaż"},
-    {url: "/kategorie", icon: <FaUser/>, title: "Kategorie"},
+    {url: "/historia", icon: <FaClock/>, title: "Historia"},
+    {url: "/serwis", icon: <FaScrewdriverWrench/>, title: "Serwis"},
+    // {url: "/sprzedaz", icon: <FaMoneyBill/>, title: "Sprzedaż"},
+    {url: "/kategorie", icon: <FaChartSimple/>, title: "Kategorie"},
+    // {url: "/ebike", icon: <FaBolt/>, title: "E-Bike"},
 
   ];
   return (
