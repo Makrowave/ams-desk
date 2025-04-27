@@ -44,7 +44,7 @@ export default function SaleHistoryTable({since, until}) {
             <tbody>
             {data.map((item) => (
               <tr key={item.id}
-                  className={`*:py-1 *:px-2 ${"2025-04-14" === item.saleDate ? "text-blue-600" : ""} text-center`}>
+                  className={`*:py-1 *:px-2 ${new Date().toLocaleDateString('sv-SE') === item.saleDate ? "text-blue-600" : ""} text-center`}>
                 <td>
                   <ColorPreview primaryColor={item.primaryColor} secondaryColor={item.secondaryColor}/>
                 </td>

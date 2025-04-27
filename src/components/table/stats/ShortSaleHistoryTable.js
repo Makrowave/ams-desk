@@ -30,7 +30,7 @@ export default function ShortSaleHistoryTable({}) {
           <tbody>
           {data.map((item) => (
             <tr key={item.id}
-                className={`*:py-1 *:px-2 ${"2025-04-14" === item.saleDate ? "text-blue-600" : ""}`}>
+                className={`*:py-1 *:px-2 ${new Date().toLocaleDateString('sv-SE') === item.saleDate ? "text-blue-600" : ""}`}>
               <td>
                 <ColorPreview primaryColor={item.primaryColor} secondaryColor={item.secondaryColor}/>
               </td>
