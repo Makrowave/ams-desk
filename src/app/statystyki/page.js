@@ -2,7 +2,7 @@
 
 import ShortSaleHistoryTable from "@/components/table/stats/ShortSaleHistoryTable";
 import BarChartWrapper from "@/components/charts/BarChartWrapper";
-import {BarChart} from "@mui/x-charts";
+import {BarChart, LineChart} from "@mui/x-charts";
 import {useQuery} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 
@@ -50,6 +50,7 @@ export default function DashBoard() {
               <BarChart
                 barLabel={"value"}
                 height={400}
+                grid={{horizontal: true}}
               />
             </BarChartWrapper>
           </div>
@@ -69,10 +70,12 @@ export default function DashBoard() {
                              title={"Rowery sprzedane w tym tygodniu"}
                              className="border border-gray-200 rounded-lg p-2"
                              dataKey={"date"}
+                             seriesProps={{showMark: false, curve: "linear"}}
             >
-              <BarChart
+              <LineChart
                 barLabel={"value"}
                 height={400}
+                grid={{vertical: true, horizontal: true}}
               />
             </BarChartWrapper>
           </div>

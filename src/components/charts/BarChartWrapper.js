@@ -12,7 +12,8 @@ export default function BarChartWrapper({
                                           className,
                                           collapsible,
                                           dataKey,
-                                          hideSelectors
+                                          hideSelectors,
+                                          seriesProps = {}
                                         }) {
   const [prevData, setPrevData] = useState([]);
   const queryKeys = Object.keys(queryObject);
@@ -54,7 +55,7 @@ export default function BarChartWrapper({
     return Object.keys(data[0] ?? {})
       .filter(item => item !== dataKey)
       .map((key, index) =>
-        ({dataKey: key, label: key, color: chartColors[index], ...(isStacked && {stack: ""})}))
+        ({...seriesProps, dataKey: key, label: key, color: chartColors[index], ...(isStacked && {stack: ""})}))
       .filter(item => blacklist[item.dataKey])
   }
 
