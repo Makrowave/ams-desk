@@ -18,7 +18,7 @@ const URLS = {
   ServiceCategories: "/Services/Categories/",
   Favorites: "/Favorites/",
   ExcludedStatuses: "/Statuses/Excluded/",
-  Sold: "/SalesData/Sold/",
+  SoldBikes: "/SalesData/Sold/",
   ServicesFromCategory: "/Services/FromCategory/",
   FilteredParts: "/Parts/Filtered/"
 };
