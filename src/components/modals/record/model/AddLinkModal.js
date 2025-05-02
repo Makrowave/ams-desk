@@ -2,9 +2,9 @@ import ErrorDisplay from "@/components/error/ErrorDisplay";
 import ModalTextInput from "@/components/input/ModalTextInput";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
+import URLS from "@/util/urls";
 
 export default function AddLinkModal({model}) {
   const [link, setLink] = useState("");
@@ -24,7 +24,7 @@ export default function AddLinkModal({model}) {
     },
     onSuccess: (data) => {
       queryClient.setQueriesData({
-        queryKey: [QUERY_KEYS.Models],
+        queryKey: [URLS.Models],
         exact: false,
       }, (oldData) => {
         return oldData ? oldData.map((m) => m.modelId === data.modelId ?

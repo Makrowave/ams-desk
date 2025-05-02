@@ -9,7 +9,6 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {axiosPrivate} from "@/api/axios";
 import useModal from "@/hooks/useModal";
 import Modal from "../modals/Modal";
-import {QUERY_KEYS} from "@/util/query_keys";
 import useSavedData from "@/hooks/useSavedData";
 import SavedDataWarning from "../navigation/SavedDataWarning";
 import ServiceSelect from "@/components/filtering/ServiceSelect";
@@ -17,6 +16,7 @@ import PartSelect from "@/components/filtering/PartSelect";
 import AddPartModal from "@/components/modals/repair/AddPartModal";
 import StatusButtons from "@/components/repairs/StatusButtons";
 import SaveIndicator from "@/components/repairs/SaveIndicator";
+import URLS from "@/util/urls";
 
 export default function Repair({repair}) {
   const {isSaved, setIsSaved, updateIsUsed} = useSavedData();
@@ -35,7 +35,7 @@ export default function Repair({repair}) {
   const queryClient = useQueryClient();
   const [saveStatus, setSaveStatus] = useState("success");
   const {data, isError, isLoading, error} = useQuery({
-    queryKey: [QUERY_KEYS.Employees],
+    queryKey: [URLS.Employees],
     queryFn: async () => {
       const response = await axiosPrivate.get("Employees");
       return response.data;
@@ -53,7 +53,7 @@ export default function Repair({repair}) {
     },
     onSuccess: async (data) => {
       setIsSaved(true);
-      queryClient.setQueryData([QUERY_KEYS.Repairs, repair.repairId], (oldData) => {
+      queryClient.setQueryData([URLS.Repairs, repair.repairId], (oldData) => {
         const result = {
           ...oldData,
           repairEmployeeName: data.repairEmployeeName,
@@ -98,7 +98,7 @@ export default function Repair({repair}) {
     onSuccess: async (data) => {
       setLocalRepair(data);
       setIsSaved(true);
-      queryClient.setQueryData([QUERY_KEYS.Repairs, repair.repairId], () => {
+      queryClient.setQueryData([URLS.Repairs, repair.repairId], () => {
         return data;
       })
       setSaveStatus("success");

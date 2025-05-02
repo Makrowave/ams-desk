@@ -14,8 +14,8 @@ import {
 import CancelRepairModal from "@/components/modals/repair/CancelRepairModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {axiosPrivate} from "@/api/axios";
-import {QUERY_KEYS} from "@/util/query_keys";
 import useModal from "@/hooks/useModal";
+import URLS from "@/util/urls";
 
 
 export default function StatusButtons({localRepair, setIsSaved, setLocalRepair, setSaveStatus}) {
@@ -26,7 +26,7 @@ export default function StatusButtons({localRepair, setIsSaved, setLocalRepair, 
     setSaveStatus("success");
     setIsSaved(true);
     console.log(data);
-    queryClient.setQueryData([QUERY_KEYS.Repairs, localRepair.repairId], (oldData) => {
+    queryClient.setQueryData([URLS.Repairs, localRepair.repairId], (oldData) => {
       const result = {
         ...oldData,
         repairEmployeeName: data.repairEmployeeName,
@@ -78,7 +78,7 @@ export default function StatusButtons({localRepair, setIsSaved, setLocalRepair, 
     },
     onSuccess: async (data) => {
       setSaveStatus("success");
-      queryClient.setQueryData([QUERY_KEYS.Repairs, localRepair.repairId], (oldData) => {
+      queryClient.setQueryData([URLS.Repairs, localRepair.repairId], (oldData) => {
         const result = {
           ...oldData,
           statusId: data.statusId,

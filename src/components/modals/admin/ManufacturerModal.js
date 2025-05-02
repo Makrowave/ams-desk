@@ -5,7 +5,7 @@ import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import {REGEX} from "@/util/regex";
-import {QUERY_KEYS} from "@/util/query_keys";
+import URLS from "@/util/urls";
 
 export default function ManufacturerModal({manufacturer, action}) {
   const [name, setName] = useState(manufacturer === undefined ? "" : manufacturer.manufacturerName);
@@ -43,11 +43,11 @@ export default function ManufacturerModal({manufacturer, action}) {
     },
     onSuccess: (data) => {
       if (action === "put") {
-        queryClient.setQueryData([QUERY_KEYS.Manufacturers], (oldData) => (
+        queryClient.setQueryData([URLS.Manufacturers], (oldData) => (
           oldData.map(man => man.manufacturerId === manufacturer.manufacturerId ? data : man)
         ));
       } else if (action === "post") {
-        queryClient.setQueryData([QUERY_KEYS.Manufacturers], (oldData) => (
+        queryClient.setQueryData([URLS.Manufacturers], (oldData) => (
           [...oldData, data]
         ));
       }

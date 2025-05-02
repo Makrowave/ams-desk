@@ -5,7 +5,7 @@ import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
 import ModalTextInput from "@/components/input/ModalTextInput";
 import {REGEX} from "@/util/regex";
-import {QUERY_KEYS} from "@/util/query_keys";
+import URLS from "@/util/urls";
 
 export default function SellModal({bikeId, basePrice, placeId}) {
   //Change it based on selected location
@@ -23,21 +23,22 @@ export default function SellModal({bikeId, basePrice, placeId}) {
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueriesData({queryKey: [QUERY_KEYS.Models], exact: false}, (oldData) => {
+      queryClient.setQueriesData({queryKey: [URLS.Models], exact: false}, (oldData) => {
         return oldData.map((model) => {
           return model.modelId === data.modelId
-          ? {...model,
+            ? {
+              ...model,
               bikeCount: model.bikeCount - 1,
               placeBikeCount: model.placeBikeCount.map(place => place.placeId === data.placeId
-              ? {...place, count: place.count - 1, isAvaible: place.isAvaible && ((place.count - 1) === 0)}
+                ? {...place, count: place.count - 1, isAvaible: place.isAvaible && ((place.count - 1) === 0)}
                 : place
               )
-          }
-          : model
+            }
+            : model
         })
       })
-      console.log([QUERY_KEYS.Bikes, data.modelId, placeId])
-      queryClient.setQueryData([QUERY_KEYS.Bikes, data.modelId, placeId], (oldData) => {
+      console.log([URLS.Bikes, data.modelId, placeId])
+      queryClient.setQueryData([URLS.Bikes, data.modelId, placeId], (oldData) => {
         console.log(oldData)
         return oldData.filter((bike) => bike.id !== bikeId);
       })

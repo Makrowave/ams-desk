@@ -4,7 +4,7 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
+import URLS from "@/util/urls";
 
 export default function AddBikeModal({modelId, placeId}) {
   //Change it based on selected location
@@ -32,11 +32,11 @@ export default function AddBikeModal({modelId, placeId}) {
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Models],
+        queryKey: [URLS.Models],
         exact: false,
       });
       queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Bikes],
+        queryKey: [URLS.Bikes],
         exact: false,
       });
       setIsModalOpen(false);
@@ -58,8 +58,7 @@ export default function AddBikeModal({modelId, placeId}) {
       <ValidationFetchSelect
         value={place}
         onChange={setPlace}
-        src='/Places'
-        queryKey={QUERY_KEYS.Places}
+        urlKey={'Places'}
         title='Miejsce'
         default_option={""}
         default_title='Wybierz z listy'
@@ -67,8 +66,8 @@ export default function AddBikeModal({modelId, placeId}) {
       <ValidationFetchSelect
         value={status}
         onChange={setStatus}
-        src='/Status/Excluded?exclude=3'
-        queryKey={QUERY_KEYS.Statuses}
+        urlKey={'ExcludedStatuses'}
+        params={{exclude: [3]}}
         title='Status'
         default_option={""}
         default_title='Wybierz z listy'

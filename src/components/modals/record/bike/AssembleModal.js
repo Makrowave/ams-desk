@@ -4,7 +4,7 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
+import URLS from "@/util/urls";
 
 export default function AssembleModal({bikeId}) {
   //Change it based on selected location
@@ -28,7 +28,7 @@ export default function AssembleModal({bikeId}) {
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Bikes],
+        queryKey: [URLS.Bikes],
         exact: false,
       });
       setIsModalOpen(false);
@@ -50,8 +50,7 @@ export default function AssembleModal({bikeId}) {
       <ValidationFetchSelect
         value={employeeId}
         onChange={setEmployeeId}
-        src='/Employees'
-        queryKey={QUERY_KEYS.Employees}
+        urlKey={'Employees'}
         default_option={""}
         title='Pracownik'
         default_title='Wybierz z listy'

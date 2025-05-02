@@ -1,13 +1,12 @@
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
 import OrderButton from "../OrderButton";
 import DeleteModal from "@/components/modals/DeleteModal";
 import EmployeeModal from "@/components/modals/admin/EmployeeModal";
+import URLS from "@/util/urls";
 
 export default function EmployeeRow({employee, prev, next}) {
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
-  const _url = "/Employees/ChangeOrder";
-  const queryKey = QUERY_KEYS.Employees;
+  const _url = `${URLS.Employees}ChangeOrder`;
   return (
     <tr className='table-row h-14'>
       <td>{employee.employeeId}</td>
@@ -19,11 +18,11 @@ export default function EmployeeRow({employee, prev, next}) {
             first={prev}
             last={employee.employeeId}
             url={_url}
-            queryKey={queryKey}
+            queryKey={URLS.Employees}
             up={true}
           />
         )}
-        {next && <OrderButton first={employee.employeeId} last={next} url={_url} queryKey={queryKey} up={false}/>}
+        {next && <OrderButton first={employee.employeeId} last={next} url={_url} queryKey={URLS.Employees} up={false}/>}
       </td>
       <td>
         <button
@@ -45,9 +44,9 @@ export default function EmployeeRow({employee, prev, next}) {
             setModalContent(
               <DeleteModal
                 id={employee.employeeId}
-                url={"/Employees/"}
+                url={URLS.Employees}
                 admin={true}
-                refetchQueryKey={QUERY_KEYS.Employees}
+                refetchQueryKey={URLS.Employees}
               />
             );
             setIsModalOpen(true);

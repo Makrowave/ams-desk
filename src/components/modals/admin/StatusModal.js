@@ -6,7 +6,7 @@ import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import {REGEX} from "@/util/regex";
-import {QUERY_KEYS} from "@/util/query_keys";
+import URLS from "@/util/urls";
 
 export default function StatusModal({status, action}) {
   const [name, setName] = useState(status === undefined ? "" : status.statusName);
@@ -17,7 +17,7 @@ export default function StatusModal({status, action}) {
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
   const {setIsModalOpen} = useModal();
-  const _url = "/Status/";
+  const _url = "/Statuses/";
   const mutation = useMutation({
     mutationFn: async () => {
       if (action === "put") {
@@ -46,11 +46,11 @@ export default function StatusModal({status, action}) {
     },
     onSuccess: (data) => {
       if (action === "put") {
-        queryClient.setQueriesData({queryKey: [QUERY_KEYS.Statuses], exact: false}, (oldData) => (
+        queryClient.setQueriesData({queryKey: [URLS.Statuses], exact: false}, (oldData) => (
           oldData.map(st => st.statusId === status.statusId ? data : st)
         ));
       } else if (action === "post") {
-        queryClient.setQueryData([QUERY_KEYS.Statuses], (oldData) => (
+        queryClient.setQueryData([URLS.Statuses], (oldData) => (
           [...oldData, data]
         ));
       }

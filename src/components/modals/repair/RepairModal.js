@@ -1,6 +1,5 @@
 import FetchSelect from "@/components/filtering/FetchSelect";
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
 import {useState} from "react";
 
 export default function RepairModal({employeeId, onClick, label}) {
@@ -19,8 +18,7 @@ export default function RepairModal({employeeId, onClick, label}) {
         <FetchSelect
           value={employee}
           onChange={setEmployee}
-          src='/Employees'
-          queryKey={QUERY_KEYS.Employees}
+          urlKey={'Employees'}
           title={label}
           default_option={"Wybierz"}
           default_title='Dowolny'

@@ -61,7 +61,7 @@ export function Select({pKey, defaultKey, defaultValue, onChange, options, isCol
 
   function formatOptions() {
     let opt = [];
-    if (options.length > 0) {
+    if (options !== undefined && options.length > 0) {
       let optLength = Object.keys(options[0]).length;
       if (optLength === 2) {
         opt = options.map((option) => ({

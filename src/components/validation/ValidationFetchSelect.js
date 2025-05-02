@@ -1,15 +1,14 @@
 "use client";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import {useQuery} from "@tanstack/react-query";
 import {Select} from "../input/Select";
 import {FaCheck, FaXmark} from "react-icons/fa6";
+import {createQueryHook} from "@/hooks/queryHooks";
 
 // Component that turns data fetch from 'src' to <option> list.
 // Data fetched should have unique key as first parameter and name as second
 // Shows an icon if value other than default is chosen
 export default function ValidationFetchSelect({
-                                                src,
-                                                queryKey,
+                                                urlKey,
+                                                params = null,
                                                 value,
                                                 onChange,
                                                 title,
@@ -37,16 +36,9 @@ export default function ValidationFetchSelect({
       </div>
     );
   };
-  const createQueryKey = () => (Array.isArray(queryKey) ? queryKey : [queryKey])
 
-  const axiosPrivate = useAxiosPrivate();
-  const {data, isPending, isError, error, refetch} = useQuery({
-    queryKey: [...createQueryKey()],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(src);
-      return response.data;
-    },
-  });
+  const hook = createQueryHook(urlKey)
+  const {data, isPending, isError, error, refetch} = hook(params)
 
   if (isPending) {
     return (

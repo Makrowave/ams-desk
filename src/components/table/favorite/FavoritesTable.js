@@ -1,19 +1,9 @@
 'use client'
-import {useQuery} from "@tanstack/react-query";
-import {QUERY_KEYS} from "@/util/query_keys";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import FavoriteModelRecord from "@/components/table/favorite/FavoriteModelRecord";
+import {useFavoritesQuery} from "@/hooks/queryHooks";
 
 export default function FavoritesTable() {
-
-  const axiosPrivate = useAxiosPrivate()
-  const {data, isLoading, isError, error} = useQuery({
-    queryKey: [QUERY_KEYS.Favorites],
-    queryFn: async () => {
-      const result = await axiosPrivate({url: "/models/favorite"});
-      return result.data;
-    }
-  });
+  const {data, isLoading, isError, error} = useFavoritesQuery(null, {refetchInterval: 5000})
 
   return (
     <table className="w-fit mr-auto min-w-[600px]">

@@ -1,10 +1,8 @@
 import {useEffect, useRef, useState} from "react";
 import {FaPlus, FaXmark} from "react-icons/fa6";
-import {useQuery} from "@tanstack/react-query";
-import {QUERY_KEYS} from "@/util/query_keys";
-import {axiosPrivate} from "@/api/axios";
 import AddPartModal from "@/components/modals/repair/AddPartModal";
 import useModal from "@/hooks/useModal";
+import {useFilteredPartsQuery, usePartCategoriesQuery, usePartTypesQuery} from "@/hooks/queryHooks";
 
 export default function PartSelect({mutation}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,33 +13,16 @@ export default function PartSelect({mutation}) {
   const [text, setText] = useState("");
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal()
   // Fetch categories
-  const {data: catData, isLoading: catIsLoading, isError: catIsError} = useQuery({
-    queryKey: [QUERY_KEYS.PartCategories],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(`/partTypes/categories`);
-      return response.data;
-    },
-  });
+  const {data: catData, isLoading: catIsLoading, isError: catIsError} = usePartCategoriesQuery();
 
   // Fetch parts based on selected part type
-  const {data: partData, isLoading: partIsLoading, isError: partIsError} = useQuery({
-    queryKey: [QUERY_KEYS.Parts, categoryId, typeId],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(`/parts/filtered?categoryId=${categoryId}&typeId=${typeId}`);
-      return response.data;
-    },
+  const {data: partData, isLoading: partIsLoading, isError: partIsError} = useFilteredPartsQuery({
+    categoryId: categoryId,
+    typeId: typeId
   });
 
   //Fetch types based on selected category
-  const {data: typeData, isLoading: typeIsLoading, isError: typeIsError} = useQuery({
-    queryKey: [QUERY_KEYS.PartTypes, "category", categoryId],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(
-        `/partTypes/${categoryId}`
-      );
-      return response.data;
-    },
-  });
+  const {data: typeData, isLoading: typeIsLoading, isError: typeIsError} = usePartTypesQuery({"id": categoryId});
 
   const handleOnClick = (record) => {
     mutation(record);

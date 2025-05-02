@@ -1,27 +1,11 @@
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import {useQuery} from "@tanstack/react-query";
 import ColorPreview from "@/components/table/ColorPreview";
-import {QUERY_KEYS} from "@/util/query_keys";
+import {usePlacesQuery, useSoldBikesQuery} from "@/hooks/queryHooks";
 
 export default function SaleHistoryTable({since, until}) {
+  const {data, isError, isLoading} = useSoldBikesQuery({since: since ?? "", until: until ?? ""});
 
-  const axiosPrivate = useAxiosPrivate();
-
-  const {data, isError, isLoading} = useQuery({
-    queryKey: ["SalesData/sold", since, until],
-    queryFn: async () => {
-      const result = await axiosPrivate.get(`SalesData/sold?since=${since ?? ""}&until=${until ?? ""}`);
-      return result.data
-    }
-  })
-
-  const {data: placeData, isError: placeIsError, isLoading: placeIsLoading} = useQuery({
-    queryKey: [QUERY_KEYS.Places],
-    queryFn: async () => {
-      const result = await axiosPrivate.get(`Places`)
-      return result.data
-    }
-  })
+  //TODO
+  const {data: placeData, isError: placeIsError, isLoading: placeIsLoading} = usePlacesQuery()
 
   return (
     <div className="w-fit h-[500px] overflow-y-auto rounded-lg border-gray-200 border">

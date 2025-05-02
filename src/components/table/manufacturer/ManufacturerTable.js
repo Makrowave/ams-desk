@@ -1,21 +1,10 @@
 "use client";
 import "../table.css";
-import {useQuery} from "@tanstack/react-query";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ManufacturerRow from "./ManufacturerRow";
-import {QUERY_KEYS} from "@/util/query_keys";
+import {useManufacturersQuery} from "@/hooks/queryHooks";
 
 export default function ManufacturerTable() {
-  const axiosPrivate = useAxiosPrivate();
-  const _url = "/Manufacturers";
-  const {data, isPending, isError, error} = useQuery({
-    queryKey: [QUERY_KEYS.Manufacturers],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(_url);
-      return response.data;
-    },
-    refetchInterval: 5000,
-  });
+  const {data, isPending, isError, error} = useManufacturersQuery(null, {refetchInterval: 5000})
   return (
     <table className='table w-full'>
       <thead className='bg-secondary mb-px sticky top-0 z-10 shadow-lg h-10'>

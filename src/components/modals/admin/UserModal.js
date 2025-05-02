@@ -3,9 +3,9 @@ import FetchSelect from "@/components/filtering/FetchSelect";
 import ModalTextInput from "@/components/input/ModalTextInput";
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
+import URLS from "@/util/urls";
 
 export default function UserModal({user, action}) {
   const [username, setUsername] = useState(user === undefined ? "" : user.username);
@@ -15,12 +15,11 @@ export default function UserModal({user, action}) {
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
   const {setIsModalOpen} = useModal();
-  const _url = "/Users/";
   const mutation = useMutation({
     mutationFn: async () => {
       if (action === "put") {
         return await axiosAdmin.put(
-          _url + user.userId,
+          URLS.Users + user.userId,
           JSON.stringify({
             username: username,
             newPassword: password,
@@ -32,7 +31,7 @@ export default function UserModal({user, action}) {
         );
       } else if (action === "post") {
         return await axiosAdmin.post(
-          _url,
+          URLS.Users,
           JSON.stringify({
             username: username,
             password: password,
@@ -46,7 +45,7 @@ export default function UserModal({user, action}) {
     },
     onSuccess: (response) => {
       queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Users],
+        queryKey: [URLS.Users],
         exact: false,
       });
       setIsModalOpen(false);
@@ -68,8 +67,7 @@ export default function UserModal({user, action}) {
       <FetchSelect
         value={employeeId}
         onChange={setEmployeeId}
-        src='/Employees'
-        queryKey={QUERY_KEYS.Employees}
+        urlKey={'Employees'}
         title='Pracownik'
         default_option={""}
         default_title='Brak'

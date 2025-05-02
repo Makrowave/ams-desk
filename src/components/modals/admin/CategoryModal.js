@@ -5,7 +5,7 @@ import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import {REGEX} from "@/util/regex";
-import {QUERY_KEYS} from "@/util/query_keys";
+import URLS from "@/util/urls";
 
 export default function CategoryModal({category, action}) {
   const [name, setName] = useState(category === undefined ? "" : category.categoryName);
@@ -43,11 +43,11 @@ export default function CategoryModal({category, action}) {
     },
     onSuccess: (data) => {
       if (action === "put") {
-        queryClient.setQueryData([QUERY_KEYS.Categories], (oldData) => (
+        queryClient.setQueryData([URLS.Categories], (oldData) => (
           oldData.map(cat => cat.categoryId === category.categoryId ? data : cat)
         ));
       } else if (action === "post") {
-        queryClient.setQueryData([QUERY_KEYS.Categories], (oldData) => (
+        queryClient.setQueryData([URLS.Categories], (oldData) => (
           [...oldData, data]
         ));
       }

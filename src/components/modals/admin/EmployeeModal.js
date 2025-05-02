@@ -5,7 +5,7 @@ import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import {REGEX} from "@/util/regex";
-import {QUERY_KEYS} from "@/util/query_keys";
+import URLS from "@/util/urls";
 
 export default function EmployeeModal({employee, action}) {
   const [name, setName] = useState(employee === undefined ? "" : employee.employeeName);
@@ -43,11 +43,11 @@ export default function EmployeeModal({employee, action}) {
     },
     onSuccess: (data) => {
       if (action === "put") {
-        queryClient.setQueryData([QUERY_KEYS.Employees], (oldData) => (
+        queryClient.setQueryData([URLS.Employees], (oldData) => (
           oldData.map(emp => emp.employeeId === employee.employeeId ? data : emp)
         ));
       } else if (action === "post") {
-        queryClient.setQueryData([QUERY_KEYS.Employees], (oldData) => (
+        queryClient.setQueryData([URLS.Employees], (oldData) => (
           [...oldData, data]
         ));
       }

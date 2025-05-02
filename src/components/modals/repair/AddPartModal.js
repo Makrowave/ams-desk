@@ -1,11 +1,11 @@
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
-import {QUERY_KEYS} from "@/util/query_keys";
 import {useState} from "react";
 import {FaCheck, FaXmark} from "react-icons/fa6";
 import {REGEX} from "@/util/regex";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
+import URLS from "@/util/urls";
 
 export default function AddPartModal({}) {
   const {setIsModalOpen} = useModal();
@@ -35,7 +35,7 @@ export default function AddPartModal({}) {
       );
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({queryKey: [QUERY_KEYS.Parts], exact: false});
+      await queryClient.refetchQueries({queryKey: [URLS.Parts], exact: false});
       setIsModalOpen(false);
     },
   });
@@ -70,8 +70,7 @@ export default function AddPartModal({}) {
         <ValidationFetchSelect
           value={category}
           onChange={handleCategoryChange}
-          src='/partTypes/categories'
-          queryKey={QUERY_KEYS.PartCategories}
+          urlKey={'PartCategories'}
           default_option={""}
           title='Kategoria'
           default_title='Wybierz z listy'
@@ -80,8 +79,8 @@ export default function AddPartModal({}) {
           <ValidationFetchSelect
             value={type}
             onChange={setType}
-            src={`/partTypes/${category}`}
-            queryKey={[QUERY_KEYS.PartTypes, "category", category]}
+            urlKey={"PartTypes"}
+            params={{id: category}}
             default_option={""}
             title='Typ'
             default_title='Wybierz z listy'
@@ -126,8 +125,7 @@ export default function AddPartModal({}) {
         <ValidationFetchSelect
           value={unit}
           onChange={setUnit}
-          src='/Units'
-          queryKey={QUERY_KEYS.Units}
+          urlKey='Units'
           default_option={""}
           title='Jednostka'
           default_title='Wybierz z listy'

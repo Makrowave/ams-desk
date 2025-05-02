@@ -2,9 +2,9 @@ import ErrorDisplay from "@/components/error/ErrorDisplay";
 import ModalTextInput from "@/components/input/ModalTextInput";
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
+import URLS from "@/util/urls";
 
 export default function WheelModal() {
   const [wheel, setWheel] = useState("");
@@ -20,7 +20,7 @@ export default function WheelModal() {
     },
     onSuccess: (data) => {
       queryClient.setQueryData(
-        [QUERY_KEYS.WheelSizes], (oldData) => {
+        [URLS.WheelSizes], (oldData) => {
           return [...oldData, {key: data, value: data}].sort((a, b) => (Number(a.value) - Number(b.value)))
         });
       setIsModalOpen(false);

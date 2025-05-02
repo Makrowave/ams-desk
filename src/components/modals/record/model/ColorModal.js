@@ -2,9 +2,9 @@ import ColorInput from "@/components/input/ColorInput";
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
+import URLS from "@/util/urls";
 
 //primaryColor and secondaryColor can be null in DB
 //(for example if not specified by manufacturer and bike inserts are automated)
@@ -33,7 +33,7 @@ export default function ColorModal({model}) {
     },
     onSuccess: (data) => {
       queryClient.setQueriesData({
-        queryKey: [QUERY_KEYS.Models],
+        queryKey: [URLS.Models],
         exact: false,
       }, (oldData) => {
         return oldData ? oldData.map((m) => m.modelId === data.modelId ?
@@ -63,8 +63,7 @@ export default function ColorModal({model}) {
       <ValidationFetchSelect
         value={color}
         onChange={setColor}
-        src='/Colors'
-        queryKey={QUERY_KEYS.Colors}
+        urlKey={'Colors'}
         default_option={""}
         title='Kolor'
         default_title='Wybierz z listy'

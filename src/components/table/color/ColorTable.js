@@ -1,22 +1,10 @@
 "use client";
 import ColorRow from "./ColorRow";
 import "../table.css";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import {useQuery} from "@tanstack/react-query";
-import {QUERY_KEYS} from "@/util/query_keys";
+import {useColorsQuery} from "@/hooks/queryHooks";
 
 export default function ColorTable() {
-  //const data = [{ id: 1, name: "Czrewony", hexCode: "#FF0000" }];
-  const axiosPrivate = useAxiosPrivate();
-  const _url = "/Colors";
-  const {data, isPending, isError, error} = useQuery({
-    queryKey: [QUERY_KEYS.Colors],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(_url);
-      return response.data;
-    },
-    refetchInterval: 5000,
-  });
+  const {data, isPending, isError, error} = useColorsQuery(null, {refetchInterval: 5000});
   return (
     <table className='table w-full'>
       <thead className='bg-secondary mb-px sticky top-0 z-10 shadow-lg h-10'>

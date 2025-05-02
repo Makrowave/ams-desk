@@ -1,22 +1,10 @@
 "use client";
 import StatusRow from "./StatusRow";
 import "../table.css";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import {useQuery} from "@tanstack/react-query";
-import {QUERY_KEYS} from "@/util/query_keys";
+import {useStatusesQuery} from "@/hooks/queryHooks";
 
 export default function StatusTable() {
-  //const data = [{ id: 1, name: "Niezłożony", hexCode: "#fff0c2" }];
-  const axiosPrivate = useAxiosPrivate();
-  const _url = "/Status";
-  const {data, isPending, isError, error} = useQuery({
-    queryKey: [QUERY_KEYS.Statuses],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(_url);
-      return response.data;
-    },
-    refetchInterval: 5000,
-  });
+  const {data, isPending, isError, error} = useStatusesQuery(null, {refetchInterval: 5000})
   return (
     <table className='table w-full'>
       <thead className='bg-secondary mb-px sticky top-0 z-10 shadow-lg h-10'>

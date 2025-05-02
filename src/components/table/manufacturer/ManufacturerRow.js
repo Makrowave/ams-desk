@@ -1,23 +1,24 @@
 import ManufacturerModal from "@/components/modals/admin/ManufacturerModal";
 import DeleteModal from "@/components/modals/DeleteModal";
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
 import OrderButton from "../OrderButton";
+import URLS from "@/util/urls";
 
 export default function ManufacturerRow({manufacturer, prev, next}) {
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
-  const queryKey = QUERY_KEYS.Manufacturers;
-  const _url = "/Manufacturers/ChangeOrder";
+  const _url = `${URLS.Manufacturers}ChangeOrder`;
   return (
     <tr className='table-row h-14'>
       <td>{manufacturer.manufacturerId}</td>
       <td>{manufacturer.manufacturerName}</td>
       <td>
         {prev && (
-          <OrderButton first={prev} last={manufacturer.manufacturerId} url={_url} queryKey={queryKey} up={true}/>
+          <OrderButton first={prev} last={manufacturer.manufacturerId} url={_url} queryKey={URLS.Manufacturers}
+                       up={true}/>
         )}
         {next && (
-          <OrderButton first={manufacturer.manufacturerId} last={next} url={_url} queryKey={queryKey} up={false}/>
+          <OrderButton first={manufacturer.manufacturerId} last={next} url={_url} queryKey={URLS.Manufacturers}
+                       up={false}/>
         )}
       </td>
       <td>
@@ -39,8 +40,8 @@ export default function ManufacturerRow({manufacturer, prev, next}) {
             setModalContent(
               <DeleteModal
                 id={manufacturer.manufacturerId}
-                url={"/Manufacturers/"}
-                refetchQueryKey={queryKey}
+                url={URLS.Manufacturers}
+                refetchQueryKey={URLS.Manufacturers}
                 admin={true}
               />
             );

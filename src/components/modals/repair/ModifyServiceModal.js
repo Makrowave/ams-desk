@@ -1,11 +1,11 @@
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
-import {QUERY_KEYS} from "@/util/query_keys";
 import {useState} from "react";
 import {FaCheck, FaXmark} from "react-icons/fa6";
 import {REGEX} from "@/util/regex";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useModal from "@/hooks/useModal";
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
+import URLS from "@/util/urls";
 
 export default function ModifyServiceModal({service}) {
   const {setIsModalOpen} = useModal();
@@ -33,7 +33,7 @@ export default function ModifyServiceModal({service}) {
       );
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({queryKey: [QUERY_KEYS.Services], exact: false});
+      await queryClient.refetchQueries({queryKey: [URLS.Services], exact: false});
       setIsModalOpen(false);
     },
   });
@@ -63,8 +63,7 @@ export default function ModifyServiceModal({service}) {
         <ValidationFetchSelect
           value={category}
           onChange={setCategory}
-          src='/Services/categories'
-          queryKey={QUERY_KEYS.ServiceCategories}
+          urlKey={'ServiceCategories'}
           default_option={""}
           title='Kategoria'
           default_title='Wybierz z listy'

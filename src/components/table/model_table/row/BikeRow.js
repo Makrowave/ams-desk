@@ -1,5 +1,5 @@
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useModal from "@/hooks/useModal";
 import React from "react";
 import ChangeModelModal from "@/components/modals/record/model/ChangeModelModal";
@@ -7,11 +7,12 @@ import AddBikeModal from "@/components/modals/record/bike/AddBikeModal";
 import ColorModal from "@/components/modals/record/model/ColorModal";
 import AddLinkModal from "@/components/modals/record/model/AddLinkModal";
 import AddEanModal from "@/components/modals/record/model/AddEanModal";
-import {QUERY_KEYS} from "@/util/query_keys";
 import useAuth from "@/hooks/useAuth";
 import DeleteModal from "@/components/modals/DeleteModal";
 import {FaBan, FaBarcode, FaLink, FaPalette, FaPenToSquare, FaPlus, FaRegCircleXmark, FaStar} from "react-icons/fa6";
 import ExpandButton from "@/components/buttons/ExpandButton";
+import URLS from "@/util/urls";
+import {useColorsQuery} from "@/hooks/queryHooks";
 
 /**
  * Row containing more data about model and buttons to edit model's data.
@@ -24,13 +25,7 @@ export function BikeRow({model, placeId}) {
   const {setModalContent, setModalTitle, setIsModalOpen} = useModal();
   const {isAdmin} = useAuth();
   const queryClient = useQueryClient();
-  const color = useQuery({
-    queryKey: [QUERY_KEYS.Colors, model.colorId],
-    queryFn: async () => {
-      const response = await axiosPrivate.get("/Colors/" + model.colorId.toString());
-      return response.data;
-    },
-  });
+  const color = useColorsQuery({id: model.colorId.toString()})
 
   const favoriteMutation = useMutation({
     mutationFn: async (current) => {
@@ -38,7 +33,7 @@ export function BikeRow({model, placeId}) {
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueriesData({queryKey: [QUERY_KEYS.Models], exact: false}, (oldData) => {
+      queryClient.setQueriesData({queryKey: [URLS.Models], exact: false}, (oldData) => {
         console.log(oldData);
         return oldData ?
           oldData.map((m) => m.modelId === model.modelId ? {...m, favorite: data} : m)
@@ -138,8 +133,8 @@ export function BikeRow({model, placeId}) {
                 className='text-red-600 hover:bg-red-300'
                 onClick={() => {
                   setModalContent(
-                    <DeleteModal id={model.modelId} admin={true} refetchQueryKey={QUERY_KEYS.Models}
-                                 url={"/Models/"}/>
+                    <DeleteModal id={model.modelId} admin={true} refetchQueryKey={URLS.Models}
+                                 url={URLS.Models}/>
                   );
                   setModalTitle("Usuń model");
                   setIsModalOpen(true);

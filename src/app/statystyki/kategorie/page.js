@@ -1,26 +1,17 @@
 "use client"
 import TimeSelector from "@/components/charts/TimeSelector";
 import {useState} from "react";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import {useQuery} from "@tanstack/react-query";
-import {QUERY_KEYS} from "@/util/query_keys";
 import {BarChart, barLabelClasses, pieArcLabelClasses, PieChart} from "@mui/x-charts";
 import BarChartWrapper from "@/components/charts/BarChartWrapper";
 import Collapsible from "@/components/Collapsible";
 import PieChartWrapper from "@/components/charts/PieChartWrapper";
+import {usePlacesQuery} from "@/hooks/queryHooks";
 
 export default function CategoriesStats({}) {
   const [interval, setInterval] = useState("day")
   const [since, setSince] = useState(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toLocaleDateString('sv-SE'));
   const [until, setUntil] = useState(new Date().toLocaleDateString('sv-SE'));
-  const axiosPrivate = useAxiosPrivate()
-  const placesQuery = useQuery({
-    queryKey: [QUERY_KEYS.Places],
-    queryFn: async () => {
-      const response = await axiosPrivate.get("places");
-      return response.data;
-    }
-  })
+  const placesQuery = usePlacesQuery()
 
   const sxPie = {
     [`& .${pieArcLabelClasses.root}`]: {

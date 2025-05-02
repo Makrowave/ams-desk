@@ -1,5 +1,3 @@
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import {useQuery} from "@tanstack/react-query";
 import useModal from "@/hooks/useModal";
 import React from "react";
 import MoveModal from "@/components/modals/record/bike/MoveModal";
@@ -7,9 +5,10 @@ import AssembleModal from "@/components/modals/record/bike/AssembleModal";
 import SellModal from "@/components/modals/record/bike/SellModal";
 import StatusModal from "@/components/modals/record/bike/StatusModal";
 import DeleteModal from "@/components/modals/DeleteModal";
-import {QUERY_KEYS} from "@/util/query_keys";
 import ExpandButton from "@/components/buttons/ExpandButton";
 import {FaArrowRight, FaCircleInfo, FaMoneyBill, FaRegCircleXmark, FaWrench} from "react-icons/fa6";
+import URLS from "@/util/urls";
+import {useBikesQuery, useEmployeesQuery, usePlacesQuery, useStatusesQuery} from "@/hooks/queryHooks";
 
 /**
  * Renders table of bikes with buttons that open modals and allow to edit bikes.
@@ -17,56 +16,26 @@ import {FaArrowRight, FaCircleInfo, FaMoneyBill, FaRegCircleXmark, FaWrench} fro
  * @param {number} placeId - Place id used to filter bikes in query.
  */
 export function BikeTable({model, placeId}) {
-  const _bikesUrl = "/Bikes/bikesByModelId/";
-  const _statusUrl = "/Status/";
-  const _placeUrl = "/Places";
-  const _employeeUrl = "/Employees";
-  const axiosPrivate = useAxiosPrivate();
   const {setModalContent, setModalTitle, setIsModalOpen} = useModal();
-  const {refetch, data, isPending, isError, error} = useQuery({
-    queryKey: [QUERY_KEYS.Bikes, model.modelId, placeId],
-    queryFn: async () => {
-      console.log([QUERY_KEYS.Bikes, model.modelId, placeId])
-      const response = await axiosPrivate.get(_bikesUrl + model.modelId + "?placeId=" + placeId.toString());
-      return response.data;
-    },
-  });
-  //CONVERT THOSE INTO HOOKS LIKE ON MOBILE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const {refetch, data, isPending, isError, error}
+    = useBikesQuery({id: model.modelId, placeId: placeId.toString()});
   const {
     data: placeData,
     isPending: placeIsPending,
     isError: placeIsError,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.Places],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(_placeUrl);
-      return response.data;
-    },
-  });
+  } = usePlacesQuery()
 
   const {
     data: statusData,
     isPending: statusIsPending,
     isError: statusIsError,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.Statuses],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(_statusUrl);
-      return response.data;
-    },
-  });
+  } = useStatusesQuery()
 
   const {
     data: employeeData,
     isPending: employeeIsPending,
     isError: employeeIsError,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.Employees],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(_employeeUrl);
-      return response.data;
-    },
-  });
+  } = useEmployeesQuery()
 
   /**
    * @param {number} statusId - Status id - 1 to 6 at the time of writing.
@@ -145,7 +114,8 @@ export function BikeTable({model, placeId}) {
                 <ExpandButton
                   text='Sprzedaj'
                   onClick={() => {
-                    setModalContent(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} placeId={placeId}/>);
+                    setModalContent(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price}
+                                               placeId={placeId}/>);
                     setModalTitle("Sprzedaj rower");
                     setIsModalOpen(true);
                   }}
@@ -167,7 +137,7 @@ export function BikeTable({model, placeId}) {
                   className='text-red-600 hover:bg-red-300 '
                   onClick={() => {
                     setModalContent(
-                      <DeleteModal id={bike.id} url='/Bikes/' refetchQueryKey={QUERY_KEYS.Bikes} admin={false}/>
+                      <DeleteModal id={bike.id} url={URLS.Bikes} refetchQueryKey={URLS.Bikes} admin={false}/>
                     );
                     setModalTitle("Usuń rower");
                     setIsModalOpen(true);

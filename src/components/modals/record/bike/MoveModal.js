@@ -4,9 +4,9 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
+import URLS from "@/util/urls";
 
-export default function MoveModal({refetch, bikeId}) {
+export default function MoveModal({bikeId}) {
   const [place, setPlace] = useState("");
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
@@ -26,7 +26,7 @@ export default function MoveModal({refetch, bikeId}) {
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Bikes],
+        queryKey: [URLS.Bikes],
         exact: false,
       });
       setIsModalOpen(false);
@@ -48,8 +48,7 @@ export default function MoveModal({refetch, bikeId}) {
       <ValidationFetchSelect
         value={place}
         onChange={setPlace}
-        src='/Places'
-        queryKey={QUERY_KEYS.Places}
+        urlKey={'Places'}
         default_option={""}
         title='Dokąd'
         default_title='Wybierz z listy'

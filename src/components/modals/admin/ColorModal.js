@@ -6,7 +6,7 @@ import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import {REGEX} from "@/util/regex";
-import {QUERY_KEYS} from "@/util/query_keys";
+import URLS from "@/util/urls";
 
 export default function ColorModal({colorData, action}) {
   const [name, setName] = useState(colorData === undefined ? "" : colorData.colorName);
@@ -48,11 +48,11 @@ export default function ColorModal({colorData, action}) {
     },
     onSuccess: (data) => {
       if (action === "put") {
-        queryClient.setQueryData([QUERY_KEYS.Colors], (oldData) => (
+        queryClient.setQueryData([URLS.Colors], (oldData) => (
           oldData.map(col => col.colorId === colorData.colorId ? data : col)
         ));
       } else if (action === "post") {
-        queryClient.setQueryData([QUERY_KEYS.Colors], (oldData) => (
+        queryClient.setQueryData([URLS.Colors], (oldData) => (
           [...oldData, data]
         ));
       }

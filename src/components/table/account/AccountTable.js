@@ -1,22 +1,10 @@
 "use client";
 import "../table.css";
-import {useQuery} from "@tanstack/react-query";
-import {QUERY_KEYS} from "@/util/query_keys";
 import AccountRow from "./AccountRow";
-import useEmployeesQuery from "@/hooks/queries/useEmployeesQuery";
-import useAxiosAdmin from "@/hooks/useAxiosAdmin";
+import {useEmployeesQuery, useUsersQuery} from "@/hooks/queryHooks";
 
 export default function AccountTable() {
-  const axiosAdmin = useAxiosAdmin();
-  const _url = "/Users";
-  const {data, isPending, isError, error} = useQuery({
-    queryKey: [QUERY_KEYS.Users],
-    queryFn: async () => {
-      const response = await axiosAdmin.get(_url);
-      return response.data;
-    },
-    refetchInterval: 5000,
-  });
+  const {data, isPending, isError, error} = useUsersQuery(null, {refetchInterval: 5000})
   const employees = useEmployeesQuery();
   return (
     <table className='table w-full'>

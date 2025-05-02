@@ -4,9 +4,9 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
+import URLS from "@/util/urls";
 
-export default function StatusModal({refetch, bikeId}) {
+export default function StatusModal({bikeId}) {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
@@ -26,7 +26,7 @@ export default function StatusModal({refetch, bikeId}) {
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Bikes],
+        queryKey: [URLS.Bikes],
         exact: false,
       });
       setIsModalOpen(false);
@@ -48,8 +48,8 @@ export default function StatusModal({refetch, bikeId}) {
       <ValidationFetchSelect
         value={status}
         onChange={setStatus}
-        src='/Status/Excluded?exclude=3'
-        queryKey={QUERY_KEYS.Statuses}
+        urlKey='ExcludedStatuses'
+        params={{exclude: [3]}}
         default_option={""}
         title='Status'
         default_title='Wybierz z listy'

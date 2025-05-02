@@ -7,8 +7,8 @@ import ErrorDisplay from "../../../error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
 import ColorInput from "@/components/input/ColorInput";
 import {REGEX} from "@/util/regex";
-import {QUERY_KEYS} from "@/util/query_keys";
 import {FaCheck, FaXmark} from "react-icons/fa6";
+import URLS from "@/util/urls";
 
 //Add refetch
 
@@ -104,7 +104,7 @@ export default function AddModelModal() {
     },
     onSuccess: (data) => {
       queryClient.setQueriesData({
-        queryKey: [QUERY_KEYS.Models],
+        queryKey: [URLS.Models],
         exact: false,
       }, (oldData) => (
         [...oldData, data]
@@ -250,8 +250,7 @@ export default function AddModelModal() {
         <ValidationFetchSelect
           value={wheelSize}
           onChange={setWheelSize}
-          src='/WheelSizes'
-          queryKey={QUERY_KEYS.WheelSizes}
+          urlKey={'WheelSizes'}
           title='Rozmiar koła'
           default_option={""}
           default_title='Wybierz'
@@ -287,8 +286,7 @@ export default function AddModelModal() {
         <ValidationFetchSelect
           value={manufacturerId}
           onChange={setManufacturerId}
-          src='/Manufacturers'
-          queryKey={QUERY_KEYS.Manufacturers}
+          urlKey={'Manufacturers'}
           title='Producent'
           default_option={""}
           default_title='Wybierz'
@@ -299,8 +297,7 @@ export default function AddModelModal() {
         <ValidationFetchSelect
           value={categoryId}
           onChange={setCategoryId}
-          src='/Categories'
-          queryKey={QUERY_KEYS.Categories}
+          urlKey={'Categories'}
           title='Kategoria'
           default_option={""}
           default_title='Wybierz'
@@ -311,8 +308,7 @@ export default function AddModelModal() {
         <ValidationFetchSelect
           value={colorId}
           onChange={setColorId}
-          src='/Colors'
-          queryKey={QUERY_KEYS.Colors}
+          urlKey={'Colors'}
           title='Kolor'
           default_option={""}
           default_title='Wybierz'
@@ -324,14 +320,14 @@ export default function AddModelModal() {
       <ColorInput title='Kolor dodatkowy' value={secondaryColor} setValue={setSecondaryColor}/>
       <SingleCheckbox
         checked={isWoman}
-        onChange={(e) => {
+        onChange={() => {
           setIsWoman(!isWoman);
         }}
         title='Damski'
       />
       <SingleCheckbox
         checked={isElectric}
-        onChange={(e) => {
+        onChange={() => {
           setIsElectric(!isElectric);
         }}
         title='Elektryczny'

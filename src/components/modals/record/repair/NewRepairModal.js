@@ -1,7 +1,6 @@
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
 import {REGEX} from "@/util/regex";
 import {useMutation} from "@tanstack/react-query";
 import {useRouter} from "next/navigation";
@@ -63,8 +62,7 @@ export default function NewRepairModal({}) {
             setPlace(value);
             localStorage.setItem("repairModal:defaultPlace", value)
           }}
-          src='/Places'
-          queryKey={QUERY_KEYS.Places}
+          urlKey={'Places'}
           default_option={""}
           title='Miejsce przyjęcia'
           default_title='Wybierz z listy'
@@ -72,8 +70,7 @@ export default function NewRepairModal({}) {
         <ValidationFetchSelect
           value={employee}
           onChange={setEmployee}
-          src='/Employees'
-          queryKey={QUERY_KEYS.Employees}
+          urlKey={'Employees'}
           title={"Kto przyjmuje"}
           default_option={""}
           default_title='Wybierz z listy'

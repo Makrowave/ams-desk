@@ -1,5 +1,4 @@
 import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
-import {QUERY_KEYS} from "@/util/query_keys";
 import {useEffect, useState} from "react";
 import {FaCheck, FaXmark} from "react-icons/fa6";
 import {REGEX} from "@/util/regex";
@@ -7,6 +6,7 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 import FetchSelect from "@/components/filtering/FetchSelect";
+import URLS from "@/util/urls";
 
 export default function ModifyPartModal({part}) {
   const {setIsModalOpen} = useModal();
@@ -34,7 +34,7 @@ export default function ModifyPartModal({part}) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
-      const result = axiosPrivate.put(
+      return await axiosPrivate.put(
         `parts/${part.partId}`,
         JSON.stringify({
           partId: part.partId,
@@ -44,10 +44,9 @@ export default function ModifyPartModal({part}) {
           unitId: unit,
         })
       );
-      return result;
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({queryKey: [QUERY_KEYS.Parts], exact: false});
+      await queryClient.refetchQueries({queryKey: [URLS.Parts], exact: false});
       setIsModalOpen(false);
     },
   });
@@ -77,8 +76,7 @@ export default function ModifyPartModal({part}) {
         <FetchSelect
           value={category}
           onChange={setCategory}
-          src={`/partTypes/categories`}
-          queryKey={QUERY_KEYS.PartCategories}
+          urlKey={'PartCategories'}
           default_option={"0"}
           title='Kategoria'
           default_title='Wybierz z listy'
@@ -86,8 +84,8 @@ export default function ModifyPartModal({part}) {
         <ValidationFetchSelect
           value={type}
           onChange={setType}
-          src={`/partTypes/${category}`}
-          queryKey={[QUERY_KEYS.PartTypes, category]}
+          urlKey={"PartTypes"}
+          params={{id: category}}
           default_option={""}
           title='Typ części'
           default_title='Wybierz z listy'
@@ -130,8 +128,7 @@ export default function ModifyPartModal({part}) {
         <ValidationFetchSelect
           value={unit}
           onChange={setUnit}
-          src='/Units'
-          queryKey={QUERY_KEYS.Units}
+          urlKey={'Units'}
           default_option={""}
           title='Jednostka'
           default_title='Wybierz z listy'

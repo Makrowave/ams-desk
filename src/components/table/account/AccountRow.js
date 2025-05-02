@@ -2,7 +2,7 @@ import LogoutModal from "@/components/modals/admin/LogoutModal";
 import UserModal from "@/components/modals/admin/UserModal";
 import DeleteModal from "@/components/modals/DeleteModal";
 import useModal from "@/hooks/useModal";
-import {QUERY_KEYS} from "@/util/query_keys";
+import URLS from "@/util/urls";
 
 export default function AccountRow({user, employeeName}) {
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
@@ -41,7 +41,7 @@ export default function AccountRow({user, employeeName}) {
           onClick={() => {
             setModalTitle("Usuń konto");
             setModalContent(
-              <DeleteModal id={user.userId} refetchQueryKey={QUERY_KEYS.Users} admin={true} url={"/Users/"}/>
+              <DeleteModal id={user.userId} refetchQueryKey={URLS.Users} admin={true} url={URLS.Users}/>
             );
             setIsModalOpen(true);
           }}

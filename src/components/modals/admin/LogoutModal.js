@@ -1,6 +1,7 @@
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
 import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+import URLS from "@/util/urls";
 
 export default function LogoutModal({id}) {
   const url = "/Users/Logout" + (id ? "/" + id : "");
@@ -19,7 +20,7 @@ export default function LogoutModal({id}) {
     },
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.Users],
+        queryKey: [URLS.Users],
         exact: false,
       });
       setIsModalOpen(false);

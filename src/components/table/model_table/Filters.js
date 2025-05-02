@@ -4,247 +4,203 @@ import FilterSelect from "@/components/filtering/FilterSelect";
 import RangeInput from "@/components/filtering/RangeInput";
 import SingleCheckbox from "@/components/filtering/SingleCheckbox";
 import useAuth from "@/hooks/useAuth";
-import {QUERY_KEYS} from "@/util/query_keys";
-import {useEffect, useState} from "react";
+import {useEffect, useReducer} from "react";
+import URLS from "@/util/urls";
 
 export default function Filters({setQuery}) {
-  const defaults = {
-    name: "",
-    size: "",
-    wheel: "",
-    priceMin: 0,
-    priceMax: 100000,
-    number: 1,
-    avail: true,
-    electric: false,
-    isWoman: "",
-    make: "",
-    place: 0,
-    isKids: false,
-    category: "",
-    minPrice: 0,
-    maxPrice: 100000,
-    color: "",
-    statusId: "",
-    productCode: "",
-  };
-  const [name, setName] = useState(defaults.name);
-  const [size, setSize] = useState(defaults.size);
-  const [wheel, setWheel] = useState(defaults.wheel);
-  const [number, setNumber] = useState(defaults.number);
-  const [avail, setAvail] = useState(defaults.avail);
-  const [statusId, setStatusId] = useState(defaults.statusId);
-  const [electric, setElectric] = useState(defaults.electric);
-  const [isWoman, setIsWoman] = useState(defaults.isWoman);
-  const [make, setMake] = useState(defaults.make);
-  const [isKids, setIsKids] = useState(defaults.isKids);
-  const [category, setCategory] = useState(defaults.category);
-  const [minPrice, setMinPrice] = useState(defaults.minPrice);
-  const [maxPrice, setMaxPrice] = useState(defaults.maxPrice);
-  const [color, setColor] = useState(defaults.color);
-  const [productCode, setProductCode] = useState(defaults.productCode);
-  //Admin only - not sensitive, but unescessary for normal users
-  const [noEan, setNoEan] = useState(false);
-  const [noColor, setNoColor] = useState(false);
-  const [noColorGroup, setNoColorGroup] = useState(false);
-  const [noProductCode, setNoProductCode] = useState(false);
+  const updateFilters = (field, value) => {
+    if (field === undefined) return;
+    dispatch({type: "SET", field, value});
+  }
+  const [filters, dispatch] = useReducer(reducer, defaultFilters);
 
   const {isAdmin} = useAuth();
   useEffect(() => {
-    setQuery(
-      `&avaible=${avail}
-&manufacturerId=${make}
-&wheelSize=${wheel}
-&frameSize=${size}
-&name=${name.trim().toLowerCase()}
-&electric=${electric}
-&statusId=${statusId}
-&isWoman=${isWoman}
-&isKids=${isKids}
-&minPrice=${minPrice}
-&maxPrice=${maxPrice}
-&colorId=${color}
-&categoryId=${category}
-&productCode=${productCode.trim()}
-&noEan=${noEan}
-&noProductCode=${noProductCode}
-&noColor=${noColor}
-&noColorGroup=${noColorGroup}`
-    );
+    setQuery(filters);
   });
-
-  function reset() {
-    setName(defaults.name);
-    setSize(defaults.size);
-    setWheel(defaults.wheel);
-    setNumber(defaults.number);
-    setStatusId(defaults.statusId);
-    setElectric(defaults.electric);
-    setIsWoman(defaults.isWoman);
-    setMake(defaults.make);
-    setAvail(defaults.avail);
-    setIsKids(defaults.isKids);
-    setMinPrice(defaults.minPrice);
-    setMaxPrice(defaults.maxPrice);
-    setColor(defaults.color);
-    setCategory(defaults.category);
-    setProductCode(defaults.productCode);
-  }
 
   return (
     <div className='col-span-1 overflow-y-auto bg-primary flex flex-col pb-4 pr-4 pl-4 rounded-xl ml-4'>
-      {/* Title */}
       <div className='flex justify-center sticky top-0 bg-primary z-30'>
         <div className='flex justify-center text-2xl w-3/5 pb-1 mb pt-4'>
-          <h2>
-            <b>Filtry</b>
-          </h2>
+          <h2><b>Filtry</b></h2>
         </div>
       </div>
       <div className='*:pb-1 flex flex-col'>
-        {/* Name */}
-        <FilterInput title='Nazwa' value={name} setValue={setName}/>
-        {/* Product Code */}
-        <FilterInput title='Kod producenta' value={productCode} setValue={setProductCode}/>
-        {/* Size */}
-        <FilterInput title='Rozmiar' value={size} setValue={setSize}/>
-        {/* Wheel size */}
+        <FilterInput title='Nazwa' value={filters.name} setValue={(v) => updateFilters("name", v)}/>
+        <FilterInput title='Kod producenta' value={filters.productCode}
+                     setValue={(v) => updateFilters("productCode", v)}/>
+        <FilterInput title='Rozmiar' value={filters.frameSize} setValue={(v) => updateFilters("frameSize", v)}/>
+
         <FetchSelect
-          value={wheel}
-          onChange={setWheel}
-          src='/WheelSizes'
-          queryKey={QUERY_KEYS.WheelSizes}
+          value={filters.wheelSize}
+          onChange={(v) => updateFilters("wheelSize", v)}
+          urlKey={"WheelSizes"}
+          queryKey={URLS.WheelSizes}
           title='Rozmiar koła'
-          default_option={defaults.wheel}
+          default_option={defaultFilters.wheelSize}
           default_title='Dowolny'
         />
-        {/* Frame type (is woman) */}
+
         <FilterSelect
           title='Typ ramy'
-          value={isWoman}
-          defaultKey={defaults.isWoman}
-          defaultValue={"Dowolny"}
-          onChange={setIsWoman}
+          value={filters.isWoman}
+          defaultKey={defaultFilters.isWoman}
+          defaultValue='Dowolny'
+          onChange={(v) => updateFilters("isWoman", v)}
           options={[
             {key: "false", value: "Męski"},
             {key: "true", value: "Damski"},
           ]}
         />
-        {/* Manufacturer */}
+
         <FetchSelect
-          value={make}
-          onChange={setMake}
-          src='/Manufacturers'
-          queryKey={QUERY_KEYS.Manufacturers}
+          value={filters.manufacturerId}
+          onChange={(v) => updateFilters("manufacturerId", v)}
+          urlKey='Manufacturers'
+          queryKey={URLS.Manufacturers}
           title='Producent'
-          default_option={defaults.make}
+          default_option={defaultFilters.manufacturerId}
           default_title='Dowolny'
         />
-        {/* Category */}
-        {/* Endpoint to be made */}
+
         <FetchSelect
-          value={category}
-          onChange={setCategory}
-          src='/Categories'
-          queryKey={QUERY_KEYS.Categories}
+          value={filters.categoryId}
+          onChange={(v) => updateFilters("categoryId", v)}
+          urlKey='Categories'
+          queryKey={URLS.Categories}
           title='Kategoria'
-          default_option={defaults.category}
+          default_option={defaultFilters.categoryId}
           default_title='Dowolny'
         />
-        {/* Color */}
+
         <FetchSelect
-          value={color}
-          onChange={setColor}
-          src='/Colors'
-          queryKey={QUERY_KEYS.Colors}
+          value={filters.colorId}
+          onChange={(v) => updateFilters("colorId", v)}
+          urlKey='Colors'
+          queryKey={URLS.Colors}
           title='Kolor'
-          default_option={defaults.color}
+          default_option={defaultFilters.colorId}
           default_title='Dowolny'
-          isColored={true}
+          isColored
         />
-        {/* Status */}
+
         <FetchSelect
-          value={statusId}
-          onChange={setStatusId}
-          src='/Status/Excluded?exclude=3'
-          queryKey={QUERY_KEYS.StatusesNotSold}
+          value={filters.statusId}
+          onChange={(v) => updateFilters("statusId", v)}
+          urlKey={"ExcludedStatuses"}
+          params={{exclude: [3]}}
+          queryKey={URLS.Statuses}
           title='Status'
-          default_option={""}
+          default_option=""
           default_title='Dowolny'
-          isColored={true}
+          isColored
         />
-        {/* Price range */}
-        <RangeInput title='Cena' minValue={minPrice} maxValue={maxPrice} setMin={setMinPrice}
-                    setMax={setMaxPrice}/>
-        {/* Avaible */}
+
+        <RangeInput
+          title='Cena'
+          minValue={filters.minPrice}
+          maxValue={filters.maxPrice}
+          setMin={(v) => updateFilters("minPrice", v)}
+          setMax={(v) => updateFilters("maxPrice", v)}
+        />
+
         <SingleCheckbox
-          checked={avail}
-          onChange={() => {
-            setAvail(!avail);
-          }}
+          checked={filters.available}
+          onChange={() => dispatch({type: "TOGGLE", field: "available"})}
           title='Dostępny'
         />
-        {/* Electric */}
+
         <SingleCheckbox
-          checked={electric}
-          onChange={() => {
-            setElectric(!electric);
-          }}
+          checked={filters.electric}
+          onChange={() => dispatch({type: "TOGGLE", field: "electric"})}
           title='Elektryczny'
         />
+
         <SingleCheckbox
-          checked={isKids}
-          onChange={() => {
-            setIsKids(!isKids);
-          }}
+          checked={filters.isKids}
+          onChange={() => dispatch({type: "TOGGLE", field: "isKids"})}
           title='Dziecięcy'
         />
+
         {isAdmin && (
           <>
             <span>Braki</span>
             <SingleCheckbox
-              checked={noEan}
-              onChange={() => {
-                setNoEan(!noEan);
-              }}
+              checked={filters.noEan}
+              onChange={() => dispatch({type: "TOGGLE", field: "noEan"})}
               title='Bez kodu EAN'
             />
-
             <SingleCheckbox
-              checked={noProductCode}
+              checked={filters.noProductCode}
               onChange={() => {
-                setNoProductCode(!noProductCode);
-                setProductCode("");
+                dispatch({type: "TOGGLE", field: "noProductCode"});
+                dispatch({type: "SET", field: "productCode", value: ""});
               }}
               title='Bez kodu producenta'
             />
             <SingleCheckbox
-              checked={noColorGroup}
-              onChange={() => {
-                setNoColorGroup(!noColorGroup);
-              }}
+              checked={filters.noColorGroup}
+              onChange={() => dispatch({type: "TOGGLE", field: "noColorGroup"})}
               title='Bez koloru'
             />
             <SingleCheckbox
-              checked={noColor}
-              onChange={() => {
-                setNoColor(!noColor);
-              }}
+              checked={filters.noColor}
+              onChange={() => dispatch({type: "TOGGLE", field: "noColor"})}
               title='Bez podglądu kolorów'
             />
           </>
         )}
       </div>
-      {/*Reset button*/}
+
       <button
         className='button-primary'
-        onClick={() => {
-          reset();
-        }}
+        onClick={() => dispatch({type: "RESET"})}
       >
         Reset
       </button>
+
       <div className='min-h-8'/>
     </div>
   );
+}
+
+export const defaultFilters = {
+  name: "",
+  frameSize: "",
+  wheelSize: "",
+  available: true,
+  electric: false,
+  isWoman: "",
+  manufacturerId: "",
+  place: 0,
+  isKids: false,
+  categoryId: "",
+  minPrice: 0,
+  maxPrice: 100000,
+  colorId: "",
+  statusId: "",
+  productCode: "",
+  noEan: false,
+  noProductCode: false,
+  noColor: false,
+  noColorGroup: false,
+};
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET":
+      return {
+        ...state,
+        [action.field]: action.value,
+      }
+    case "TOGGLE":
+      return {
+        ...state,
+        [action.field]: !state[action.field],
+      };
+    case "RESET":
+      return defaultFilters;
+    default:
+      return state;
+  }
 }

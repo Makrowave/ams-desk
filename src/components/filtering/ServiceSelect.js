@@ -1,8 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 import {FaPlus, FaXmark} from "react-icons/fa6";
-import {useQuery} from "@tanstack/react-query";
-import {QUERY_KEYS} from "@/util/query_keys";
-import {axiosPrivate} from "@/api/axios";
+import {useServiceCategoriesQuery, useServicesFromCategoryQuery} from "@/hooks/queryHooks";
 
 export default function ServiceSelect({mutation}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,22 +9,10 @@ export default function ServiceSelect({mutation}) {
   const buttonRef = useRef(null);
   const [text, setText] = useState("");
   // Fetch categories
-  const {data: catData, isLoading: catIsLoading, isError: catIsError} = useQuery({
-    queryKey: [QUERY_KEYS.ServiceCategories],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(`/services/categories`);
-      return response.data;
-    },
-  });
+  const {data: catData, isLoading: catIsLoading, isError: catIsError} = useServiceCategoriesQuery();
 
   // Fetch services based on selected category
-  const {data: serData, isLoading: serIsLoading, isError: serIsError} = useQuery({
-    queryKey: [QUERY_KEYS.Services, "category", categoryId],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(`/services/fromCategory/${categoryId}`);
-      return response.data;
-    },
-  });
+  const {data: serData, isLoading: serIsLoading, isError: serIsError} = useServicesFromCategoryQuery({id: categoryId})
 
   const handleOnClick = (record) => {
     mutation(record);

@@ -1,29 +1,19 @@
 "use client";
-import {useQuery} from "@tanstack/react-query";
 import ModelRecord from "./row/ModelRecord";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import {QUERY_KEYS} from "@/util/query_keys";
+import {useModelsQuery} from "@/hooks/queryHooks";
 
 /**
  * ModelTable's body. Queries the backend to get models and maps them to bike records.
  * @param {Object} props - Props.
- * @param {string} props.src - Query string
+ * @param {Object} props.filters - Filters
  * @param {boolean} props.singlePlace - Passed down to BikeRecord. If false it won't render <td>
  *  tags for places.
  * @param {number} props.placeId - Place Id. Passed down to BikeRecord
  * @param {criterion: {name: string, boolean: isAscending, key: number}} props.sortCriterion
  * @returns
  */
-export default function ModelTableBody({src, singlePlace, placeId, sortCriterion}) {
-  const axiosPrivate = useAxiosPrivate();
-  const {data, isPending, isError, error} = useQuery({
-    queryKey: [QUERY_KEYS.Models, src],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(src);
-      return response.data;
-    },
-    refetchInterval: 20000,
-  });
+export default function ModelTableBody({filters, singlePlace, placeId, sortCriterion}) {
+  const {data, isPending, isError, error} = useModelsQuery(filters, {refetchInterval: 10000,})
   const placeCount = process.env.NEXT_PUBLIC_PLACE_COUNT;
   if (isPending) {
     return (

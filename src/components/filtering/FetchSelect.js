@@ -1,17 +1,16 @@
 "use client";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import {useQuery} from "@tanstack/react-query";
 import {Select} from "../input/Select";
+import {createQueryHook} from "@/hooks/queryHooks";
 
-// Component that turns data fetch from 'src' to <option> list.
+// Component that turns data fetch from src specified by key to <option> list.
 // Fetched data scheme:
 // 1. Key (int) required
 // 2. Name (string) required
 // 3. Color (string: '#XXXXXX')
 // 4. Trash unless I write DTO in backend
 export default function FetchSelect({
-                                      src,
-                                      queryKey,
+                                      urlKey,
+                                      params = null,
                                       value,
                                       onChange,
                                       title,
@@ -19,14 +18,8 @@ export default function FetchSelect({
                                       default_title,
                                       isColored,
                                     }) {
-  const axiosPrivate = useAxiosPrivate();
-  const {data, isPending, isError, error, refetch} = useQuery({
-    queryKey: [queryKey],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(src);
-      return response.data;
-    },
-  });
+  const hook = createQueryHook(urlKey);
+  const {data, isPending, isError, error, refetch} = hook(params)
 
   const Body = ({children}) => {
     return (

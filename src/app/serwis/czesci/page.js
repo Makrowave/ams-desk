@@ -1,5 +1,4 @@
 "use client"
-import {QUERY_KEYS} from "@/util/query_keys";
 import AddPartModal from "@/components/modals/repair/AddPartModal";
 import {FaCircleXmark, FaPencil, FaPlus} from "react-icons/fa6";
 import PrivateRoute from "@/components/routing/PrivateRoute";
@@ -7,48 +6,30 @@ import Navigation from "@/components/navigation/Navigation";
 import SideBar from "@/components/navigation/SideBar";
 import {repairsNavigation} from "@/app/serwis/page";
 import Modal from "@/components/modals/Modal";
-import {useQuery} from "@tanstack/react-query";
 import {useState} from "react";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 import DeleteModal from "@/components/modals/DeleteModal";
 import ModifyPartModal from "@/components/modals/repair/ModifyPartModal";
+import URLS from "@/util/urls";
+import {useFilteredPartsQuery, usePartCategoriesQuery, usePartTypesQuery} from "@/hooks/queryHooks";
 
 
 export default function PartRepairsPage() {
   const [categoryId, setCategoryId] = useState(0);
   const [typeId, setTypeId] = useState(0);
   const [text, setText] = useState("");
-  const axiosPrivate = useAxiosPrivate()
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal()
   // Fetch categories
-  const {data: catData, isLoading: catIsLoading, isError: catIsError} = useQuery({
-    queryKey: [QUERY_KEYS.PartCategories],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(`/partTypes/categories`);
-      return response.data;
-    },
-  });
+  const {data: catData, isLoading: catIsLoading, isError: catIsError} = usePartCategoriesQuery();
 
   // Fetch parts based on selected part type
-  const {data: partData, isLoading: partIsLoading, isError: partIsError} = useQuery({
-    queryKey: [QUERY_KEYS.Parts, categoryId, typeId],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(`/parts/filtered?categoryId=${categoryId}&typeId=${typeId}`);
-      return response.data;
-    },
+  const {data: partData, isLoading: partIsLoading, isError: partIsError} = useFilteredPartsQuery({
+    categoryId: categoryId,
+    typeId: typeId
   });
 
   //Fetch types based on selected category
-  const {data: typeData, isLoading: typeIsLoading, isError: typeIsError} = useQuery({
-    queryKey: [QUERY_KEYS.PartTypes, "category", categoryId],
-    queryFn: async () => {
-      const response = await axiosPrivate.get(
-        `/partTypes/${categoryId}`
-      );
-      return response.data;
-    },
-  });
+  const {data: typeData, isLoading: typeIsLoading, isError: typeIsError} = usePartTypesQuery({id: categoryId});
 
   return (
     <PrivateRoute>
@@ -132,7 +113,9 @@ export default function PartRepairsPage() {
                       </thead>
                       <tbody>
                       {partIsLoading && <tr className="text-gray-500 text-center">
-                        Ładowanie...
+                        <td>
+                          Ładowanie...
+                        </td>
                       </tr>}
                       {!partIsLoading &&
                         !partIsError &&
@@ -177,8 +160,8 @@ export default function PartRepairsPage() {
                                   </button>
                                   <button className='button-primary w-10 h-10' onClick={() => {
                                     setModalTitle("Usuń część");
-                                    setModalContent(<DeleteModal id={part.partId} refetchQueryKey={QUERY_KEYS.Parts}
-                                                                 url={"Parts/"}/>)
+                                    setModalContent(<DeleteModal id={part.partId} refetchQueryKey={URLS.Parts}
+                                                                 url={URLS.Parts}/>)
                                     setIsModalOpen(true);
                                   }}>
                                     <FaCircleXmark className="text-red-600"/>

@@ -6,8 +6,8 @@ import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useEffect, useState} from "react";
 import {REGEX} from "@/util/regex";
-import {QUERY_KEYS} from "@/util/query_keys";
 import {FaCheck, FaXmark} from "react-icons/fa6";
+import URLS from "@/util/urls";
 
 export default function ChangeModelModal({model}) {
   const modelId = model.modelId;
@@ -22,7 +22,6 @@ export default function ChangeModelModal({model}) {
   const [validPrice, setValidPrice] = useState(false);
   // Regex
   const NAME_REGEX = REGEX.MODEL_NAME;
-  const EAN_REGEX = REGEX.EAN;
   const PRODUCT_REGEX = REGEX.PRODUCT_NAME;
   const FRAME_REGEX = REGEX.FRAME;
   const PRICE_REGEX = REGEX.PRICE;
@@ -81,7 +80,7 @@ export default function ChangeModelModal({model}) {
     },
     onSuccess: (data) => {
       queryClient.setQueriesData({
-        queryKey: [QUERY_KEYS.Models],
+        queryKey: [URLS.Models],
         exact: false,
       }, (oldData) => {
         return oldData ? oldData.map((m) => m.modelId === data.modelId ?
@@ -168,8 +167,7 @@ export default function ChangeModelModal({model}) {
         <ValidationFetchSelect
           value={wheelSize}
           onChange={setWheelSize}
-          src='/WheelSizes'
-          queryKey={QUERY_KEYS.WheelSizes}
+          urlKey={'WheelSizes'}
           title='Rozmiar koła'
           default_option={""}
           default_title='Rozmiar koła'
@@ -195,8 +193,7 @@ export default function ChangeModelModal({model}) {
         <ValidationFetchSelect
           value={manufacturerId}
           onChange={setManufacturerId}
-          src='/Manufacturers'
-          queryKey={QUERY_KEYS.Manufacturers}
+          urlKey={'Manufacturers'}
           title='Producent'
           default_option={""}
           default_title='Wybierz'
@@ -207,8 +204,7 @@ export default function ChangeModelModal({model}) {
         <ValidationFetchSelect
           value={categoryId}
           onChange={setCategoryId}
-          src='/Categories'
-          queryKey={QUERY_KEYS.Categories}
+          urlKey={'Categories'}
           title='Kategoria'
           default_option={""}
           default_title='Wybierz'
@@ -217,14 +213,14 @@ export default function ChangeModelModal({model}) {
       </div>
       <SingleCheckbox
         checked={isWoman}
-        onChange={(e) => {
+        onChange={() => {
           setIsWoman(!isWoman);
         }}
         title='Damski'
       />
       <SingleCheckbox
         checked={isElectric}
-        onChange={(e) => {
+        onChange={() => {
           setIsElectric(!isElectric);
         }}
         title='Elektryczny'

@@ -1,8 +1,5 @@
 "use client";
 import Modal from "@/components/modals/Modal";
-import {useQuery} from "@tanstack/react-query";
-import {QUERY_KEYS} from "@/util/query_keys";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import {FaPenToSquare, FaPlus, FaRegCircleXmark} from "react-icons/fa6";
 import FetchSelect from "@/components/filtering/FetchSelect";
 import {useState} from "react";
@@ -10,21 +7,17 @@ import useModal from "@/hooks/useModal";
 import AddServiceModal from "@/components/modals/repair/AddServiceModal";
 import DeleteModal from "@/components/modals/DeleteModal";
 import ModifyServiceModal from "@/components/modals/repair/ModifyServiceModal";
+import {useServicesQuery} from "@/hooks/queryHooks";
+import URLS from "@/util/urls";
 
 export default function AdminRepairs() {
-  const axiosPrivate = useAxiosPrivate();
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const {
     isError: isServicesError,
     isLoading: isServicesLoading,
     data: servicesData,
     error: servicesError
-  } = useQuery({
-    queryKey: [QUERY_KEYS.Services], queryFn: async () => {
-      const result = await axiosPrivate.get("/services");
-      return result.data;
-    }
-  });
+  } = useServicesQuery();
 
 
   const [serviceCategory, setServiceCategory] = useState("");
@@ -53,8 +46,7 @@ export default function AdminRepairs() {
                 <th></th>
                 <th className="w-48 text-ellipsis">
                   <FetchSelect
-                    src="/Services/categories"
-                    queryKey={QUERY_KEYS.ServiceCategories}
+                    urlKey="ServiceCategories"
                     value={serviceCategory}
                     onChange={setServiceCategory}
                     default_option={""}
@@ -103,7 +95,7 @@ export default function AdminRepairs() {
                                 onClick={() => {
                                   setModalTitle("Usuń usługę")
                                   setModalContent(<DeleteModal id={service.serviceId}
-                                                               refetchQueryKey={QUERY_KEYS.Services}
+                                                               refetchQueryKey={URLS.Services}
                                                                admin
                                                                url="services/"/>)
                                   setIsModalOpen(true);
