@@ -18,7 +18,7 @@ import {useBikesQuery, useEmployeesQuery, usePlacesQuery, useStatusesQuery} from
 export function BikeTable({model, placeId}) {
   const {setModalContent, setModalTitle, setIsModalOpen} = useModal();
   const {refetch, data, isPending, isError, error}
-    = useBikesQuery({id: model.modelId, placeId: placeId.toString()});
+    = useBikesQuery({id: model.modelId, placeId: placeId});
   const {
     data: placeData,
     isPending: placeIsPending,

@@ -26,7 +26,7 @@ function buildQueryString(params = null) {
 export const createQueryHook = (key, admin = false) => {
   return function useGenericQuery(params = null, options = {}) {
     const axios = admin ? useAxiosAdmin() : useAxiosPrivate();
-    const queryKey = [URLS[key], params];
+    const queryKey = [URLS[key], ...Object.values(params ?? {})];
 
     return useQuery({
       queryKey,

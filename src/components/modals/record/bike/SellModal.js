@@ -10,6 +10,7 @@ import URLS from "@/util/urls";
 export default function SellModal({bikeId, basePrice, placeId}) {
   //Change it based on selected location
   const [price, setPrice] = useState(basePrice);
+  const [internetSale, setInternetSale] = useState(false);
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const {setIsModalOpen} = useModal();
@@ -18,12 +19,16 @@ export default function SellModal({bikeId, basePrice, placeId}) {
   const mutation = useMutation({
     mutationFn: async () => {
       const response = await axiosPrivate.put(
-        `/Bikes/sell/${bikeId}?price=${price}`
+        `/Bikes/sell/${bikeId}?price=${price}&internet=${internetSale}`
       );
       return response.data;
     },
     onSuccess: (data) => {
       queryClient.setQueriesData({queryKey: [URLS.Models], exact: false}, (oldData) => {
+        if (!oldData) {
+          console.log("sell - oldData undefined");
+          return [];
+        }
         return oldData.map((model) => {
           return model.modelId === data.modelId
             ? {
@@ -39,7 +44,10 @@ export default function SellModal({bikeId, basePrice, placeId}) {
       })
       console.log([URLS.Bikes, data.modelId, placeId])
       queryClient.setQueryData([URLS.Bikes, data.modelId, placeId], (oldData) => {
-        console.log(oldData)
+        if (!oldData) {
+          console.log("sell - oldData undefined");
+          return [];
+        }
         return oldData.filter((bike) => bike.id !== bikeId);
       })
       setIsModalOpen(false);
@@ -59,6 +67,13 @@ export default function SellModal({bikeId, basePrice, placeId}) {
     <div className='modal-basic'>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
       <ModalTextInput title='Cena' value={price} setValue={setPrice}/>
+      <div className={"flex items-center mt-2 ml-1"}>
+        <input className={"scale-150 mr-2"} type={"checkbox"} onChange={() => setInternetSale(!internetSale)}
+               checked={internetSale}/>
+        <span>
+          Sprzedaż przez internet
+        </span>
+      </div>
       <button
         className='button-secondary self-center mt-auto mb-4'
         onClick={() => {
