@@ -13,15 +13,15 @@ import {
 } from "react-icons/fa6";
 import CancelRepairModal from "@/components/modals/repair/CancelRepairModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {axiosPrivate} from "@/api/axios";
 import useModal from "@/hooks/useModal";
 import URLS from "@/util/urls";
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 
 
 export default function StatusButtons({localRepair, setIsSaved, setLocalRepair, setSaveStatus}) {
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const queryClient = useQueryClient();
-
+  const axiosPrivate = useAxiosPrivate();
   const handleStartOrCollect = async (data) => {
     setSaveStatus("success");
     setIsSaved(true);

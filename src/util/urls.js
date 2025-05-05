@@ -2,6 +2,7 @@ const URLS = {
   Manufacturers: "/Manufacturers/",
   Models: "/Models/",
   Bikes: "/Bikes/bikesByModelId/",
+  Bikes2: "/Bikes/",
   WheelSizes: "/WheelSizes/",
   Colors: "/Colors/",
   Categories: "/Categories/",

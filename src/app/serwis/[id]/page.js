@@ -6,7 +6,7 @@ import {useRepairsQuery} from "@/hooks/queryHooks";
 
 export default function RepairPage({params}) {
   const {id} = params;
-  const {data, isPending, isError, error} = useRepairsQuery({id: id})
+  const {data, isPending, isError, error} = useRepairsQuery({id: Number(id)})
 
   return (
     <PrivateRoute>

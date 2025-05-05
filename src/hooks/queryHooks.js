@@ -14,7 +14,6 @@ function buildQueryString(params = null) {
   });
   let queryString = searchParams.toString();
   queryString = queryString ? `?${queryString}` : "";
-  console.log(params);
   if (params["id"] !== undefined) {
     queryString = `${params["id"]}${queryString}`;
   }

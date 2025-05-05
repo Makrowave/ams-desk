@@ -137,7 +137,7 @@ export function BikeTable({model, placeId}) {
                   className='text-red-600 hover:bg-red-300 '
                   onClick={() => {
                     setModalContent(
-                      <DeleteModal id={bike.id} url={URLS.Bikes} refetchQueryKey={URLS.Bikes} admin={false}/>
+                      <DeleteModal id={bike.id} url={URLS.Bikes2} refetchQueryKey={URLS.Bikes} admin={false}/>
                     );
                     setModalTitle("Usuń rower");
                     setIsModalOpen(true);
