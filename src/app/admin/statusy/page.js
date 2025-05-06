@@ -1,32 +1,19 @@
 "use client";
-import StatusModal from "@/components/modals/admin/StatusModal";
-import Modal from "@/components/modals/Modal";
-import StatusTable from "@/components/table/status/StatusTable";
-import useModal from "@/hooks/useModal";
+import {useStatusesQuery} from "@/hooks/queryHooks";
+import AdminTable from "@/components/table/AdminTable";
+import URLS from "@/util/urls";
 
 export default function StatusPanel() {
-  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
+  const {data, isLoading, isError} = useStatusesQuery();
+  const newRowFormat = [
+    {key: "statusName", label: "Nazwa", input: "text"},
+    {key: "hexCode", label: "", input: "color"}
+  ]
   return (
-    <>
-      <div className='main-div bg-primary py-4 px-16'>
-        <h2 className='text-3xl'>Statusy</h2>
-        <div className='overflow-y-auto max-h-[600px] w-4/12 min-w-[600px]'>
-          <StatusTable/>
-        </div>
-        <div className='mt-4'>
-          <button
-            className='button-secondary mr-4'
-            onClick={() => {
-              setIsModalOpen(true);
-              setModalContent(<StatusModal action='post'/>);
-              setModalTitle("Dodaj staus");
-            }}
-          >
-            Dodaj status
-          </button>
-        </div>
-      </div>
-      <Modal/>
-    </>
-  );
+    <div>
+      {!isError && !isLoading &&
+        <AdminTable data={data} headers={["Id", "Nazwa", ""]} url={URLS.Statuses} newRowFormat={newRowFormat}/>
+      }
+    </div>
+  )
 }

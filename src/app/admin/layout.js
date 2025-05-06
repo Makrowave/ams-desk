@@ -1,3 +1,4 @@
+"use client"
 import Navigation from "@/components/navigation/Navigation";
 import SideBar from "@/components/navigation/SideBar";
 import AdminRoute from "@/components/routing/AdminRoute";
@@ -12,6 +13,7 @@ import {
   FaUser,
   FaWrench
 } from "react-icons/fa6";
+import Modal from "@/components/modals/Modal";
 
 export default function AdminLayout({children}) {
   const links = [
@@ -32,6 +34,7 @@ export default function AdminLayout({children}) {
         <SideBar baseUrl={"/admin"} links={links}/>
         {children}
       </main>
+      <Modal/>
     </AdminRoute>
   );
 }
