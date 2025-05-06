@@ -10,17 +10,63 @@ import {
   TextField
 } from "@mui/material";
 import {FaEdit} from "react-icons/fa";
-import {FaCheck, FaPlus, FaTrash, FaXmark} from "react-icons/fa6";
+import {FaBars, FaCheck, FaPlus, FaTrash, FaXmark} from "react-icons/fa6";
 import {useEffect, useRef, useState} from "react";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import URLS from "@/util/urls";
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
 import useModal from "@/hooks/useModal";
 import DeleteModal from "@/components/modals/DeleteModal";
 import ColorInput from "@/components/input/ColorInput";
+import {draggable, dropTargetForElements, monitorForElements} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 
 export default function AdminTable({headers, data, url, newRowFormat}) {
   const [addRowVisible, setAddRowVisible] = useState(false);
+  const queryClient = useQueryClient();
+  const axiosAdmin = useAxiosAdmin();
+  const reorderMutation = useMutation({
+    mutationFn: async (els) => {
+      const response = await axiosAdmin.put(
+        `${url}ChangeOrder?first=${els[0]}&last=${els[1]}`,
+        {},
+        {
+          headers: {"Content-Type": "application/json"},
+        }
+      );
+      return response.data
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData([url], () => (data));
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  useEffect(() => {
+    return monitorForElements({
+      onDrop({source, location}) {
+        console.log("test")
+        const destination = location.current.dropTargets[0];
+        // if dropped outside of any drop targets
+        if (!destination) {
+          return;
+        }
+        // const destinationLocation = destination.data.location;
+        // const sourceLocation = source.data.location;
+
+        // Check if we are dragging rows in same table
+        if (source.data.dragId !== destination.data.dragId) {
+          return;
+        }
+
+        const firstId = source.data.itemId
+        const lastId = destination.data.itemId
+        reorderMutation.mutate([firstId, lastId])
+      },
+    });
+  }, [data]);
+
+
   return (
     <TableContainer component={Paper} className={"m-8 h-[600px]"}>
       <Table stickyHeader>
@@ -34,7 +80,7 @@ export default function AdminTable({headers, data, url, newRowFormat}) {
         <TableBody>
           {
             data.map((item) => (
-              <AdminTableRow item={item} url={url}/>
+              <AdminTableRow key={Object.values(item)[0]} item={item} url={url} dragId={url}/>
             ))
           }
           {
@@ -42,7 +88,9 @@ export default function AdminTable({headers, data, url, newRowFormat}) {
               ? <AdminTableAddRow format={newRowFormat} url={url} setVisible={setAddRowVisible}/>
               : (
                 <TableRow>
-                  <TableCell colSpan={headers.length + 1} align={"right"}>
+                  <TableCell colSpan={headers.length}>
+                  </TableCell>
+                  <TableCell align={"center"}>
                     <IconButton onClick={() => {
                       setAddRowVisible(true)
                     }} color={"success"} variant="contained">
@@ -59,19 +107,22 @@ export default function AdminTable({headers, data, url, newRowFormat}) {
   )
 }
 
-function AdminTableRow({item, url}) {
+function AdminTableRow({item, url, dragId}) {
   const itemId = Object.values(item)[0]
-  const heightRef = useRef(null);
+  const ref = useRef(null);
+  const dragHandleRef = useRef(null);
   const [rowWidth, setRowWidth] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState(item);
+  const [dragging, setDragging] = useState(false);
+  const [isDraggedOver, setIsDraggedOver] = useState(false);
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal()
   const editData = (key, value) => {
     setEditedData(prev => ({...prev, [key]: value}));
   }
   const axiosAdmin = useAxiosAdmin();
   const queryClient = useQueryClient();
-  const mutation = useMutation({
+  const editMutation = useMutation({
     mutationFn: async () => {
       const response = await axiosAdmin.put(
         url + itemId,
@@ -84,7 +135,7 @@ function AdminTableRow({item, url}) {
     },
     onSuccess: (data) => {
       setIsEditing(false);
-      queryClient.setQueryData([URLS.Colors], (oldData) => (
+      queryClient.setQueryData([url], (oldData) => (
         oldData.map(oldItem => Object.values(oldItem)[0] === itemId ? data : oldItem)
       ));
     },
@@ -93,19 +144,45 @@ function AdminTableRow({item, url}) {
     },
   });
 
-
   useEffect(() => {
-    if (heightRef.current) {
-      const rect = heightRef.current.getBoundingClientRect();
+    // Width
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect();
       setRowWidth(rect.height);
     }
+    // Dragging
+    const el = ref.current;
+    const handle = dragHandleRef.current;
+    if (el) {
+      return draggable({
+        element: el,
+        dragHandle: handle,
+        getInitialData: () => ({itemId, dragId}),
+        onDragStart: () => setDragging(true),
+        onDrop: () => setDragging(false),
+      });
+    } else {
+      console.log("no ref in admin row")
+    }
   }, []);
-
+  //Dropping
+  useEffect(() => {
+    const el = ref.current;
+    if (el) {
+      return dropTargetForElements({
+        element: el,
+        getData: () => ({itemId, dragId}),
+        onDragEnter: () => setIsDraggedOver(true),
+        onDragLeave: () => setIsDraggedOver(false),
+        onDrop: () => setIsDraggedOver(false),
+      });
+    }
+  }, [])
   const startEditing = () => {
     setIsEditing(true);
   }
   const endEditing = () => {
-    mutation.mutate()
+    editMutation.mutate()
   }
   const renderCellContent = (key, value, index) => {
     if (key === "hexCode") {
@@ -130,13 +207,21 @@ function AdminTableRow({item, url}) {
   }
 
   return (
-    <TableRow key={itemId} ref={heightRef}>
+    <TableRow
+      key={itemId}
+      ref={ref}
+      style={{
+        opacity: dragging ? 0.4 : 1,
+        // borderBottom: isDraggedOver ? "1px solid" : "",
+      }}
+      className={isDraggedOver ? "bg-secondary" : ""}
+    >
       {
         Object.entries(item).map(([key, value], index) => (
           renderCellContent(key, value, index)
         ))
       }
-      <TableCell>
+      <TableCell align={"center"}>
         <IconButton onClick={() => {
           isEditing ? endEditing() : startEditing();
         }} variant="contained" color={"primary"}>
@@ -150,7 +235,11 @@ function AdminTableRow({item, url}) {
           <FaTrash/>
         </IconButton>
       </TableCell>
-      <TableCell></TableCell>
+      <TableCell>
+        <IconButton ref={dragHandleRef}>
+          <FaBars/>
+        </IconButton>
+      </TableCell>
     </TableRow>
   )
 }
