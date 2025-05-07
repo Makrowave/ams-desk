@@ -6,6 +6,7 @@ import NewRepairModal from "../modals/record/repair/NewRepairModal";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import {useQuery} from "@tanstack/react-query";
 import {useState} from "react";
+import {usePlacesNotStorageQuery} from "@/hooks/queryHooks";
 
 export default function RepairTable({src, addButton, localKey}) {
   const axiosPrivate = useAxiosPrivate();
@@ -28,8 +29,10 @@ export default function RepairTable({src, addButton, localKey}) {
     },
   });
 
+  const {data: placesData, isError: isPlacesError, isLoading: isPlacesLoading} = usePlacesNotStorageQuery();
+
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
-  const places = createPlaces();
+  const places = createPlaces(!isPlacesLoading && !isPlacesError ? placesData : []);
 
   return (
     <div>
@@ -121,8 +124,6 @@ function HeaderButton({selected, onClick, id, text}) {
   );
 }
 
-const createPlaces = () => {
-  const places = JSON.parse(process.env.NEXT_PUBLIC_REPAIR_PLACES);
-  places.unshift({placeId: 0, placeName: "Wszystkie"});
-  return places;
+const createPlaces = (places) => {
+  return [{placeId: 0, placeName: "Wszystkie"}, ...places];
 };

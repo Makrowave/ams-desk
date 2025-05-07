@@ -2,6 +2,7 @@
 
 import {useState} from "react";
 import {FaChevronDown, FaChevronUp} from "react-icons/fa6";
+import {usePlacesQuery} from "@/hooks/queryHooks";
 
 /**
  * ModelTable's header. It consists of sortable buttons generated
@@ -14,6 +15,7 @@ import {FaChevronDown, FaChevronUp} from "react-icons/fa6";
  */
 export default function ModelTableHeader({singlePlace, setCriterion}) {
   const [active, setActive] = useState(1);
+  const {data, isError, isLoading} = usePlacesQuery();
 
   function handleOptionButton(criterion, id) {
     setActive(id);
@@ -21,23 +23,24 @@ export default function ModelTableHeader({singlePlace, setCriterion}) {
   }
 
   //Map of places from .env to sortable buttons
-  let tableHeaders = JSON.parse(process.env.NEXT_PUBLIC_PLACES)
-    .sort((a, b) => a.placeId - b.placeId)
-    .map((place, index) => {
-      return (
-        <th className={`w-24 ${place.color}`} key={place.placeId}>
-          <SortButton
-            onClick={handleOptionButton}
-            activeId={active}
-            id={index + 6}
-            criterionName='amount'
-            subValue={index + 1}
-            defeaultIsAscending={false}
-            title={place.placeName}
-          />
-        </th>
-      );
-    });
+  const createTableHeaders = () => {
+    return data.sort((a, b) => a.placeId - b.placeId)
+      .map((place, index) => {
+        return (
+          <th className={`w-24 ${place.color}`} key={place.placeId}>
+            <SortButton
+              onClick={handleOptionButton}
+              activeId={active}
+              id={index + 6}
+              criterionName='amount'
+              subValue={index + 1}
+              defeaultIsAscending={false}
+              title={place.placeName}
+            />
+          </th>
+        );
+      });
+  }
 
   return (
     <thead className='bg-secondary mb-px sticky top-0 z-10 shadow-lg h-10'>
@@ -66,7 +69,7 @@ export default function ModelTableHeader({singlePlace, setCriterion}) {
         />
       </th>
       {/* Mapped buttons */}
-      {!singlePlace && tableHeaders}
+      {!singlePlace && !isLoading && !isError && createTableHeaders()}
     </tr>
     </thead>
   );

@@ -7,6 +7,7 @@ const URLS = {
   Colors: "/Colors/",
   Categories: "/Categories/",
   Statuses: "/Statuses/",
+  PlacesNotStorage: "/Places/NotStorage/",
   Places: "/Places/",
   Employees: "/Employees/",
   Users: "/Users/",

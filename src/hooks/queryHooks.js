@@ -49,6 +49,7 @@ export const useCategoriesQuery = createQueryHook("Categories");
 export const useStatusesQuery = createQueryHook("Statuses");
 export const useStatusesNotSoldQuery = createQueryHook("StatusesNotSold");
 export const usePlacesQuery = createQueryHook("Places");
+export const usePlacesNotStorageQuery = createQueryHook("PlacesNotStorage");
 export const useEmployeesQuery = createQueryHook("Employees");
 export const useUsersQuery = createQueryHook("Users", true);
 export const useRepairsQuery = createQueryHook("Repairs");

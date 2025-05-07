@@ -1,6 +1,6 @@
 "use client";
 import ModelRecord from "./row/ModelRecord";
-import {useModelsQuery} from "@/hooks/queryHooks";
+import {useModelsQuery, usePlacesQuery} from "@/hooks/queryHooks";
 
 /**
  * ModelTable's body. Queries the backend to get models and maps them to bike records.
@@ -14,7 +14,8 @@ import {useModelsQuery} from "@/hooks/queryHooks";
  */
 export default function ModelTableBody({filters, singlePlace, placeId, sortCriterion}) {
   const {data, isPending, isError, error} = useModelsQuery(filters, {refetchInterval: 10000,})
-  const placeCount = process.env.NEXT_PUBLIC_PLACE_COUNT;
+  const {data: placesData, isLoading: placesIsLoading, isError: placesIsError} = usePlacesQuery();
+  const placeCount = !placesIsLoading && !placesIsError ? placesData.length : 0;
   if (isPending) {
     return (
       <tbody>

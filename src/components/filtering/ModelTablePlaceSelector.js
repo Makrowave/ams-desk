@@ -3,11 +3,12 @@ import useModal from "@/hooks/useModal";
 import AddModelModal from "@/components/modals/record/model/AddModelModal";
 import ExpandButton from "../buttons/ExpandButton";
 import {FaPlus} from "react-icons/fa6";
+import {usePlacesQuery} from "@/hooks/queryHooks";
 // Switches places for frontend user. Buttons change placeId in query
 export default function ModelTablePlaceSelector({changePlaceId}) {
   const [active, setActive] = useState(0);
-  const places = load();
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
+  const {data, isLoading, isError} = usePlacesQuery();
 
   function openModal() {
     setModalContent(<AddModelModal/>);
@@ -15,10 +16,8 @@ export default function ModelTablePlaceSelector({changePlaceId}) {
     setIsModalOpen(true);
   }
 
-  function load() {
-    let arr = JSON.parse(process.env.NEXT_PUBLIC_PLACES);
-    arr.unshift({placeId: 0, placeName: "Wszystkie"});
-    return arr;
+  const createPlaces = (places) => {
+    return [{placeId: 0, placeName: "Wszystkie"}, ...places];
   }
 
   function handleClick(index) {
@@ -29,7 +28,7 @@ export default function ModelTablePlaceSelector({changePlaceId}) {
   return (
     <div className='flex justify-between items-center h-fit'>
       <div className='flex *:px-5 h-12'>
-        {places.map((place, index) => (
+        {createPlaces(!isLoading && !isError ? data : []).map((place, index) => (
           <ChangeTableButton
             key={place.placeId}
             title={place.placeName}
