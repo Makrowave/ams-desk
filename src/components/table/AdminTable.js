@@ -222,18 +222,38 @@ function AdminTableRow({item, url, dragId}) {
         ))
       }
       <TableCell align={"center"}>
-        <IconButton onClick={() => {
-          isEditing ? endEditing() : startEditing();
-        }} variant="contained" color={"primary"}>
-          {isEditing ? <FaCheck/> : <FaEdit/>}
-        </IconButton>
-        <IconButton variant="contained" color={"error"} onClick={() => {
-          setModalTitle("Usuń")
-          setModalContent(<DeleteModal id={itemId} url={url} refetchQueryKey={url} admin/>)
-          setIsModalOpen(true)
-        }}>
-          <FaTrash/>
-        </IconButton>
+        {
+          isEditing ? (
+            <IconButton onClick={endEditing} variant="contained" color={"success"}>
+              <FaCheck/>
+            </IconButton>
+          ) : (
+            <IconButton onClick={startEditing} variant="contained" color={"primary"}>
+              <FaEdit/>
+            </IconButton>
+          )
+        }
+        {
+          isEditing ? (
+            <IconButton onClick={() => {
+              setIsEditing(false);
+              setEditedData(item)
+            }} color={"error"}>
+              <FaXmark/>
+            </IconButton>
+          ) : (
+            <IconButton variant="contained" color={"error"} onClick={() => {
+              setModalTitle("Usuń")
+              setModalContent(<DeleteModal id={itemId} url={url} refetchQueryKey={url} admin/>)
+              setIsModalOpen(true)
+            }}>
+              <FaTrash/>
+            </IconButton>
+
+          )
+        }
+
+
       </TableCell>
       <TableCell>
         <IconButton ref={dragHandleRef}>
@@ -284,7 +304,7 @@ function AdminTableAddRow({format, url, setVisible}) {
           }
         })
       }
-      <TableCell>
+      <TableCell align={"center"}>
         <IconButton onClick={() => {
           mutation.mutate()
         }} color={"success"} variant="contained">
