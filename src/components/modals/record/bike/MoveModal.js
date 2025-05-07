@@ -49,9 +49,9 @@ export default function MoveModal({bikeId}) {
         value={place}
         onChange={setPlace}
         urlKey={'Places'}
-        default_option={""}
+        defaultValue={""}
         title='Dokąd'
-        default_title='Wybierz z listy'
+        defaultLabel='Wybierz z listy'
       />
       <button
         className='button-secondary self-center mt-auto mb-4'

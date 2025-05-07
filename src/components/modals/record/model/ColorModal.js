@@ -64,9 +64,9 @@ export default function ColorModal({model}) {
         value={color}
         onChange={setColor}
         urlKey={'Colors'}
-        default_option={""}
+        defaultValue={""}
         title='Kolor'
-        default_title='Wybierz z listy'
+        defaultLabel='Wybierz z listy'
         isColored={true}
       />
       <button

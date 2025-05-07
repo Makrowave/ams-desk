@@ -1,24 +1,18 @@
 "use client";
 
-import {Select} from "../input/Select";
+import {DataSelect} from "../input/DataSelect";
 
-// Children should be <option> element
-export default function FilterSelect({onChange, value, title, defaultKey, defaultValue, options, isColored}) {
+export default function FilterSelect({onChange, value, title, defaultValue, defaultLabel, options}) {
   return (
     <div className='flex justify-center flex-col'>
-      <div className='flex justify-center self-start'>
-        <p>{title}</p>
-      </div>
-      <div className='flex justify-center items-center self-start w-full'>
-        <Select
-          pKey={value}
-          defaultKey={defaultKey}
-          defaultValue={defaultValue}
-          onChange={onChange}
-          options={options}
-          isColored={isColored}
-        />
-      </div>
+      <DataSelect
+        label={title}
+        value={value}
+        defaultValue={defaultValue}
+        defaultLabel={defaultLabel}
+        onChange={onChange}
+        options={options}
+      />
     </div>
   );
 }

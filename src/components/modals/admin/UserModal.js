@@ -69,8 +69,8 @@ export default function UserModal({user, action}) {
         onChange={setEmployeeId}
         urlKey={'Employees'}
         title='Pracownik'
-        default_option={""}
-        default_title='Brak'
+        defaultValue={""}
+        defaultLabel='Brak'
       />
       <button className='button-primary mb-4' onClick={() => handleClick()}>
         {action === "put" ? "Edytuj" : ""}

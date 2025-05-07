@@ -50,9 +50,9 @@ export default function StatusModal({bikeId}) {
         onChange={setStatus}
         urlKey='ExcludedStatuses'
         params={{exclude: [3]}}
-        default_option={""}
+        defaultValue={""}
         title='Status'
-        default_title='Wybierz z listy'
+        defaultLabel='Wybierz z listy'
         isColored={true}
       />
       <button

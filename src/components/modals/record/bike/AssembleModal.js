@@ -51,9 +51,9 @@ export default function AssembleModal({bikeId}) {
         value={employeeId}
         onChange={setEmployeeId}
         urlKey={'Employees'}
-        default_option={""}
+        defaultValue={""}
         title='Pracownik'
-        default_title='Wybierz z listy'
+        defaultLabel='Wybierz z listy'
       />
       <button
         className='button-secondary self-center mt-auto mb-4'

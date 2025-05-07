@@ -64,9 +64,9 @@ export default function ModifyServiceModal({service}) {
           value={category}
           onChange={setCategory}
           urlKey={'ServiceCategories'}
-          default_option={""}
+          defaultValue={""}
           title='Kategoria'
-          default_title='Wybierz z listy'
+          defaultLabel='Wybierz z listy'
         />
 
         <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>

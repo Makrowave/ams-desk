@@ -60,8 +60,8 @@ export default function AddBikeModal({modelId, placeId}) {
         onChange={setPlace}
         urlKey={'Places'}
         title='Miejsce'
-        default_option={""}
-        default_title='Wybierz z listy'
+        defaultValue={""}
+        defaultLabel='Wybierz z listy'
       />
       <ValidationFetchSelect
         value={status}
@@ -69,8 +69,8 @@ export default function AddBikeModal({modelId, placeId}) {
         urlKey={'ExcludedStatuses'}
         params={{exclude: [3]}}
         title='Status'
-        default_option={""}
-        default_title='Wybierz z listy'
+        defaultValue={""}
+        defaultLabel='Wybierz z listy'
         isColored={true}
       />
       <button

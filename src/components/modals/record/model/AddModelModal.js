@@ -252,8 +252,8 @@ export default function AddModelModal() {
           onChange={setWheelSize}
           urlKey={'WheelSizes'}
           title='Rozmiar koła'
-          default_option={""}
-          default_title='Wybierz'
+          defaultValue={""}
+          defaultLabel='Wybierz'
           useRowStyle={true}
         />
       </div>
@@ -288,8 +288,8 @@ export default function AddModelModal() {
           onChange={setManufacturerId}
           urlKey={'Manufacturers'}
           title='Producent'
-          default_option={""}
-          default_title='Wybierz'
+          defaultValue={""}
+          defaultLabel='Wybierz'
           useRowStyle={true}
         />
       </div>
@@ -299,8 +299,8 @@ export default function AddModelModal() {
           onChange={setCategoryId}
           urlKey={'Categories'}
           title='Kategoria'
-          default_option={""}
-          default_title='Wybierz'
+          defaultValue={""}
+          defaultLabel='Wybierz'
           useRowStyle={true}
         />
       </div>
@@ -310,8 +310,8 @@ export default function AddModelModal() {
           onChange={setColorId}
           urlKey={'Colors'}
           title='Kolor'
-          default_option={""}
-          default_title='Wybierz'
+          defaultValue={""}
+          defaultLabel='Wybierz'
           useRowStyle={true}
           isColored={true}
         />

@@ -63,17 +63,17 @@ export default function NewRepairModal({}) {
             localStorage.setItem("repairModal:defaultPlace", value)
           }}
           urlKey={'Places'}
-          default_option={""}
+          defaultValue={""}
           title='Miejsce przyjęcia'
-          default_title='Wybierz z listy'
+          defaultLabel='Wybierz z listy'
         />
         <ValidationFetchSelect
           value={employee}
           onChange={setEmployee}
           urlKey={'Employees'}
           title={"Kto przyjmuje"}
-          default_option={""}
-          default_title='Wybierz z listy'
+          defaultValue={""}
+          defaultLabel='Wybierz z listy'
         />
       </div>
       <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>

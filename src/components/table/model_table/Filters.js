@@ -9,6 +9,7 @@ import URLS from "@/util/urls";
 
 export default function Filters({setQuery}) {
   const updateFilters = (field, value) => {
+    console.log("Dispatching:", field, value);
     if (field === undefined) return;
     dispatch({type: "SET", field, value});
   }
@@ -38,15 +39,15 @@ export default function Filters({setQuery}) {
           urlKey={"WheelSizes"}
           queryKey={URLS.WheelSizes}
           title='Rozmiar koła'
-          default_option={defaultFilters.wheelSize}
-          default_title='Dowolny'
+          defaultValue={defaultFilters.wheelSize}
+          defaultLabel='Dowolny'
         />
 
         <FilterSelect
           title='Typ ramy'
           value={filters.isWoman}
-          defaultKey={defaultFilters.isWoman}
-          defaultValue='Dowolny'
+          defaultValue={defaultFilters.isWoman}
+          defaultLabel='Dowolny'
           onChange={(v) => updateFilters("isWoman", v)}
           options={[
             {key: "false", value: "Męski"},
@@ -60,8 +61,8 @@ export default function Filters({setQuery}) {
           urlKey='Manufacturers'
           queryKey={URLS.Manufacturers}
           title='Producent'
-          default_option={defaultFilters.manufacturerId}
-          default_title='Dowolny'
+          defaultValue={defaultFilters.manufacturerId}
+          defaultLabel='Dowolny'
         />
 
         <FetchSelect
@@ -70,8 +71,8 @@ export default function Filters({setQuery}) {
           urlKey='Categories'
           queryKey={URLS.Categories}
           title='Kategoria'
-          default_option={defaultFilters.categoryId}
-          default_title='Dowolny'
+          defaultValue={defaultFilters.categoryId}
+          defaultLabel='Dowolny'
         />
 
         <FetchSelect
@@ -80,8 +81,8 @@ export default function Filters({setQuery}) {
           urlKey='Colors'
           queryKey={URLS.Colors}
           title='Kolor'
-          default_option={defaultFilters.colorId}
-          default_title='Dowolny'
+          defaultValue={defaultFilters.colorId}
+          defaultLabel='Dowolny'
           isColored
         />
 
@@ -92,8 +93,8 @@ export default function Filters({setQuery}) {
           params={{exclude: [3]}}
           queryKey={URLS.Statuses}
           title='Status'
-          default_option=""
-          default_title='Dowolny'
+          defaultValue={defaultFilters.statusId}
+          defaultLabel='Dowolny'
           isColored
         />
 

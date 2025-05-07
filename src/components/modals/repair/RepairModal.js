@@ -20,8 +20,8 @@ export default function RepairModal({employeeId, onClick, label}) {
           onChange={setEmployee}
           urlKey={'Employees'}
           title={label}
-          default_option={"Wybierz"}
-          default_title='Dowolny'
+          defaultValue={"Wybierz"}
+          defaultLabel='Dowolny'
         />
       </div>
       <button className='block button-primary mb-4 w-40' onClick={handleClick}>

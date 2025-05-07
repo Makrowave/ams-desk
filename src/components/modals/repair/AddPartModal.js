@@ -71,9 +71,9 @@ export default function AddPartModal({}) {
           value={category}
           onChange={handleCategoryChange}
           urlKey={'PartCategories'}
-          default_option={""}
+          defaultValue={""}
           title='Kategoria'
-          default_title='Wybierz z listy'
+          defaultLabel='Wybierz z listy'
         />
         {category !== "" &&
           <ValidationFetchSelect
@@ -81,9 +81,9 @@ export default function AddPartModal({}) {
             onChange={setType}
             urlKey={"PartTypes"}
             params={{id: category}}
-            default_option={""}
+            defaultValue={""}
             title='Typ'
-            default_title='Wybierz z listy'
+            defaultLabel='Wybierz z listy'
           />
 
         }
@@ -126,9 +126,9 @@ export default function AddPartModal({}) {
           value={unit}
           onChange={setUnit}
           urlKey='Units'
-          default_option={""}
+          defaultValue={""}
           title='Jednostka'
-          default_title='Wybierz z listy'
+          defaultLabel='Wybierz z listy'
         />
         <button
           disabled={!(isNameValid && isPriceValid && category !== "" && unit !== "")}

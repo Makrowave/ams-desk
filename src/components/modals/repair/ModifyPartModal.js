@@ -77,18 +77,18 @@ export default function ModifyPartModal({part}) {
           value={category}
           onChange={setCategory}
           urlKey={'PartCategories'}
-          default_option={"0"}
+          defaultValue={"0"}
           title='Kategoria'
-          default_title='Wybierz z listy'
+          defaultLabel='Wybierz z listy'
         />
         <ValidationFetchSelect
           value={type}
           onChange={setType}
           urlKey={"PartTypes"}
           params={{id: category}}
-          default_option={""}
+          defaultValue={""}
           title='Typ części'
-          default_title='Wybierz z listy'
+          defaultLabel='Wybierz z listy'
         />
 
         <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>
@@ -129,9 +129,9 @@ export default function ModifyPartModal({part}) {
           value={unit}
           onChange={setUnit}
           urlKey={'Units'}
-          default_option={""}
+          defaultValue={""}
           title='Jednostka'
-          default_title='Wybierz z listy'
+          defaultLabel='Wybierz z listy'
         />
         <button
           disabled={!(isNameValid && isPriceValid && type !== "" && unit !== "")}

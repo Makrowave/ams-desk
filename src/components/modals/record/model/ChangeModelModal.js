@@ -169,8 +169,8 @@ export default function ChangeModelModal({model}) {
           onChange={setWheelSize}
           urlKey={'WheelSizes'}
           title='Rozmiar koła'
-          default_option={""}
-          default_title='Rozmiar koła'
+          defaultValue={""}
+          defaultLabel='Rozmiar koła'
           useRowStyle={true}
         />
       </div>
@@ -195,8 +195,8 @@ export default function ChangeModelModal({model}) {
           onChange={setManufacturerId}
           urlKey={'Manufacturers'}
           title='Producent'
-          default_option={""}
-          default_title='Wybierz'
+          defaultValue={""}
+          defaultLabel='Wybierz'
           useRowStyle={true}
         />
       </div>
@@ -206,8 +206,8 @@ export default function ChangeModelModal({model}) {
           onChange={setCategoryId}
           urlKey={'Categories'}
           title='Kategoria'
-          default_option={""}
-          default_title='Wybierz'
+          defaultValue={""}
+          defaultLabel='Wybierz'
           useRowStyle={true}
         />
       </div>

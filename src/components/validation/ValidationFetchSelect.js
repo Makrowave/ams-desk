@@ -1,5 +1,5 @@
 "use client";
-import {Select} from "../input/Select";
+import {DataSelect} from "../input/DataSelect";
 import {FaCheck, FaXmark} from "react-icons/fa6";
 import {createQueryHook} from "@/hooks/queryHooks";
 
@@ -12,8 +12,8 @@ export default function ValidationFetchSelect({
                                                 value,
                                                 onChange,
                                                 title,
-                                                default_option,
-                                                default_title,
+                                                defaultValue,
+                                                defaultLabel,
                                                 useRowStyle,
                                                 isColored,
                                               }) {
@@ -22,7 +22,7 @@ export default function ValidationFetchSelect({
       <div className={useRowStyle ? "flex flex-row justify-between" : "flex justify-center flex-col"}>
         <div className='flex justify-center items-center self-start flex-row'>
           <span className='mr-1'>{title}</span>
-          {value === default_option ? <FaXmark className='text-red-600'/> : <FaCheck className='text-green-500'/>}
+          {value === defaultValue ? <FaXmark className='text-red-600'/> : <FaCheck className='text-green-500'/>}
         </div>
         <div
           className={
@@ -62,10 +62,10 @@ export default function ValidationFetchSelect({
 
   return (
     <Body>
-      <Select
+      <DataSelect
         pKey={value}
-        defaultKey={default_option}
-        defaultValue={default_title}
+        defaultKey={defaultValue}
+        defaultValue={defaultLabel}
         onChange={onChange}
         options={data}
         isColored={isColored}

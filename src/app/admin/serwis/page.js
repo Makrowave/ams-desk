@@ -49,8 +49,8 @@ export default function AdminRepairs() {
                     urlKey="ServiceCategories"
                     value={serviceCategory}
                     onChange={setServiceCategory}
-                    default_option={""}
-                    default_title={"Dowolna"}
+                    defaultValue={""}
+                    defaultLabel={"Dowolna"}
                   /></th>
                 <th className="rounded-tr-lg">
                   <div className="flex w-full justify-end">
