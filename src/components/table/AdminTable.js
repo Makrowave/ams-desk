@@ -19,7 +19,18 @@ import DeleteModal from "@/components/modals/DeleteModal";
 import ColorInput from "@/components/input/ColorInput";
 import {draggable, dropTargetForElements, monitorForElements} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 
-export default function AdminTable({headers, data, url, newRowFormat}) {
+export default function AdminTable({
+                                     className,
+                                     headers,
+                                     data,
+                                     url,
+                                     newRowFormat,
+                                     noReorder = false,
+                                     noEdit = false,
+                                     noDelete = false,
+                                     noAdd = false,
+                                     addAsQuery = false
+                                   }) {
   const [addRowVisible, setAddRowVisible] = useState(false);
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
@@ -51,9 +62,6 @@ export default function AdminTable({headers, data, url, newRowFormat}) {
         if (!destination) {
           return;
         }
-        // const destinationLocation = destination.data.location;
-        // const sourceLocation = source.data.location;
-
         // Check if we are dragging rows in same table
         if (source.data.dragId !== destination.data.dragId) {
           return;
@@ -68,38 +76,41 @@ export default function AdminTable({headers, data, url, newRowFormat}) {
 
 
   return (
-    <TableContainer component={Paper} className={"m-8 h-[600px]"}>
+    <TableContainer component={Paper} className={`m-8 max-h-[600px] ${className}`}>
       <Table stickyHeader>
         <TableHead>
           <TableRow>
             {headers.map(header => <TableCell>{header}</TableCell>)}
-            <TableCell align={"center"}>Akcje</TableCell>
-            <TableCell></TableCell>
+            {!(noDelete && noEdit) && <TableCell align={"center"} className={"w-32"}>Akcje</TableCell>}
+            {!noReorder && <TableCell align={"center"} className={"w-16"}></TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
           {
             data.map((item) => (
-              <AdminTableRow key={Object.values(item)[0]} item={item} url={url} dragId={url}/>
+              <AdminTableRow key={Object.values(item)[0]} item={item} url={url} dragId={url} noDelete={noDelete}
+                             noEdit={noEdit} noReorder={noReorder}/>
             ))
           }
           {
             addRowVisible
-              ? <AdminTableAddRow format={newRowFormat} url={url} setVisible={setAddRowVisible}/>
-              : (
-                <TableRow>
-                  <TableCell colSpan={headers.length}>
-                  </TableCell>
-                  <TableCell align={"center"}>
-                    <IconButton onClick={() => {
-                      setAddRowVisible(true)
-                    }} color={"success"} variant="contained">
-                      <FaPlus/>
-                    </IconButton>
-                  </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              )
+              ? !noAdd &&
+              <AdminTableAddRow format={newRowFormat} url={url} setVisible={setAddRowVisible} noEdit={noEdit}
+                                noDelete={noDelete} noReorder={noReorder} addAsQuery={addAsQuery}/>
+              : !noAdd && (
+              <TableRow>
+                <TableCell colSpan={headers.length}>
+                </TableCell>
+                <TableCell align={"center"}>
+                  <IconButton onClick={() => {
+                    setAddRowVisible(true)
+                  }} color={"success"} variant="contained">
+                    <FaPlus/>
+                  </IconButton>
+                </TableCell>
+                {!noReorder && <TableCell></TableCell>}
+              </TableRow>
+            )
           }
         </TableBody>
       </Table>
@@ -107,7 +118,7 @@ export default function AdminTable({headers, data, url, newRowFormat}) {
   )
 }
 
-function AdminTableRow({item, url, dragId}) {
+function AdminTableRow({item, url, dragId, noEdit, noDelete, noReorder}) {
   const itemId = Object.values(item)[0]
   const ref = useRef(null);
   const dragHandleRef = useRef(null);
@@ -221,50 +232,52 @@ function AdminTableRow({item, url, dragId}) {
           renderCellContent(key, value, index)
         ))
       }
-      <TableCell align={"center"}>
-        {
-          isEditing ? (
-            <IconButton onClick={endEditing} variant="contained" color={"success"}>
-              <FaCheck/>
-            </IconButton>
-          ) : (
-            <IconButton onClick={startEditing} variant="contained" color={"primary"}>
-              <FaEdit/>
-            </IconButton>
-          )
-        }
-        {
-          isEditing ? (
-            <IconButton onClick={() => {
-              setIsEditing(false);
-              setEditedData(item)
-            }} color={"error"}>
-              <FaXmark/>
-            </IconButton>
-          ) : (
-            <IconButton variant="contained" color={"error"} onClick={() => {
-              setModalTitle("Usuń")
-              setModalContent(<DeleteModal id={itemId} url={url} refetchQueryKey={url} admin/>)
-              setIsModalOpen(true)
-            }}>
-              <FaTrash/>
-            </IconButton>
+      {!(noDelete && noEdit) &&
+        <TableCell align={"center"}>
+          {
+            isEditing ? !noEdit && (
+              <IconButton onClick={endEditing} variant="contained" color={"success"}>
+                <FaCheck/>
+              </IconButton>
+            ) : !noEdit && (
+              <IconButton onClick={startEditing} variant="contained" color={"primary"}>
+                <FaEdit/>
+              </IconButton>
+            )
+          }
+          {
+            isEditing ? !noDelete && (
+              <IconButton onClick={() => {
+                setIsEditing(false);
+                setEditedData(item)
+              }} color={"error"}>
+                <FaXmark/>
+              </IconButton>
+            ) : !noDelete && (
+              <IconButton variant="contained" color={"error"} onClick={() => {
+                setModalTitle("Usuń")
+                setModalContent(<DeleteModal id={itemId} url={url} refetchQueryKey={url} admin/>)
+                setIsModalOpen(true)
+              }}>
+                <FaTrash/>
+              </IconButton>
+            )
+          }
+        </TableCell>
+      }
+      {!noReorder &&
+        <TableCell>
+          <IconButton ref={dragHandleRef}>
+            <FaBars/>
+          </IconButton>
+        </TableCell>
+      }
 
-          )
-        }
-
-
-      </TableCell>
-      <TableCell>
-        <IconButton ref={dragHandleRef}>
-          <FaBars/>
-        </IconButton>
-      </TableCell>
     </TableRow>
   )
 }
 
-function AdminTableAddRow({format, url, setVisible}) {
+function AdminTableAddRow({format, url, setVisible, noReorder, addAsQuery}) {
   const [data, setData] = useState({});
 
   const editData = (key, value) => {
@@ -275,7 +288,8 @@ function AdminTableAddRow({format, url, setVisible}) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await axiosAdmin.post(url, data, {headers: {"Content-Type": "application/json"}});
+      const response = await axiosAdmin.post(
+        addAsQuery ? `${url}${createQuery(data)}` : url, addAsQuery ? {} : data, {headers: {"Content-Type": "application/json"}});
       return response.data;
     },
     onSuccess: (data) => {
@@ -288,9 +302,19 @@ function AdminTableAddRow({format, url, setVisible}) {
     }
   });
 
+  const createQuery = (queryObject) => {
+    const params = new URLSearchParams();
+    Object.entries(queryObject).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        params.append(key, String(value));
+      }
+    });
+    let queryString = params.toString();
+    return queryString ? `?${queryString}` : "";
+  }
+
   return (
     <TableRow>
-      <TableCell></TableCell>
       {
         format.map((item) => {
           switch (item.input) {
@@ -298,9 +322,11 @@ function AdminTableAddRow({format, url, setVisible}) {
               return <ColorPickerCell value={data[item.key]} onChange={(value) => editData(item.key, value)}/>
             case "picker":
               return <PickerCell value={data[item.key]} onChange={(value) => editData(item.key, value)}/>
-            default:
+            case "text":
               return <TextCell label={item.label} value={data[item.key]}
                                onChange={(value) => editData(item.key, value)}/>
+            default:
+              return <TableCell/>
           }
         })
       }
@@ -316,13 +342,13 @@ function AdminTableAddRow({format, url, setVisible}) {
           <FaXmark/>
         </IconButton>
       </TableCell>
-      <TableCell></TableCell>
+      {!noReorder && <TableCell></TableCell>}
     </TableRow>
   )
 }
 
-function PickerCell({value, onChange}) {
-  return <div></div>
+function PickerCell({value, onChange, urlKey}) {
+  return <TableCell></TableCell>
 }
 
 function TextCell({value, onChange, label}) {

@@ -5,7 +5,10 @@ import URLS from "@/util/urls";
 
 export default function CategoriesPanel() {
   const {data, isLoading, isError} = useCategoriesQuery();
-  const newRowFormat = [{key: "categoryName", label: "Nazwa", input: "text"}]
+  const newRowFormat = [
+    {key: "", label: "", input: "blank"},
+    {key: "categoryName", label: "Nazwa", input: "text"}
+  ]
   return (
     <div>
       {!isError && !isLoading &&
