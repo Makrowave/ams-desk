@@ -4,6 +4,7 @@ import SideBar from "@/components/navigation/SideBar";
 import AdminRoute from "@/components/routing/AdminRoute";
 import {
   FaBicycle,
+  FaBuilding,
   FaCircleInfo,
   FaHouse,
   FaIndustry,
@@ -25,6 +26,7 @@ export default function AdminLayout({children}) {
     {url: "/kola", icon: <FaRegCircle/>, title: "Koła"},
     {url: "/producenci", icon: <FaIndustry/>, title: "Producenci"},
     {url: "/kategorie", icon: <FaList/>, title: "Kategorie"},
+    {url: "/miejsca", icon: <FaBuilding/>, title: "Miejsca"},
     {url: "/serwis", icon: <FaWrench/>, title: "Serwis"},
   ];
   return (

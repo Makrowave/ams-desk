@@ -6,7 +6,7 @@ import URLS from "@/util/urls";
 export default function PlacesPanel() {
   const {data, isLoading, isError} = usePlacesQuery();
   const newRowFormat = [
-    {key: "", label: "", input: "blank"},
+    {key: "", label: "Id", input: "blank"},
     {key: "placeName", label: "Nazwa", input: "text"},
     {key: "isStorage", label: "Magazyn", input: "check"},
   ]

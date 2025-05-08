@@ -6,7 +6,7 @@ import URLS from "@/util/urls";
 export default function CategoriesPanel() {
   const {data, isLoading, isError} = useManufacturersQuery();
   const newRowFormat = [
-    {key: "", label: "", input: "blank"},
+    {key: "", label: "Id", input: "blank"},
     {key: "manufacturerName", label: "Nazwa", input: "text"}
   ]
   return (

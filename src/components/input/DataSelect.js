@@ -28,7 +28,7 @@ export function DataSelect({defaultValue, value, onChange, options, label, valid
         </MenuItem>
         {
           data.map((option) => (
-            <MenuItem value={option.value}>
+            <MenuItem value={option.value} key={option.value}>
               <MenuItemChild option={option} key={option.value}/>
             </MenuItem>
           ))

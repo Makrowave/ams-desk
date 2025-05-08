@@ -6,7 +6,7 @@ import URLS from "@/util/urls";
 export default function ColorsPanel() {
   const {data, isLoading, isError} = useColorsQuery();
   const newRowFormat = [
-    {key: "", label: "", input: "blank"},
+    {key: "", label: "Id", input: "blank"},
     {key: "colorName", label: "Nazwa", input: "text"},
     {key: "hexCode", label: "", input: "color"}
   ]

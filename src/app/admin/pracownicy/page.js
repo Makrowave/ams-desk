@@ -11,7 +11,7 @@ export default function EmployeesPanel() {
   const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const {data: employeeData, error: isEmployeeError, isLoading: isEmployeeLoading} = useEmployeesQuery()
   const employeeRowFormat = [
-    {key: "", label: "", input: "blank"},
+    {key: "", label: "Id", input: "blank"},
     {key: "employeeName", label: "Pracownik", input: "text"}
   ]
   const employeeHeaders = ["Id", "Pracownik"]

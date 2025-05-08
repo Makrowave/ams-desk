@@ -1,6 +1,10 @@
 import {
+  Box,
+  Checkbox,
+  CircularProgress,
   IconButton,
   Paper,
+  SvgIcon,
   Table,
   TableBody,
   TableCell,
@@ -18,10 +22,11 @@ import useModal from "@/hooks/useModal";
 import DeleteModal from "@/components/modals/DeleteModal";
 import ColorInput from "@/components/input/ColorInput";
 import {draggable, dropTargetForElements, monitorForElements} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import FetchSelect from "@/components/filtering/FetchSelect";
+import {createQueryHook} from "@/hooks/queryHooks";
 
 export default function AdminTable({
                                      className,
-                                     headers,
                                      data,
                                      url,
                                      newRowFormat,
@@ -80,7 +85,8 @@ export default function AdminTable({
       <Table stickyHeader>
         <TableHead>
           <TableRow>
-            {headers.map(header => <TableCell>{header}</TableCell>)}
+            {newRowFormat.map(item => <TableCell key={item.key}
+                                                 align={item.input === "check" ? "center" : "left"}>{item.label}</TableCell>)}
             {!(noDelete && noEdit) && <TableCell align={"center"} className={"w-32"}>Akcje</TableCell>}
             {!noReorder && <TableCell align={"center"} className={"w-16"}></TableCell>}
           </TableRow>
@@ -89,7 +95,7 @@ export default function AdminTable({
           {
             data.map((item) => (
               <AdminTableRow key={Object.values(item)[0]} item={item} url={url} dragId={url} noDelete={noDelete}
-                             noEdit={noEdit} noReorder={noReorder}/>
+                             noEdit={noEdit} noReorder={noReorder} rowFormat={newRowFormat}/>
             ))
           }
           {
@@ -99,7 +105,7 @@ export default function AdminTable({
                                 noDelete={noDelete} noReorder={noReorder} addAsQuery={addAsQuery}/>
               : !noAdd && (
               <TableRow>
-                <TableCell colSpan={headers.length}>
+                <TableCell colSpan={newRowFormat.length}>
                 </TableCell>
                 <TableCell align={"center"}>
                   <IconButton onClick={() => {
@@ -118,7 +124,7 @@ export default function AdminTable({
   )
 }
 
-function AdminTableRow({item, url, dragId, noEdit, noDelete, noReorder}) {
+function AdminTableRow({item, url, dragId, noEdit, noDelete, noReorder, rowFormat}) {
   const itemId = Object.values(item)[0]
   const ref = useRef(null);
   const dragHandleRef = useRef(null);
@@ -196,10 +202,27 @@ function AdminTableRow({item, url, dragId, noEdit, noDelete, noReorder}) {
     editMutation.mutate()
   }
   const renderCellContent = (key, value, index) => {
-    if (key === "hexCode") {
+    if (value === null || value === undefined || typeof value === "object") {
+      return <></>
+    } else if (key === "hexCode") {
       return (
         <TableCell style={{background: isEditing ? editedData[key] : item.hexCode, width: rowWidth ?? 10}} key={key}>
           {isEditing && <ColorInput title={""} value={editedData[key]} setValue={(v) => editData(key, v)}/>}
+        </TableCell>
+      )
+    } else if (typeof value === "boolean") {
+      return (
+        <TableCell>
+          {
+            isEditing
+              ? (
+                <Checkbox checked={value} onChange={(e) => editData(key, e.target.checked)}/>
+              ) : (
+                <SvgIcon>
+                  {value ? <FaCheck/> : <FaXmark/>}
+                </SvgIcon>
+              )
+          }
         </TableCell>
       )
     } else if (index === 0) {
@@ -229,7 +252,8 @@ function AdminTableRow({item, url, dragId, noEdit, noDelete, noReorder}) {
     >
       {
         Object.entries(item).map(([key, value], index) => (
-          renderCellContent(key, value, index)
+          <ContentCell key={key} dataKey={key} value={value} index={index} rowFormat={rowFormat} editData={editData}
+                       editedData={editedData} isEditing={isEditing} rowWidth={rowWidth}/>
         ))
       }
       {!(noDelete && noEdit) &&
@@ -278,7 +302,7 @@ function AdminTableRow({item, url, dragId, noEdit, noDelete, noReorder}) {
 }
 
 function AdminTableAddRow({format, url, setVisible, noReorder, addAsQuery}) {
-  const [data, setData] = useState({});
+  const [data, setData] = useState(createAddRowInitialData(format));
 
   const editData = (key, value) => {
     setData(prev => ({...prev, [key]: value}));
@@ -319,14 +343,19 @@ function AdminTableAddRow({format, url, setVisible, noReorder, addAsQuery}) {
         format.map((item) => {
           switch (item.input) {
             case "color":
-              return <ColorPickerCell value={data[item.key]} onChange={(value) => editData(item.key, value)}/>
+              return <ColorPickerCell key={item.key} value={data[item.key]}
+                                      onChange={(value) => editData(item.key, value)}/>
             case "picker":
-              return <PickerCell value={data[item.key]} onChange={(value) => editData(item.key, value)}/>
+              return <PickerCell key={item.key} value={data[item.key]} onChange={(value) => editData(item.key, value)}
+                                 pickerData={item.pickerData} label={item.label}/>
+            case "check":
+              return <CheckBoxCell key={item.key} value={data[item.key]}
+                                   onChange={(value) => editData(item.key, value)}/>
             case "text":
-              return <TextCell label={item.label} value={data[item.key]}
+              return <TextCell key={item.key} label={item.label} value={data[item.key]}
                                onChange={(value) => editData(item.key, value)}/>
             default:
-              return <TableCell/>
+              return <TableCell key={""}/>
           }
         })
       }
@@ -347,8 +376,97 @@ function AdminTableAddRow({format, url, setVisible, noReorder, addAsQuery}) {
   )
 }
 
-function PickerCell({value, onChange, urlKey}) {
-  return <TableCell></TableCell>
+function ContentCell({dataKey, value, index, rowFormat, editedData, editData, isEditing, rowWidth}) {
+
+  // Undefined - early return
+  if (value === null || value === undefined || typeof value === "object") {
+    return <></>
+  }
+  const isFetch = rowFormat[index].input === "picker"
+  const pickerData = rowFormat[index].pickerData;
+  const hook = createQueryHook(pickerData?.urlKey ?? "");
+  const {data, isLoading, isError, error, refetch} = hook(pickerData?.params ?? {}, {enabled: isFetch});
+  if (isFetch) {
+    return (
+      isEditing ? (
+        <PickerCell value={editedData[dataKey]} onChange={(value) => editData(dataKey, value)} pickerData={pickerData}
+                    label={rowFormat[index].label}/>
+      ) : (
+        <TableCell>
+          {isLoading && <CircularProgress/>}
+          {!isError && !isLoading && (data.find(item => item[pickerData.idKey]?.toString() === value.toString())[pickerData.valueKey] ?? "")}
+        </TableCell>
+      )
+    )
+  }
+
+  // dataKey === hexCode - color editable
+  if (dataKey === "hexCode") {
+    return (
+      <TableCell style={{background: isEditing ? editedData[dataKey] : value, width: rowWidth ?? 10}}
+                 key={dataKey}>
+        {isEditing && <ColorInput title={""} value={editedData[dataKey]} setValue={(v) => editData(dataKey, v)}/>}
+      </TableCell>
+    )
+  }
+  // Booleans - checkbox editable
+  if (typeof value === "boolean") {
+    return (
+      <TableCell align={"center"}>
+        {
+          isEditing
+            ? (
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <Checkbox checked={editedData[dataKey]} onChange={(e) => editData(dataKey, e.target.checked)}/>
+              </Box>
+            ) : (
+              <SvgIcon>
+                {value ? <FaCheck/> : <FaXmark/>}
+              </SvgIcon>
+            )
+        }
+      </TableCell>
+    )
+  }
+  // Id cell
+  if (index === 0) {
+    return <TableCell>{value}</TableCell>
+  }
+  // Other cells - text editables
+  return (
+    <TableCell className={"w-60"}>
+      {
+        isEditing
+          ? <TextField variant="standard" value={editedData[dataKey]}
+                       onChange={(e) => editData(dataKey, e.target.value)}/>
+          : value
+      }
+    </TableCell>
+  )
+}
+
+function PickerCell({value, onChange, pickerData, label}) {
+  return (
+    <TableCell>
+      <FetchSelect
+        urlKey={pickerData.urlKey}
+        params={pickerData.params}
+        value={value}
+        onChange={onChange}
+        defaultValue={""}
+        label={label}
+        validated
+      />
+    </TableCell>
+  )
+}
+
+function CheckBoxCell({value, onChange}) {
+  return (
+    <TableCell>
+      <Checkbox checked={value} onChange={(e) => onChange(e.target.checked)}/>
+    </TableCell>
+  )
 }
 
 function TextCell({value, onChange, label}) {
@@ -370,4 +488,25 @@ function ColorPickerCell({value, onChange}) {
       </div>
     </TableCell>
   )
+}
+
+const createAddRowInitialData = (format) => {
+  return format.reduce((acc, item) => {
+    return {...acc, ...(item.key !== "" && {[item.key]: createAddRowInitialValue(item)})}
+  }, {})
+}
+
+const createAddRowInitialValue = (item) => {
+  switch (item.input) {
+    case "color":
+      return "#ffffff"
+    case "picker":
+      return item.default
+    case "check":
+      return false
+    case "text":
+      return ""
+    default:
+      return item.default ?? ""
+  }
 }
