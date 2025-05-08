@@ -1,12 +1,13 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
-import URLS from "@/util/urls";
+import URLS, {URLKEYS} from "@/util/urls";
+import FetchSelect from "@/components/filtering/FetchSelect";
+import {Button} from "@mui/material";
 
-export default function AddBikeModal({modelId, placeId}) {
+export default function AddBikeModal({modelId}) {
   //Change it based on selected location
   const [place, setPlace] = useState("");
   const [status, setStatus] = useState("");
@@ -53,34 +54,32 @@ export default function AddBikeModal({modelId, placeId}) {
   }
 
   return (
-    <div className='flex flex-col justify-between w-72 mx-auto'>
+    <div className='flex flex-col gap-6 w-72 mx-auto'>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
-      <ValidationFetchSelect
+      <FetchSelect
         value={place}
         onChange={setPlace}
-        urlKey={'Places'}
-        title='Miejsce'
+        urlKey={URLKEYS.Places}
+        label='Miejsce'
         defaultValue={""}
-        defaultLabel='Wybierz z listy'
+        validated
       />
-      <ValidationFetchSelect
+      <FetchSelect
         value={status}
         onChange={setStatus}
-        urlKey={'ExcludedStatuses'}
         params={{exclude: [3]}}
-        title='Status'
+        urlKey={URLKEYS.ExcludedStatuses}
+        label='Status'
         defaultValue={""}
-        defaultLabel='Wybierz z listy'
-        isColored={true}
+        validated
       />
-      <button
-        className='button-secondary self-center mt-auto mb-4'
-        onClick={() => {
-          if (validate()) mutation.mutate();
-        }}
+      <Button color={"primary"} variant={"contained"}
+              onClick={() => {
+                if (validate()) mutation.mutate();
+              }}
       >
         Dodaj
-      </button>
+      </Button>
     </div>
   );
 }

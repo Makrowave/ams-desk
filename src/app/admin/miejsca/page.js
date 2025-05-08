@@ -13,7 +13,7 @@ export default function PlacesPanel() {
   return (
     <div>
       {!isError && !isLoading &&
-        <AdminTable data={data} headers={["Id", "Nazwa", ""]} url={URLS.Colors} newRowFormat={newRowFormat}/>
+        <AdminTable data={data} headers={["Id", "Nazwa", ""]} url={URLS.Places} newRowFormat={newRowFormat}/>
       }
     </div>
   )

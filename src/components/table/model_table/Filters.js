@@ -1,11 +1,11 @@
 import FetchSelect from "@/components/filtering/FetchSelect";
 import FilterInput from "@/components/filtering/FilterInput";
-import FilterSelect from "@/components/filtering/FilterSelect";
 import RangeInput from "@/components/filtering/RangeInput";
 import SingleCheckbox from "@/components/filtering/SingleCheckbox";
 import useAuth from "@/hooks/useAuth";
 import {useEffect, useReducer} from "react";
-import URLS from "@/util/urls";
+import {DataSelect} from "@/components/input/DataSelect";
+import {URLKEYS} from "@/util/urls";
 
 export default function Filters({setQuery}) {
   const updateFilters = (field, value) => {
@@ -36,18 +36,15 @@ export default function Filters({setQuery}) {
         <FetchSelect
           value={filters.wheelSize}
           onChange={(v) => updateFilters("wheelSize", v)}
-          urlKey={"WheelSizes"}
-          queryKey={URLS.WheelSizes}
-          title='Rozmiar koła'
+          urlKey={URLKEYS.WheelSizes}
+          label='Rozmiar koła'
           defaultValue={defaultFilters.wheelSize}
-          defaultLabel='Dowolny'
         />
 
-        <FilterSelect
-          title='Typ ramy'
+        <DataSelect
+          label='Typ ramy'
           value={filters.isWoman}
           defaultValue={defaultFilters.isWoman}
-          defaultLabel='Dowolny'
           onChange={(v) => updateFilters("isWoman", v)}
           options={[
             {key: "false", value: "Męski"},
@@ -58,43 +55,35 @@ export default function Filters({setQuery}) {
         <FetchSelect
           value={filters.manufacturerId}
           onChange={(v) => updateFilters("manufacturerId", v)}
-          urlKey='Manufacturers'
-          queryKey={URLS.Manufacturers}
-          title='Producent'
+          urlKey={URLKEYS.Manufacturers}
+          label='Producent'
           defaultValue={defaultFilters.manufacturerId}
-          defaultLabel='Dowolny'
         />
 
         <FetchSelect
           value={filters.categoryId}
           onChange={(v) => updateFilters("categoryId", v)}
-          urlKey='Categories'
-          queryKey={URLS.Categories}
-          title='Kategoria'
+          urlKey={URLKEYS.Categories}
+          label='Kategoria'
           defaultValue={defaultFilters.categoryId}
-          defaultLabel='Dowolny'
         />
 
         <FetchSelect
           value={filters.colorId}
           onChange={(v) => updateFilters("colorId", v)}
-          urlKey='Colors'
-          queryKey={URLS.Colors}
-          title='Kolor'
+          urlKey={URLKEYS.Colors}
+          label='Kolor'
           defaultValue={defaultFilters.colorId}
-          defaultLabel='Dowolny'
           isColored
         />
 
         <FetchSelect
           value={filters.statusId}
           onChange={(v) => updateFilters("statusId", v)}
-          urlKey={"ExcludedStatuses"}
+          urlKey={URLKEYS.ExcludedStatuses}
           params={{exclude: [3]}}
-          queryKey={URLS.Statuses}
-          title='Status'
+          label='Status'
           defaultValue={defaultFilters.statusId}
-          defaultLabel='Dowolny'
           isColored
         />
 

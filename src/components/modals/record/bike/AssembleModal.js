@@ -1,10 +1,10 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
-import URLS from "@/util/urls";
+import URLS, {URLKEYS} from "@/util/urls";
+import FetchSelect from "@/components/filtering/FetchSelect";
 
 export default function AssembleModal({bikeId}) {
   //Change it based on selected location
@@ -47,13 +47,13 @@ export default function AssembleModal({bikeId}) {
   return (
     <div className='modal-basic'>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
-      <ValidationFetchSelect
+      <FetchSelect
         value={employeeId}
         onChange={setEmployeeId}
-        urlKey={'Employees'}
+        urlKey={URLKEYS.Employees}
         defaultValue={""}
-        title='Pracownik'
-        defaultLabel='Wybierz z listy'
+        label='Pracownik'
+        validated
       />
       <button
         className='button-secondary self-center mt-auto mb-4'

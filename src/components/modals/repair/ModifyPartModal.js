@@ -1,4 +1,3 @@
-import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import {useEffect, useState} from "react";
 import {FaCheck, FaXmark} from "react-icons/fa6";
 import {REGEX} from "@/util/regex";
@@ -6,7 +5,7 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 import FetchSelect from "@/components/filtering/FetchSelect";
-import URLS from "@/util/urls";
+import URLS, {URLKEYS} from "@/util/urls";
 
 export default function ModifyPartModal({part}) {
   const {setIsModalOpen} = useModal();
@@ -76,21 +75,19 @@ export default function ModifyPartModal({part}) {
         <FetchSelect
           value={category}
           onChange={setCategory}
-          urlKey={'PartCategories'}
+          urlKey={URLKEYS.PartCategories}
           defaultValue={"0"}
-          title='Kategoria'
-          defaultLabel='Wybierz z listy'
+          label='Kategoria'
         />
-        <ValidationFetchSelect
+        <FetchSelect
           value={type}
           onChange={setType}
-          urlKey={"PartTypes"}
+          urlKey={URLKEYS.PartTypes}
           params={{id: category}}
           defaultValue={""}
-          title='Typ części'
-          defaultLabel='Wybierz z listy'
+          label='Typ części'
+          validated
         />
-
         <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>
           <div className='border-b border-gray-400 w-fit flex items-center'>
             <span className='text-xs text-gray-400 mr-1'>Nazwa</span>
@@ -125,13 +122,13 @@ export default function ModifyPartModal({part}) {
             onChange={(e) => updatePrice(e.target.value)}
           />
         </div>
-        <ValidationFetchSelect
+        <FetchSelect
           value={unit}
           onChange={setUnit}
-          urlKey={'Units'}
+          urlKey={URLKEYS.Units}
           defaultValue={""}
-          title='Jednostka'
-          defaultLabel='Wybierz z listy'
+          label='Jednostka'
+          validated
         />
         <button
           disabled={!(isNameValid && isPriceValid && type !== "" && unit !== "")}

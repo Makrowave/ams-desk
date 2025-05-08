@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import ValidationFetchSelect from "../../../validation/ValidationFetchSelect";
 import SingleCheckbox from "../../../filtering/SingleCheckbox";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
@@ -8,7 +7,8 @@ import useModal from "@/hooks/useModal";
 import ColorInput from "@/components/input/ColorInput";
 import {REGEX} from "@/util/regex";
 import {FaCheck, FaXmark} from "react-icons/fa6";
-import URLS from "@/util/urls";
+import URLS, {URLKEYS} from "@/util/urls";
+import FetchSelect from "@/components/filtering/FetchSelect";
 
 //Add refetch
 
@@ -247,14 +247,13 @@ export default function AddModelModal() {
         )} */}
       </div>
       <div>
-        <ValidationFetchSelect
+        <FetchSelect
           value={wheelSize}
           onChange={setWheelSize}
-          urlKey={'WheelSizes'}
-          title='Rozmiar koła'
+          urlKey={URLKEYS.WheelSizes}
+          label='Rozmiar koła'
           defaultValue={""}
-          defaultLabel='Wybierz'
-          useRowStyle={true}
+          validated
         />
       </div>
       <div>
@@ -283,37 +282,33 @@ export default function AddModelModal() {
         )} */}
       </div>
       <div>
-        <ValidationFetchSelect
+        <FetchSelect
           value={manufacturerId}
           onChange={setManufacturerId}
-          urlKey={'Manufacturers'}
-          title='Producent'
+          urlKey={URLKEYS.Manufacturers}
+          label='Producent'
           defaultValue={""}
-          defaultLabel='Wybierz'
-          useRowStyle={true}
+          validated
         />
       </div>
       <div>
-        <ValidationFetchSelect
+        <FetchSelect
           value={categoryId}
           onChange={setCategoryId}
-          urlKey={'Categories'}
-          title='Kategoria'
+          urlKey={URLKEYS.Categories}
+          label='Kategoria'
           defaultValue={""}
-          defaultLabel='Wybierz'
-          useRowStyle={true}
+          validated
         />
       </div>
       <div>
-        <ValidationFetchSelect
+        <FetchSelect
           value={colorId}
           onChange={setColorId}
-          urlKey={'Colors'}
-          title='Kolor'
+          urlKey={URLKEYS.Colors}
           defaultValue={""}
-          defaultLabel='Wybierz'
-          useRowStyle={true}
-          isColored={true}
+          label='Kolor'
+          validated
         />
       </div>
       <ColorInput title='Kolor główny' value={primaryColor} setValue={setPrimaryColor}/>

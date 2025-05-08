@@ -1,11 +1,11 @@
-import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import {useState} from "react";
 import {FaCheck, FaXmark} from "react-icons/fa6";
 import {REGEX} from "@/util/regex";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
-import URLS from "@/util/urls";
+import URLS, {URLKEYS} from "@/util/urls";
+import FetchSelect from "@/components/filtering/FetchSelect";
 
 export default function AddPartModal({}) {
   const {setIsModalOpen} = useModal();
@@ -67,27 +67,25 @@ export default function AddPartModal({}) {
   return (
     <div className='flex flex-col w-full justify-between items-center py-2'>
       <div className='w-full *:w-full *:mb-4'>
-        <ValidationFetchSelect
+        <FetchSelect
           value={category}
           onChange={handleCategoryChange}
-          urlKey={'PartCategories'}
+          urlKey={URLKEYS.PartCategories}
           defaultValue={""}
-          title='Kategoria'
-          defaultLabel='Wybierz z listy'
+          label='Kategoria'
+          validated
         />
         {category !== "" &&
-          <ValidationFetchSelect
+          <FetchSelect
             value={type}
             onChange={setType}
-            urlKey={"PartTypes"}
+            urlKey={URLKEYS.PartTypes}
             params={{id: category}}
             defaultValue={""}
-            title='Typ'
-            defaultLabel='Wybierz z listy'
+            label='Typ'
+            validated
           />
-
         }
-
         <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>
           <div className='border-b border-gray-400 w-fit flex items-center'>
             <span className='text-xs text-gray-400 mr-1'>Nazwa</span>
@@ -122,13 +120,13 @@ export default function AddPartModal({}) {
             onChange={(e) => updatePrice(e.target.value)}
           />
         </div>
-        <ValidationFetchSelect
+        <FetchSelect
           value={unit}
           onChange={setUnit}
-          urlKey='Units'
+          urlKey={URLKEYS.Units}
           defaultValue={""}
-          title='Jednostka'
-          defaultLabel='Wybierz z listy'
+          label='Jednostka'
+          validated
         />
         <button
           disabled={!(isNameValid && isPriceValid && category !== "" && unit !== "")}

@@ -1,4 +1,3 @@
-import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 import {REGEX} from "@/util/regex";
@@ -6,6 +5,8 @@ import {useMutation} from "@tanstack/react-query";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {FaCheck, FaXmark} from "react-icons/fa6";
+import FetchSelect from "@/components/filtering/FetchSelect";
+import {URLKEYS} from "@/util/urls";
 
 export default function NewRepairModal({}) {
   const axios = useAxiosPrivate();
@@ -56,24 +57,24 @@ export default function NewRepairModal({}) {
   return (
     <div className='*:mb-2 w-full flex flex-col'>
       <div>
-        <ValidationFetchSelect
+        <FetchSelect
           value={place}
           onChange={(value) => {
             setPlace(value);
             localStorage.setItem("repairModal:defaultPlace", value)
           }}
-          urlKey={'Places'}
+          urlKey={URLKEYS.Places}
           defaultValue={""}
-          title='Miejsce przyjęcia'
-          defaultLabel='Wybierz z listy'
+          label='Miejsce przyjęcia'
+          validated
         />
-        <ValidationFetchSelect
+        <FetchSelect
           value={employee}
           onChange={setEmployee}
-          urlKey={'Employees'}
-          title={"Kto przyjmuje"}
+          urlKey={URLKEYS.Employees}
+          label={"Kto przyjmuje"}
           defaultValue={""}
-          defaultLabel='Wybierz z listy'
+          validated
         />
       </div>
       <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>

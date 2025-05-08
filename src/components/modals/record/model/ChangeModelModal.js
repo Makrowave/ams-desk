@@ -1,13 +1,13 @@
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import SingleCheckbox from "@/components/filtering/SingleCheckbox";
-import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useEffect, useState} from "react";
 import {REGEX} from "@/util/regex";
 import {FaCheck, FaXmark} from "react-icons/fa6";
-import URLS from "@/util/urls";
+import URLS, {URLKEYS} from "@/util/urls";
+import FetchSelect from "@/components/filtering/FetchSelect";
 
 export default function ChangeModelModal({model}) {
   const modelId = model.modelId;
@@ -164,14 +164,13 @@ export default function ChangeModelModal({model}) {
         </div>
       </div>
       <div>
-        <ValidationFetchSelect
+        <FetchSelect
           value={wheelSize}
           onChange={setWheelSize}
-          urlKey={'WheelSizes'}
-          title='Rozmiar koła'
+          urlKey={URLKEYS.WheelSizes}
+          label='Rozmiar koła'
           defaultValue={""}
-          defaultLabel='Rozmiar koła'
-          useRowStyle={true}
+          validated
         />
       </div>
       <div>
@@ -189,28 +188,22 @@ export default function ChangeModelModal({model}) {
           />
         </div>
       </div>
-      <div>
-        <ValidationFetchSelect
-          value={manufacturerId}
-          onChange={setManufacturerId}
-          urlKey={'Manufacturers'}
-          title='Producent'
-          defaultValue={""}
-          defaultLabel='Wybierz'
-          useRowStyle={true}
-        />
-      </div>
-      <div>
-        <ValidationFetchSelect
-          value={categoryId}
-          onChange={setCategoryId}
-          urlKey={'Categories'}
-          title='Kategoria'
-          defaultValue={""}
-          defaultLabel='Wybierz'
-          useRowStyle={true}
-        />
-      </div>
+      <FetchSelect
+        value={manufacturerId}
+        onChange={setManufacturerId}
+        urlKey={URLKEYS.Manufacturers}
+        label='Producent'
+        defaultValue={""}
+        validated
+      />
+      <FetchSelect
+        value={categoryId}
+        onChange={setCategoryId}
+        urlKey={URLKEYS.Categories}
+        label='Kategoria'
+        defaultValue={""}
+        validated
+      />
       <SingleCheckbox
         checked={isWoman}
         onChange={() => {

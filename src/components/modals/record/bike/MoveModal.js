@@ -1,7 +1,6 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
 import URLS from "@/util/urls";
@@ -45,13 +44,13 @@ export default function MoveModal({bikeId}) {
   return (
     <div className='modal-basic'>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
-      <ValidationFetchSelect
+      <FetchSelect
         value={place}
         onChange={setPlace}
-        urlKey={'Places'}
+        urlKey={URLKEYS.Places}
         defaultValue={""}
-        title='Dokąd'
-        defaultLabel='Wybierz z listy'
+        label='Dokąd'
+        validated
       />
       <button
         className='button-secondary self-center mt-auto mb-4'

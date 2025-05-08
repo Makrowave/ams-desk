@@ -25,4 +25,31 @@ const URLS = {
   FilteredParts: "/Parts/Filtered/"
 };
 
+export const URLKEYS = {
+  Manufacturers: "Manufacturers",
+  Models: "Models",
+  Bikes: "Bikes",
+  Bikes2: "Bikes2",
+  WheelSizes: "WheelSizes",
+  Colors: "Colors",
+  Categories: "Categories",
+  Statuses: "Statuses",
+  PlacesNotStorage: "PlacesNotStorage",
+  Places: "Places",
+  Employees: "Employees",
+  Users: "Users",
+  Repairs: "Repairs",
+  Services: "Services",
+  Units: "Units",
+  Parts: "Parts",
+  PartCategories: "PartCategories",
+  PartTypes: "PartTypes",
+  ServiceCategories: "ServiceCategories",
+  Favorites: "Favorites",
+  ExcludedStatuses: "ExcludedStatuses",
+  SoldBikes: "SoldBikes",
+  ServicesFromCategory: "ServicesFromCategory",
+  FilteredParts: "FilteredParts"
+
+}
 export default URLS;

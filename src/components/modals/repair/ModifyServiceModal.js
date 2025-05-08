@@ -1,11 +1,11 @@
-import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import {useState} from "react";
 import {FaCheck, FaXmark} from "react-icons/fa6";
 import {REGEX} from "@/util/regex";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useModal from "@/hooks/useModal";
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
-import URLS from "@/util/urls";
+import URLS, {URLKEYS} from "@/util/urls";
+import FetchSelect from "@/components/filtering/FetchSelect";
 
 export default function ModifyServiceModal({service}) {
   const {setIsModalOpen} = useModal();
@@ -60,15 +60,14 @@ export default function ModifyServiceModal({service}) {
   return (
     <div className='flex flex-col w-full justify-between items-center py-2'>
       <div className='w-full *:w-full *:mb-4'>
-        <ValidationFetchSelect
+        <FetchSelect
           value={category}
           onChange={setCategory}
-          urlKey={'ServiceCategories'}
+          urlKey={URLKEYS.ServiceCategories}
           defaultValue={""}
-          title='Kategoria'
-          defaultLabel='Wybierz z listy'
+          label='Kategoria'
+          validated
         />
-
         <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>
           <div className='border-b border-gray-400 w-fit flex items-center'>
             <span className='text-xs text-gray-400 mr-1'>Nazwa</span>

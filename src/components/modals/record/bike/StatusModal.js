@@ -1,10 +1,10 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
-import URLS from "@/util/urls";
+import URLS, {URLKEYS} from "@/util/urls";
+import FetchSelect from "@/components/filtering/FetchSelect";
 
 export default function StatusModal({bikeId}) {
   const [status, setStatus] = useState("");
@@ -45,16 +45,16 @@ export default function StatusModal({bikeId}) {
   return (
     <div className='modal-basic'>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
-      <ValidationFetchSelect
+      <FetchSelect
         value={status}
         onChange={setStatus}
-        urlKey='ExcludedStatuses'
+        urlKey={URLKEYS.ExcludedStatuses}
         params={{exclude: [3]}}
         defaultValue={""}
-        title='Status'
-        defaultLabel='Wybierz z listy'
-        isColored={true}
+        label='Status'
+        validated
       />
+
       <button
         className='button-secondary self-center mt-auto mb-4 text-nowrap'
         onClick={() => {

@@ -1,10 +1,10 @@
 import ColorInput from "@/components/input/ColorInput";
-import ValidationFetchSelect from "@/components/validation/ValidationFetchSelect";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
-import URLS from "@/util/urls";
+import URLS, {URLKEYS} from "@/util/urls";
+import FetchSelect from "@/components/filtering/FetchSelect";
 
 //primaryColor and secondaryColor can be null in DB
 //(for example if not specified by manufacturer and bike inserts are automated)
@@ -60,14 +60,13 @@ export default function ColorModal({model}) {
       </div>
       <ColorInput title='Kolor główny' value={primaryColor} setValue={setPrimaryColor}/>
       <ColorInput title='Kolor dodatkowy' value={secondaryColor} setValue={setSecondaryColor}/>
-      <ValidationFetchSelect
+      <FetchSelect
         value={color}
         onChange={setColor}
-        urlKey={'Colors'}
+        urlKey={URLKEYS.Colors}
         defaultValue={""}
-        title='Kolor'
-        defaultLabel='Wybierz z listy'
-        isColored={true}
+        label='Kolor'
+        validated
       />
       <button
         className='button-secondary self-center mt-auto mb-4'
