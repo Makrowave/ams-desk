@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {ChromePicker} from "react-color";
 import ReactDOM from "react-dom";
+import {Box, IconButton, Paper, Typography} from "@mui/material";
 
 export default function ColorInput({title, value, setValue}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,27 +48,32 @@ export default function ColorInput({title, value, setValue}) {
   }, [isOpen]);
 
   return (
-    <div className="flex justify-between">
-      <p className="self-center">{title}</p>
-      <div ref={selectRef}>
-        <button
-          className="h-10 w-10"
+    <Box display="flex" alignItems="center" justifyContent="space-between" gap={2}>
+      <Typography>{title}</Typography>
+      <Box ref={selectRef}>
+        <IconButton
           onClick={() => setIsOpen(!isOpen)}
-          style={{background: value}}
+          sx={{
+            width: 40,
+            height: 40,
+            borderRadius: 2,
+            bgcolor: value,
+            border: '1px solid #ccc',
+          }}
         />
-      </div>
+      </Box>
 
       {isOpen &&
         ReactDOM.createPortal(
-          <div ref={pickerRef} style={pickerStyle}>
+          <Paper ref={pickerRef} elevation={4} sx={{position: "absolute", zIndex: 1300, ...pickerStyle}}>
             <ChromePicker
               color={value}
               onChange={(e) => setValue(e.hex)}
               disableAlpha={true}
             />
-          </div>,
+          </Paper>,
           document.body
         )}
-    </div>
+    </Box>
   );
 }

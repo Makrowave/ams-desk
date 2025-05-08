@@ -1,101 +1,48 @@
 import {useEffect, useState} from "react";
-import SingleCheckbox from "../../../filtering/SingleCheckbox";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ErrorDisplay from "../../../error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
 import ColorInput from "@/components/input/ColorInput";
 import {REGEX} from "@/util/regex";
-import {FaCheck, FaXmark} from "react-icons/fa6";
 import URLS, {URLKEYS} from "@/util/urls";
 import FetchSelect from "@/components/filtering/FetchSelect";
-
-//Add refetch
+import ValidatedTextField from "@/components/input/ValidatedTextField";
+import {Button, Checkbox, FormControlLabel} from "@mui/material";
 
 export default function AddModelModal() {
-  // Values with validation values
-  const [name, setName] = useState("");
-  const [productCode, setProductCode] = useState("");
-  const [eanCode, setEanCode] = useState("");
-  const [frameSize, setFrameSize] = useState("");
-  const [price, setPrice] = useState("");
-  // Focus values
-  const [nameFocus, setNameFocus] = useState(false);
-  const [productCodeFocus, setProductCodeFocus] = useState(false);
-  const [eanCodeFocus, setEanCodeFocus] = useState(false);
-  const [frameSizeFocus, setFrameSizeFocus] = useState(false);
-  const [priceFocus, setPriceFocus] = useState(false);
-  // Validation values
-  const [validName, setValidName] = useState(false);
-  const [validProductCode, setValidProductCode] = useState(false);
-  const [validEanCode, setValidEanCode] = useState(false);
-  const [validFrameSize, setValidFrameSize] = useState(false);
-  const [validPrice, setValidPrice] = useState(false);
-  // Regex
-  const NAME_REGEX = REGEX.MODEL_NAME;
-  const EAN_REGEX = REGEX.EAN;
-  const PRODUCT_REGEX = REGEX.PRODUCT_NAME;
-  const FRAME_REGEX = REGEX.FRAME;
-  const PRICE_REGEX = REGEX.PRICE;
-  // Values that use component with in-built validation render
-  const [wheelSize, setWheelSize] = useState("");
-  const [manufacturerId, setManufacturerId] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [colorId, setColorId] = useState("");
-  // Values which don't need a validation render
-  const [primaryColor, setPrimaryColor] = useState("#FF00FF");
-  const [secondaryColor, setSecondaryColor] = useState("#000000");
-  const [isWoman, setIsWoman] = useState(false);
-  const [isElectric, setIsElectric] = useState(false);
-  //Other
-  const _url = "/Models";
+  const [model, setModel] = useState({
+    modelName: "",
+    productCode: "",
+    eanCode: "",
+    frameSize: "",
+    price: "",
+    wheelSize: "",
+    manufacturerId: "",
+    categoryId: "",
+    colorId: "",
+    primaryColor: "#FF00FF",
+    secondaryColor: "#000000",
+    isWoman: false,
+    isElectric: false,
+  });
+
   const [error, setError] = useState("");
   const {setIsModalOpen} = useModal();
 
-  //Validation logic
-  //Name
-  useEffect(() => {
-    setValidName(NAME_REGEX.test(name));
-  }, [name]);
-  //EAN - maybe add additional validation
-  useEffect(() => {
-    setValidEanCode(EAN_REGEX.test(eanCode));
-  }, [eanCode]);
-  //PRODUCT
-  useEffect(() => {
-    setValidProductCode(PRODUCT_REGEX.test(productCode));
-  }, [productCode]);
-  //FRAME
-  useEffect(() => {
-    setValidFrameSize(FRAME_REGEX.test(frameSize));
-  }, [frameSize]);
-  //PRICE
-  useEffect(() => {
-    setValidPrice(PRICE_REGEX.test(price));
-  }, [price]);
-  //Query
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
+  const [isValid, setIsValid] = useState(false);
+
+  const updateField = (key, value) => {
+    setModel((prev) => ({...prev, [key]: value}));
+  };
 
   const mutation = useMutation({
     mutationFn: async () => {
       const result = await axiosPrivate.post(
-        _url,
-        JSON.stringify({
-          productCode: productCode,
-          eanCode: eanCode,
-          modelName: name,
-          frameSize: Number(frameSize),
-          isWoman: isWoman,
-          wheelSize: wheelSize,
-          manufacturerId: manufacturerId,
-          price: price,
-          isElectric: isElectric,
-          primaryColor: primaryColor,
-          secondaryColor: secondaryColor,
-          colorId: colorId,
-          categoryId: categoryId,
-        }),
+        URLS.Models,
+        model,
         {
           headers: {"Content-Type": "application/json"},
         }
@@ -103,12 +50,13 @@ export default function AddModelModal() {
       return result.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueriesData({
-        queryKey: [URLS.Models],
-        exact: false,
-      }, (oldData) => (
-        [...oldData, data]
-      ));
+      queryClient.setQueriesData(
+        {
+          queryKey: [URLS.Models],
+          exact: false,
+        },
+        (oldData) => [...oldData, data]
+      );
       setIsModalOpen(false);
     },
     onError: (error) => {
@@ -116,220 +64,129 @@ export default function AddModelModal() {
     },
   });
 
-  function validate() {
-    let result =
-      validName &&
-      //validEanCode &&
-      validPrice &&
-      validFrameSize &&
-      //validProductCode &&
-      !!wheelSize &&
-      !!manufacturerId &&
-      !!categoryId &&
-      !!colorId &&
-      !!primaryColor &&
-      !!secondaryColor &&
-      isWoman !== null &&
-      isWoman !== undefined &&
-      isElectric !== null &&
-      isElectric !== undefined;
-    if (!result) setError("Wprowadzono niepoprawne dane");
-    return result;
+  const validate = () => {
+    return REGEX.MODEL_NAME.test(model.modelName) &&
+      REGEX.PRODUCT_NAME.test(model.productCode) &&
+      REGEX.EAN.test(model.eanCode) &&
+      REGEX.FRAME.test(model.frameSize) &&
+      REGEX.PRICE.test(model.price) &&
+      model.wheelSize !== "" &&
+      model.manufacturerId !== "" &&
+      model.categoryId !== "" &&
+      model.colorId !== "" &&
+      !!model.primaryColor &&
+      !!model.secondaryColor &&
+      typeof model.isWoman === "boolean" &&
+      typeof model.isElectric === "boolean";
   }
+
 
   function handleClick() {
-    if (validate()) mutation.mutate();
+    if (isValid) mutation.mutate();
   }
 
+  useEffect(() => {
+    setIsValid(validate());
+  }, [model]);
+
   return (
-    <div className='flex flex-col gap-y-2 w-[600px]'>
+    <div className="flex flex-col gap-y-2 w-[600px]">
       <ErrorDisplay message={error} isVisible={error !== ""}/>
-      <div>
-        <div className='flex justify-between'>
-          <div className='flex justify-center items-center'>
-            <span className='mr-1'>Nazwa</span>
-            {validName ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
-          </div>
-          <input
-            onFocus={() => setNameFocus(true)}
-            onBlur={() => setNameFocus(false)}
-            className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          ></input>
-        </div>
-        {/* {!validName && nameFocus ? (
-          <div className='flex flex-col bg-tertiary px-4 py-2 rounded-md'>
-            <p>4-50 znaków</p>
-            <p>Polskie znaki, cyfry i spacje</p>
-            <p>Dozwolone: .-_</p>
-          </div>
-        ) : (
-          <></>
-        )} */}
-      </div>
-      <div>
-        <div className='flex justify-between'>
-          <div className='flex justify-center items-center'>
-            <span className='text-nowrap mr-1'>Kod producenta</span>
-            {validProductCode ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
-          </div>
-          <input
-            onFocus={() => setProductCodeFocus(true)}
-            onBlur={() => setProductCodeFocus(false)}
-            className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
-            value={productCode}
-            onChange={(e) => {
-              setProductCode(e.target.value);
-            }}
-          ></input>
-        </div>
-        {/* {!validProductCode && productCodeFocus ? (
-          <div className='flex flex-col bg-tertiary px-4 py-2 rounded-md'>
-            <p>4-30 znaków</p>
-            <p>Alfabet łaciński i cyfry</p>
-            <p>Dozwolone: _-</p>
-          </div>
-        ) : (
-          <></>
-        )} */}
-      </div>
-      <div>
-        <div className='flex justify-between'>
-          <div className='flex justify-center items-center'>
-            <span className='mr-1'>Kod EAN</span>
-            {validEanCode ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
-          </div>
-          <input
-            onFocus={() => setEanCodeFocus(true)}
-            onBlur={() => setEanCodeFocus(false)}
-            className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
-            value={eanCode}
-            onChange={(e) => {
-              setEanCode(e.target.value);
-            }}
-          />
-        </div>
-        {/* {!validEanCode && eanCodeFocus ? (
-          <div className='flex flex-col bg-tertiary px-4 py-2 rounded-md'>
-            <p>13 cyfr</p>
-            <p>Musi być poprawnym kodem EAN</p>
-          </div>
-        ) : (
-          <></>
-        )} */}
-      </div>
-      <div>
-        <div className='flex justify-between'>
-          <div className='flex items-center justify-center'>
-            <span className='mr-1'>Rozmiar ramy</span>
-            {validFrameSize ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
-          </div>
-          <input
-            type='number'
-            onFocus={() => setFrameSizeFocus(true)}
-            onBlur={() => setFrameSizeFocus(false)}
-            className='self-end text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
-            value={frameSize}
-            onChange={(e) => {
-              setFrameSize(e.target.value);
-            }}
-          />
-        </div>
-        {/* {!validFrameSize && frameSizeFocus ? (
-          <div className='flex flex-col bg-tertiary px-4 py-2 rounded-md'>
-            <p>1-2 cyfry</p>
-          </div>
-        ) : (
-          <></>
-        )} */}
-      </div>
-      <div>
-        <FetchSelect
-          value={wheelSize}
-          onChange={setWheelSize}
-          urlKey={URLKEYS.WheelSizes}
-          label='Rozmiar koła'
-          defaultValue={""}
-          validated
-        />
-      </div>
-      <div>
-        <div className='flex justify-between'>
-          <div className='flex justify-center items-center'>
-            <span className='mr-1'>Cena</span>
-            {validPrice ? <FaCheck className='text-green-500'/> : <FaXmark className='text-red-600'/>}
-          </div>
-          <input
-            type='number'
-            onFocus={() => setPriceFocus(true)}
-            onBlur={() => setPriceFocus(false)}
-            className='self-end  text-center bg-primary border-2 border-tertiary rounded-lg w-1/2'
-            value={price}
-            onChange={(e) => {
-              setPrice(e.target.value);
-            }}
-          ></input>
-        </div>
-        {/* {!validPrice && priceFocus ? (
-          <div className='flex flex-col bg-tertiary px-4 py-2 rounded-md'>
-            <p>3-5 cyfr</p>
-          </div>
-        ) : (
-          <></>
-        )} */}
-      </div>
-      <div>
-        <FetchSelect
-          value={manufacturerId}
-          onChange={setManufacturerId}
-          urlKey={URLKEYS.Manufacturers}
-          label='Producent'
-          defaultValue={""}
-          validated
-        />
-      </div>
-      <div>
-        <FetchSelect
-          value={categoryId}
-          onChange={setCategoryId}
-          urlKey={URLKEYS.Categories}
-          label='Kategoria'
-          defaultValue={""}
-          validated
-        />
-      </div>
-      <div>
-        <FetchSelect
-          value={colorId}
-          onChange={setColorId}
-          urlKey={URLKEYS.Colors}
-          defaultValue={""}
-          label='Kolor'
-          validated
-        />
-      </div>
-      <ColorInput title='Kolor główny' value={primaryColor} setValue={setPrimaryColor}/>
-      <ColorInput title='Kolor dodatkowy' value={secondaryColor} setValue={setSecondaryColor}/>
-      <SingleCheckbox
-        checked={isWoman}
-        onChange={() => {
-          setIsWoman(!isWoman);
-        }}
-        title='Damski'
+
+      <ValidatedTextField
+        label="Nazwa"
+        value={model.modelName}
+        onChange={(e) => updateField("modelName", e.target.value)}
+        regex={REGEX.MODEL_NAME}
       />
-      <SingleCheckbox
-        checked={isElectric}
-        onChange={() => {
-          setIsElectric(!isElectric);
-        }}
-        title='Elektryczny'
+      <ValidatedTextField
+        label="Kod produktu"
+        value={model.productCode}
+        onChange={(e) => updateField("productCode", e.target.value)}
+        regex={REGEX.PRODUCT_NAME}
       />
-      <button className='button-secondary self-center mt-auto mb-4' onClick={() => handleClick()}>
+      <ValidatedTextField
+        label="Kod EAN"
+        value={model.eanCode}
+        onChange={(e) => updateField("eanCode", e.target.value)}
+        regex={REGEX.EAN}
+      />
+      <ValidatedTextField
+        label="Rozmiar ramy"
+        other={{type: "number"}}
+        value={model.frameSize}
+        onChange={(e) => updateField("frameSize", e.target.value)}
+        regex={REGEX.FRAME}
+      />
+      <FetchSelect
+        value={model.wheelSize}
+        onChange={(val) => updateField("wheelSize", val)}
+        urlKey={URLKEYS.WheelSizes}
+        label="Rozmiar koła"
+        defaultValue=""
+        validated
+      />
+      <ValidatedTextField
+        label="Cena"
+        other={{type: "number"}}
+        value={model.price}
+        onChange={(e) => updateField("price", e.target.value)}
+        regex={REGEX.PRICE}
+      />
+      <FetchSelect
+        value={model.manufacturerId}
+        onChange={(val) => updateField("manufacturerId", val)}
+        urlKey={URLKEYS.Manufacturers}
+        label="Producent"
+        defaultValue=""
+        validated
+      />
+      <FetchSelect
+        value={model.categoryId}
+        onChange={(val) => updateField("categoryId", val)}
+        urlKey={URLKEYS.Categories}
+        label="Kategoria"
+        defaultValue=""
+        validated
+      />
+      <FetchSelect
+        value={model.colorId}
+        onChange={(val) => updateField("colorId", val)}
+        urlKey={URLKEYS.Colors}
+        defaultValue=""
+        label="Kolor"
+        validated
+      />
+      <ColorInput
+        title="Kolor główny"
+        value={model.primaryColor}
+        setValue={(val) => updateField("primaryColor", val)}
+      />
+      <ColorInput
+        title="Kolor dodatkowy"
+        value={model.secondaryColor}
+        setValue={(val) => updateField("secondaryColor", val)}
+      />
+      <FormControlLabel
+        control={<Checkbox/>}
+        checked={model.isWoman}
+        onChange={() => updateField("isWoman", !model.isWoman)}
+        label="Damski"
+      />
+      <FormControlLabel
+        control={<Checkbox/>}
+        checked={model.isElectric}
+        onChange={() => updateField("isElectric", !model.isElectric)}
+        label="Elektryczny"
+      />
+      <Button
+        variant="contained"
+        className="mb-2"
+        onClick={handleClick}
+        disabled={!isValid}
+      >
         Dodaj model
-      </button>
+      </Button>
     </div>
   );
 }
