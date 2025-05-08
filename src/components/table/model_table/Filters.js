@@ -1,11 +1,10 @@
 import FetchSelect from "@/components/filtering/FetchSelect";
-import FilterInput from "@/components/filtering/FilterInput";
 import RangeInput from "@/components/filtering/RangeInput";
-import SingleCheckbox from "@/components/filtering/SingleCheckbox";
 import useAuth from "@/hooks/useAuth";
 import {useEffect, useReducer} from "react";
 import {DataSelect} from "@/components/input/DataSelect";
 import {URLKEYS} from "@/util/urls";
+import {Box, Button, Checkbox, FormControlLabel, FormGroup, Paper, TextField, Typography} from "@mui/material";
 
 export default function Filters({setQuery}) {
   const updateFilters = (field, value) => {
@@ -21,18 +20,27 @@ export default function Filters({setQuery}) {
   });
 
   return (
-    <div className='col-span-1 overflow-y-auto bg-primary flex flex-col pb-4 pr-4 pl-4 rounded-xl ml-4'>
-      <div className='flex justify-center sticky top-0 bg-primary z-30'>
-        <div className='flex justify-center text-2xl w-3/5 pb-1 mb pt-4'>
-          <h2><b>Filtry</b></h2>
-        </div>
-      </div>
-      <div className='*:pb-1 flex flex-col'>
-        <FilterInput title='Nazwa' value={filters.name} setValue={(v) => updateFilters("name", v)}/>
-        <FilterInput title='Kod producenta' value={filters.productCode}
-                     setValue={(v) => updateFilters("productCode", v)}/>
-        <FilterInput title='Rozmiar' value={filters.frameSize} setValue={(v) => updateFilters("frameSize", v)}/>
-
+    <Paper elevation={0} className={"pb-4 px-4 ml-4 overflow-y-auto"}>
+      <Box
+        sx={{
+          position: 'sticky',
+          top: 0,
+          backgroundColor: '#ffffff',
+          zIndex: 10,
+          p: 2,
+          pt: 4,
+          mb: 2,
+          borderBottom: '1px solid #ccc'
+        }}
+      >
+        <Typography variant="h6">Filtry</Typography>
+      </Box>
+      <FormGroup className={'flex-col gap-1.5'}>
+        <TextField label='Nazwa' value={filters.name} onChange={(e) => updateFilters("name", e.target.value)}/>
+        <TextField label='Kod producenta' value={filters.productCode}
+                   onChange={(e) => updateFilters("productCode", e.target.value)}/>
+        <TextField label='Rozmiar' value={filters.frameSize}
+                   onChange={(e) => updateFilters("frameSize", e.target.value)}/>
         <FetchSelect
           value={filters.wheelSize}
           onChange={(v) => updateFilters("wheelSize", v)}
@@ -40,7 +48,6 @@ export default function Filters({setQuery}) {
           label='Rozmiar koła'
           defaultValue={defaultFilters.wheelSize}
         />
-
         <DataSelect
           label='Typ ramy'
           value={filters.isWoman}
@@ -94,64 +101,61 @@ export default function Filters({setQuery}) {
           setMin={(v) => updateFilters("minPrice", v)}
           setMax={(v) => updateFilters("maxPrice", v)}
         />
-
-        <SingleCheckbox
+        <FormControlLabel
+          control={<Checkbox/>}
           checked={filters.available}
           onChange={() => dispatch({type: "TOGGLE", field: "available"})}
-          title='Dostępny'
+          label='Dostępny'
         />
-
-        <SingleCheckbox
+        <FormControlLabel
+          control={<Checkbox/>}
           checked={filters.electric}
           onChange={() => dispatch({type: "TOGGLE", field: "electric"})}
-          title='Elektryczny'
+          label='Elektryczny'
         />
-
-        <SingleCheckbox
+        <FormControlLabel
+          control={<Checkbox/>}
           checked={filters.isKids}
           onChange={() => dispatch({type: "TOGGLE", field: "isKids"})}
-          title='Dziecięcy'
+          label='Dziecięcy'
         />
-
         {isAdmin && (
           <>
             <span>Braki</span>
-            <SingleCheckbox
+            <FormControlLabel
+              control={<Checkbox/>}
               checked={filters.noEan}
               onChange={() => dispatch({type: "TOGGLE", field: "noEan"})}
-              title='Bez kodu EAN'
+              label='Bez kodu EAN'
             />
-            <SingleCheckbox
+            <FormControlLabel
+              control={<Checkbox/>}
               checked={filters.noProductCode}
               onChange={() => {
                 dispatch({type: "TOGGLE", field: "noProductCode"});
                 dispatch({type: "SET", field: "productCode", value: ""});
               }}
-              title='Bez kodu producenta'
+              label='Bez kodu producenta'
             />
-            <SingleCheckbox
+            <FormControlLabel
+              control={<Checkbox/>}
               checked={filters.noColorGroup}
               onChange={() => dispatch({type: "TOGGLE", field: "noColorGroup"})}
-              title='Bez koloru'
+              label='Bez koloru'
             />
-            <SingleCheckbox
+            <FormControlLabel
+              control={<Checkbox/>}
               checked={filters.noColor}
               onChange={() => dispatch({type: "TOGGLE", field: "noColor"})}
-              title='Bez podglądu kolorów'
+              label='Bez podglądu kolorów'
             />
           </>
         )}
-      </div>
-
-      <button
-        className='button-primary'
-        onClick={() => dispatch({type: "RESET"})}
-      >
-        Reset
-      </button>
-
-      <div className='min-h-8'/>
-    </div>
+        <Button variant={"contained"} color={"primary"} onClick={() => dispatch({type: "RESET"})}>
+          Reset
+        </Button>
+      </FormGroup>
+    </Paper>
   );
 }
 

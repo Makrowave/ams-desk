@@ -1,4 +1,5 @@
 import {useEffect, useRef, useState} from "react";
+import {Box, TextField} from "@mui/material";
 
 //Component that contains 2 input fields that
 //represend range (most likely price range).
@@ -52,27 +53,22 @@ export default function RangeInput({minValue, maxValue, title, setMin, setMax}) 
   }
 
   return (
-    <div className='flex justify-center flex-col'>
-      <div className='flex justify-center self-start'>
-        <p>{title}</p>
-      </div>
-      <div className='flex justify-items-center'>
-        <input
-          type='number'
-          className=' text-center bg-primary border-2 border-tertiary rounded w-2/5 block'
-          placeholder='min'
-          value={realMin}
-          onChange={(e) => handleChange(setRealMin, e.target.value)}
-        ></input>
-        <span className='m-auto block'>-</span>
-        <input
-          type='number'
-          className=' text-center bg-primary border-2 border-tertiary rounded w-2/5 block'
-          placeholder='max'
-          value={realMax}
-          onChange={(e) => handleChange(setRealMax, e.target.value)}
-        ></input>
-      </div>
-    </div>
+    <Box className={'flex justify-between align-center mt-1'}>
+      <TextField
+        type='number'
+        className=' text-center bg-primary border-2 border-tertiary rounded w-2/5 block'
+        label='Cena min'
+        value={realMin}
+        onChange={(e) => handleChange(setRealMin, e.target.value)}
+      />
+      <span className='m-auto block'>-</span>
+      <TextField
+        type='number'
+        className=' text-center bg-primary border-2 border-tertiary rounded w-2/5 block'
+        label='Cena max'
+        value={realMax}
+        onChange={(e) => handleChange(setRealMax, e.target.value)}
+      />
+    </Box>
   );
 }
