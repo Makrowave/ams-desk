@@ -4,7 +4,7 @@ import {useMutation} from "@tanstack/react-query";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import FetchSelect from "@/components/filtering/FetchSelect";
-import {URLKEYS} from "@/util/urls";
+import URLS, {URLKEYS} from "@/util/urls";
 import {Button} from "@mui/material";
 import ValidatedTextField from "@/components/input/ValidatedTextField";
 import ValidatedTextarea from "@/components/input/ValidatedTextarea";
