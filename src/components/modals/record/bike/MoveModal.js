@@ -3,7 +3,9 @@ import {useState} from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
-import URLS from "@/util/urls";
+import URLS, {URLKEYS} from "@/util/urls";
+import FetchSelect from "@/components/filtering/FetchSelect";
+import {Button} from "@mui/material";
 
 export default function MoveModal({bikeId}) {
   const [place, setPlace] = useState("");
@@ -14,7 +16,7 @@ export default function MoveModal({bikeId}) {
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.put(
-        "/Bikes/" + bikeId,
+        URLS.Bikes2 + bikeId,
         JSON.stringify({
           placeId: place,
         }),
@@ -35,14 +37,9 @@ export default function MoveModal({bikeId}) {
     },
   });
 
-  function validate() {
-    let result = place !== "";
-    if (!result) setError("Nie wybrano miejsca z listy");
-    return result;
-  }
 
   return (
-    <div className='modal-basic'>
+    <div className='modal-basic pb-4'>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
       <FetchSelect
         value={place}
@@ -52,14 +49,9 @@ export default function MoveModal({bikeId}) {
         label='Dokąd'
         validated
       />
-      <button
-        className='button-secondary self-center mt-auto mb-4'
-        onClick={() => {
-          if (validate()) mutation.mutate();
-        }}
-      >
+      <Button variant={'contained'} color={"primary"} onClick={() => mutation.mutate()} disabled={place === ""}>
         Przenieś
-      </button>
+      </Button>
     </div>
   );
 }

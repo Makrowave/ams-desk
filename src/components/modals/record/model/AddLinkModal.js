@@ -1,10 +1,12 @@
 import ErrorDisplay from "@/components/error/ErrorDisplay";
-import ModalTextInput from "@/components/input/ModalTextInput";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import URLS from "@/util/urls";
+import ValidatedTextField from "@/components/input/ValidatedTextField";
+import {REGEX} from "@/util/regex";
+import {Button} from "@mui/material";
 
 export default function AddLinkModal({model}) {
   const [link, setLink] = useState("");
@@ -39,17 +41,12 @@ export default function AddLinkModal({model}) {
   });
 
   return (
-    <div className='modal-basic'>
+    <div className='modal-basic mb-4'>
       <ErrorDisplay message={error} isVisible={!!error}/>
-      <ModalTextInput title='Link' value={link} setValue={setLink}/>
-      <button
-        className='button-secondary self-center mt-auto mb-4'
-        onClick={() => {
-          mutation.mutate();
-        }}
-      >
+      <ValidatedTextField label='Link' value={link} onChange={setLink} regex={REGEX.LINK}/>
+      <Button onClick={() => mutation.mutate()} variant='contained' color='primary' disabled={!REGEX.LINK.test(link)}>
         Zmień link
-      </button>
+      </Button>
     </div>
   );
 }

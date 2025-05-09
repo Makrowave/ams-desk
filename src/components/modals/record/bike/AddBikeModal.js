@@ -54,7 +54,7 @@ export default function AddBikeModal({modelId}) {
   }
 
   return (
-    <div className='flex flex-col gap-6 w-72 mx-auto'>
+    <div className='modal-basic pb-4'>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
       <FetchSelect
         value={place}

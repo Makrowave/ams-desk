@@ -64,6 +64,10 @@ export default function AddModelModal() {
     },
   });
 
+  function handleClick() {
+    if (isValid) mutation.mutate();
+  }
+
   const validate = () => {
     return REGEX.MODEL_NAME.test(model.modelName) &&
       REGEX.PRODUCT_NAME.test(model.productCode) &&
@@ -80,47 +84,41 @@ export default function AddModelModal() {
       typeof model.isElectric === "boolean";
   }
 
-
-  function handleClick() {
-    if (isValid) mutation.mutate();
-  }
-
   useEffect(() => {
     setIsValid(validate());
   }, [model]);
 
   return (
-    <div className="flex flex-col gap-y-2 w-[600px]">
+    <div className="flex flex-col gap-y-2 w-[600px] pb-4">
       <ErrorDisplay message={error} isVisible={error !== ""}/>
-
       <ValidatedTextField
         label="Nazwa"
         value={model.modelName}
-        onChange={(e) => updateField("modelName", e.target.value)}
+        onChange={(v) => updateField("modelName", v)}
         regex={REGEX.MODEL_NAME}
       />
       <ValidatedTextField
         label="Kod produktu"
         value={model.productCode}
-        onChange={(e) => updateField("productCode", e.target.value)}
+        onChange={(v) => updateField("productCode", v)}
         regex={REGEX.PRODUCT_NAME}
       />
       <ValidatedTextField
         label="Kod EAN"
         value={model.eanCode}
-        onChange={(e) => updateField("eanCode", e.target.value)}
+        onChange={(v) => updateField("eanCode", v)}
         regex={REGEX.EAN}
       />
       <ValidatedTextField
         label="Rozmiar ramy"
         other={{type: "number"}}
         value={model.frameSize}
-        onChange={(e) => updateField("frameSize", e.target.value)}
+        onChange={(v) => updateField("frameSize", v)}
         regex={REGEX.FRAME}
       />
       <FetchSelect
         value={model.wheelSize}
-        onChange={(val) => updateField("wheelSize", val)}
+        onChange={(v) => updateField("wheelSize", v)}
         urlKey={URLKEYS.WheelSizes}
         label="Rozmiar koła"
         defaultValue=""
@@ -130,12 +128,12 @@ export default function AddModelModal() {
         label="Cena"
         other={{type: "number"}}
         value={model.price}
-        onChange={(e) => updateField("price", e.target.value)}
+        onChange={(v) => updateField("price", v)}
         regex={REGEX.PRICE}
       />
       <FetchSelect
         value={model.manufacturerId}
-        onChange={(val) => updateField("manufacturerId", val)}
+        onChange={(v) => updateField("manufacturerId", v)}
         urlKey={URLKEYS.Manufacturers}
         label="Producent"
         defaultValue=""
@@ -143,7 +141,7 @@ export default function AddModelModal() {
       />
       <FetchSelect
         value={model.categoryId}
-        onChange={(val) => updateField("categoryId", val)}
+        onChange={(v) => updateField("categoryId", v)}
         urlKey={URLKEYS.Categories}
         label="Kategoria"
         defaultValue=""
@@ -151,7 +149,7 @@ export default function AddModelModal() {
       />
       <FetchSelect
         value={model.colorId}
-        onChange={(val) => updateField("colorId", val)}
+        onChange={(v) => updateField("colorId", v)}
         urlKey={URLKEYS.Colors}
         defaultValue=""
         label="Kolor"
@@ -160,12 +158,12 @@ export default function AddModelModal() {
       <ColorInput
         title="Kolor główny"
         value={model.primaryColor}
-        setValue={(val) => updateField("primaryColor", val)}
+        setValue={(v) => updateField("primaryColor", v)}
       />
       <ColorInput
         title="Kolor dodatkowy"
         value={model.secondaryColor}
-        setValue={(val) => updateField("secondaryColor", val)}
+        setValue={(v) => updateField("secondaryColor", v)}
       />
       <FormControlLabel
         control={<Checkbox/>}

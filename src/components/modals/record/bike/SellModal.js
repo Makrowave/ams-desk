@@ -3,9 +3,10 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
-import ModalTextInput from "@/components/input/ModalTextInput";
 import {REGEX} from "@/util/regex";
 import URLS from "@/util/urls";
+import {Button, Checkbox, FormControlLabel} from "@mui/material";
+import ValidatedTextField from "@/components/input/ValidatedTextField";
 
 export default function SellModal({bikeId, basePrice, placeId}) {
   //Change it based on selected location
@@ -14,12 +15,11 @@ export default function SellModal({bikeId, basePrice, placeId}) {
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
   const {setIsModalOpen} = useModal();
-  const PRICE_REGEX = REGEX.PRICE;
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
       const response = await axiosPrivate.put(
-        `/Bikes/sell/${bikeId}?price=${price}&internet=${internetSale}`
+        `${URLS.Bikes2}sell/${bikeId}?price=${price}&internet=${internetSale}`
       );
       return response.data;
     },
@@ -57,31 +57,24 @@ export default function SellModal({bikeId, basePrice, placeId}) {
     },
   });
 
-  function validate() {
-    let result = PRICE_REGEX.test(price);
-    if (!result) setError("Wprowadzono niewłaściwą cenę");
-    return result;
-  }
-
   return (
-    <div className='modal-basic'>
+    <div className='modal-basic pb-4'>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
-      <ModalTextInput title='Cena' value={price} setValue={setPrice}/>
-      <div className={"flex items-center mt-2 ml-1"}>
-        <input className={"scale-150 mr-2"} type={"checkbox"} onChange={() => setInternetSale(!internetSale)}
-               checked={internetSale}/>
-        <span>
-          Sprzedaż przez internet
-        </span>
-      </div>
-      <button
-        className='button-secondary self-center mt-auto mb-4'
-        onClick={() => {
-          if (validate()) mutation.mutate();
-        }}
+      <ValidatedTextField label='Cena' value={price} onChange={setPrice} regex={REGEX.PRICE}/>
+      <FormControlLabel
+        control={<Checkbox/>}
+        onChange={() => setInternetSale(!internetSale)}
+        checked={internetSale}
+        label="Sprzedaż przez internet"
+      />
+      <Button
+        variant="contained"
+        className="mb-2"
+        onClick={mutation.mutate}
+        disabled={!REGEX.PRICE.test(price)}
       >
         Sprzedaj
-      </button>
+      </Button>
     </div>
   );
 }

@@ -1,10 +1,12 @@
 import ErrorDisplay from "@/components/error/ErrorDisplay";
-import ModalTextInput from "@/components/input/ModalTextInput";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import URLS from "@/util/urls";
+import ValidatedTextField from "@/components/input/ValidatedTextField";
+import {Button} from "@mui/material";
+import {REGEX} from "@/util/regex";
 
 export default function AddEanModal({model}) {
   const [ean, setEan] = useState(model.eanCode);
@@ -39,17 +41,12 @@ export default function AddEanModal({model}) {
   });
 
   return (
-    <div className='modal-basic'>
+    <div className='modal-basic pb-4'>
       <ErrorDisplay message={error} isVisible={!!error}></ErrorDisplay>
-      <ModalTextInput title='EAN' value={ean} setValue={setEan}/>
-      <button
-        className='button-secondary self-center mt-auto mb-4'
-        onClick={() => {
-          mutation.mutate();
-        }}
-      >
+      <ValidatedTextField label='EAN' value={ean} onChange={setEan} regex={REGEX.EAN}/>
+      <Button onClick={() => mutation.mutate()} variant={"contained"} color={"primary"} disabled={!REGEX.EAN.test(ean)}>
         Zmień EAN
-      </button>
+      </Button>
     </div>
   );
 }

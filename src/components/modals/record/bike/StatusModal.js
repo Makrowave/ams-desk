@@ -5,6 +5,7 @@ import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useModal from "@/hooks/useModal";
 import URLS, {URLKEYS} from "@/util/urls";
 import FetchSelect from "@/components/filtering/FetchSelect";
+import {Button} from "@mui/material";
 
 export default function StatusModal({bikeId}) {
   const [status, setStatus] = useState("");
@@ -15,7 +16,7 @@ export default function StatusModal({bikeId}) {
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.put(
-        "/Bikes/" + bikeId,
+        URLS.Bikes2 + bikeId,
         JSON.stringify({
           statusId: status.toString(),
         }),
@@ -36,14 +37,8 @@ export default function StatusModal({bikeId}) {
     },
   });
 
-  function validate() {
-    let result = status !== "";
-    if (!result) setError("Nie wybrano statusu z listy");
-    return result;
-  }
-
   return (
-    <div className='modal-basic'>
+    <div className='modal-basic pb-4'>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
       <FetchSelect
         value={status}
@@ -55,14 +50,14 @@ export default function StatusModal({bikeId}) {
         validated
       />
 
-      <button
-        className='button-secondary self-center mt-auto mb-4 text-nowrap'
-        onClick={() => {
-          if (validate()) mutation.mutate();
-        }}
+      <Button
+        variant="contained"
+        className="mb-2"
+        onClick={mutation.mutate}
+        disabled={status === ""}
       >
         Zmień status
-      </button>
+      </Button>
     </div>
   );
 }

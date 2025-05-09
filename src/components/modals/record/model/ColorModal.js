@@ -5,6 +5,8 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import URLS, {URLKEYS} from "@/util/urls";
 import FetchSelect from "@/components/filtering/FetchSelect";
+import {Button} from "@mui/material";
+import ErrorDisplay from "@/components/error/ErrorDisplay";
 
 //primaryColor and secondaryColor can be null in DB
 //(for example if not specified by manufacturer and bike inserts are automated)
@@ -13,6 +15,7 @@ export default function ColorModal({model}) {
   const [secondaryColor, setSecondaryColor] = useState(!!model.secondaryColor ? model.secondaryColor : "#000000");
   const [color, setColor] = useState(model.colorId);
   const {setIsModalOpen} = useModal();
+  const [error, setError] = useState("");
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
@@ -47,17 +50,10 @@ export default function ColorModal({model}) {
     },
   });
 
-  function validate() {
-    let result = color !== "";
-    if (!result) setError("Nie wybrano koloru z listy");
-    return result;
-  }
 
   return (
-    <div className='modal-basic'>
-      <div>
-        <h2>Kliknij na kolor aby go zmienić</h2>
-      </div>
+    <div className='modal-basic pb-2'>
+      <ErrorDisplay message={error} isVisible={error !== ""}/>
       <ColorInput title='Kolor główny' value={primaryColor} setValue={setPrimaryColor}/>
       <ColorInput title='Kolor dodatkowy' value={secondaryColor} setValue={setSecondaryColor}/>
       <FetchSelect
@@ -68,14 +64,13 @@ export default function ColorModal({model}) {
         label='Kolor'
         validated
       />
-      <button
-        className='button-secondary self-center mt-auto mb-4'
-        onClick={() => {
-          if (validate()) mutation.mutate();
-        }}
+      <Button variant="contained" color="primary" disabled={color === ""}
+              onClick={() => {
+                if (color !== "") mutation.mutate();
+              }}
       >
         Zmień kolor
-      </button>
+      </Button>
     </div>
   );
 }
