@@ -2,13 +2,11 @@ import {useState} from "react";
 import {FaCheck, FaXmark} from "react-icons/fa6";
 import {REGEX} from "@/util/regex";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import useModal from "@/hooks/useModal";
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
 import URLS, {URLKEYS} from "@/util/urls";
 import FetchSelect from "@/components/filtering/FetchSelect";
 
-export default function ModifyServiceModal({service}) {
-  const {setIsModalOpen} = useModal();
+export default function ModifyServiceModal({service, closeModal}) {
 
   const [category, setCategory] = useState(service.serviceCategoryId);
   const [name, setName] = useState(service.serviceName);
@@ -22,7 +20,7 @@ export default function ModifyServiceModal({service}) {
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosAdmin.put(
-        `services/${service.serviceId}`,
+        `${URLS.Services}${service.serviceId}`,
         JSON.stringify({
           serviceId: service.serviceId,
           serviceName: name,
@@ -34,7 +32,7 @@ export default function ModifyServiceModal({service}) {
     },
     onSuccess: async () => {
       await queryClient.refetchQueries({queryKey: [URLS.Services], exact: false});
-      setIsModalOpen(false);
+      closeModal();
     },
   });
 
@@ -58,7 +56,7 @@ export default function ModifyServiceModal({service}) {
   };
 
   return (
-    <div className='flex flex-col w-full justify-between items-center py-2'>
+    <>
       <div className='w-full *:w-full *:mb-4'>
         <FetchSelect
           value={category}
@@ -110,6 +108,6 @@ export default function ModifyServiceModal({service}) {
           Edytuj
         </button>
       </div>
-    </div>
+    </>
   );
 }

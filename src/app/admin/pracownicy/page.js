@@ -2,13 +2,13 @@
 import LogoutModal from "@/components/modals/admin/LogoutModal";
 import UserModal from "@/components/modals/admin/UserModal";
 import AccountTable from "@/components/table/account/AccountTable";
-import useModal from "@/hooks/useModal";
 import AdminTable from "@/components/table/AdminTable";
 import {useEmployeesQuery} from "@/hooks/queryHooks";
 import URLS from "@/util/urls";
+import MaterialModal from "@/components/modals/MaterialModal";
+import {Button} from "@mui/material";
 
 export default function EmployeesPanel() {
-  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const {data: employeeData, error: isEmployeeError, isLoading: isEmployeeLoading} = useEmployeesQuery()
   const employeeRowFormat = [
     {key: "", label: "Id", input: "blank"},
@@ -27,27 +27,17 @@ export default function EmployeesPanel() {
           <div className='overflow-y-auto max-h-[600px] w-full'>
             <AccountTable/>
           </div>
-          <div className='mt-4'>
-            <button
-              className='button-secondary mr-4'
-              onClick={() => {
-                setIsModalOpen(true);
-                setModalContent(<UserModal action='post'/>);
-                setModalTitle("Utwórz konto");
-              }}
-            >
-              Dodaj
-            </button>
-            <button
-              className='button-secondary mr-4'
-              onClick={() => {
-                setModalContent(<LogoutModal/>);
-                setModalTitle("Wyloguj wszystkich");
-                setIsModalOpen(true);
-              }}
-            >
-              Wyloguj wszystkich
-            </button>
+          <div className='mt-4 flex gap-2'>
+            <MaterialModal label={"Utwórz konto"} button={
+              <Button variant={"contained"} color={"primary"}>Dodaj</Button>
+            }>
+              <UserModal action='post'/>
+            </MaterialModal>
+            <MaterialModal label={"Wyloguj wszystkich"} button={
+              <Button variant={"contained"} color={"error"}>Wyloguj wszystkich</Button>
+            }>
+              <LogoutModal/>
+            </MaterialModal>
           </div>
         </div>
       </div>

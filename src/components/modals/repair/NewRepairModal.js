@@ -1,5 +1,4 @@
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import useModal from "@/hooks/useModal";
 import {REGEX} from "@/util/regex";
 import {useMutation} from "@tanstack/react-query";
 import {useRouter} from "next/navigation";
@@ -10,10 +9,9 @@ import {Button} from "@mui/material";
 import ValidatedTextField from "@/components/input/ValidatedTextField";
 import ValidatedTextarea from "@/components/input/ValidatedTextarea";
 
-export default function NewRepairModal({}) {
+export default function NewRepairModal({closeModal}) {
   const axios = useAxiosPrivate();
   const router = useRouter();
-  const {setIsModalOpen} = useModal();
   const [phone, setPhone] = useState("");
   const [place, setPlace] = useState(localStorage.getItem("repairModal:defaultPlace") ?? "");
   const [bike, setBike] = useState("");
@@ -42,13 +40,13 @@ export default function NewRepairModal({}) {
   const mutation = useMutation({
     mutationFn: async () => {
       return await axios.post(
-        "/Repairs",
+        URLS.Repairs,
         JSON.stringify({phoneNumber: phone, issue: issue, bikeName: bike, placeId: place, takeInEmployeeId: employee}),
       );
     },
     onSuccess: (response) => {
       const id = response.data;
-      setIsModalOpen(false);
+      closeModal();
       router.push(`/serwis/${id}`);
     },
     onError: (error) => {
@@ -57,7 +55,7 @@ export default function NewRepairModal({}) {
   });
 
   return (
-    <div className='modal-basic mb-4 gap-1'>
+    <>
       <FetchSelect
         value={place}
         onChange={(value) => {
@@ -103,6 +101,6 @@ export default function NewRepairModal({}) {
       >
         Stwórz
       </Button>
-    </div>
+    </>
   );
 }

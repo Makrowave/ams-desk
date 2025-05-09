@@ -2,15 +2,12 @@ import {useState} from "react";
 import {REGEX} from "@/util/regex";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import useModal from "@/hooks/useModal";
 import URLS, {URLKEYS} from "@/util/urls";
 import FetchSelect from "@/components/filtering/FetchSelect";
 import {Button} from "@mui/material";
 import ValidatedTextField from "@/components/input/ValidatedTextField";
 
-export default function AddPartModal({}) {
-  const {setIsModalOpen} = useModal();
-
+export default function AddPartModal({closeModal}) {
   const [category, setCategory] = useState("");
   const [type, setType] = useState("");
   const [name, setName] = useState("");
@@ -37,7 +34,7 @@ export default function AddPartModal({}) {
     },
     onSuccess: async () => {
       await queryClient.refetchQueries({queryKey: [URLS.Parts], exact: false});
-      setIsModalOpen(false);
+      closeModal();
     },
   });
 
@@ -66,7 +63,7 @@ export default function AddPartModal({}) {
   }
 
   return (
-    <div className='modal-basic gap-2 mb-4'>
+    <>
       <FetchSelect
         value={category}
         onChange={handleCategoryChange}
@@ -113,6 +110,6 @@ export default function AddPartModal({}) {
       >
         Dodaj
       </Button>
-    </div>
+    </>
   );
 }

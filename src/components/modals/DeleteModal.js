@@ -1,13 +1,12 @@
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import ErrorDisplay from "../error/ErrorDisplay";
 import {useState} from "react";
+import {Button, Typography} from "@mui/material";
 
-export default function DeleteModal({refetchQueryKey, id, url, admin = false}) {
+export default function DeleteModal({refetchQueryKey, id, url, admin = false, closeModal}) {
   const axios = admin ? useAxiosAdmin() : useAxiosPrivate();
-  const {setIsModalOpen} = useModal();
   const queryClient = useQueryClient();
   const [error, setError] = useState("");
   const mutation = useMutation({
@@ -17,7 +16,7 @@ export default function DeleteModal({refetchQueryKey, id, url, admin = false}) {
     onSuccess: () => {
       queryClient.setQueriesData({queryKey: [refetchQueryKey], exact: false},
         (oldData) => oldData.filter((item) => Object.values(item)[0] !== id));
-      setIsModalOpen(false);
+      closeModal();
     },
     onError: (error) => {
       if (error.status === 500) {
@@ -30,23 +29,17 @@ export default function DeleteModal({refetchQueryKey, id, url, admin = false}) {
   });
 
   return (
-    <div className='modal-basic'>
+    <>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
-      <div className='w-full *:py-2'>
-        <h2>
-          <b>Czy na pewno?</b>
-        </h2>
-        <p>Usunięcie danych może nieść za sobą niepożądane konsekwencje.</p>
-        <p>Upewnij się, czy nie można rozwiązać problemu innymi metodami jak np. edycją.</p>
-      </div>
-      <button
-        className='button-secondary self-center mt-auto mb-4'
+      <Typography variant={"h6"}>Czy na pewno?</Typography>
+      <Button
+        variant='contained' color={"error"}
         onClick={() => {
           mutation.mutate();
         }}
       >
         Usuń
-      </button>
-    </div>
+      </Button>
+    </>
   );
 }

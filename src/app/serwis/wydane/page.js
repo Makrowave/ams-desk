@@ -2,7 +2,6 @@
 import PrivateRoute from "@/components/routing/PrivateRoute";
 import Navigation from "@/components/navigation/Navigation";
 import RepairTable from "@/components/repairs/RepairTable";
-import Modal from "@/components/modals/Modal";
 import {REPAIR_STATUS} from "@/util/repairStatuses";
 import SideBar from "@/components/navigation/SideBar";
 import {repairsNavigation} from "@/app/serwis/page";
@@ -20,7 +19,6 @@ export default function CollectedRepairsPage() {
           </div>
         </div>
       </main>
-      <Modal/>
     </PrivateRoute>
   );
 }

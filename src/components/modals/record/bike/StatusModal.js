@@ -2,16 +2,14 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
-import useModal from "@/hooks/useModal";
 import URLS, {URLKEYS} from "@/util/urls";
 import FetchSelect from "@/components/filtering/FetchSelect";
 import {Button} from "@mui/material";
 
-export default function StatusModal({bikeId}) {
+export default function StatusModal({bikeId, closeModal}) {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
-  const {setIsModalOpen} = useModal();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
@@ -30,7 +28,7 @@ export default function StatusModal({bikeId}) {
         queryKey: [URLS.Bikes],
         exact: false,
       });
-      setIsModalOpen(false);
+      closeModal();
     },
     onError: (error) => {
       setError(error.message);
@@ -38,7 +36,7 @@ export default function StatusModal({bikeId}) {
   });
 
   return (
-    <div className='modal-basic pb-4'>
+    <>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
       <FetchSelect
         value={status}
@@ -58,6 +56,6 @@ export default function StatusModal({bikeId}) {
       >
         Zmień status
       </Button>
-    </div>
+    </>
   );
 }

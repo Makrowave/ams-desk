@@ -1,4 +1,3 @@
-import useModal from "@/hooks/useModal";
 import React from "react";
 import MoveModal from "@/components/modals/record/bike/MoveModal";
 import AssembleModal from "@/components/modals/record/bike/AssembleModal";
@@ -9,6 +8,7 @@ import ExpandButton from "@/components/buttons/ExpandButton";
 import {FaArrowRight, FaCircleInfo, FaMoneyBill, FaRegCircleXmark, FaWrench} from "react-icons/fa6";
 import URLS from "@/util/urls";
 import {useBikesQuery, useEmployeesQuery, usePlacesQuery, useStatusesQuery} from "@/hooks/queryHooks";
+import MaterialModal from "@/components/modals/MaterialModal";
 
 /**
  * Renders table of bikes with buttons that open modals and allow to edit bikes.
@@ -16,7 +16,6 @@ import {useBikesQuery, useEmployeesQuery, usePlacesQuery, useStatusesQuery} from
  * @param {number} placeId - Place id used to filter bikes in query.
  */
 export function BikeTable({model, placeId}) {
-  const {setModalContent, setModalTitle, setIsModalOpen} = useModal();
   const {refetch, data, isPending, isError, error}
     = useBikesQuery({id: model.modelId, placeId: placeId});
   const {
@@ -91,60 +90,37 @@ export function BikeTable({model, placeId}) {
             </td>
             <td>
               <div className='flex justify-end space-x-1'>
-                <ExpandButton
-                  text='Przenieś'
-                  onClick={() => {
-                    setModalContent(<MoveModal refetch={refetch} bikeId={bike.id}/>);
-                    setModalTitle("Przenieś rower");
-                    setIsModalOpen(true);
-                  }}
-                >
+                <MaterialModal label={"Przenieś rower"} button={<ExpandButton text='Przenieś'>
                   <FaArrowRight/>
-                </ExpandButton>
-                <ExpandButton
-                  text='Złóż'
-                  onClick={() => {
-                    setModalContent(<AssembleModal refetch={refetch} bikeId={bike.id}/>);
-                    setModalTitle("Złóż rower");
-                    setIsModalOpen(true);
-                  }}
-                >
+                </ExpandButton>}>
+                  <MoveModal refetch={refetch} bikeId={bike.id}/>
+                </MaterialModal>
+
+                <MaterialModal label={"Złóż rower"} button={<ExpandButton text='Złóż'>
                   <FaWrench/>
-                </ExpandButton>
-                <ExpandButton
-                  text='Sprzedaj'
-                  onClick={() => {
-                    setModalContent(<SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price}
-                                               placeId={placeId}/>);
-                    setModalTitle("Sprzedaj rower");
-                    setIsModalOpen(true);
-                  }}
-                >
+                </ExpandButton>}>
+                  <AssembleModal refetch={refetch} bikeId={bike.id}/>
+                </MaterialModal>
+
+                <MaterialModal label={"Sprzedaj rower"} button={<ExpandButton text='Sprzedaj'>
                   <FaMoneyBill/>
-                </ExpandButton>
-                <ExpandButton
-                  text='Zmień status'
-                  onClick={() => {
-                    setModalContent(<StatusModal refetch={refetch} bikeId={bike.id}/>);
-                    setModalTitle("Zmień status");
-                    setIsModalOpen(true);
-                  }}
-                >
+                </ExpandButton>}>
+                  <SellModal refetch={refetch} bikeId={bike.id} basePrice={model.price} placeId={placeId}/>
+                </MaterialModal>
+
+                <MaterialModal label={"Zmień status"} button={<ExpandButton text='Zmień status'>
                   <FaCircleInfo/>
-                </ExpandButton>
-                <ExpandButton
-                  text='Usuń'
-                  className='text-red-600 hover:bg-red-300 '
-                  onClick={() => {
-                    setModalContent(
-                      <DeleteModal id={bike.id} url={URLS.Bikes2} refetchQueryKey={URLS.Bikes} admin={false}/>
-                    );
-                    setModalTitle("Usuń rower");
-                    setIsModalOpen(true);
-                  }}
-                >
-                  <FaRegCircleXmark/>
-                </ExpandButton>
+                </ExpandButton>}>
+                  <StatusModal refetch={refetch} bikeId={bike.id}/>
+                </MaterialModal>
+
+                <MaterialModal label={"Usuń rower"}
+                               button={<ExpandButton text='Usuń' className='text-red-600 hover:bg-red-300 '>
+                                 <FaRegCircleXmark/>
+                               </ExpandButton>}>
+                  <DeleteModal id={bike.id} url={URLS.Bikes2} refetchQueryKey={URLS.Bikes} admin={false}/>
+                </MaterialModal>
+
               </div>
             </td>
           </tr>

@@ -1,6 +1,5 @@
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import useModal from "@/hooks/useModal";
 import React from "react";
 import ChangeModelModal from "@/components/modals/record/model/ChangeModelModal";
 import AddBikeModal from "@/components/modals/record/bike/AddBikeModal";
@@ -13,6 +12,7 @@ import {FaBan, FaBarcode, FaLink, FaPalette, FaPenToSquare, FaPlus, FaRegCircleX
 import ExpandButton from "@/components/buttons/ExpandButton";
 import URLS from "@/util/urls";
 import {useColorsQuery} from "@/hooks/queryHooks";
+import MaterialModal from "@/components/modals/MaterialModal";
 
 /**
  * Row containing more data about model and buttons to edit model's data.
@@ -22,7 +22,6 @@ import {useColorsQuery} from "@/hooks/queryHooks";
  */
 export function BikeRow({model, placeId}) {
   const axiosPrivate = useAxiosPrivate();
-  const {setModalContent, setModalTitle, setIsModalOpen} = useModal();
   const {isAdmin} = useAuth();
   const queryClient = useQueryClient();
   const color = useColorsQuery({id: model.colorId.toString()})
@@ -67,81 +66,54 @@ export function BikeRow({model, placeId}) {
         </div>
         <div className='flex'>
           <div className='border-border border-r px-1'>
-            <ExpandButton
+            <MaterialModal label={"Dodaj rower"} button={<ExpandButton
               text='Dodaj'
-              onClick={() => {
-                setModalContent(<AddBikeModal modelId={model.modelId} placeId={placeId}/>);
-                setModalTitle("Dodaj rower");
-                setIsModalOpen(true);
-              }}
             >
               <FaPlus/>
-            </ExpandButton>
+            </ExpandButton>}>
+              <AddBikeModal modelId={model.modelId} placeId={placeId}/>
+            </MaterialModal>
           </div>
           <div className='border-border border-r px-1'>
-            <ExpandButton
+            <MaterialModal label={"Zmień kolor"} button={<ExpandButton
               text='Zmień kolor'
-              onClick={() => {
-                setModalContent(<ColorModal model={model}/>);
-                setModalTitle("Zmień kolor");
-                setIsModalOpen(true);
-              }}
             >
               <FaPalette/>
-            </ExpandButton>
+            </ExpandButton>}>
+              <ColorModal model={model}/>
+            </MaterialModal>
           </div>
           <div className='border-border border-r px-1'>
-            <ExpandButton
-              text='Zmień link'
-              onClick={() => {
-                setModalContent(<AddLinkModal model={model}/>);
-                setModalTitle("Zmień link");
-                setIsModalOpen(true);
-              }}
-            >
+            <MaterialModal label={"Zmień link"} button={<ExpandButton text='Zmień link'>
               <FaLink/>
-            </ExpandButton>
+            </ExpandButton>}>
+              <AddLinkModal model={model}/>
+            </MaterialModal>
           </div>
           <div className='border-border border-r px-1'>
-            <ExpandButton
-              text='Zmień EAN'
-              onClick={() => {
-                setModalContent(<AddEanModal model={model}/>);
-                setModalTitle("Zmień EAN");
-                setIsModalOpen(true);
-              }}
-            >
+            <MaterialModal label={"Zmień EAN"} button={<ExpandButton text='Zmień EAN'>
               <FaBarcode/>
-            </ExpandButton>
+            </ExpandButton>}>
+              <AddEanModal model={model}/>
+            </MaterialModal>
           </div>
           <div className='px-1'>
-            <ExpandButton
-              text='Zmień dane'
-              onClick={() => {
-                setModalContent(<ChangeModelModal model={model}/>);
-                setModalTitle("Zmień dane roweru");
-                setIsModalOpen(true);
-              }}
-            >
+            <MaterialModal label={"Zmień dane roweru"} button={<ExpandButton text='Zmień dane'>
               <FaPenToSquare/>
-            </ExpandButton>
+            </ExpandButton>}>
+              <ChangeModelModal model={model}/>
+            </MaterialModal>
           </div>
+
           {isAdmin && (
             <div className='border-border border-l px-1'>
-              <ExpandButton
-                text='Usuń'
-                className='text-red-600 hover:bg-red-300'
-                onClick={() => {
-                  setModalContent(
-                    <DeleteModal id={model.modelId} admin={true} refetchQueryKey={URLS.Models}
-                                 url={URLS.Models}/>
-                  );
-                  setModalTitle("Usuń model");
-                  setIsModalOpen(true);
-                }}
-              >
-                <FaRegCircleXmark/>
-              </ExpandButton>
+              <MaterialModal label={"Usuń model"} button={
+                <ExpandButton text='Usuń' className='text-red-600 hover:bg-red-300'>
+                  <FaRegCircleXmark/>
+                </ExpandButton>
+              }>
+                <DeleteModal id={model.modelId} admin={true} refetchQueryKey={URLS.Models} url={URLS.Models}/>
+              </MaterialModal>
             </div>
           )}
         </div>

@@ -5,20 +5,18 @@ import PrivateRoute from "@/components/routing/PrivateRoute";
 import Navigation from "@/components/navigation/Navigation";
 import SideBar from "@/components/navigation/SideBar";
 import {repairsNavigation} from "@/app/serwis/page";
-import Modal from "@/components/modals/Modal";
 import {useState} from "react";
-import useModal from "@/hooks/useModal";
 import DeleteModal from "@/components/modals/DeleteModal";
 import ModifyPartModal from "@/components/modals/repair/ModifyPartModal";
 import URLS from "@/util/urls";
 import {useFilteredPartsQuery, usePartCategoriesQuery, usePartTypesQuery} from "@/hooks/queryHooks";
+import MaterialModal from "@/components/modals/MaterialModal";
 
 
 export default function PartRepairsPage() {
   const [categoryId, setCategoryId] = useState(0);
   const [typeId, setTypeId] = useState(0);
   const [text, setText] = useState("");
-  const {setIsModalOpen, setModalContent, setModalTitle} = useModal()
   // Fetch categories
   const {data: catData, isLoading: catIsLoading, isError: catIsError} = usePartCategoriesQuery();
 
@@ -151,21 +149,20 @@ export default function PartRepairsPage() {
                               </td>
                               <td>
                                 <div className={"flex *:mx-1"}>
-                                  <button className='button-primary w-10 h-10' onClick={() => {
-                                    setModalTitle("Edytuj część");
-                                    setModalContent(<ModifyPartModal part={part}/>)
-                                    setIsModalOpen(true);
-                                  }}>
-                                    <FaPencil/>
-                                  </button>
-                                  <button className='button-primary w-10 h-10' onClick={() => {
-                                    setModalTitle("Usuń część");
-                                    setModalContent(<DeleteModal id={part.partId} refetchQueryKey={URLS.Parts}
-                                                                 url={URLS.Parts}/>)
-                                    setIsModalOpen(true);
-                                  }}>
-                                    <FaCircleXmark className="text-red-600"/>
-                                  </button>
+                                  <MaterialModal label={"Edytuj część"} button={
+                                    <button className='button-primary w-10 h-10'>
+                                      <FaPencil/>
+                                    </button>
+                                  }>
+                                    <ModifyPartModal part={part}/>
+                                  </MaterialModal>
+                                  <MaterialModal label={"Usuń część"} button={
+                                    <button className='button-primary w-10 h-10'>
+                                      <FaCircleXmark className="text-red-600"/>
+                                    </button>
+                                  }>
+                                    <DeleteModal id={part.partId} refetchQueryKey={URLS.Parts} url={URLS.Parts}/>
+                                  </MaterialModal>
                                 </div>
                               </td>
                             </tr>
@@ -175,21 +172,18 @@ export default function PartRepairsPage() {
                   </div>
                 </div>
               </div>
-              <button
-                className='absolute top-1 right-1 p-0.5 mx-2 hover:bg-gray-300 transition-colors duration-200 rounded-lg'
-                onClick={() => {
-                  setModalContent(<AddPartModal/>);
-                  setModalTitle("Dodaj część");
-                  setIsModalOpen(true);
-                }}
-              >
-                <FaPlus/>
-              </button>
+              <MaterialModal label={"Dodaj część"} button={
+                <button
+                  className='absolute top-1 right-1 p-0.5 mx-2 hover:bg-gray-300 transition-colors duration-200 rounded-lg'>
+                  <FaPlus/>
+                </button>
+              }>
+                <AddPartModal/>
+              </MaterialModal>
             </div>
           </div>
         </div>
       </main>
-      <Modal/>
     </PrivateRoute>
   );
 }

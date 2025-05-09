@@ -1,53 +1,36 @@
 import LogoutModal from "@/components/modals/admin/LogoutModal";
 import UserModal from "@/components/modals/admin/UserModal";
 import DeleteModal from "@/components/modals/DeleteModal";
-import useModal from "@/hooks/useModal";
 import URLS from "@/util/urls";
+import MaterialModal from "@/components/modals/MaterialModal";
+import {Button} from "@mui/material";
 
 export default function AccountRow({user, employeeName}) {
-  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   return (
     <tr className='table-row h-14'>
       <td>{user.userId}</td>
       <td>{user.username}</td>
       <td>{employeeName}</td>
       <td>
-        <button
-          className='button-secondary'
-          onClick={() => {
-            setModalTitle("Edytuj konto");
-            setModalContent(<UserModal user={user} action={"put"}/>);
-            setIsModalOpen(true);
-          }}
-        >
-          Edytuj
-        </button>
+        <MaterialModal label={"Edytuj konto"} button={
+          <Button variant={"contained"} color={"neutral"}>Edytuj</Button>
+        }>
+          <UserModal user={user} action={"put"}/>
+        </MaterialModal>
       </td>
       <td>
-        <button
-          className='button-secondary'
-          onClick={() => {
-            setModalTitle("Wyloguj");
-            setModalContent(<LogoutModal id={user.userId}/>);
-            setIsModalOpen(true);
-          }}
-        >
-          Wyloguj
-        </button>
+        <MaterialModal label={"Wyloguj"} button={
+          <Button variant={"contained"} color={"error"}>Wyloguj</Button>
+        }>
+          <LogoutModal id={user.userId}/>
+        </MaterialModal>
       </td>
       <td>
-        <button
-          className='button-secondary'
-          onClick={() => {
-            setModalTitle("Usuń konto");
-            setModalContent(
-              <DeleteModal id={user.userId} refetchQueryKey={URLS.Users} admin={true} url={URLS.Users}/>
-            );
-            setIsModalOpen(true);
-          }}
-        >
-          Usuń
-        </button>
+        <MaterialModal label={"Usuń konto"} button={
+          <Button variant={"contained"} color={"error"}>Usuń</Button>
+        }>
+          <DeleteModal id={user.userId} refetchQueryKey={URLS.Users} admin={true} url={URLS.Users}/>
+        </MaterialModal>
       </td>
     </tr>
   );

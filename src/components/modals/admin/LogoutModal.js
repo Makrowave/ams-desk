@@ -1,13 +1,12 @@
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
-import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import URLS from "@/util/urls";
+import {Button, Typography} from "@mui/material";
 
-export default function LogoutModal({id}) {
-  const url = "/Users/Logout" + (id ? "/" + id : "");
+export default function LogoutModal({id, closeModal}) {
+  const url = URLS.Users + "Logout" + (id ? "/" + id : "");
   const axiosAdmin = useAxiosAdmin();
   const queryClient = useQueryClient();
-  const {setIsModalOpen} = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosAdmin.post(
@@ -23,18 +22,14 @@ export default function LogoutModal({id}) {
         queryKey: [URLS.Users],
         exact: false,
       });
-      setIsModalOpen(false);
+      closeModal();
     },
   });
 
   return (
-    <div className='modal-basic'>
-      <div className='h-full w-full flex items-center'>
-        <span className='mx-auto mb-20'>Czy na pewno?</span>
-      </div>
-      <button className='button-secondary mb-4' onClick={() => mutation.mutate()}>
-        Wyloguj
-      </button>
-    </div>
+    <>
+      <Typography variant={"h6"}>Czy na pewno?</Typography>
+      <Button variant={"contained"} color={"error"} onClick={mutation.mutate}>Wyloguj</Button>
+    </>
   );
 }

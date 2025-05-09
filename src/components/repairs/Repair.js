@@ -7,8 +7,6 @@ import {FaArrowLeft, FaFloppyDisk, FaPlus} from "react-icons/fa6";
 import ServiceRecord from "./ServiceRecord";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {axiosPrivate} from "@/api/axios";
-import useModal from "@/hooks/useModal";
-import Modal from "../modals/Modal";
 import useSavedData from "@/hooks/useSavedData";
 import SavedDataWarning from "../navigation/SavedDataWarning";
 import ServiceSelect from "@/components/filtering/ServiceSelect";
@@ -17,11 +15,11 @@ import AddPartModal from "@/components/modals/repair/AddPartModal";
 import StatusButtons from "@/components/repairs/StatusButtons";
 import SaveIndicator from "@/components/repairs/SaveIndicator";
 import URLS from "@/util/urls";
+import MaterialModal from "@/components/modals/MaterialModal";
 
 export default function Repair({repair}) {
   const {isSaved, setIsSaved, updateIsUsed} = useSavedData();
   const [localRepair, setLocalRepair] = useState(repair);
-  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const noteTimeoutRef = useRef(null);
 
   const setChangeTimeoutRef = (repair) => {
@@ -455,16 +453,15 @@ export default function Repair({repair}) {
               <b className='p-2'>Części</b>
               <div className='flex flex-row items-center'>
                 <PartSelect mutation={updateParts}/>
-                <button
-                  className='absolute -top-3 right-1 p-2 mx-2 bg-gray-300 hover:bg-gray-400 transition-colors duration-200 rounded-lg'
-                  onClick={() => {
-                    setModalContent(<AddPartModal/>);
-                    setModalTitle("Dodaj część");
-                    setIsModalOpen(true);
-                  }}
-                >
-                  <FaPlus/>
-                </button>
+                <MaterialModal label={"Dodaj część"} button={
+                  <button
+                    className='absolute -top-3 right-1 p-2 mx-2 bg-gray-300 hover:bg-gray-400 transition-colors duration-200 rounded-lg'>
+                    <FaPlus/>
+                  </button>
+                }>
+                  <AddPartModal/>
+                </MaterialModal>
+
               </div>
             </div>
             <table className='shadow-lg w-full text-lg'>
@@ -503,7 +500,6 @@ export default function Repair({repair}) {
           </div>
         </div>
       </section>
-      <Modal/>
     </div>
   );
 }

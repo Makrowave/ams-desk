@@ -1,8 +1,8 @@
 import {useEffect, useRef, useState} from "react";
 import {FaPlus, FaXmark} from "react-icons/fa6";
 import AddPartModal from "@/components/modals/repair/AddPartModal";
-import useModal from "@/hooks/useModal";
 import {useFilteredPartsQuery, usePartCategoriesQuery, usePartTypesQuery} from "@/hooks/queryHooks";
+import MaterialModal from "@/components/modals/MaterialModal";
 
 export default function PartSelect({mutation}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +11,6 @@ export default function PartSelect({mutation}) {
   const boxRef = useRef(null);
   const buttonRef = useRef(null);
   const [text, setText] = useState("");
-  const {setIsModalOpen, setModalContent, setModalTitle} = useModal()
   // Fetch categories
   const {data: catData, isLoading: catIsLoading, isError: catIsError} = usePartCategoriesQuery();
 
@@ -168,16 +167,14 @@ export default function PartSelect({mutation}) {
                 </ul>
               </div>
             </div>
-            <button
-              className='absolute top-1 right-5 p-0.5 mx-2 hover:bg-gray-300 transition-colors duration-200 rounded-lg'
-              onClick={() => {
-                setModalContent(<AddPartModal/>);
-                setModalTitle("Dodaj część");
-                setIsModalOpen(true);
-              }}
-            >
-              <FaPlus/>
-            </button>
+            <MaterialModal label={"Dodaj część"} button={
+              <button
+                className='absolute top-1 right-5 p-0.5 mx-2 hover:bg-gray-300 transition-colors duration-200 rounded-lg'>
+                <FaPlus/>
+              </button>
+            }>
+              <AddPartModal/>
+            </MaterialModal>
             <button className="p-0.5 rounded-lg hover:bg-gray-300 absolute top-1 right-1"
                     onClick={() => setIsOpen(false)}>
               <FaXmark/>

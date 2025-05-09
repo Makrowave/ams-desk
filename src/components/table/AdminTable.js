@@ -18,12 +18,12 @@ import {FaBars, FaCheck, FaPlus, FaTrash, FaXmark} from "react-icons/fa6";
 import {useEffect, useRef, useState} from "react";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
-import useModal from "@/hooks/useModal";
 import DeleteModal from "@/components/modals/DeleteModal";
 import ColorInput from "@/components/input/ColorInput";
 import {draggable, dropTargetForElements, monitorForElements} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import FetchSelect from "@/components/filtering/FetchSelect";
 import {createQueryHook} from "@/hooks/queryHooks";
+import MaterialModal from "@/components/modals/MaterialModal";
 
 export default function AdminTable({
                                      className,
@@ -133,7 +133,6 @@ function AdminTableRow({item, url, dragId, noEdit, noDelete, noReorder, rowForma
   const [editedData, setEditedData] = useState(item);
   const [dragging, setDragging] = useState(false);
   const [isDraggedOver, setIsDraggedOver] = useState(false);
-  const {setIsModalOpen, setModalContent, setModalTitle} = useModal()
   const editData = (key, value) => {
     setEditedData(prev => ({...prev, [key]: value}));
   }
@@ -201,44 +200,6 @@ function AdminTableRow({item, url, dragId, noEdit, noDelete, noReorder, rowForma
   const endEditing = () => {
     editMutation.mutate()
   }
-  const renderCellContent = (key, value, index) => {
-    if (value === null || value === undefined || typeof value === "object") {
-      return <></>
-    } else if (key === "hexCode") {
-      return (
-        <TableCell style={{background: isEditing ? editedData[key] : item.hexCode, width: rowWidth ?? 10}} key={key}>
-          {isEditing && <ColorInput title={""} value={editedData[key]} setValue={(v) => editData(key, v)}/>}
-        </TableCell>
-      )
-    } else if (typeof value === "boolean") {
-      return (
-        <TableCell>
-          {
-            isEditing
-              ? (
-                <Checkbox checked={value} onChange={(e) => editData(key, e.target.checked)}/>
-              ) : (
-                <SvgIcon>
-                  {value ? <FaCheck/> : <FaXmark/>}
-                </SvgIcon>
-              )
-          }
-        </TableCell>
-      )
-    } else if (index === 0) {
-      return <TableCell>{value}</TableCell>
-    } else {
-      return (
-        <TableCell className={"w-60"}>
-          {
-            isEditing
-              ? <TextField variant="standard" value={editedData[key]} onChange={(e) => editData(key, e.target.value)}/>
-              : value
-          }
-        </TableCell>
-      )
-    }
-  }
 
   return (
     <TableRow
@@ -258,35 +219,37 @@ function AdminTableRow({item, url, dragId, noEdit, noDelete, noReorder, rowForma
       }
       {!(noDelete && noEdit) &&
         <TableCell align={"center"}>
-          {
-            isEditing ? !noEdit && (
-              <IconButton onClick={endEditing} variant="contained" color={"success"}>
-                <FaCheck/>
-              </IconButton>
-            ) : !noEdit && (
-              <IconButton onClick={startEditing} variant="contained" color={"primary"}>
-                <FaEdit/>
-              </IconButton>
-            )
-          }
-          {
-            isEditing ? !noDelete && (
-              <IconButton onClick={() => {
-                setIsEditing(false);
-                setEditedData(item)
-              }} color={"error"}>
-                <FaXmark/>
-              </IconButton>
-            ) : !noDelete && (
-              <IconButton variant="contained" color={"error"} onClick={() => {
-                setModalTitle("Usuń")
-                setModalContent(<DeleteModal id={itemId} url={url} refetchQueryKey={url} admin/>)
-                setIsModalOpen(true)
-              }}>
-                <FaTrash/>
-              </IconButton>
-            )
-          }
+          <Box className={"flex justify-center"}>
+            {
+              isEditing ? !noEdit && (
+                <IconButton onClick={endEditing} variant="contained" color={"success"}>
+                  <FaCheck/>
+                </IconButton>
+              ) : !noEdit && (
+                <IconButton onClick={startEditing} variant="contained" color={"primary"}>
+                  <FaEdit/>
+                </IconButton>
+              )
+            }
+            {
+              isEditing ? !noDelete && (
+                <IconButton onClick={() => {
+                  setIsEditing(false);
+                  setEditedData(item)
+                }} color={"error"}>
+                  <FaXmark/>
+                </IconButton>
+              ) : !noDelete && (
+                <MaterialModal label={"Usuń"} button={
+                  <IconButton variant="contained" color={"error"}>
+                    <FaTrash/>
+                  </IconButton>
+                }>
+                  <DeleteModal id={itemId} url={url} refetchQueryKey={url} admin/>
+                </MaterialModal>
+              )
+            }
+          </Box>
         </TableCell>
       }
       {!noReorder &&

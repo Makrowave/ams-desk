@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ErrorDisplay from "../../../error/ErrorDisplay";
-import useModal from "@/hooks/useModal";
 import ColorInput from "@/components/input/ColorInput";
 import {REGEX} from "@/util/regex";
 import URLS, {URLKEYS} from "@/util/urls";
@@ -10,7 +9,7 @@ import FetchSelect from "@/components/filtering/FetchSelect";
 import ValidatedTextField from "@/components/input/ValidatedTextField";
 import {Button, Checkbox, FormControlLabel} from "@mui/material";
 
-export default function AddModelModal() {
+export default function AddModelModal(closeModal) {
   const [model, setModel] = useState({
     modelName: "",
     productCode: "",
@@ -28,7 +27,6 @@ export default function AddModelModal() {
   });
 
   const [error, setError] = useState("");
-  const {setIsModalOpen} = useModal();
 
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
@@ -57,7 +55,7 @@ export default function AddModelModal() {
         },
         (oldData) => [...oldData, data]
       );
-      setIsModalOpen(false);
+      closeModal();
     },
     onError: (error) => {
       setError(error.message);
@@ -89,7 +87,7 @@ export default function AddModelModal() {
   }, [model]);
 
   return (
-    <div className="flex flex-col gap-y-2 w-[600px] pb-4">
+    <>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
       <ValidatedTextField
         label="Nazwa"
@@ -185,6 +183,6 @@ export default function AddModelModal() {
       >
         Dodaj model
       </Button>
-    </div>
+    </>
   );
 }

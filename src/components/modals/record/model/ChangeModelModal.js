@@ -1,6 +1,5 @@
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useEffect, useState} from "react";
 import URLS, {URLKEYS} from "@/util/urls";
@@ -10,12 +9,11 @@ import {REGEX} from "@/util/regex";
 import ValidatedTextField from "@/components/input/ValidatedTextField";
 
 
-export default function ChangeModelModal({model}) {
+export default function ChangeModelModal({model, closeModal}) {
   const [editedModel, setEditedModel] = useState(model);
   const [isValid, setIsValid] = useState(false);
   //Other
   const [error, setError] = useState("");
-  const {setIsModalOpen} = useModal();
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
 
@@ -40,7 +38,7 @@ export default function ChangeModelModal({model}) {
             {...data, bikeCount: m.bikeCount, placeBikeCount: m.placeBikeCount} : m)
           : oldData
       });
-      setIsModalOpen(false);
+      closeModal();
     },
     onError: (error) => {
       setError(error.message);
@@ -73,7 +71,7 @@ export default function ChangeModelModal({model}) {
   }, [editedModel]);
 
   return (
-    <div className='flex flex-col gap-y-2 w-[600px] pb-4'>
+    <>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
       <ValidatedTextField
         label="Nazwa"
@@ -141,6 +139,6 @@ export default function ChangeModelModal({model}) {
         variant={"contained"} color={"primary"} onClick={() => handleClick()} disabled={!isValid}>
         Zmień dane
       </Button>
-    </div>
+    </>
   );
 }

@@ -1,12 +1,12 @@
 "use client";
 import {FaPlus} from "react-icons/fa6";
 import RepairRecord from "./RepairRecord";
-import useModal from "@/hooks/useModal";
-import NewRepairModal from "../modals/record/repair/NewRepairModal";
+import NewRepairModal from "../modals/repair/NewRepairModal";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import {useQuery} from "@tanstack/react-query";
 import {useState} from "react";
 import {usePlacesNotStorageQuery} from "@/hooks/queryHooks";
+import MaterialModal from "@/components/modals/MaterialModal";
 
 export default function RepairTable({src, addButton, localKey}) {
   const axiosPrivate = useAxiosPrivate();
@@ -30,8 +30,6 @@ export default function RepairTable({src, addButton, localKey}) {
   });
 
   const {data: placesData, isError: isPlacesError, isLoading: isPlacesLoading} = usePlacesNotStorageQuery();
-
-  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const places = createPlaces(!isPlacesLoading && !isPlacesError ? placesData : []);
 
   return (
@@ -61,16 +59,14 @@ export default function RepairTable({src, addButton, localKey}) {
             />
           </div>
           {addButton && (
-            <button
-              className='flex justify-center items-center hover:bg-gray-400 transition-colors duration-200 rounded-lg w-fit h-fit p-2'
-              onClick={() => {
-                setIsModalOpen(true);
-                setModalContent(<NewRepairModal/>);
-                setModalTitle("Nowe zgłoszenie");
-              }}
-            >
-              <FaPlus className='w-6 h-6'/>
-            </button>
+            <MaterialModal label={"Nowe zgłoszenie"} button={
+              <button
+                className='flex justify-center items-center hover:bg-gray-400 transition-colors duration-200 rounded-lg w-fit h-fit p-2'>
+                <FaPlus className='w-6 h-6'/>
+              </button>
+            }>
+              <NewRepairModal/>
+            </MaterialModal>
           )}
         </div>
       </div>

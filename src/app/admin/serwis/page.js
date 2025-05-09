@@ -1,12 +1,10 @@
 "use client";
 import {useState} from "react";
-import useModal from "@/hooks/useModal";
 import {useServicesQuery} from "@/hooks/queryHooks";
 import URLS, {URLKEYS} from "@/util/urls";
 import AdminTable from "@/components/table/AdminTable";
 
 export default function AdminRepairs() {
-  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const {
     isError: isServicesError,
     isLoading: isServicesLoading,

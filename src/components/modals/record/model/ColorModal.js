@@ -1,6 +1,5 @@
 import ColorInput from "@/components/input/ColorInput";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import URLS, {URLKEYS} from "@/util/urls";
@@ -8,20 +7,18 @@ import FetchSelect from "@/components/filtering/FetchSelect";
 import {Button} from "@mui/material";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 
-//primaryColor and secondaryColor can be null in DB
-//(for example if not specified by manufacturer and bike inserts are automated)
-export default function ColorModal({model}) {
+
+export default function ColorModal({model, closeModal}) {
   const [primaryColor, setPrimaryColor] = useState(!!model.primaryColor ? model.primaryColor : "#FF00FF");
   const [secondaryColor, setSecondaryColor] = useState(!!model.secondaryColor ? model.secondaryColor : "#000000");
   const [color, setColor] = useState(model.colorId);
-  const {setIsModalOpen} = useModal();
   const [error, setError] = useState("");
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
     mutationFn: async () => {
       const result = await axiosPrivate.put(
-        "/Models/" + model.modelId,
+        URLS.Models + model.modelId,
         JSON.stringify({
           ...model,
           colorId: color,
@@ -43,7 +40,7 @@ export default function ColorModal({model}) {
             {...data, bikeCount: m.bikeCount, placeBikeCount: m.placeBikeCount} : m)
           : oldData
       });
-      setIsModalOpen(false);
+      closeModal();
     },
     onError: (error) => {
       setError(error.message);
@@ -52,7 +49,7 @@ export default function ColorModal({model}) {
 
 
   return (
-    <div className='modal-basic pb-2'>
+    <>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
       <ColorInput title='Kolor główny' value={primaryColor} setValue={setPrimaryColor}/>
       <ColorInput title='Kolor dodatkowy' value={secondaryColor} setValue={setSecondaryColor}/>
@@ -71,6 +68,6 @@ export default function ColorModal({model}) {
       >
         Zmień kolor
       </Button>
-    </div>
+    </>
   );
 }

@@ -1,20 +1,13 @@
 import {useState} from "react";
-import useModal from "@/hooks/useModal";
 import AddModelModal from "@/components/modals/record/model/AddModelModal";
 import ExpandButton from "../buttons/ExpandButton";
 import {FaPlus} from "react-icons/fa6";
 import {usePlacesQuery} from "@/hooks/queryHooks";
+import MaterialModal from "@/components/modals/MaterialModal";
 // Switches places for frontend user. Buttons change placeId in query
 export default function ModelTablePlaceSelector({changePlaceId}) {
   const [active, setActive] = useState(0);
-  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const {data, isLoading, isError} = usePlacesQuery();
-
-  function openModal() {
-    setModalContent(<AddModelModal/>);
-    setModalTitle("Dodaj rower");
-    setIsModalOpen(true);
-  }
 
   const createPlaces = (places) => {
     return [{placeId: 0, placeName: "Wszystkie"}, ...places];
@@ -37,9 +30,14 @@ export default function ModelTablePlaceSelector({changePlaceId}) {
           />
         ))}
       </div>
-      <ExpandButton className='bg-gray-200 mb-2' text='Dodaj model' onClick={openModal}>
-        <FaPlus/>
-      </ExpandButton>
+      <MaterialModal label={"Dodaj rower"} button={
+        <ExpandButton className='bg-gray-200 mb-2' text='Dodaj model'>
+          <FaPlus/>
+        </ExpandButton>
+      }>
+        <AddModelModal/>
+      </MaterialModal>
+
     </div>
   );
 }

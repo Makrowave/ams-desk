@@ -14,7 +14,7 @@ export default function PasswordModal({
   const [confirmPassword, setConfirmPassword] = useState("");
   const [match, setMatch] = useState(true);
   useEffect(() => {
-    if (newPassword == confirmPassword) {
+    if (newPassword === confirmPassword) {
       setMatch(true);
     } else {
       setMatch(false);
@@ -24,7 +24,7 @@ export default function PasswordModal({
   function handleClick() {
     if (!match) {
       setError("Hasła nie są identyczne");
-    } else if (password == "") {
+    } else if (password === "") {
       setError("Hasło jest puste");
     } else {
       mutation.mutate();
@@ -32,7 +32,7 @@ export default function PasswordModal({
   }
 
   return (
-    <div className='flex flex-col justify-self-center w-full mx-16'>
+    <>
       <ErrorDisplay isVisible={error !== ""} message={error}/>
       <div className='flex flex-col'>
         <span>Stare hasło</span>
@@ -70,6 +70,6 @@ export default function PasswordModal({
       <button className='button-primary mb-4 mt-10' onClick={() => handleClick()}>
         Zmień hasło
       </button>
-    </div>
+    </>
   );
 }

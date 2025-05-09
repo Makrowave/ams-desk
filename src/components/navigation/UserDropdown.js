@@ -1,15 +1,14 @@
 import useAuth from "@/hooks/useAuth";
-import useModal from "@/hooks/useModal";
 import {useState} from "react";
 import AdminPasswordModal from "../modals/auth/AdminPasswordModal";
 import UserPasswordModal from "../modals/auth/UserPasswordModal";
 import {FaChevronDown, FaChevronUp} from "react-icons/fa6";
 import SavedDataWarning from "./SavedDataWarning";
+import MaterialModal from "@/components/modals/MaterialModal";
 //Maybe create admin UserDropdown
 export default function UserDropdown() {
   const {user, admin, logout, logoutAdmin, isAdmin} = useAuth();
   const [isClicked, setIsClicked] = useState(false);
-  const {setIsModalOpen, setModalTitle, setModalContent} = useModal();
   return (
     <div className='relative inline-block w-60 h-full justify-center'>
       <div
@@ -28,20 +27,15 @@ export default function UserDropdown() {
       {isClicked && (
         <ul className='absolute bg-secondary w-full z-20'>
           <li className='px-4 py-2 cursor-pointer hover:bg-tertiary border-t border-l border-r border-border'>
-            <button
-              className='h-full w-full'
-              onClick={() => {
-                setIsClicked(false);
-                setModalTitle("Zmień hasło");
-                if (isAdmin) setModalContent(<AdminPasswordModal/>);
-                else setModalContent(<UserPasswordModal/>);
-                setIsModalOpen(true);
-              }}
-            >
-              <SavedDataWarning>
-                <span className='text-2xl'>Zmień hasło</span>
-              </SavedDataWarning>
-            </button>
+            <MaterialModal label={"Zmień hasło"} button={
+              <button className='h-full w-full'>
+                <SavedDataWarning>
+                  <span className='text-2xl'>Zmień hasło</span>
+                </SavedDataWarning>
+              </button>
+            }>
+              {isAdmin ? <AdminPasswordModal/> : <UserPasswordModal/>}
+            </MaterialModal>
           </li>
           <li className='px-4 py-2 cursor-pointer hover:bg-tertiary border border-border'>
             <button

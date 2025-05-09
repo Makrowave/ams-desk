@@ -2,25 +2,22 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
-import useModal from "@/hooks/useModal";
 import URLS, {URLKEYS} from "@/util/urls";
 import FetchSelect from "@/components/filtering/FetchSelect";
 import {Button} from "@mui/material";
 
-export default function AddBikeModal({modelId}) {
+export default function AddBikeModal({modelId, closeModal}) {
   //Change it based on selected location
   const [place, setPlace] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
-  const {setIsModalOpen} = useModal();
   const queryClient = useQueryClient();
-  const _url = "/Bikes";
 
   const axiosPrivate = useAxiosPrivate();
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.post(
-        _url,
+        URLS.Bikes2,
         JSON.stringify({
           modelId: modelId,
           placeId: place,
@@ -40,7 +37,7 @@ export default function AddBikeModal({modelId}) {
         queryKey: [URLS.Bikes],
         exact: false,
       });
-      setIsModalOpen(false);
+      closeModal()
     },
     onError: (error) => {
       setError(error.message);
@@ -54,7 +51,7 @@ export default function AddBikeModal({modelId}) {
   }
 
   return (
-    <div className='modal-basic pb-4'>
+    <>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
       <FetchSelect
         value={place}
@@ -80,6 +77,6 @@ export default function AddBikeModal({modelId}) {
       >
         Dodaj
       </Button>
-    </div>
+    </>
   );
 }

@@ -1,20 +1,18 @@
 import ErrorDisplay from "@/components/error/ErrorDisplay";
 import FetchSelect from "@/components/filtering/FetchSelect";
-import ModalTextInput from "@/components/input/ModalTextInput";
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
-import useModal from "@/hooks/useModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import URLS from "@/util/urls";
+import {Button, TextField} from "@mui/material";
 
-export default function UserModal({user, action}) {
+export default function UserModal({user, action, closeModal}) {
   const [username, setUsername] = useState(user === undefined ? "" : user.username);
   const [password, setPassword] = useState("");
   const [employeeId, setEmployeeId] = useState(user === undefined ? "" : user.employeeId);
   const [error, setError] = useState("");
   const queryClient = useQueryClient();
   const axiosAdmin = useAxiosAdmin();
-  const {setIsModalOpen} = useModal();
   const mutation = useMutation({
     mutationFn: async () => {
       if (action === "put") {
@@ -48,7 +46,7 @@ export default function UserModal({user, action}) {
         queryKey: [URLS.Users],
         exact: false,
       });
-      setIsModalOpen(false);
+      closeModal();
     },
     onError: (error) => {
       setError(error.message);
@@ -60,22 +58,21 @@ export default function UserModal({user, action}) {
   }
 
   return (
-    <div className='modal-basic'>
+    <>
       <ErrorDisplay message={error} isVisible={!!error}/>
-      <ModalTextInput title='Login' value={username} setValue={setUsername}/>
-      <ModalTextInput title='Hasło' value={password} setValue={setPassword}/>
+      <TextField label='Login' value={username} onChange={setUsername}/>
+      <TextField label='Hasło' value={password} onChange={setPassword}/>
       <FetchSelect
         value={employeeId}
         onChange={setEmployeeId}
         urlKey={'Employees'}
-        title='Pracownik'
+        label='Pracownik'
         defaultValue={""}
-        defaultLabel='Brak'
       />
-      <button className='button-primary mb-4' onClick={() => handleClick()}>
+      <Button onClick={handleClick} variant={"contained"} color={"primary"}>
         {action === "put" ? "Edytuj" : ""}
         {action === "post" ? "Dodaj" : ""}
-      </button>
-    </div>
+      </Button>
+    </>
   );
 }

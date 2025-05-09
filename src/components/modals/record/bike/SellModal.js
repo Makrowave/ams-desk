@@ -2,19 +2,17 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import ErrorDisplay from "@/components/error/ErrorDisplay";
-import useModal from "@/hooks/useModal";
 import {REGEX} from "@/util/regex";
 import URLS from "@/util/urls";
 import {Button, Checkbox, FormControlLabel} from "@mui/material";
 import ValidatedTextField from "@/components/input/ValidatedTextField";
 
-export default function SellModal({bikeId, basePrice, placeId}) {
+export default function SellModal({bikeId, basePrice, placeId, closeModal}) {
   //Change it based on selected location
   const [price, setPrice] = useState(basePrice);
   const [internetSale, setInternetSale] = useState(false);
   const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
-  const {setIsModalOpen} = useModal();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
@@ -50,7 +48,7 @@ export default function SellModal({bikeId, basePrice, placeId}) {
         }
         return oldData.filter((bike) => bike.id !== bikeId);
       })
-      setIsModalOpen(false);
+      closeModal()
     },
     onError: (error) => {
       setError(error.message);
@@ -58,7 +56,7 @@ export default function SellModal({bikeId, basePrice, placeId}) {
   });
 
   return (
-    <div className='modal-basic pb-4'>
+    <>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
       <ValidatedTextField label='Cena' value={price} onChange={setPrice} regex={REGEX.PRICE}/>
       <FormControlLabel
@@ -75,6 +73,6 @@ export default function SellModal({bikeId, basePrice, placeId}) {
       >
         Sprzedaj
       </Button>
-    </div>
+    </>
   );
 }

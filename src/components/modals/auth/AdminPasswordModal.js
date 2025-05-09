@@ -1,5 +1,4 @@
 import useAuth from "@/hooks/useAuth";
-import useModal from "@/hooks/useModal";
 import {useMutation} from "@tanstack/react-query";
 import PasswordModal from "./PasswordModal";
 import useAxiosAdmin from "@/hooks/useAxiosAdmin";
@@ -11,7 +10,6 @@ export default function AdminPasswordModal() {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const _url = "/AdminAuth/ChangePassword";
   const mutation = useMutation({
     mutationFn: async () => {
@@ -26,11 +24,9 @@ export default function AdminPasswordModal() {
       );
     },
     onSuccess: () => {
-      setIsModalOpen(false);
-      setModalContent(<></>);
-      setModalTitle("");
+      closeModal();
       logoutAdmin();
-      if (admin.username == user.username) logout();
+      if (admin.username === user.username) logout();
     },
     onError: (error) => {
       setError(error.message);

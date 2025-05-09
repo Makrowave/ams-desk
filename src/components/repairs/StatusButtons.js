@@ -13,13 +13,12 @@ import {
 } from "react-icons/fa6";
 import CancelRepairModal from "@/components/modals/repair/CancelRepairModal";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import useModal from "@/hooks/useModal";
 import URLS from "@/util/urls";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+import MaterialModal from "@/components/modals/MaterialModal";
 
 
 export default function StatusButtons({localRepair, setIsSaved, setLocalRepair, setSaveStatus}) {
-  const {setIsModalOpen, setModalContent, setModalTitle} = useModal();
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
   const handleStartOrCollect = async (data) => {
@@ -101,26 +100,20 @@ export default function StatusButtons({localRepair, setIsSaved, setLocalRepair, 
     switch (localRepair.statusId) {
       case REPAIR_STATUS.Pending:
         return (
-          <button
-            className='button-primary flex items-center justify-center gap-2'
-            onClick={() => {
-              if (localRepair.statusId !== REPAIR_STATUS.Pending) return;
-              setModalTitle("Rozpocznij naprawę");
-              setModalContent(
-                <RepairModal
-                  employeeId={localRepair.repairEmployeeId}
-                  label='Kto naprawia'
-                  onClick={(employee) => {
-                    startMutation.mutate(employee);
-                  }}
-                />
-              );
-              setIsModalOpen(true);
-            }}
-          >
-            <FaWrench/>
-            <span>Rozpocznij</span>
-          </button>
+          <MaterialModal label={"Rozpocznij naprawę"} button={
+            <button className='button-primary flex items-center justify-center gap-2'>
+              <FaWrench/>
+              <span>Rozpocznij</span>
+            </button>
+          }>
+            <RepairModal
+              employeeId={localRepair.repairEmployeeId}
+              label='Kto naprawia'
+              onClick={(employee) => {
+                startMutation.mutate(employee);
+              }}
+            />
+          </MaterialModal>
         )
       case REPAIR_STATUS.InProgress:
         return (
@@ -213,25 +206,21 @@ export default function StatusButtons({localRepair, setIsSaved, setLocalRepair, 
               <FaBoxOpen/>
               <span>Wznów</span>
             </button>
-            <button
-              className='button-primary flex items-center justify-center gap-2'
-              onClick={() => {
-                setModalTitle("Wydaj rower");
-                setModalContent(
-                  <RepairModal
-                    employeeId={localRepair.repairEmployeeId}
-                    label='Kto wydaje'
-                    onClick={(employee) => {
-                      collectMutation.mutate(employee);
-                    }}
-                  />
-                );
-                setIsModalOpen(true);
-              }}
-            >
-              <FaFlagCheckered/>
-              <span>Wydaj</span>
-            </button>
+            <MaterialModal label={"Wydaj rower"} button={
+              <button className='button-primary flex items-center justify-center gap-2'>
+                <FaFlagCheckered/>
+                <span>Wydaj</span>
+              </button>
+            }>
+              <RepairModal
+                employeeId={localRepair.repairEmployeeId}
+                label='Kto wydaje'
+                onClick={(employee) => {
+                  collectMutation.mutate(employee);
+                }}
+              />
+            </MaterialModal>
+
           </>
         )
       default:
@@ -246,19 +235,15 @@ export default function StatusButtons({localRepair, setIsSaved, setLocalRepair, 
       }
       {
         !(localRepair.statusId === REPAIR_STATUS.Cancelled || localRepair.statusId === REPAIR_STATUS.Collected) &&
-        <button
-          className='button-primary flex items-center justify-center gap-2'
-          onClick={() => {
-            setModalTitle("Anuluj");
-            setModalContent(
-              <CancelRepairModal onClick={changeStatus}/>
-            );
-            setIsModalOpen(true);
-          }}
-        >
-          <FaRegCircleXmark className={"text-red-600"}/>
-          <span>Anuluj</span>
-        </button>
+        <MaterialModal label={"Anuluj"} button={
+          <button className='button-primary flex items-center justify-center gap-2'>
+            <FaRegCircleXmark className={"text-red-600"}/>
+            <span>Anuluj</span>
+          </button>
+        }>
+          <CancelRepairModal onClick={changeStatus}/>
+        </MaterialModal>
+
       }
 
     </div>

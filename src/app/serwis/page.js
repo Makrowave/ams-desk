@@ -2,7 +2,6 @@
 import PrivateRoute from "@/components/routing/PrivateRoute";
 import Navigation from "../../components/navigation/Navigation";
 import RepairTable from "@/components/repairs/RepairTable";
-import Modal from "@/components/modals/Modal";
 import {REPAIR_STATUS} from "@/util/repairStatuses";
 import SideBar from "@/components/navigation/SideBar";
 import {FaFlagCheckered, FaHourglassHalf, FaScrewdriverWrench} from "react-icons/fa6";
@@ -22,7 +21,6 @@ export default function RepairsPage() {
           </div>
         </div>
       </main>
-      <Modal/>
     </PrivateRoute>
   );
 }
