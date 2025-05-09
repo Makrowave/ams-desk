@@ -1,5 +1,6 @@
 import useModal from "@/hooks/useModal";
 import {REPAIR_STATUS} from "@/util/repairStatuses";
+import {Button, Typography} from "@mui/material";
 
 export default function CancelRepairModal({onClick}) {
   const {setIsModalOpen} = useModal();
@@ -9,13 +10,13 @@ export default function CancelRepairModal({onClick}) {
   };
 
   return (
-    <div className='flex flex-col w-full justify-between items-center'>
-      <div className='w-60'>
+    <div className='modal-basic pb-4'>
+      <Typography className={"text-justify"}>
         Czy na pewno chcesz anulować zgłoszenie?
-      </div>
-      <button className='block bg-red-600 hover:bg-red-700 text-white rounded-lg mb-4 w-40' onClick={handleClick}>
+      </Typography>
+      <Button variant={"contained"} color={"error"} onClick={handleClick}>
         Anuluj
-      </button>
+      </Button>
     </div>
   );
 }

@@ -4,9 +4,11 @@ import {REGEX} from "@/util/regex";
 import {useMutation} from "@tanstack/react-query";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
-import {FaCheck, FaXmark} from "react-icons/fa6";
 import FetchSelect from "@/components/filtering/FetchSelect";
 import {URLKEYS} from "@/util/urls";
+import {Button} from "@mui/material";
+import ValidatedTextField from "@/components/input/ValidatedTextField";
+import ValidatedTextarea from "@/components/input/ValidatedTextarea";
 
 export default function NewRepairModal({}) {
   const axios = useAxiosPrivate();
@@ -55,77 +57,52 @@ export default function NewRepairModal({}) {
   });
 
   return (
-    <div className='*:mb-2 w-full flex flex-col'>
-      <div>
-        <FetchSelect
-          value={place}
-          onChange={(value) => {
-            setPlace(value);
-            localStorage.setItem("repairModal:defaultPlace", value)
-          }}
-          urlKey={URLKEYS.Places}
-          defaultValue={""}
-          label='Miejsce przyjęcia'
-          validated
-        />
-        <FetchSelect
-          value={employee}
-          onChange={setEmployee}
-          urlKey={URLKEYS.Employees}
-          label={"Kto przyjmuje"}
-          defaultValue={""}
-          validated
-        />
-      </div>
-      <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>
-        <div className='border-b border-gray-400 w-fit flex items-center'>
-          <span className='text-xs text-gray-400 mr-1'>Telefon</span>
-          {isPhoneValid ? <FaCheck className='text-green-500 text-sm'/> : <FaXmark className='text-red-600 text-sm'/>}
-        </div>
-        <input
-          type='text'
-          className='w-full focus:outline-none'
-          placeholder='Telefon'
-          value={phone}
-          onChange={(e) => updatePhone(e.target.value)}
-        />
-      </div>
-      <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>
-        <div className='border-b border-gray-400 w-fit flex items-center'>
-          <span className='text-xs text-gray-400 mr-1'>Rower</span>
-          {isBikeValid ? <FaCheck className='text-green-500 text-sm'/> : <FaXmark className='text-red-600 text-sm'/>}
-        </div>
-        <input
-          type='text'
-          className='w-full focus:outline-none'
-          placeholder='Rower'
-          value={bike}
-          onChange={(e) => {
-            updateBike(e.target.value);
-          }}
-        />
-      </div>
-      <div className='flex flex-col rounded-lg border-border border p-1 *:px-1'>
-        <div className='border-b border-gray-400 w-fit flex items-center'>
-          <span className='text-xs text-gray-400 mr-1'>Problem</span>
-          {isIssueValid ? <FaCheck className='text-green-500 text-sm'/> : <FaXmark className='text-red-600 text-sm'/>}
-        </div>
-        <textarea
-          className='w-full focus:outline-none'
-          placeholder='Problem'
-          value={issue}
-          onChange={(e) => {
-            updateIssue(e.target.value);
-          }}
-        />
-      </div>
-      <button
+    <div className='modal-basic mb-4 gap-1'>
+      <FetchSelect
+        value={place}
+        onChange={(value) => {
+          setPlace(value);
+          localStorage.setItem("repairModal:defaultPlace", value)
+        }}
+        urlKey={URLKEYS.Places}
+        defaultValue={""}
+        label='Miejsce przyjęcia'
+        validated
+      />
+      <FetchSelect
+        value={employee}
+        onChange={setEmployee}
+        urlKey={URLKEYS.Employees}
+        label={"Kto przyjmuje"}
+        defaultValue={""}
+        validated
+      />
+      <ValidatedTextField
+        label='Telefon'
+        value={phone}
+        onChange={updatePhone}
+        regex={REGEX.PHONE}
+      />
+      <ValidatedTextField
+        label='Rower'
+        value={bike}
+        onChange={updateBike}
+        regex={REGEX.POLISH_TEXT}
+      />
+      <ValidatedTextarea
+        placeholder='Treść zgłoszenia'
+        value={issue}
+        onChange={updateIssue}
+        regex={REGEX.POLISH_TEXT}
+        otherProps={{minRows: 3}}
+      />
+      <Button
+        variant='contained' color='primary'
         disabled={!(isBikeValid && isIssueValid && isPhoneValid && place !== "" && employee !== "")}
-        className='button-primary w-full self-center'
-        onClick={() => mutation.mutate()}
+        onClick={mutation.mutate}
       >
         Stwórz
-      </button>
+      </Button>
     </div>
   );
 }
