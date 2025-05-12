@@ -12,7 +12,7 @@ export default function PartRecord({index, part, changeAmount, deleteFn}) {
     <tr className='text-center *:p-2 odd:bg-primary'>
       <td>{index + 1}</td>
       <td>{localPart.part.partName}</td>
-      <td>{localPart.part.price.toFixed(2)}</td>
+      <td>{localPart.price.toFixed(2)} ({localPart.part.price.toFixed(2)})</td>
       <td>
         <input
           className='bg-inherit border border-gray-300 rounded-lg w-20 text-center'
@@ -22,7 +22,7 @@ export default function PartRecord({index, part, changeAmount, deleteFn}) {
         />
         {" " + localPart.part.unit.unitName}
       </td>
-      <td>{(localPart.part.price * localPart.amount).toFixed(2)}</td>
+      <td>{(localPart.price * localPart.amount).toFixed(2)}</td>
       <td>
         <button
           className='p-2 hover:bg-gray-200 transition-colors duration-200 rounded-lg'

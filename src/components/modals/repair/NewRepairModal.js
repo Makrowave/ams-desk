@@ -41,7 +41,7 @@ export default function NewRepairModal({closeModal}) {
     mutationFn: async () => {
       return await axios.post(
         URLS.Repairs,
-        JSON.stringify({phoneNumber: phone, issue: issue, bikeName: bike, placeId: place, takeInEmployeeId: employee}),
+        {phoneNumber: phone, issue: issue, bikeName: bike, placeId: place, takeInEmployeeId: employee},
       );
     },
     onSuccess: (response) => {

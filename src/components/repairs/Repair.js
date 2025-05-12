@@ -3,25 +3,32 @@ import PartRecord from "./PartRecord";
 import {generateRepairCostDoc, generateRepairNewDoc, printRepairCostDoc, printRepairDoc} from "@/util/print";
 import {formatPhone} from "@/util/formatting";
 import {useRouter} from "next/navigation";
-import {FaArrowLeft, FaFloppyDisk, FaPlus} from "react-icons/fa6";
+import {FaArrowLeft, FaFloppyDisk, FaPencil, FaPlus} from "react-icons/fa6";
 import ServiceRecord from "./ServiceRecord";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {axiosPrivate} from "@/api/axios";
 import useSavedData from "@/hooks/useSavedData";
 import SavedDataWarning from "../navigation/SavedDataWarning";
-import ServiceSelect from "@/components/filtering/ServiceSelect";
-import PartSelect from "@/components/filtering/PartSelect";
-import AddPartModal from "@/components/modals/repair/AddPartModal";
+import ServiceSelectModal from "@/components/modals/repair/ServiceSelectModal";
+import PartSelectModal from "@/components/modals/repair/PartSelectModal";
 import StatusButtons from "@/components/repairs/StatusButtons";
 import SaveIndicator from "@/components/repairs/SaveIndicator";
 import URLS from "@/util/urls";
 import MaterialModal from "@/components/modals/MaterialModal";
+import {IconButton, Tooltip} from "@mui/material";
+import {FaInfoCircle} from "react-icons/fa";
+import {REPAIR_STATUS} from "@/util/repairStatuses";
+import EditRepairModal from "@/components/modals/repair/EditRepairModal";
 
 export default function Repair({repair}) {
   const {isSaved, setIsSaved, updateIsUsed} = useSavedData();
   const [localRepair, setLocalRepair] = useState(repair);
   const noteTimeoutRef = useRef(null);
-
+  let disabledEditing = localRepair.statusId === REPAIR_STATUS.Finished
+    || localRepair.statusId === REPAIR_STATUS.Notified
+    || localRepair.statusId === REPAIR_STATUS.Cancelled
+    || localRepair.statusId === REPAIR_STATUS.Pending
+    || localRepair.statusId === REPAIR_STATUS.Collected
   const setChangeTimeoutRef = (repair) => {
     setSaveStatus("");
     clearTimeout(noteTimeoutRef.current);
@@ -218,9 +225,18 @@ export default function Repair({repair}) {
           </SavedDataWarning>
         </button>
         <div className='ml-auto flex gap-4'>
-          <button onClick={save} className="button-primary">
+          <MaterialModal label={"Edytuj treść zgłoszenia"}
+                         button={(
+                           <IconButton color={"primary"}
+                                       disabled={localRepair.statusId === REPAIR_STATUS.Collected
+                                         || localRepair.statusId === REPAIR_STATUS.Cancelled}>
+                             <FaPencil/>
+                           </IconButton>)}>
+            <EditRepairModal repair={localRepair} updateRepair={setLocalRepair}/>
+          </MaterialModal>
+          <IconButton onClick={save} color={"primary"}>
             <FaFloppyDisk/>
-          </button>
+          </IconButton>
           <SaveIndicator status={saveStatus}/>
           <button className='button-primary'
                   onClick={() => printRepairDoc(generateRepairNewDoc, localRepair)}>
@@ -300,6 +316,7 @@ export default function Repair({repair}) {
                     <td>Dodatkowe koszty</td>
                     <td className='text-end'>
                       <input
+                        disabled={localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Cancelled}
                         className='w-10 border-gray-300 rounded-lg border text-end'
                         value={localRepair.additionalCosts}
                         onChange={(e) => changeCosts(e.target.value)}
@@ -311,6 +328,7 @@ export default function Repair({repair}) {
                     <td className='text-end'>
                       <span>-</span>
                       <input
+                        disabled={localRepair.statusId === REPAIR_STATUS.Collected || localRepair.statusId === REPAIR_STATUS.Cancelled}
                         className='w-10 border-gray-300 rounded-lg border text-end'
                         value={localRepair.discount}
                         onChange={(e) => changeDiscount(e.target.value)}
@@ -417,7 +435,24 @@ export default function Repair({repair}) {
             <div
               className='flex items-center justify-between p-2 border-gray-300 border-b rounded-t-lg bg-secondary'>
               <b className='p-2'>Usługi</b>
-              <ServiceSelect mutation={updateServices}/>
+
+              <MaterialModal label={"Dodaj część"} button={
+                <IconButton
+                  sx={{
+                    bgcolor: 'primary.main',
+                    color: 'white',
+                    borderRadius: '20%',
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                    },
+                  }}
+                  disabled={disabledEditing}
+                >
+                  <FaPlus/>
+                </IconButton>
+              }>
+                <ServiceSelectModal mutation={updateServices}/>
+              </MaterialModal>
             </div>
 
             <table className='shadow-lg w-full text-lg'>
@@ -425,7 +460,10 @@ export default function Repair({repair}) {
               <tr className='*:p-2'>
                 <th>Lp.</th>
                 <th>Nazwa</th>
-                <th>Cena</th>
+                <Tooltip
+                  title={"Cena z obecną ceną są różne, jeśli ktoś zmienił cennik usług. Usuń i dodaj usługę, jeśli chcesz mieć obecną cenę na zgłoszeniu."}>
+                  <th className={"flex items-center justify-center gap-2"}>Cena (Obecna) <FaInfoCircle/></th>
+                </Tooltip>
                 <th></th>
               </tr>
               </thead>
@@ -452,16 +490,23 @@ export default function Repair({repair}) {
               className='flex items-center justify-between p-2 border-gray-300 border-b rounded-t-lg bg-secondary'>
               <b className='p-2'>Części</b>
               <div className='flex flex-row items-center'>
-                <PartSelect mutation={updateParts}/>
                 <MaterialModal label={"Dodaj część"} button={
-                  <button
-                    className='absolute -top-3 right-1 p-2 mx-2 bg-gray-300 hover:bg-gray-400 transition-colors duration-200 rounded-lg'>
+                  <IconButton
+                    sx={{
+                      bgcolor: 'primary.main',
+                      color: 'white',
+                      borderRadius: '20%',
+                      '&:hover': {
+                        bgcolor: 'primary.dark',
+                      },
+                    }}
+                    disabled={disabledEditing}
+                  >
                     <FaPlus/>
-                  </button>
+                  </IconButton>
                 }>
-                  <AddPartModal/>
+                  <PartSelectModal mutation={updateParts}/>
                 </MaterialModal>
-
               </div>
             </div>
             <table className='shadow-lg w-full text-lg'>
@@ -469,7 +514,10 @@ export default function Repair({repair}) {
               <tr className='*:p-2'>
                 <th>Lp.</th>
                 <th>Nazwa</th>
-                <th>Cena</th>
+                <Tooltip
+                  title={"Cena z obecną ceną są różne, jeśli ktoś w międzyczasie edytował część. Usuń i dodaj część, jeśli chcesz mieć obecną cenę na zgłoszeniu."}>
+                  <th className={"flex items-center justify-center gap-2"}>Cena (Obecna) <FaInfoCircle/></th>
+                </Tooltip>
                 <th>Ilość</th>
                 <th>Suma</th>
                 <th></th>
