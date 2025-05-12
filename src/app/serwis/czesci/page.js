@@ -1,6 +1,6 @@
 "use client"
 import AddPartModal from "@/components/modals/repair/AddPartModal";
-import {FaCircleXmark, FaPencil, FaPlus} from "react-icons/fa6";
+import {FaCircleXmark, FaObjectUngroup, FaPencil, FaPlus} from "react-icons/fa6";
 import PrivateRoute from "@/components/routing/PrivateRoute";
 import Navigation from "@/components/navigation/Navigation";
 import SideBar from "@/components/navigation/SideBar";
@@ -11,6 +11,25 @@ import ModifyPartModal from "@/components/modals/repair/ModifyPartModal";
 import URLS from "@/util/urls";
 import {useFilteredPartsQuery, usePartCategoriesQuery, usePartTypesQuery} from "@/hooks/queryHooks";
 import MaterialModal from "@/components/modals/MaterialModal";
+import {
+  Box,
+  Checkbox,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemText,
+  ListSubheader,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Tooltip
+} from "@mui/material";
+import MergePartModal from "@/components/modals/repair/MergePartModal";
 
 
 export default function PartRepairsPage() {
@@ -25,164 +44,254 @@ export default function PartRepairsPage() {
     categoryId: categoryId,
     typeId: typeId
   });
+  const [selectedParts, setSelectedParts] = useState([]);
+
+  const handleSelection = (part) => {
+    if (selectionContains(part)) {
+      setSelectedParts((prev) => prev.filter(p => !(p.partId === part.partId)));
+    } else if (selectedParts.length < 2) {
+      setSelectedParts((prev) => [...prev, part])
+    }
+  }
+
+  const selectionContains = (part) => {
+    return selectedParts.some(selection => selection.partId === part.partId)
+  }
+
 
   //Fetch types based on selected category
   const {data: typeData, isLoading: typeIsLoading, isError: typeIsError} = usePartTypesQuery({id: categoryId});
+
+  const defaultSx = {
+    bgcolor: 'background.paper',
+    position: 'relative',
+    overflow: 'scroll',
+    maxHeight: 800,
+  }
+
 
   return (
     <PrivateRoute>
       <Navigation active={2}/>
       <main className='overflow-y-hidden'>
         <SideBar baseUrl={"/serwis"} links={repairsNavigation}/>
-        <div className='flex flex-col m-auto overflow-y-auto h-full px-12 py-6 items-center space-y-10'>
-          <div className='h-full sm:pb-10 2xl:pb-0 2xl:mr-10'>
-            <h2 className='text-3xl'>Części</h2>
-            <div className="bg-white rounded-lg shadow-xl w-fit p-4 z-50 border border-gray-200 relative">
-              <div className="flex">
-                {/* Category List */}
-                <div
-                  className="w-1/5 pr-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden max-h-[500px] flex flex-col">
-                  <h3 className="font-semibold mb-2 text-gray-700 min-h-7">Kategoria</h3>
-                  <ul className="space-y-1 overflow-y-auto child-1">
-                    {catIsLoading && <li className="text-gray-500 text-center">Ładowanie...</li>}
-                    {!catIsLoading &&
-                      !catIsError &&
-                      [{id: 0, name: "Wszystkie"}, ...catData].map((category) => (
-                        <li
-                          key={category.id}
-                          className={`p-2 rounded-md cursor-pointer transition-all ${
-                            categoryId === category.id
-                              ? "bg-blue-500 text-white"
-                              : "hover:bg-gray-100 text-gray-700"
-                          }`}
-                          onClick={() => {
-                            setCategoryId(category.id);
-                            setTypeId(0)
-                          }}
-                        >
-                          {category.name}
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-
-                {/* Type List */}
-                <div
-                  className="w-2/5 px-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden max-h-[500px] flex flex-col">
-                  <h3 className="font-semibold mb-2 text-gray-700 min-h-7">Typ</h3>
-                  <ul className="space-y-1 overflow-y-auto child-1">
-                    {typeIsLoading && <li className="text-gray-500 text-center">Ładowanie...</li>}
-                    {!typeIsLoading &&
-                      !typeIsError &&
-                      [{id: 0, name: "Wszystkie"}, ...typeData].map((type) => (
-                        <li
-                          key={type.id}
-                          className={`p-2 rounded-md cursor-pointer transition-all ${
-                            typeId === type.id
-                              ? "bg-emerald-400 text-white"
-                              : "hover:bg-gray-100 text-gray-700"
-                          }`}
-                          onClick={() => setTypeId(type.id)}
-                        >
-                          {type.name}
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-
-
-                {/* Part List */}
-                <div
-                  className="min-w-[400px] pl-2 overflow-x-hidden *:overflow-x-hidden flex flex-col">
-                  <h3 className="font-semibold mb-2 text-gray-700 min-h-7">Część</h3>
-                  <input type="text" className="w-full rounded-lg p-1 border-gray-300 border"
-                         placeholder="Część"
-                         onChange={(e) => setText(e.target.value)}
-                  />
-                  <div className="max-h-[430px]">
-                    <table className="overflow-y-auto child-1">
-                      <thead className="sticky top-0 bg-white pb-2">
-                      <tr>
-                        <th>Część</th>
-                        <th>Cena</th>
-                        <th>Jedn.</th>
-                        <th></th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      {partIsLoading && <tr className="text-gray-500 text-center">
-                        <td>
-                          Ładowanie...
-                        </td>
-                      </tr>}
-                      {!partIsLoading &&
-                        !partIsError &&
-                        partData.filter(part => (strFind(part.partName, text)))
-                          .map((part) => (
-                            <tr key={part.partId}>
-                              <td>
-                                {categoryId === 0 &&
-                                  <span className="inline text-[11px] text-gray-400 underline">
+        <Paper className={"w-10/12 m-auto my-8 flex p-4"}>
+          {/* Category List */}
+          <List disablePadding sx={{...defaultSx, width: 250}} subheader={<ListSubheader>Kategorie</ListSubheader>}>
+            {!catIsLoading && !catIsError &&
+              [{id: 0, name: "Wszystkie"}, ...catData].map(category => (
+                <ListItemButton
+                  className={category.id === categoryId ? "sticky" : ""}
+                  sx={{
+                    ...(category.id === categoryId && {
+                      position: 'sticky',
+                      top: 48,
+                      zIndex: 10,
+                    }),
+                    '&.Mui-selected': {
+                      backgroundColor: '#3b82f6',
+                      color: 'white',
+                    },
+                    '&.Mui-selected:hover': {
+                      backgroundColor: '#0056b3',
+                    },
+                  }}
+                  key={category.id}
+                  selected={category.id === categoryId}
+                  onClick={() => {
+                    setCategoryId(category.id);
+                    setTypeId(0)
+                  }}
+                >
+                  <ListItemText>
+                    {category.name}
+                  </ListItemText>
+                </ListItemButton>
+              ))
+            }
+          </List>
+          {/* Type List */}
+          <List disablePadding sx={{...defaultSx, width: 250}} subheader={<ListSubheader>Typy części</ListSubheader>}>
+            {!typeIsLoading && !typeIsError &&
+              [{id: 0, name: "Wszystkie"}, ...typeData].map(type => (
+                <ListItemButton
+                  sx={{
+                    ...(type.id === typeId && {
+                      position: 'sticky',
+                      top: 48,
+                      zIndex: 10,
+                    }),
+                    '&.Mui-selected': {
+                      backgroundColor: '#34d399',
+                      color: 'white',
+                    },
+                    '&.Mui-selected:hover': {
+                      backgroundColor: '#059669',
+                    },
+                  }}
+                  key={type.id}
+                  selected={type.id === typeId}
+                  onClick={() => setTypeId(type.id)}
+                >
+                  <ListItemText>
+                    {type.name}
+                  </ListItemText>
+                </ListItemButton>
+              ))
+            }
+          </List>
+          {/* Part List */}
+          {/*<input type="text" className="w-full rounded-lg p-1 border-gray-300 border"*/}
+          {/*       placeholder="Część"*/}
+          {/*       onChange={(e) => setText(e.target.value)}*/}
+          {/*/>*/}
+          <Box sx={{flex: "3", maxHeight: 800, display: 'flex', flexDirection: 'column'}}>
+            <TextField label={"Wyszukaj część"} sx={{marginX: 0.5}} onChange={(e) => setText(e.target.value)}
+                       value={text}/>
+            <TableContainer sx={{position: 'relative', overflow: 'scroll', flex: '1'}}>
+              <Table stickyHeader>
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell>Część</TableCell>
+                    <TableCell>Cena</TableCell>
+                    <TableCell>Jedn.</TableCell>
+                    <TableCell>
+                      <Box className={"flex items-center justify-center"}>
+                        <MaterialModal label={"Dodaj część"} button={
+                          <Tooltip title="Dodaj część">
+                            <IconButton color="primary">
+                              <FaPlus/>
+                            </IconButton>
+                          </Tooltip>
+                        }>
+                          <AddPartModal/>
+                        </MaterialModal>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {
+                    !partIsLoading && !partIsError &&
+                    partData.filter(part => (strFind(part.partName, text)))
+                      .map((part) => (
+                        <TableRow key={part.partId}>
+                          <TableCell>
+                            <Checkbox
+                              onChange={() => handleSelection(part)}
+                              disabled={selectedParts.length >= 2 && !selectionContains(part)}
+                              checked={selectedParts.includes(part)}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            {categoryId === 0 &&
+                              <span className="inline text-[11px] text-gray-400 underline">
                                   {part.partType.partCategory.partCategoryName}
                                 </span>
-                                }
-                                {
-                                  typeId === 0 && categoryId === 0 &&
-                                  <span className="inline text-[11px] text-gray-400">
+                            }
+                            {
+                              typeId === 0 && categoryId === 0 &&
+                              <span className="inline text-[11px] text-gray-400">
                                   {" - "}
                                 </span>
-                                }
-                                {typeId === 0 &&
-                                  <span className="inline text-[11px] text-gray-400 underline text-ellipsis">
+                            }
+                            {typeId === 0 &&
+                              <span className="inline text-[11px] text-gray-400 underline text-ellipsis">
                                   {part.partType.partTypeName}
                                 </span>
-                                }
-                                <span className="block">
+                            }
+                            <span className="block">
                                 {part.partName}
                               </span>
-                              </td>
-                              <td className="text-center">
-                                {part.price.toFixed(2)}
-                              </td>
-                              <td className="text-center">
-                                {part.unit.unitName}
-                              </td>
-                              <td>
-                                <div className={"flex *:mx-1"}>
-                                  <MaterialModal label={"Edytuj część"} button={
-                                    <button className='button-primary w-10 h-10'>
-                                      <FaPencil/>
-                                    </button>
-                                  }>
-                                    <ModifyPartModal part={part}/>
-                                  </MaterialModal>
-                                  <MaterialModal label={"Usuń część"} button={
-                                    <button className='button-primary w-10 h-10'>
-                                      <FaCircleXmark className="text-red-600"/>
-                                    </button>
-                                  }>
-                                    <DeleteModal id={part.partId} refetchQueryKey={URLS.Parts} url={URLS.Parts}/>
-                                  </MaterialModal>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <MaterialModal label={"Dodaj część"} button={
-                <button
-                  className='absolute top-1 right-1 p-0.5 mx-2 hover:bg-gray-300 transition-colors duration-200 rounded-lg'>
-                  <FaPlus/>
-                </button>
-              }>
-                <AddPartModal/>
-              </MaterialModal>
-            </div>
-          </div>
-        </div>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {part.price.toFixed(2)}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {part.unit.unitName}
+                          </TableCell>
+                          <TableCell>
+                            <Box className={"flex items-center justify-center"}>
+                              <MaterialModal label={"Edytuj część"} button={
+                                <Tooltip title={"Edytuj część"}>
+                                  <IconButton color={"primary"}>
+                                    <FaPencil/>
+                                  </IconButton>
+                                </Tooltip>
+                              }>
+                                <ModifyPartModal part={part}/>
+                              </MaterialModal>
+                              <MaterialModal label={"Usuń część"} button={
+                                <Tooltip title={"Usuń część"}>
+                                  <IconButton>
+                                    <FaCircleXmark className="text-red-600"/>
+                                  </IconButton>
+                                </Tooltip>
+                              }>
+                                <DeleteModal id={part.partId} refetchQueryKey={URLS.Parts} url={URLS.Parts}/>
+                              </MaterialModal>
+                            </Box>
+                          </TableCell>
+                        </TableRow>))
+                  }
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+          <TableContainer sx={{...defaultSx, flex: "2", position: 'relative'}}>
+            <Table stickyHeader>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <MaterialModal label={"Połącz części"}
+                                   button={
+                                     <Tooltip title="Połącz części">
+                                       <IconButton color={"primary"} disabled={selectedParts.length < 2}>
+                                         <FaObjectUngroup/>
+                                       </IconButton>
+                                     </Tooltip>
+                                   }>
+                      <MergePartModal part1={selectedParts[0]} part2={selectedParts[1]}/>
+                    </MaterialModal>
+                  </TableCell>
+                  <TableCell>Część</TableCell>
+                  <TableCell>Cena</TableCell>
+                  <TableCell>Jedn.</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {
+                  !partIsLoading && !partIsError &&
+                  selectedParts.map((part) => (
+                    <TableRow key={part.partId}>
+                      <TableCell>
+                        <Checkbox
+                          onChange={() => handleSelection(part)}
+                          disabled={selectedParts.length >= 2 && !selectionContains(part)}
+                          checked={selectedParts.includes(part)}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <span className="inline text-[11px] text-gray-400 text-ellipsis">
+                          {part.partType.partCategory.partCategoryName}{" - "}{part.partType.partTypeName}
+                        </span>
+                        <span className="block">
+                          {part.partName}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {part.price.toFixed(2)}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {part.unit.unitName}
+                      </TableCell>
+                    </TableRow>))
+                }
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
       </main>
     </PrivateRoute>
   );
