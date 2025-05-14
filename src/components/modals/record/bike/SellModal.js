@@ -16,6 +16,8 @@ export default function SellModal({bikeId, basePrice, placeId, closeModal}) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
+      console.log(`${URLS.Bikes2}sell/${bikeId}?price=${price}&internet=${internetSale}`)
+      console.log(price)
       const response = await axiosPrivate.put(
         `${URLS.Bikes2}sell/${bikeId}?price=${price}&internet=${internetSale}`
       );
