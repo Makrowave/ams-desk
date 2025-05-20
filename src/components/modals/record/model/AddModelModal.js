@@ -7,9 +7,9 @@ import {REGEX} from "@/util/regex";
 import URLS, {URLKEYS} from "@/util/urls";
 import FetchSelect from "@/components/filtering/FetchSelect";
 import ValidatedTextField from "@/components/input/ValidatedTextField";
-import {Button, Checkbox, FormControlLabel} from "@mui/material";
+import {Box, Button, Checkbox, FormControlLabel} from "@mui/material";
 
-export default function AddModelModal(closeModal) {
+export default function AddModelModal({closeModal}) {
   const [model, setModel] = useState({
     modelName: "",
     productCode: "",
@@ -89,92 +89,98 @@ export default function AddModelModal(closeModal) {
   return (
     <>
       <ErrorDisplay message={error} isVisible={error !== ""}/>
-      <ValidatedTextField
-        label="Nazwa"
-        value={model.modelName}
-        onChange={(v) => updateField("modelName", v)}
-        regex={REGEX.MODEL_NAME}
-      />
-      <ValidatedTextField
-        label="Kod produktu"
-        value={model.productCode}
-        onChange={(v) => updateField("productCode", v)}
-        regex={REGEX.PRODUCT_NAME}
-      />
-      <ValidatedTextField
-        label="Kod EAN"
-        value={model.eanCode}
-        onChange={(v) => updateField("eanCode", v)}
-        regex={REGEX.EAN}
-      />
-      <ValidatedTextField
-        label="Rozmiar ramy"
-        other={{type: "number"}}
-        value={model.frameSize}
-        onChange={(v) => updateField("frameSize", v)}
-        regex={REGEX.FRAME}
-      />
-      <FetchSelect
-        value={model.wheelSize}
-        onChange={(v) => updateField("wheelSize", v)}
-        urlKey={URLKEYS.WheelSizes}
-        label="Rozmiar koła"
-        defaultValue=""
-        validated
-      />
-      <ValidatedTextField
-        label="Cena"
-        other={{type: "number"}}
-        value={model.price}
-        onChange={(v) => updateField("price", v)}
-        regex={REGEX.PRICE}
-      />
-      <FetchSelect
-        value={model.manufacturerId}
-        onChange={(v) => updateField("manufacturerId", v)}
-        urlKey={URLKEYS.Manufacturers}
-        label="Producent"
-        defaultValue=""
-        validated
-      />
-      <FetchSelect
-        value={model.categoryId}
-        onChange={(v) => updateField("categoryId", v)}
-        urlKey={URLKEYS.Categories}
-        label="Kategoria"
-        defaultValue=""
-        validated
-      />
-      <FetchSelect
-        value={model.colorId}
-        onChange={(v) => updateField("colorId", v)}
-        urlKey={URLKEYS.Colors}
-        defaultValue=""
-        label="Kolor"
-        validated
-      />
-      <ColorInput
-        title="Kolor główny"
-        value={model.primaryColor}
-        setValue={(v) => updateField("primaryColor", v)}
-      />
-      <ColorInput
-        title="Kolor dodatkowy"
-        value={model.secondaryColor}
-        setValue={(v) => updateField("secondaryColor", v)}
-      />
-      <FormControlLabel
-        control={<Checkbox/>}
-        checked={model.isWoman}
-        onChange={() => updateField("isWoman", !model.isWoman)}
-        label="Damski"
-      />
-      <FormControlLabel
-        control={<Checkbox/>}
-        checked={model.isElectric}
-        onChange={() => updateField("isElectric", !model.isElectric)}
-        label="Elektryczny"
-      />
+      <Box sx={{display: "flex"}}>
+        <Box sx={{display: "flex", width: 300, flexDirection: "column", gap: 2, mr: 2}}>
+          <ValidatedTextField
+            label="Nazwa"
+            value={model.modelName}
+            onChange={(v) => updateField("modelName", v)}
+            regex={REGEX.MODEL_NAME}
+          />
+          <ValidatedTextField
+            label="Kod produktu"
+            value={model.productCode}
+            onChange={(v) => updateField("productCode", v)}
+            regex={REGEX.PRODUCT_NAME}
+          />
+          <ValidatedTextField
+            label="Kod EAN"
+            value={model.eanCode}
+            onChange={(v) => updateField("eanCode", v)}
+            regex={REGEX.EAN}
+          />
+          <ValidatedTextField
+            label="Rozmiar ramy"
+            other={{type: "number"}}
+            value={model.frameSize}
+            onChange={(v) => updateField("frameSize", v)}
+            regex={REGEX.FRAME}
+          />
+          <FetchSelect
+            value={model.wheelSize}
+            onChange={(v) => updateField("wheelSize", v)}
+            urlKey={URLKEYS.WheelSizes}
+            label="Rozmiar koła"
+            defaultValue=""
+            validated
+          />
+          <ValidatedTextField
+            label="Cena"
+            other={{type: "number"}}
+            value={model.price}
+            onChange={(v) => updateField("price", v)}
+            regex={REGEX.PRICE}
+          />
+        </Box>
+        <Box sx={{display: "flex", width: 300, flexDirection: "column", gap: 2, pl: 2, borderLeft: "1px solid gray"}}>
+          <FetchSelect
+            value={model.manufacturerId}
+            onChange={(v) => updateField("manufacturerId", v)}
+            urlKey={URLKEYS.Manufacturers}
+            label="Producent"
+            defaultValue=""
+            validated
+          />
+          <FetchSelect
+            value={model.categoryId}
+            onChange={(v) => updateField("categoryId", v)}
+            urlKey={URLKEYS.Categories}
+            label="Kategoria"
+            defaultValue=""
+            validated
+          />
+          <FetchSelect
+            value={model.colorId}
+            onChange={(v) => updateField("colorId", v)}
+            urlKey={URLKEYS.Colors}
+            defaultValue=""
+            label="Kolor"
+            validated
+          />
+          <ColorInput
+            title="Kolor główny"
+            value={model.primaryColor}
+            setValue={(v) => updateField("primaryColor", v)}
+          />
+          <ColorInput
+            title="Kolor dodatkowy"
+            value={model.secondaryColor}
+            setValue={(v) => updateField("secondaryColor", v)}
+          />
+          <FormControlLabel
+            control={<Checkbox/>}
+            checked={model.isWoman}
+            onChange={() => updateField("isWoman", !model.isWoman)}
+            label="Damski"
+          />
+          <FormControlLabel
+            control={<Checkbox/>}
+            checked={model.isElectric}
+            onChange={() => updateField("isElectric", !model.isElectric)}
+            label="Elektryczny"
+          />
+        </Box>
+      </Box>
       <Button
         variant="contained"
         className="mb-2"
