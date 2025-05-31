@@ -60,8 +60,8 @@ export default function UserModal({user, action, closeModal}) {
   return (
     <>
       <ErrorDisplay message={error} isVisible={!!error}/>
-      <TextField label='Login' value={username} onChange={setUsername}/>
-      <TextField label='Hasło' value={password} onChange={setPassword}/>
+      <TextField label='Login' value={username} onChange={(e) => setUsername(e.target.value)}/>
+      <TextField label='Hasło' value={password} onChange={(e) => setPassword(e.target.value)}/>
       <FetchSelect
         value={employeeId}
         onChange={setEmployeeId}
