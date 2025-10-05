@@ -1,7 +1,13 @@
 "use client";
 import Navigation from "@/components/navigation/Navigation";
 import SideBar from "@/components/navigation/SideBar";
-import { FaChartSimple, FaClock, FaHouse, FaMoneyBill } from "react-icons/fa6";
+import {
+  FaChartSimple,
+  FaClock,
+  FaHouse,
+  FaMoneyBill,
+  FaScrewdriverWrench,
+} from "react-icons/fa6";
 import PrivateRoute from "@/components/routing/PrivateRoute";
 
 export default function AdminLayout({ children }) {
