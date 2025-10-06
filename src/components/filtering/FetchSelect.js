@@ -10,7 +10,8 @@ export default function FetchSelect({
                                       onChange,
                                       label,
                                       defaultValue,
-                                      validated
+                                      validated,
+                                      disabled,
                                     }) {
   const hook = createQueryHook(urlKey);
   const {data, isPending, isError, error, refetch} = hook(params)
@@ -32,6 +33,7 @@ export default function FetchSelect({
   }
   return (
     <DataSelect
+      disabled={disabled}
       defaultValue={defaultValue}
       value={value}
       onChange={onChange}

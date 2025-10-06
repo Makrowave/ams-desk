@@ -9,6 +9,7 @@ const navigation = [
   {name: "Serwis", href: "/serwis", links: ["serwis"]},
   {name: "Zarządzanie", href: "/adminlogin", links: ["adminlogin", "admin"]},
   {name: "Statystyki", href: "/statystyki", links: ["statystyki"]},
+  {name: 'Dostawy', href: "/dostawy", links: ["dostawy"]},
 ];
 
 export default function Navigation() {

@@ -1,7 +1,7 @@
 import {Box, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
 
-export function DataSelect({defaultValue, value, onChange, options, label, validated}) {
+export function DataSelect({defaultValue, value, onChange, options, label, validated, disabled}) {
   const data = formatData(options ?? []);
   const isColored = data[0] !== undefined ? Object.keys(data[0]).includes("hexCode") : false
 
@@ -14,6 +14,7 @@ export function DataSelect({defaultValue, value, onChange, options, label, valid
     <FormControl fullWidth>
       <InputLabel id={label}>{label}</InputLabel>
       <Select
+        disabled={disabled}
         error={validated && value === defaultValue}
         value={value}
         onChange={handleChange}
