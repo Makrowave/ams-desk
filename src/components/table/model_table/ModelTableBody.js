@@ -1,6 +1,6 @@
 "use client";
 import ModelRecord from "./row/ModelRecord";
-import {useModelsQuery, usePlacesQuery} from "@/hooks/queryHooks";
+import { useModelsQuery, usePlacesQuery } from "@/hooks/queryHooks";
 
 /**
  * ModelTable's body. Queries the backend to get models and maps them to bike records.
@@ -12,16 +12,16 @@ import {useModelsQuery, usePlacesQuery} from "@/hooks/queryHooks";
  * @param {criterion: {name: string, boolean: isAscending, key: number}} props.sortCriterion
  * @returns
  */
-export default function ModelTableBody({filters, singlePlace, placeId, sortCriterion}) {
-  const {data, isPending, isError, error} = useModelsQuery(filters, {refetchInterval: 10000,})
-  const {data: placesData, isLoading: placesIsLoading, isError: placesIsError} = usePlacesQuery();
+export default function ModelTableBody({ filters, singlePlace, placeId, sortCriterion }) {
+  const { data, isPending, isError, error } = useModelsQuery(filters, { refetchInterval: 10000 });
+  const { data: placesData, isLoading: placesIsLoading, isError: placesIsError } = usePlacesQuery();
   const placeCount = !placesIsLoading && !placesIsError ? placesData.length : 0;
   if (isPending) {
     return (
       <tbody>
-      <tr>
-        <td colSpan={5 + (singlePlace ? 0 : placeCount)}>Ładowanie...</td>
-      </tr>
+        <tr>
+          <td colSpan={5 + (singlePlace ? 0 : placeCount)}>Ładowanie...</td>
+        </tr>
       </tbody>
     );
   }
@@ -29,11 +29,11 @@ export default function ModelTableBody({filters, singlePlace, placeId, sortCrite
   if (isError) {
     return (
       <tbody>
-      <tr>
-        <td className='bg-error-light text-error-dark' colSpan={5 + (singlePlace ? 0 : placeCount)}>
-          {error.message}
-        </td>
-      </tr>
+        <tr>
+          <td className='bg-error-light text-error-dark' colSpan={5 + (singlePlace ? 0 : placeCount)}>
+            {error.message}
+          </td>
+        </tr>
       </tbody>
     );
   }
@@ -87,21 +87,21 @@ export default function ModelTableBody({filters, singlePlace, placeId, sortCrite
   }
 
   return (
-    <tbody className="relative">
-    {data.sort(sortPredicate(sortCriterion)).map((record) => (
-      <ModelRecord key={record.modelId} model={record} placeCount={singlePlace ? 0 : 6} placeId={placeId}/>
-    ))}
-    <tr className="sticky bottom-0 bg-slate-200 h-10">
-      <td colSpan={4}>Suma</td>
-      <td>{data.reduce((acc, model) => (acc + model.bikeCount), 0)}</td>
-      {singlePlace ?
-        <></> :
-        new Array(6).fill(0).map((_, i) => (
-          <td key={i}>
-            {data.reduce((acc, model) => (acc + model.placeBikeCount[i].count), 0)}
-          </td>
-        ))}
-    </tr>
+    <tbody className='relative'>
+      {data.sort(sortPredicate(sortCriterion)).map((record) => (
+        <ModelRecord key={record.modelId} model={record} placeCount={singlePlace ? 0 : 6} placeId={placeId} />
+      ))}
+      <tr className='sticky bottom-0 bg-slate-200 h-10'>
+        <td colSpan={4}>Suma</td>
+        <td>{data.reduce((acc, model) => acc + model.bikeCount, 0)}</td>
+        {singlePlace ? (
+          <></>
+        ) : (
+          new Array(2)
+            .fill(0)
+            .map((_, i) => <td key={i}>{data.reduce((acc, model) => acc + model.placeBikeCount[i].count, 0)}</td>)
+        )}
+      </tr>
     </tbody>
   );
 }

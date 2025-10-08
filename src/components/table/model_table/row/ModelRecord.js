@@ -1,6 +1,6 @@
 "use client";
-import {ModelSubRecord} from "./ModelSubRecord";
-import {useState} from "react";
+import { ModelSubRecord } from "./ModelSubRecord";
+import { useState } from "react";
 import ExternalLink from "../../../navigation/ExternalLink";
 import "../../table.css";
 import ColorPreview from "@/components/table/ColorPreview";
@@ -13,7 +13,7 @@ import ColorPreview from "@/components/table/ColorPreview";
  * @param {number} props.placeId -  Current place's id. Used to fetch bikes.
  *  If place = 0 then bikes from all places are fetched.
  */
-export default function ModelRecord({model, placeCount, placeId}) {
+export default function ModelRecord({ model, placeCount, placeId }) {
   const [clicked, setClicked] = useState(false);
   //Initialize places - placeId is always index+1
 
@@ -39,7 +39,7 @@ export default function ModelRecord({model, placeCount, placeId}) {
         }}
       >
         <td className='text-left pl-8 flex min-h-10 place-center items-center align-center'>
-          <ColorPreview primaryColor={model.primaryColor} secondaryColor={model.secondaryColor}/>
+          <ColorPreview primaryColor={model.primaryColor} secondaryColor={model.secondaryColor} />
           <div className='self-center'>
             <ExternalLink disabled={model.link === null} href={model.link}>
               {model.modelName}
@@ -50,20 +50,25 @@ export default function ModelRecord({model, placeCount, placeId}) {
         <td>{model.wheelSize}</td>
         <td>{model.price}</td>
         <td className={colorCount(model.bikeCount)}>{model.bikeCount}</td>
-        {placeId === 0 ? model.placeBikeCount.map((place) => <td key={place.placeId}>
-          <div className='flex justify-center items-center'>{place.name}
-            <div
-              className={place.isAvailable ? "text-green-500 w-fit h-fit relative" : "w-fit h-fit relative"}>
-              {place.count}
-              {place.isAvailable &&
-                <div className="w-1.5 h-1.5 rounded-[50%] bg-green-500 absolute top-0.5 -right-1.5"/>}
-            </div>
-
-          </div>
-        </td>) : <></>}
+        {placeId === 0 ? (
+          model.placeBikeCount.map((place) => (
+            <td key={place.placeId}>
+              <div className='flex justify-center items-center'>
+                {place.name}
+                <div className={place.isAvailable ? "text-green-500 w-fit h-fit relative" : "w-fit h-fit relative"}>
+                  {place.count}
+                  {place.isAvailable && (
+                    <div className='w-1.5 h-1.5 rounded-[50%] bg-green-500 absolute top-0.5 -right-1.5' />
+                  )}
+                </div>
+              </div>
+            </td>
+          ))
+        ) : (
+          <></>
+        )}
       </tr>
-      {clicked && <ModelSubRecord placeCount={placeCount} model={model} placeId={placeId}/>}
+      {clicked && <ModelSubRecord placeCount={placeCount} model={model} placeId={placeId} />}
     </>
   );
 }
-
