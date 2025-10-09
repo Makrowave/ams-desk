@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-    --foreground-rgb: 0, 0, 0;
-    --background-start-rgb: 214, 219, 220;
-    --background-end-rgb: 255, 255, 255;
-    height: 100%;
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  height: 100%;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -18,46 +18,32 @@
 } */
 
 body {
-    @apply bg-gray-200;
-    font-size: x-large;
+  @apply bg-gray-200;
+  font-size: x-large;
 }
 
 @layer utilities {
-    .text-balance {
-        text-wrap: balance;
-    }
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
 .transparent-bg {
-    background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .button-secondary {
-    @apply bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary text-nowrap;
+  @apply bg-secondary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary text-nowrap;
 }
 
 .button-primary {
-    @apply bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary;
-}
-
-/* .main-div {
-  @apply h-screen flex flex-col overflow-hidden max-w-1920 m-auto;
-} */
-
-.main-div {
-    @apply flex flex-col max-w-1920 m-auto h-full;
-}
-
-main {
-    @apply overflow-y-auto;
-    /*height: 100%;*/
-    height: calc(100vh - 48px);
+  @apply bg-primary rounded-lg px-2 border-border border-2 shadow-lg border-b-4 hover:bg-tertiary;
 }
 
 tr:last-child td:first-child {
-    @apply rounded-bl-lg;
+  @apply rounded-bl-lg;
 }
 
 tr:last-child td:last-child {
-    @apply rounded-br-lg;
+  @apply rounded-br-lg;
 }

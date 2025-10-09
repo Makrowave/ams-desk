@@ -1,15 +1,26 @@
-import {useState} from "react";
-import Filters, {defaultFilters} from "./Filters";
-import ModelTable from "./ModelTable";
+import { useState } from 'react';
+import Filters, { defaultFilters } from './Filters';
+import { Paper, Stack } from '@mui/material';
+import NewModelTable from './NewModelTable';
+import { appBarHeight } from '@/styles/layout';
 
 export default function FilterModelTable() {
   const [query, setQuery] = useState(defaultFilters);
   return (
-    <div className='main-div'>
-      <div className='flex-1 grid grid-cols-6 py-5 rounded-b-xl overflow-hidden flex-col'>
-        <Filters setQuery={setQuery}/>
-        <ModelTable filters={query}/>
-      </div>
-    </div>
+    <Stack sx={{ height: `calc(100vh - ${appBarHeight}px)` }} direction={'row'}>
+      <Filters setQuery={setQuery} />
+      <Paper
+        sx={{
+          m: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          // width: "full",
+          overflowX: 'auto',
+          flex: 5,
+        }}
+      >
+        <NewModelTable filters={query} />
+      </Paper>
+    </Stack>
   );
 }
