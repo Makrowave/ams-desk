@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Filters, { defaultFilters } from './Filters';
 import { Paper, Stack } from '@mui/material';
-import NewModelTable from './NewModelTable';
+import ModelTable from './ModelTable';
 import { appBarHeight } from '@/styles/layout';
 
 export default function FilterModelTable() {
@@ -20,7 +20,7 @@ export default function FilterModelTable() {
           flex: 5,
         }}
       >
-        <NewModelTable filters={query} />
+        <ModelTable filters={query} />
       </Paper>
     </Stack>
   );
