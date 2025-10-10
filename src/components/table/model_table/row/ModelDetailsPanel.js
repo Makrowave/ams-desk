@@ -2,10 +2,29 @@ import React from 'react';
 import { BikeTable } from './BikeTable';
 import { useColorsQuery } from '@/hooks/queryHooks';
 import { FaBan } from 'react-icons/fa6';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 
 export function ModelDetailsPanel({ model, placeId }) {
-  const color = useColorsQuery({ id: model.colorId.toString() });
+  const { data, isLoading } = useColorsQuery({ id: model.colorId.toString() });
+
+  const Color = () => {
+    if (isLoading) {
+      return <CircularProgress />;
+    }
+    if (data) {
+      return (
+        <Box
+          sx={{
+            background: data.hexCode,
+            borderRadius: 1.5,
+            flex: 1,
+          }}
+        />
+      );
+    } else {
+      return <FaBan className="h-6 w-6" />;
+    }
+  };
 
   return (
     <Stack>
@@ -18,20 +37,17 @@ export function ModelDetailsPanel({ model, placeId }) {
           py: 1,
         }}
       >
-        {color.data === undefined ? (
-          <FaBan className="h-6 w-6" />
-        ) : (
-          <Box
-            sx={{
-              background: color.data.hexCode,
-              height: 30,
-              width: 30,
-              minHeight: 6,
-              minWidth: 6,
-              borderRadius: 1.5,
-            }}
-          />
-        )}
+        <Box
+          sx={{
+            height: 30,
+            width: 30,
+            minHeight: 30,
+            minWidth: 30,
+            display: 'flex',
+          }}
+        >
+          <Color />
+        </Box>
         <Stack>
           <Typography variant="body2" color="text.secondary">
             EAN
