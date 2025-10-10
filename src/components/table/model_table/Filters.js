@@ -29,7 +29,17 @@ export default function Filters({ setQuery }) {
   });
 
   return (
-    <Paper sx={{ pb: 4, px: 4, m: 2, mr: 0, flex: 1, minWidth: '350px' }}>
+    <Paper
+      sx={{
+        pb: 4,
+        px: 4,
+        m: 2,
+        mr: 0,
+        flex: 1,
+        minWidth: '350px',
+        overflowY: 'auto',
+      }}
+    >
       <Box
         sx={{
           position: 'sticky',

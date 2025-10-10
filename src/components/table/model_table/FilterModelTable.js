@@ -16,6 +16,7 @@ export default function FilterModelTable() {
           flexDirection: 'column',
           // width: "full",
           overflowX: 'auto',
+          overflowY: 'auto',
           flex: 5,
         }}
       >
