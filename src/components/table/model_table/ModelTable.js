@@ -26,6 +26,7 @@ import useAuth from '@/hooks/useAuth';
 import DeleteModal from '@/components/modals/DeleteModal';
 import URLS from '@/util/urls';
 import { ModelDetailsPanel } from './row/ModelDetailsPanel';
+import { flexTableStyle } from '@/styles/styles';
 
 const ModelTable = ({ filters }) => {
   const { isAdmin } = useAuth();
@@ -131,17 +132,16 @@ const ModelTable = ({ filters }) => {
     muiTableProps: {
       sx: {
         overflowX: 'auto',
-        // minHeight: "full",
       },
     },
     muiDetailPanelProps: {
       sx: {
         p: 0,
-        // No virtualization
         display: 'table-row',
         flex: 1,
       },
     },
+    ...flexTableStyle,
     enableRowActions: true,
     renderRowActionMenuItems: ({ row, table }) =>
       [

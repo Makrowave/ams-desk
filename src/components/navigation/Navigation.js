@@ -1,9 +1,9 @@
 'use client';
 import { appBarHeight } from '@/styles/layout';
-import NavButton from './NavButton';
 import UserDropdown from './UserDropdown';
 import { usePathname } from 'next/navigation';
-import { Box } from '@mui/material';
+import { AppBar, Tab, Tabs, Toolbar } from '@mui/material';
+import Link from 'next/link';
 
 const navigation = [
   { name: 'Strona Główna', href: '/', links: [''] },
@@ -15,23 +15,33 @@ const navigation = [
 
 export default function Navigation() {
   const path = usePathname().split('/')[1];
-  const navItems = navigation.map((item) => (
-    <NavButton
-      key={item.name}
-      title={item.name}
-      href={item.href}
-      current={item.links.includes(path)}
-    />
-  ));
+  const activeTab = navigation.findIndex((item) => item.links.includes(path));
 
   return (
-    <Box sx={{ zIndex: 40, position: 'relative', height: `${appBarHeight}px` }}>
-      <div className="m-auto flex items-center bg-white h-full flex-1 shadow-md">
-        <div className="flex items-center flex-1 h-full">{navItems}</div>
+    <AppBar position="static" sx={{ height: `${appBarHeight}px` }}>
+      <Toolbar>
+        <Tabs value={activeTab} textColor="inherit" indicatorColor="secondary">
+          {navigation.map((tab) => (
+            <Tab
+              key={tab.name}
+              label={tab.name}
+              href={tab.href}
+              LinkComponent={Link}
+              sx={{
+                height: `${appBarHeight}px`,
+                color: 'inherit',
+                '&.Mui-selected': {
+                  color: 'inherit',
+                },
+              }}
+            />
+          ))}
+        </Tabs>
+
         <div className="ml-auto h-full">
           <UserDropdown />
         </div>
-      </div>
-    </Box>
+      </Toolbar>
+    </AppBar>
   );
 }

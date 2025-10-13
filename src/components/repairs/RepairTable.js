@@ -14,6 +14,7 @@ import { Box, IconButton } from '@mui/material';
 import Link from 'next/link';
 import { formatPhone } from '@/util/formatting';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
+import { paperTableStyle } from '@/styles/styles';
 
 export default function RepairTable({ src, addButton, localKey }) {
   const axiosPrivate = useAxiosPrivate();
@@ -107,6 +108,7 @@ export default function RepairTable({ src, addButton, localKey }) {
   );
 
   const table = useMaterialReactTable({
+    ...paperTableStyle,
     columns: columns,
     data: data ?? [],
     initialState: {
