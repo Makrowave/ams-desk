@@ -46,7 +46,7 @@ export default function SideBar({ baseUrl, links }) {
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <Box
           sx={{
-            color: 'secondary.main',
+            color: 'text.primary',
             display: 'flex',
             alignItems: 'center',
             justifyContent: isExpanded ? 'space-between' : 'center',

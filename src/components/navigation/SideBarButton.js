@@ -15,7 +15,7 @@ export function SideBarButton({ href, title, current, icon, isExpanded }) {
       href={href}
       selected={current}
       sx={{
-        color: 'secondary.main',
+        color: 'text.primary',
         minHeight: 48,
         justifyContent: isExpanded ? 'initial' : 'center',
         px: 2.5,
