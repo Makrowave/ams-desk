@@ -1,54 +1,66 @@
-import ColorPreview from "@/components/table/ColorPreview";
-import { usePlacesQuery, useSoldBikesQuery } from "@/hooks/queryHooks";
-import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
-import { MRT_Localization_PL } from "material-react-table/locales/pl";
-import { useMemo } from "react";
+import ColorPreview from '@/components/table/ColorPreview';
+import { usePlacesQuery, useSoldBikesQuery } from '@/hooks/queryHooks';
+import { paperTableStyle } from '@/styles/styles';
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+} from 'material-react-table';
+import { MRT_Localization_PL } from 'material-react-table/locales/pl';
+import { useMemo } from 'react';
 
 export default function SaleHistoryTable({ since, until }) {
-  const { data, isError, isLoading } = useSoldBikesQuery({ since: since ?? "", until: until ?? "" });
+  const { data, isError, isLoading } = useSoldBikesQuery({
+    since: since ?? '',
+    until: until ?? '',
+  });
 
   //TODO
-  const { data: placeData, isError: placeIsError, isLoading: placeIsLoading } = usePlacesQuery();
+  const {
+    data: placeData,
+    isError: placeIsError,
+    isLoading: placeIsLoading,
+  } = usePlacesQuery();
 
   const columns = useMemo(
     () => [
       {
-        accessorKey: "model",
-        header: "Model",
+        accessorKey: 'model',
+        header: 'Model',
       },
       {
-        accessorKey: "place",
-        header: "Miejsce",
+        accessorKey: 'place',
+        header: 'Miejsce',
       },
       {
-        accessorKey: "manufacturer",
-        header: "Producent",
+        accessorKey: 'manufacturer',
+        header: 'Producent',
       },
       {
-        accessorKey: "price",
-        header: "Cena",
+        accessorKey: 'price',
+        header: 'Cena',
       },
       {
-        accessorKey: "salePrice",
-        header: "Cena sprzedaży",
+        accessorKey: 'salePrice',
+        header: 'Cena sprzedaży',
       },
       {
-        accessorKey: "discount",
-        header: "Zniżka",
+        accessorKey: 'discount',
+        header: 'Zniżka',
       },
       {
-        accessorKey: "discountPercent",
-        header: "Zniżka %",
+        accessorKey: 'discountPercent',
+        header: 'Zniżka %',
       },
       {
-        accessorKey: "saleDate",
-        header: "Data",
+        accessorKey: 'saleDate',
+        header: 'Data',
       },
     ],
-    []
+    [],
   );
 
   const table = useMaterialReactTable({
+    ...paperTableStyle,
     columns,
     data: data ?? [],
     state: {

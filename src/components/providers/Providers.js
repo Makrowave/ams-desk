@@ -6,19 +6,23 @@ import { AuthProvider } from './AuthProvider';
 import { SavedDataProvider } from './SavedDataProvider';
 import { ThemeProvider } from '@mui/material';
 import { theme } from '@/styles/theme';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 export default function ProviderWrapper({ children }) {
   const queryClient = new QueryClient();
 
   return (
-    <AuthProvider>
-      <SavedDataProvider>
-        <ThemeProvider theme={theme}>
-          <QueryClientProvider client={queryClient}>
-            {children}
-          </QueryClientProvider>
-        </ThemeProvider>
-      </SavedDataProvider>
-    </AuthProvider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <AuthProvider>
+        <SavedDataProvider>
+          <ThemeProvider theme={theme}>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </ThemeProvider>
+        </SavedDataProvider>
+      </AuthProvider>
+    </LocalizationProvider>
   );
 }

@@ -1,88 +1,195 @@
-export default function TimeSelector({interval, setInterval, since, setSince, until, setUntil}) {
+import { Box, Button, MenuItem, Paper, Select } from '@mui/material';
+import { DateCalendar, DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import { useState } from 'react';
+
+export default function TimeSelector({
+  interval,
+  setInterval,
+  since,
+  setSince,
+  until,
+  setUntil,
+}) {
+  const [selectedInterval, setSelectedInterval] = useState(3);
   const setLatestInterval = (days) => {
-    setSince(new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split('T')[0])
-    setUntil(new Date().toISOString().split('T')[0])
-  }
+    setSince(
+      new Date(Date.now() - days * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split('T')[0],
+    );
+    setUntil(new Date().toISOString().split('T')[0]);
+  };
 
   return (
-    <div className="bg-primary mb-4 p-2 flex sticky top-0 z-10 rounded-b-lg items-center gap-2 shadow-md">
-      <select value={interval} onChange={(e) => setInterval(e.target.value)}>
-        <option value={"day"}>Dzień</option>
-        <option value={"month"}>Miesiąc</option>
-        <option value={"year"}>Rok</option>
-      </select>
-      <div className="p-1 border-gray-200 border rounded-md">
-        <span className="pr-1">Od</span>
-        <input type={"date"} value={since} onChange={(e) => setSince(e.target.value)}/>
-      </div>
-      <div className="p-1 border-gray-200 border rounded-md">
-        <span className="pr-1">Od</span>
-        <input type={"date"} value={until} onChange={(e) => setUntil(e.target.value)}/>
-      </div>
-      <div className={"flex flex-wrap gap-2"}>
-        <button className="button-primary" onClick={() => {
-          setLatestInterval(0)
-        }}>
-          Dziś
-        </button>
-        <button className="button-primary" onClick={() => {
-          setLatestInterval(7)
-        }}>
-          Tydzień
-        </button>
-        <button className="button-primary" onClick={() => {
-          setLatestInterval(30)
-        }}>
-          30 dni
-        </button>
-        <button className="button-primary" onClick={() => {
-          setLatestInterval(60)
-        }}>
-          60 dni
-        </button>
-        <button className="button-primary" onClick={() => {
-          setLatestInterval(90)
-        }}>
-          90 dni
-        </button>
-        <button className="button-primary" onClick={() => {
-          setLatestInterval(365)
-        }}>
-          Rok
-        </button>
-        <button className="button-primary" onClick={() => {
-          setSince("")
-          setUntil("")
-        }}>
-          Zawsze
-        </button>
-        <button
+    <Paper
+      sx={{
+        mb: 4,
+        p: 2,
+        display: 'flex',
+        position: 'sticky',
+        top: 0,
+        zIndex: 10,
+        alignItems: 'center',
+        gap: 2,
+      }}
+      elevation={4}
+    >
+      <Select value={interval} onChange={(e) => setInterval(e.target.value)}>
+        <MenuItem value={'day'}>Dzień</MenuItem>
+        <MenuItem value={'month'}>Miesiąc</MenuItem>
+        <MenuItem value={'year'}>Rok</MenuItem>
+      </Select>
+      <DatePicker
+        value={since ? dayjs(since) : null}
+        onChange={(v) => {
+          setSince(v);
+          setSelectedInterval(0);
+        }}
+        label="Od"
+        slotProps={{
+          textField: {
+            error: false,
+          },
+        }}
+      />
+      <DatePicker
+        value={until ? dayjs(until) : null}
+        onChange={(v) => {
+          setUntil(v);
+          setSelectedInterval(0);
+        }}
+        label="Do"
+        slotProps={{
+          textField: {
+            error: false,
+          },
+        }}
+      />
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, height: '56px' }}>
+        <Button
+          color="secondary"
+          variant={selectedInterval === 1 ? 'contained' : 'outlined'}
           className="button-primary"
           onClick={() => {
-
-            const firstCurrent = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toLocaleDateString('sv-SE');
-            const lastCurrent = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).toLocaleDateString('sv-SE');
-            console.log(firstCurrent)
-            console.log(lastCurrent)
+            setSelectedInterval(1);
+            setLatestInterval(0);
+          }}
+        >
+          Dziś
+        </Button>
+        <Button
+          color="secondary"
+          variant={selectedInterval === 2 ? 'contained' : 'outlined'}
+          className="button-primary"
+          onClick={() => {
+            setSelectedInterval(2);
+            setLatestInterval(7);
+          }}
+        >
+          Tydzień
+        </Button>
+        <Button
+          color="secondary"
+          variant={selectedInterval === 3 ? 'contained' : 'outlined'}
+          className="button-primary"
+          onClick={() => {
+            setSelectedInterval(3);
+            setLatestInterval(30);
+          }}
+        >
+          30 dni
+        </Button>
+        <Button
+          color="secondary"
+          variant={selectedInterval === 4 ? 'contained' : 'outlined'}
+          className="button-primary"
+          onClick={() => {
+            setSelectedInterval(4);
+            setLatestInterval(60);
+          }}
+        >
+          60 dni
+        </Button>
+        <Button
+          color="secondary"
+          variant={selectedInterval === 5 ? 'contained' : 'outlined'}
+          className="button-primary"
+          onClick={() => {
+            setSelectedInterval(5);
+            setLatestInterval(90);
+          }}
+        >
+          90 dni
+        </Button>
+        <Button
+          color="secondary"
+          variant={selectedInterval === 6 ? 'contained' : 'outlined'}
+          className="button-primary"
+          onClick={() => {
+            setSelectedInterval(6);
+            setLatestInterval(365);
+          }}
+        >
+          Rok
+        </Button>
+        <Button
+          color="secondary"
+          variant={selectedInterval === 7 ? 'contained' : 'outlined'}
+          className="button-primary"
+          onClick={() => {
+            setSelectedInterval(7);
+            setSince('');
+            setUntil('');
+          }}
+        >
+          Zawsze
+        </Button>
+        <Button
+          color="secondary"
+          variant={selectedInterval === 8 ? 'contained' : 'outlined'}
+          className="button-primary"
+          onClick={() => {
+            setSelectedInterval(8);
+            const firstCurrent = new Date(
+              new Date().getFullYear(),
+              new Date().getMonth(),
+              1,
+            ).toLocaleDateString('sv-SE');
+            const lastCurrent = new Date(
+              new Date().getFullYear(),
+              new Date().getMonth() + 1,
+              0,
+            ).toLocaleDateString('sv-SE');
             setSince(firstCurrent);
             setUntil(lastCurrent);
           }}
         >
           Bieżący miesiąc
-        </button>
-        <button
+        </Button>
+        <Button
+          color="secondary"
+          variant={selectedInterval === 9 ? 'contained' : 'outlined'}
           className="button-primary"
           onClick={() => {
-            const firstPrev = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1).toLocaleDateString('sv-SE');
-            const lastPrev = new Date(new Date().getFullYear(), new Date().getMonth(), 0).toLocaleDateString('sv-SE');
+            setSelectedInterval(9);
+            const firstPrev = new Date(
+              new Date().getFullYear(),
+              new Date().getMonth() - 1,
+              1,
+            ).toLocaleDateString('sv-SE');
+            const lastPrev = new Date(
+              new Date().getFullYear(),
+              new Date().getMonth(),
+              0,
+            ).toLocaleDateString('sv-SE');
             setSince(firstPrev);
             setUntil(lastPrev);
           }}
         >
           Poprzedni miesiąc
-        </button>
-      </div>
-    </div>
-  )
+        </Button>
+      </Box>
+    </Paper>
+  );
 }
-
