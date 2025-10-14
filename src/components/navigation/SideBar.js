@@ -1,41 +1,86 @@
-"use client";
-import {FaChevronLeft, FaChevronRight,} from "react-icons/fa6";
-import {SideBarButton} from "./SideBarButton";
-import {useState} from "react";
-import {usePathname} from "next/navigation";
+'use client';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
+import { SideBarButton } from './SideBarButton';
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import {
+  Drawer,
+  List,
+  IconButton,
+  Divider,
+  Box,
+  Typography,
+} from '@mui/material';
+import { appBarHeight } from '@/styles/layout';
 
-export default function SideBar({baseUrl, links}) {
-  const [isClicked, setIsClicked] = useState(false);
+const DRAWER_WIDTH_EXPANDED = 240;
+const DRAWER_WIDTH_COLLAPSED = 64;
+
+export default function SideBar({ baseUrl, links }) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const path = usePathname();
+
+  const toggleDrawer = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
-    <div
-      className={
-        isClicked
-          ? "fixed z-[31] h-full duration-300 transition-all -left-44 translate-x-44"
-          : "fixed z-[31] h-full duration-300 transition-all -left-44"
-      }
+    <Drawer
+      variant="permanent"
+      sx={{
+        width: 0, // Don't take up space in flex layout
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: isExpanded ? DRAWER_WIDTH_EXPANDED : DRAWER_WIDTH_COLLAPSED,
+          boxSizing: 'border-box',
+          transition: 'width 0.3s ease',
+          overflowX: 'hidden',
+          position: 'fixed',
+          top: `${appBarHeight}px`,
+          height: `calc(100vh - ${appBarHeight}px)`,
+          left: 0,
+          zIndex: 1200,
+        },
+      }}
     >
-      <div className='flex w-fit justify-center content-center h-full bg-primary border-r border-border'>
-        <ul className='w-fit h-full pt-2'>
-          <li className='flex w-full h-10'>
-            <button className='flex items-center justify-between w-full'
-                    onClick={() => setIsClicked(!isClicked)}>
-              <span className='ml-4'>Zakładki</span>
-              {isClicked ? <FaChevronLeft className='w-16'/> : <FaChevronRight className='w-16'/>}
-            </button>
-          </li>
+      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <Box
+          sx={{
+            color: 'secondary.main',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: isExpanded ? 'space-between' : 'center',
+            p: 1,
+            minHeight: 48,
+          }}
+        >
+          {isExpanded && (
+            <Typography variant="h6" sx={{ ml: 1 }}>
+              Zakładki
+            </Typography>
+          )}
+          <IconButton
+            sx={{ color: 'inherit' }}
+            onClick={toggleDrawer}
+            size="small"
+          >
+            {isExpanded ? <FaChevronLeft /> : <FaChevronRight />}
+          </IconButton>
+        </Box>
+        <Divider />
+        <List sx={{ pt: 1 }}>
           {links.map((item) => (
             <SideBarButton
-              onClick={() => setIsClicked(false)}
               href={baseUrl + item.url}
               title={item.title}
               icon={item.icon}
               current={path === baseUrl + item.url}
+              isExpanded={isExpanded}
               key={item.url}
             />
           ))}
-        </ul>
-      </div>
-    </div>
+        </List>
+      </Box>
+    </Drawer>
   );
 }

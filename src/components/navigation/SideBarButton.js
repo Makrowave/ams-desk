@@ -1,23 +1,61 @@
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link';
+import React from 'react';
+import {
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Tooltip,
+} from '@mui/material';
 
-export function SideBarButton({href, title, current, className, icon, onClick}) {
-  return (
-    <li
-      className={
-        current
-          ? "w-60 self-center h-10 flex bg-secondary overflow-hidden " + className
-          : "w-60 self-center h-10 flex overflow-hidden " + className
-      }
+export function SideBarButton({ href, title, current, icon, isExpanded }) {
+  const button = (
+    <ListItemButton
+      component={Link}
+      href={href}
+      selected={current}
+      sx={{
+        color: 'secondary.main',
+        minHeight: 48,
+        justifyContent: isExpanded ? 'initial' : 'center',
+        px: 2.5,
+      }}
     >
-      <Link className='w-full flex justify-center h-full' href={href} onClick={onClick}>
-        <div className='w-full pl-4 h-full border-t flex justify-center'>
-          <div className='w-full flex justify-between items-center'>
-            <span className='text-nowrap'>{title}</span>
-            <div className='flex w-16 justify-center'>{icon}</div>
-          </div>
-        </div>
-      </Link>
-    </li>
+      <ListItemIcon
+        sx={{
+          color: 'inherit',
+          ml: '3.62px',
+          minWidth: 0,
+          mr: isExpanded ? 2 : 'auto',
+          justifyContent: 'center',
+        }}
+      >
+        {icon}
+      </ListItemIcon>
+      {isExpanded && (
+        <ListItemText
+          primary={title}
+          sx={{
+            color: 'inherit',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: 120,
+          }}
+        />
+      )}
+    </ListItemButton>
+  );
+
+  return (
+    <ListItem disablePadding sx={{ display: 'block' }}>
+      {!isExpanded ? (
+        <Tooltip title={title} placement="right">
+          {button}
+        </Tooltip>
+      ) : (
+        button
+      )}
+    </ListItem>
   );
 }
