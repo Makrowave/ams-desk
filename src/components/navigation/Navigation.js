@@ -38,9 +38,7 @@ export default function Navigation() {
           ))}
         </Tabs>
 
-        <div className="ml-auto h-full">
-          <UserDropdown />
-        </div>
+        <UserDropdown />
       </Toolbar>
     </AppBar>
   );

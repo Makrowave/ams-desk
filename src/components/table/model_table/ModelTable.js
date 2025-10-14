@@ -27,6 +27,7 @@ import DeleteModal from '@/components/modals/DeleteModal';
 import URLS from '@/util/urls';
 import { ModelDetailsPanel } from './row/ModelDetailsPanel';
 import { flexTableStyle } from '@/styles/styles';
+import ColorPreview from '../ColorPreview';
 
 const ModelTable = ({ filters }) => {
   const { isAdmin } = useAuth();
@@ -53,6 +54,17 @@ const ModelTable = ({ filters }) => {
   const columns = useMemo(
     () =>
       [
+        {
+          id: 'color',
+          header: 'Kolor',
+          size: 50,
+          Cell: ({ row }) => (
+            <ColorPreview
+              primaryColor={row.original.primaryColor}
+              secondaryColor={row.original.secondaryColor}
+            />
+          ),
+        },
         {
           accessorKey: 'modelName',
           header: 'Model',

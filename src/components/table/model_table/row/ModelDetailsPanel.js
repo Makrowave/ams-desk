@@ -2,7 +2,7 @@ import React from 'react';
 import { BikeTable } from './BikeTable';
 import { useColorsQuery } from '@/hooks/queryHooks';
 import { FaBan } from 'react-icons/fa6';
-import { Box, CircularProgress, Stack, Typography } from '@mui/material';
+import { Box, CircularProgress, Paper, Stack, Typography } from '@mui/material';
 
 export function ModelDetailsPanel({ model, placeId }) {
   const { data, isLoading } = useColorsQuery({ id: model.colorId.toString() });
@@ -27,7 +27,7 @@ export function ModelDetailsPanel({ model, placeId }) {
   };
 
   return (
-    <Stack>
+    <Stack component={Paper}>
       <Stack
         sx={{
           flexDirection: 'row',

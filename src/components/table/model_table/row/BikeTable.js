@@ -25,6 +25,7 @@ import {
 } from 'material-react-table';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
+import { paperTableStyle } from '@/styles/styles';
 
 export function BikeTable({ model, placeId }) {
   const { refetch, data, isPending, isError, error } = useBikesQuery({
@@ -83,7 +84,7 @@ export function BikeTable({ model, placeId }) {
         header: 'Złożony przez',
         muiTableBodyCellProps: {
           align: 'center',
-          sx: { textAlign: 'center' },
+          sx: { textAlign: 'center', bgcolor: 'background.paper' },
         },
         accessorFn: (row) =>
           employeeData?.find((e) => e.employeeId === row.assembledBy)
@@ -94,6 +95,7 @@ export function BikeTable({ model, placeId }) {
   );
 
   const table = useMaterialReactTable({
+    ...paperTableStyle,
     columns,
     data: data ?? [],
     state: {
