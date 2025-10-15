@@ -1,4 +1,9 @@
 export const paperTableStyle = {
+  muiTableProps: {
+    sx: {
+      bgcolor: 'background.paper',
+    },
+  },
   muiTablePaperProps: {
     sx: {
       bgcolor: 'background.paper',
@@ -44,6 +49,16 @@ export const paperTableStyle = {
       bgcolor: 'background.paper',
     },
   },
+  muiTableBodyRowProps: {
+    sx: {
+      bgcolor: 'background.paper',
+    },
+  },
+  muiTableHeadRowProps: {
+    sx: {
+      bgcolor: 'background.paper',
+    },
+  },
   muiTableFooterCellProps: {
     sx: {
       bgcolor: 'background.paper',
@@ -70,6 +85,7 @@ export const flexTableStyle = {
   },
   muiTableProps: {
     sx: {
+      bgcolor: 'background.paper',
       height: '100%',
       minHeight: 0,
     },

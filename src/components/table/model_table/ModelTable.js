@@ -5,8 +5,7 @@ import {
   MRT_ActionMenuItem,
   useMaterialReactTable,
 } from 'material-react-table';
-import { useMemo } from 'react';
-import { BikeTable } from './row/BikeTable';
+import { useEffect, useMemo, useState } from 'react';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import MaterialModal from '@/components/modals/MaterialModal';
 import {
@@ -28,6 +27,8 @@ import URLS from '@/util/urls';
 import { ModelDetailsPanel } from './row/ModelDetailsPanel';
 import { flexTableStyle } from '@/styles/styles';
 import ColorPreview from '../ColorPreview';
+import { getLocalStorageItem } from '@/util/localStorage';
+import useLocallyStoredTable from '@/hooks/useLocallyStoredTable';
 
 const ModelTable = ({ filters }) => {
   const { isAdmin } = useAuth();
@@ -121,7 +122,7 @@ const ModelTable = ({ filters }) => {
     [placesData],
   );
 
-  const table = useMaterialReactTable({
+  const table = useLocallyStoredTable('Model', {
     columns,
     data: data ?? [],
     enablePagination: false,
@@ -132,7 +133,6 @@ const ModelTable = ({ filters }) => {
     renderDetailPanel: ({ row }) => (
       <ModelDetailsPanel model={row.original} placeId={0} />
     ),
-    localization: MRT_Localization_PL,
     enableColumnResizing: true,
     enableColumnOrdering: true,
     enableHiding: true,
