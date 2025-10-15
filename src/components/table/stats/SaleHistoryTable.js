@@ -1,5 +1,6 @@
 import ColorPreview from '@/components/table/ColorPreview';
 import { usePlacesQuery, useSoldBikesQuery } from '@/hooks/queryHooks';
+import useLocallyStoredTable from '@/hooks/useLocallyStoredTable';
 import { paperTableStyle } from '@/styles/styles';
 import {
   MaterialReactTable,
@@ -59,7 +60,7 @@ export default function SaleHistoryTable({ since, until }) {
     [],
   );
 
-  const table = useMaterialReactTable({
+  const table = useLocallyStoredTable('SaleHistory', {
     ...paperTableStyle,
     columns,
     data: data ?? [],

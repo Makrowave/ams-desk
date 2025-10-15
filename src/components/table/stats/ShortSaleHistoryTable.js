@@ -8,6 +8,7 @@ import {
 } from 'material-react-table';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import { useMemo } from 'react';
+import useLocallyStoredTable from '@/hooks/useLocallyStoredTable';
 
 export default function ShortSaleHistoryTable() {
   const axiosPrivate = useAxiosPrivate();
@@ -56,7 +57,7 @@ export default function ShortSaleHistoryTable() {
     [],
   );
 
-  const table = useMaterialReactTable({
+  const table = useLocallyStoredTable('SaleHistoryShort', {
     ...paperTableStyle,
     columns,
     data: data ?? [],

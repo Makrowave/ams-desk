@@ -26,6 +26,7 @@ import {
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import { paperTableStyle } from '@/styles/styles';
+import useLocallyStoredTable from '@/hooks/useLocallyStoredTable';
 
 export function BikeTable({ model, placeId }) {
   const { refetch, data, isPending, isError, error } = useBikesQuery({
@@ -94,7 +95,7 @@ export function BikeTable({ model, placeId }) {
     [placeData, statusData, employeeData],
   );
 
-  const table = useMaterialReactTable({
+  const table = useLocallyStoredTable('Bike', {
     ...paperTableStyle,
     columns,
     data: data ?? [],
@@ -134,7 +135,7 @@ export function BikeTable({ model, placeId }) {
             </Tooltip>
           }
         >
-          <MoveModal refetch={refetch} bikeId={row.id} />
+          <MoveModal refetch={refetch} bikeId={row.original.id} />
         </MaterialModal>
 
         <MaterialModal
@@ -147,7 +148,7 @@ export function BikeTable({ model, placeId }) {
             </Tooltip>
           }
         >
-          <AssembleModal refetch={refetch} bikeId={row.id} />
+          <AssembleModal refetch={refetch} bikeId={row.original.id} />
         </MaterialModal>
 
         <MaterialModal
@@ -162,7 +163,7 @@ export function BikeTable({ model, placeId }) {
         >
           <SellModal
             refetch={refetch}
-            bikeId={row.id}
+            bikeId={row.original.id}
             basePrice={model.price}
             placeId={row.original.placeId}
           />
@@ -178,7 +179,7 @@ export function BikeTable({ model, placeId }) {
             </Tooltip>
           }
         >
-          <StatusModal refetch={refetch} bikeId={row.id} />
+          <StatusModal refetch={refetch} bikeId={row.original.id} />
         </MaterialModal>
 
         <MaterialModal
@@ -192,7 +193,7 @@ export function BikeTable({ model, placeId }) {
           }
         >
           <DeleteModal
-            id={row.id}
+            id={row.original.id}
             url={URLS.Bikes2}
             refetchQueryKey={URLS.Bikes}
             admin={false}
