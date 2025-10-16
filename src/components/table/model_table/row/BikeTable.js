@@ -57,7 +57,7 @@ export function BikeTable({ model, placeId }) {
         id: 'place',
         header: 'Miejsce',
         accessorFn: (row) =>
-          placeData?.find((p) => p.placeData === row.placeId)?.placeName ?? '-',
+          placeData?.find((p) => p.placeId === row.place)?.placeName ?? '-',
       },
       {
         id: 'status',
