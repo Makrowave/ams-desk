@@ -4,7 +4,12 @@ import URLS from '../util/urls';
 import useAxiosAdmin from './useAxiosAdmin';
 
 // Build query string from object "params" or value
-function buildQueryString(params = null) {
+function buildQueryString(
+  params: Record<
+    string,
+    string | null | undefined | number | boolean
+  > | null = null,
+) {
   if (params === null) return '';
   const searchParams = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
@@ -21,8 +26,15 @@ function buildQueryString(params = null) {
 }
 
 // Create query
-export const createQueryHook = <T>(key: keyof typeof URLS, admin = false) => {
-  return <T>(params = null, options = {}) => {
+export const createQueryHook =
+  <T>(key: keyof typeof URLS, admin = false) =>
+  <T>(
+    params: Record<
+      string,
+      string | undefined | null | number | boolean
+    > | null = null,
+    options = {},
+  ) => {
     const axios = admin ? useAxiosAdmin() : useAxiosPrivate();
     const queryKey = [URLS[key], ...Object.values(params ?? {})];
 
@@ -36,7 +48,6 @@ export const createQueryHook = <T>(key: keyof typeof URLS, admin = false) => {
       ...options,
     });
   };
-};
 
 // Hook exports
 export const useManufacturersQuery = createQueryHook('Manufacturers');

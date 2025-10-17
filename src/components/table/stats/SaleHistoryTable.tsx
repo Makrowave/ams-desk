@@ -1,16 +1,20 @@
-import ColorPreview from '@/components/table/ColorPreview';
-import { usePlacesQuery, useSoldBikesQuery } from '@/hooks/queryHooks';
-import useLocallyStoredTable from '@/hooks/useLocallyStoredTable';
-import { paperTableStyle } from '@/styles/styles';
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-} from 'material-react-table';
+// import ColorPreview from '../components/table/ColorPreview';
+import { SoldBike } from '../../../app/types/stats';
+import { usePlacesQuery, useSoldBikesQuery } from '../../../hooks/queryHooks';
+import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
+import { paperTableStyle } from '../../../styles/styles';
+import { MaterialReactTable, MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import { useMemo } from 'react';
 
-export default function SaleHistoryTable({ since, until }) {
-  const { data, isError, isLoading } = useSoldBikesQuery({
+export default function SaleHistoryTable({
+  since,
+  until,
+}: {
+  since?: string;
+  until?: string;
+}) {
+  const { data, isError, isLoading } = useSoldBikesQuery<SoldBike[]>({
     since: since ?? '',
     until: until ?? '',
   });
@@ -22,7 +26,7 @@ export default function SaleHistoryTable({ since, until }) {
     isLoading: placeIsLoading,
   } = usePlacesQuery();
 
-  const columns = useMemo(
+  const columns = useMemo<MRT_ColumnDef<SoldBike>[]>(
     () => [
       {
         accessorKey: 'model',
@@ -49,7 +53,8 @@ export default function SaleHistoryTable({ since, until }) {
         header: 'Zniżka',
       },
       {
-        accessorKey: 'discountPercent',
+        id: 'discountPercent',
+        accessorFn: (row) => `${row.discountPercent}%`,
         header: 'Zniżka %',
       },
       {

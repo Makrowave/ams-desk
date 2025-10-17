@@ -64,7 +64,7 @@ export const paperTableStyle = {
       bgcolor: 'background.paper',
     },
   },
-};
+} as const;
 
 export const flexTableStyle = {
   ...paperTableStyle,
@@ -90,4 +90,4 @@ export const flexTableStyle = {
       minHeight: 0,
     },
   },
-};
+} as const;

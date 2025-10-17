@@ -1,14 +1,12 @@
-import useAxiosPrivate from '@/hooks/useAxiosPrivate';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import { useQuery } from '@tanstack/react-query';
-import ColorPreview from '@/components/table/ColorPreview';
-import { paperTableStyle } from '@/styles/styles';
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-} from 'material-react-table';
+import ColorPreview from '../ColorPreview';
+import { paperTableStyle } from '../../../styles/styles';
+import { MaterialReactTable, MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import { useMemo } from 'react';
-import useLocallyStoredTable from '@/hooks/useLocallyStoredTable';
+import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
+import { Bike } from '../../../app/types/bikeTypes';
 
 export default function ShortSaleHistoryTable() {
   const axiosPrivate = useAxiosPrivate();
@@ -21,7 +19,7 @@ export default function ShortSaleHistoryTable() {
     },
   });
 
-  const columns = useMemo(
+  const columns = useMemo<MRT_ColumnDef<Bike>[]>(
     () => [
       {
         accessorKey: 'primaryColor',
@@ -29,12 +27,12 @@ export default function ShortSaleHistoryTable() {
         size: 60,
         enableSorting: false,
         enableColumnFilter: false,
-        Cell: ({ row }) => (
-          <ColorPreview
-            primaryColor={row.original.primaryColor}
-            secondaryColor={row.original.secondaryColor}
-          />
-        ),
+        // Cell: ({ row }) => (
+        //   <ColorPreview
+        //     primaryColor={row.original?.primaryColor}
+        //     secondaryColor={row.original?.secondaryColor}
+        //   />
+        // ),
       },
       {
         accessorKey: 'model',
