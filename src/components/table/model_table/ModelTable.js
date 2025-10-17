@@ -109,7 +109,8 @@ const ModelTable = ({ filters }) => {
       ].concat(
         placesData?.map((place) => ({
           id: place.placeName,
-          accessorFn: (row) => row.placeBikeCount[place.placeId]?.count,
+          accessorFn: (row) =>
+            row.placeBikeCount.find((p) => p.placeId === place.placeId)?.count,
           header: place.placeName,
           muiTableHeadCellProps: {
             align: 'center',
