@@ -1,19 +1,31 @@
-import { useMaterialReactTable } from 'material-react-table';
+import {
+  MRT_Column,
+  MRT_ColumnOrderState,
+  MRT_ColumnSizingState,
+  MRT_RowData,
+  MRT_TableOptions,
+  MRT_VisibilityState,
+  useMaterialReactTable,
+} from 'material-react-table';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import { useState, useEffect } from 'react';
 
-const useLocallyStoredTable = (tableName, tableDefinition) => {
+const useLocallyStoredTable = <TData extends MRT_RowData>(
+  tableName: string,
+  tableDefinition: MRT_TableOptions<TData>,
+) => {
   const localStorageKey = `table_${tableName}`;
 
-  const [columnOrder, setColumnOrder] = useState(
-    JSON.parse(localStorage.getItem(`${localStorageKey}_columnOrder`)) || [],
+  const [columnOrder, setColumnOrder] = useState<MRT_ColumnOrderState>(
+    JSON.parse(localStorage.getItem(`${localStorageKey}_columnOrder`) || '[]'),
   );
-  const [columnSizing, setColumnSizing] = useState(
-    JSON.parse(localStorage.getItem(`${localStorageKey}_columnSizing`)) || {},
+  const [columnSizing, setColumnSizing] = useState<MRT_ColumnSizingState>(
+    JSON.parse(localStorage.getItem(`${localStorageKey}_columnSizing`) || '{}'),
   );
-  const [columnVisibility, setColumnVisibility] = useState(
-    JSON.parse(localStorage.getItem(`${localStorageKey}_columnVisibility`)) ||
-      {},
+  const [columnVisibility, setColumnVisibility] = useState<MRT_VisibilityState>(
+    JSON.parse(
+      localStorage.getItem(`${localStorageKey}_columnVisibility`) || '{}',
+    ),
   );
   useEffect(() => {
     localStorage.setItem(

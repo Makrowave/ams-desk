@@ -1,17 +1,36 @@
-"use client";
-import axios from "@/api/axios";
-import {useRouter} from "next/navigation";
-import {createContext, useState} from "react";
+'use client';
+import axios from '../../api/axios';
+import { useRouter } from 'next/navigation';
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useState,
+} from 'react';
 
-const AuthContext = createContext();
+export interface AuthContextType {
+  user: { username?: string; token?: string };
+  setUser: Dispatch<SetStateAction<{ username?: string; token?: string }>>;
+  admin: { username?: string; token?: string };
+  setAdmin: Dispatch<SetStateAction<{ username?: string; token?: string }>>;
+  isAdmin: boolean;
+  setIsAdmin: Dispatch<SetStateAction<boolean>>;
+  logout: () => Promise<void>;
+  logoutAdmin: (redirect?: boolean) => Promise<void>;
+  prevRoute: string;
+  setPrevRoute: Dispatch<SetStateAction<string>>;
+}
 
-export function AuthProvider({children}) {
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
-  const [admin, setAdmin] = useState({username: "", token: ""});
-  const [user, setUser] = useState({username: "", token: ""});
-  const [prevRoute, setPrevRoute] = useState("");
-  const _logoutUrl = "/Auth/Logout";
-  const _adminLogoutUrl = "/AdminAuth/Logout";
+  const [admin, setAdmin] = useState({});
+  const [user, setUser] = useState<{ username?: string; token?: string }>({});
+  const [prevRoute, setPrevRoute] = useState('');
+  const _logoutUrl = '/Auth/Logout';
+  const _adminLogoutUrl = '/AdminAuth/Logout';
   const router = useRouter();
 
   /**
@@ -27,19 +46,19 @@ export function AuthProvider({children}) {
    * accessToken to default value preventing access.
    */
   async function logout() {
-    setUser({username: "", token: ""});
+    setUser({ username: '', token: '' });
     try {
       const response = await axios.post(
         _logoutUrl,
         {},
         {
-          headers: {"Content-Type": "application/json"},
+          headers: { 'Content-Type': 'application/json' },
           withCredentials: true,
-        }
+        },
       );
       if (response.status === 200) {
-        setUser({username: "", token: ""});
-        router.push("/login");
+        setUser({ username: '', token: '' });
+        router.push('/login');
       }
     } catch (err) {
       console.error(err);
@@ -47,20 +66,20 @@ export function AuthProvider({children}) {
   }
 
   async function logoutAdmin(redirect = true) {
-    setPrevRoute("");
+    setPrevRoute('');
     setIsAdmin(false);
-    setAdmin({username: "", token: ""});
+    setAdmin({ username: '', token: '' });
     if (redirect) {
-      router.push("/admin/login");
+      router.push('/admin/login');
     }
     try {
       const response = await axios.post(
         _adminLogoutUrl,
         {},
         {
-          headers: {"Content-Type": "application/json"},
+          headers: { 'Content-Type': 'application/json' },
           withCredentials: true,
-        }
+        },
       );
       if (response.status === 200) {
         // setIsAdmin(false);
