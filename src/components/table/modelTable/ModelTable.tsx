@@ -4,7 +4,6 @@ import {
   MaterialReactTable,
   MRT_ActionMenuItem,
   MRT_ColumnDef,
-  useMaterialReactTable,
 } from 'material-react-table';
 import { useMemo } from 'react';
 import MaterialModal from '../../modals/MaterialModal';
@@ -24,7 +23,7 @@ import AddBikeModal from '../../modals/record/bike/AddBikeModal';
 import useAuth from '../../../hooks/useAuth';
 import DeleteModal from '../../modals/DeleteModal';
 import URLS from '../../../util/urls';
-import { ModelDetailsPanel } from './ModelDetailsPanel';
+import ModelDetailsPanel from './ModelDetailsPanel';
 import { flexTableStyle } from '../../../styles/styles';
 import ColorPreview from '../ColorPreview';
 import { getLocalStorageItem } from '../../../util/localStorage';
@@ -35,8 +34,29 @@ import { Place } from '../../../app/types/filterTypes';
 
 const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
   const { isAdmin } = useAuth();
+
+  const prepareFilters = (filters: typeof defaultFilters) => {
+    const entries = Object.entries(filters) as [
+      keyof typeof defaultFilters,
+      (typeof defaultFilters)[keyof typeof defaultFilters],
+    ][];
+
+    return Object.fromEntries(
+      entries.map(([key, value]) => {
+        if (key === 'isWoman') {
+          if (value === 1) return [key, 'false'];
+          return [key, 'true'];
+        }
+        if (key !== 'minPrice' && key !== 'maxPrice' && value === 0) {
+          return [key, undefined];
+        }
+        return [key, value];
+      }),
+    );
+  };
+
   const { data, isLoading, isError, error } = useModelsQuery<ModelRecord[]>(
-    { ...filters, placeId: 0 },
+    { ...prepareFilters(filters), placeId: 0 },
     {
       refetchInterval: 10000,
     },

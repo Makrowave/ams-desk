@@ -1,7 +1,6 @@
 import FetchSelect from '../../filtering/FetchSelect';
-import RangeInput from '../../filtering/RangeInput';
 import useAuth from '../../../hooks/useAuth';
-import { useEffect, useReducer } from 'react';
+import { Dispatch, SetStateAction, useEffect, useReducer } from 'react';
 import { DataSelect } from '../../input/DataSelect';
 import { URLKEYS } from '../../../util/urls';
 import {
@@ -15,8 +14,15 @@ import {
   Typography,
 } from '@mui/material';
 
-const Filters = ({ setQuery }) => {
-  const updateFilters = (field, value) => {
+const Filters = ({
+  setQuery,
+}: {
+  setQuery: Dispatch<SetStateAction<FiltersType>>;
+}) => {
+  const updateFilters = (
+    field: keyof FiltersType,
+    value: FiltersType[keyof FiltersType],
+  ) => {
     console.log('Dispatching:', field, value);
     if (field === undefined) return;
     dispatch({ type: 'SET', field, value });
@@ -83,8 +89,8 @@ const Filters = ({ setQuery }) => {
           defaultValue={defaultFilters.isWoman}
           onChange={(v) => updateFilters('isWoman', v)}
           options={[
-            { key: 'false', value: 'Męski' },
-            { key: 'true', value: 'Damski' },
+            { id: 1, name: 'Męski' },
+            { id: 2, name: 'Damski' },
           ]}
         />
 
@@ -110,7 +116,6 @@ const Filters = ({ setQuery }) => {
           urlKey={URLKEYS.Colors}
           label="Kolor"
           defaultValue={defaultFilters.colorId}
-          isColored
         />
 
         <FetchSelect
@@ -120,16 +125,15 @@ const Filters = ({ setQuery }) => {
           params={{ exclude: [3] }}
           label="Status"
           defaultValue={defaultFilters.statusId}
-          isColored
         />
 
-        <RangeInput
+        {/* <RangeInput
           title="Cena"
           minValue={filters.minPrice}
           maxValue={filters.maxPrice}
           setMin={(v) => updateFilters('minPrice', v)}
           setMax={(v) => updateFilters('maxPrice', v)}
-        />
+        /> */}
         <FormControlLabel
           control={<Checkbox />}
           checked={filters.available}
@@ -197,25 +201,42 @@ const Filters = ({ setQuery }) => {
 export const defaultFilters = {
   name: '',
   frameSize: '',
-  wheelSize: '',
+  wheelSize: 0,
   available: true,
   electric: false,
-  isWoman: '',
-  manufacturerId: '',
+  isWoman: 0,
+  manufacturerId: 0,
   place: 0,
   isKids: false,
-  categoryId: '',
+  categoryId: 0,
   minPrice: 0,
   maxPrice: 100000,
-  colorId: '',
-  statusId: '',
+  colorId: 0,
+  statusId: 0,
   productCode: '',
   noEan: false,
   noProductCode: false,
   noColor: false,
   noColorGroup: false,
 };
-const reducer = (state, action) => {
+
+export type FiltersType = typeof defaultFilters;
+
+type ReducerAction =
+  | {
+      type: 'SET';
+      field: keyof FiltersType;
+      value: FiltersType[keyof FiltersType];
+    }
+  | {
+      type: 'TOGGLE';
+      field: keyof FiltersType;
+    }
+  | {
+      type: 'RESET';
+    };
+
+const reducer = (state: FiltersType, action: ReducerAction) => {
   switch (action.type) {
     case 'SET':
       return {
