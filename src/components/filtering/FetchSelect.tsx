@@ -24,7 +24,7 @@ const FetchSelect = <T extends SelectOption>({
   defaultValue,
   validated,
 }: FetchSelectProps) => {
-  const hook = createQueryHook<T[]>(urlKey);
+  const hook = createQueryHook(urlKey);
   const { data, isPending, isError, error, refetch } = hook(params);
 
   if (isPending) {

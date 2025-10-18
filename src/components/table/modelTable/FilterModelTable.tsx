@@ -2,10 +2,11 @@ import { useState } from 'react';
 import Filters, { defaultFilters } from './Filters';
 import { Paper, Stack } from '@mui/material';
 import ModelTable from './ModelTable';
-import { appBarHeight } from '@/styles/layout';
+import { appBarHeight } from '../../../styles/layout';
 
-export default function FilterModelTable() {
+const FilterModelTable = () => {
   const [query, setQuery] = useState(defaultFilters);
+
   return (
     <Stack sx={{ height: `calc(100vh - ${appBarHeight}px)` }} direction={'row'}>
       <Filters setQuery={setQuery} />
@@ -14,7 +15,6 @@ export default function FilterModelTable() {
           m: 2,
           display: 'flex',
           flexDirection: 'column',
-          // width: "full",
           overflowX: 'auto',
           overflowY: 'auto',
           flex: 5,
@@ -24,4 +24,6 @@ export default function FilterModelTable() {
       </Paper>
     </Stack>
   );
-}
+};
+
+export default FilterModelTable;

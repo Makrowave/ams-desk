@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
-import MoveModal from '@/components/modals/record/bike/MoveModal';
-import AssembleModal from '@/components/modals/record/bike/AssembleModal';
-import SellModal from '@/components/modals/record/bike/SellModal';
-import StatusModal from '@/components/modals/record/bike/StatusModal';
-import DeleteModal from '@/components/modals/DeleteModal';
+import MoveModal from '../../modals/record/bike/MoveModal';
+import AssembleModal from '../../modals/record/bike/AssembleModal';
+import SellModal from '../../modals/record/bike/SellModal';
+import StatusModal from '../../modals/record/bike/StatusModal';
+import DeleteModal from '../../modals/DeleteModal';
+import MaterialModal from '../../modals/MaterialModal';
 import {
   FaArrowRight,
   FaCircleInfo,
@@ -11,25 +12,31 @@ import {
   FaRegCircleXmark,
   FaWrench,
 } from 'react-icons/fa6';
-import URLS from '@/util/urls';
+import URLS from '../../../util/urls';
 import {
   useBikesQuery,
   useEmployeesQuery,
   usePlacesQuery,
   useStatusesQuery,
-} from '@/hooks/queryHooks';
-import MaterialModal from '@/components/modals/MaterialModal';
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-} from 'material-react-table';
+} from '../../../hooks/queryHooks';
+import { MaterialReactTable, MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
-import { paperTableStyle } from '@/styles/styles';
-import useLocallyStoredTable from '@/hooks/useLocallyStoredTable';
+import { paperTableStyle } from '../../../styles/styles';
+import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
+import { Bike, BikeRecord, ModelRecord } from '../../../app/types/bikeTypes';
+import { Place, Status } from '../../../app/types/filterTypes';
+import { Employee } from '../../../app/types/employeeTypes';
 
-export function BikeTable({ model, placeId }) {
-  const { refetch, data, isPending, isError, error } = useBikesQuery({
+type Props = {
+  model: ModelRecord;
+  placeId?: number;
+};
+
+const BikeTable = ({ model, placeId }: Props) => {
+  const { refetch, data, isPending, isError, error } = useBikesQuery<
+    BikeRecord[]
+  >({
     id: model.modelId,
     placeId: placeId,
   });
@@ -37,34 +44,33 @@ export function BikeTable({ model, placeId }) {
     data: placeData,
     isPending: placeIsPending,
     isError: placeIsError,
-  } = usePlacesQuery();
+  } = usePlacesQuery<Place[]>();
 
   const {
     data: statusData,
     isPending: statusIsPending,
     isError: statusIsError,
-  } = useStatusesQuery();
+  } = useStatusesQuery<Status[]>();
 
   const {
     data: employeeData,
     isPending: employeeIsPending,
     isError: employeeIsError,
-  } = useEmployeesQuery();
+  } = useEmployeesQuery<Employee[]>();
 
-  const columns = useMemo(
+  const columns = useMemo<MRT_ColumnDef<BikeRecord>[]>(
     () => [
       {
         id: 'place',
         header: 'Miejsce',
         accessorFn: (row) =>
-          placeData?.find((p) => p.placeId === row.place)?.placeName ?? '-',
+          placeData?.find((p) => p.id === row.place)?.name ?? '-',
       },
       {
         id: 'status',
         header: 'Status',
         accessorFn: (row) =>
-          statusData?.find((s) => s.statusId === row.statusId)?.statusName ??
-          '-',
+          statusData?.find((s) => s.id === row.statusId)?.name ?? '-',
         Cell: ({ row, renderedCellValue }) => (
           <Box
             sx={{
@@ -72,8 +78,8 @@ export function BikeTable({ model, placeId }) {
               textAlign: 'center',
               borderRadius: 2,
               background: statusData?.find(
-                (s) => s.statusId === row.original.statusId,
-              )?.hexCode,
+                (s) => s.id === row.original.statusId,
+              )?.color,
             }}
           >
             {renderedCellValue}
@@ -88,8 +94,7 @@ export function BikeTable({ model, placeId }) {
           sx: { textAlign: 'center', bgcolor: 'background.paper' },
         },
         accessorFn: (row) =>
-          employeeData?.find((e) => e.employeeId === row.assembledBy)
-            ?.employeeName ?? 'Brak',
+          employeeData?.find((e) => e.id === row.assembledBy)?.name ?? 'Brak',
       },
     ],
     [placeData, statusData, employeeData],
@@ -155,7 +160,7 @@ export function BikeTable({ model, placeId }) {
           label={'Sprzedaj rower'}
           button={
             <Tooltip title="Sprzedaj rower" arrow>
-              <IconButton text="Sprzedaj">
+              <IconButton>
                 <FaMoneyBill />
               </IconButton>
             </Tooltip>
@@ -165,7 +170,7 @@ export function BikeTable({ model, placeId }) {
             refetch={refetch}
             bikeId={row.original.id}
             basePrice={model.price}
-            placeId={row.original.placeId}
+            placeId={row.original.place}
           />
         </MaterialModal>
 
@@ -173,7 +178,7 @@ export function BikeTable({ model, placeId }) {
           label={'Zmień status'}
           button={
             <Tooltip title="Zmień status" arrow>
-              <IconButton text="Zmień status">
+              <IconButton>
                 <FaCircleInfo />
               </IconButton>
             </Tooltip>
@@ -186,7 +191,7 @@ export function BikeTable({ model, placeId }) {
           label={'Usuń rower'}
           button={
             <Tooltip title="Usuń rower" arrow>
-              <IconButton text="Usuń" color="error">
+              <IconButton color="error">
                 <FaRegCircleXmark />
               </IconButton>
             </Tooltip>
@@ -213,4 +218,6 @@ export function BikeTable({ model, placeId }) {
       <MaterialReactTable table={table} />
     </Box>
   );
-}
+};
+
+export default BikeTable;

@@ -28,16 +28,13 @@ function buildQueryString(
 
 // Create query
 export const createQueryHook =
-  <TData = unknown, K extends keyof typeof URLS = keyof typeof URLS>(
-    key: K,
-    admin = false,
-  ) =>
-  (
+  <K extends keyof typeof URLS = keyof typeof URLS>(key: K, admin = false) =>
+  <TData = unknown>(
     params: Record<
       string,
       string | undefined | null | number | boolean
     > | null = null,
-    options?: UseQueryOptions<TData, AxiosError, TData>,
+    options?: Partial<UseQueryOptions<TData, AxiosError, TData>>,
   ) => {
     const axios = admin ? useAxiosAdmin() : useAxiosPrivate();
     const queryKey = [URLS[key], ...Object.values(params ?? {})];

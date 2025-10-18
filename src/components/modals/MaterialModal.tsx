@@ -2,7 +2,13 @@ import { cloneElement, useState } from 'react';
 import { Box, IconButton, Modal, Paper, Typography } from '@mui/material';
 import { FaXmark } from 'react-icons/fa6';
 
-export default function MaterialModal({ button, label, children }) {
+type MaterialModalProps = {
+  button: React.ReactElement;
+  label: string;
+  children: React.ReactElement;
+};
+
+const MaterialModal = ({ button, label, children }: MaterialModalProps) => {
   const [open, setOpen] = useState(false);
 
   const ChildComponent = () => {
@@ -15,7 +21,7 @@ export default function MaterialModal({ button, label, children }) {
   const ButtonComponent = () => {
     return cloneElement(button, {
       ...button.props,
-      onClick: (e) => {
+      onClick: (e: React.MouseEvent) => {
         if (button.props.onClick) button.props.onClick(e);
         setOpen(true);
       },
@@ -51,4 +57,6 @@ export default function MaterialModal({ button, label, children }) {
       </Modal>
     </div>
   );
-}
+};
+
+export default MaterialModal;

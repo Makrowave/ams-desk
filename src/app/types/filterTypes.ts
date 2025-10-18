@@ -9,3 +9,5 @@ export type Status = SelectOptionWithColor;
 export type Category = SelectOption;
 
 export type WheelSize = SelectOption;
+
+export type Place = SelectOption;

@@ -1,9 +1,9 @@
-import FetchSelect from '@/components/filtering/FetchSelect';
-import RangeInput from '@/components/filtering/RangeInput';
-import useAuth from '@/hooks/useAuth';
+import FetchSelect from '../../filtering/FetchSelect';
+import RangeInput from '../../filtering/RangeInput';
+import useAuth from '../../../hooks/useAuth';
 import { useEffect, useReducer } from 'react';
-import { DataSelect } from '@/components/input/DataSelect';
-import { URLKEYS } from '@/util/urls';
+import { DataSelect } from '../../input/DataSelect';
+import { URLKEYS } from '../../../util/urls';
 import {
   Box,
   Button,
@@ -15,7 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 
-export default function Filters({ setQuery }) {
+const Filters = ({ setQuery }) => {
   const updateFilters = (field, value) => {
     console.log('Dispatching:', field, value);
     if (field === undefined) return;
@@ -192,7 +192,7 @@ export default function Filters({ setQuery }) {
       </FormGroup>
     </Paper>
   );
-}
+};
 
 export const defaultFilters = {
   name: '',
@@ -233,3 +233,5 @@ const reducer = (state, action) => {
       return state;
   }
 };
+
+export default Filters;

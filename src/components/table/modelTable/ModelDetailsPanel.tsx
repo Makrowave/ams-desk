@@ -1,11 +1,19 @@
-import React from 'react';
-import { BikeTable } from './BikeTable';
-import { useColorsQuery } from '@/hooks/queryHooks';
+import BikeTable from './BikeTable';
+import { useColorsQuery } from '../../../hooks/queryHooks';
 import { FaBan } from 'react-icons/fa6';
 import { Box, CircularProgress, Paper, Stack, Typography } from '@mui/material';
+import { ModelRecord } from '../../../app/types/bikeTypes';
+import { Color } from '../../../app/types/filterTypes';
 
-export function ModelDetailsPanel({ model, placeId }) {
-  const { data, isLoading } = useColorsQuery({ id: model.colorId.toString() });
+type ModelDetailsPanelProps = {
+  model: ModelRecord;
+  placeId: number;
+};
+
+const ModelDetailsPanel = ({ model, placeId }: ModelDetailsPanelProps) => {
+  const { data, isLoading } = useColorsQuery<Color>({
+    id: model.colorId?.toString(),
+  });
 
   const Color = () => {
     if (isLoading) {
@@ -15,7 +23,7 @@ export function ModelDetailsPanel({ model, placeId }) {
       return (
         <Box
           sx={{
-            background: data.hexCode,
+            background: data.color,
             borderRadius: 1.5,
             flex: 1,
           }}
@@ -68,4 +76,6 @@ export function ModelDetailsPanel({ model, placeId }) {
       <BikeTable model={model} placeId={placeId} />
     </Stack>
   );
-}
+};
+
+export default ModelDetailsPanel;

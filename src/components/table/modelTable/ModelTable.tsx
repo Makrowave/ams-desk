@@ -1,13 +1,13 @@
-import { useModelsQuery, usePlacesQuery } from '@/hooks/queryHooks';
+import { useModelsQuery, usePlacesQuery } from '../../../hooks/queryHooks';
 import { Box, Link } from '@mui/material';
 import {
   MaterialReactTable,
   MRT_ActionMenuItem,
+  MRT_ColumnDef,
   useMaterialReactTable,
 } from 'material-react-table';
-import { useEffect, useMemo, useState } from 'react';
-import { MRT_Localization_PL } from 'material-react-table/locales/pl';
-import MaterialModal from '@/components/modals/MaterialModal';
+import { useMemo } from 'react';
+import MaterialModal from '../../modals/MaterialModal';
 import {
   FaBarcode,
   FaLink,
@@ -16,23 +16,26 @@ import {
   FaPlus,
   FaRegCircleXmark,
 } from 'react-icons/fa6';
-import ColorModal from '@/components/modals/record/model/ColorModal';
-import AddLinkModal from '@/components/modals/record/model/AddLinkModal';
-import AddEanModal from '@/components/modals/record/model/AddEanModal';
-import ChangeModelModal from '@/components/modals/record/model/ChangeModelModal';
-import AddBikeModal from '@/components/modals/record/bike/AddBikeModal';
-import useAuth from '@/hooks/useAuth';
-import DeleteModal from '@/components/modals/DeleteModal';
-import URLS from '@/util/urls';
-import { ModelDetailsPanel } from './row/ModelDetailsPanel';
-import { flexTableStyle } from '@/styles/styles';
+import ColorModal from '../../modals/record/model/ColorModal';
+import AddLinkModal from '../../modals/record/model/AddLinkModal';
+import AddEanModal from '../../modals/record/model/AddEanModal';
+import ChangeModelModal from '../../modals/record/model/ChangeModelModal';
+import AddBikeModal from '../../modals/record/bike/AddBikeModal';
+import useAuth from '../../../hooks/useAuth';
+import DeleteModal from '../../modals/DeleteModal';
+import URLS from '../../../util/urls';
+import { ModelDetailsPanel } from './ModelDetailsPanel';
+import { flexTableStyle } from '../../../styles/styles';
 import ColorPreview from '../ColorPreview';
-import { getLocalStorageItem } from '@/util/localStorage';
-import useLocallyStoredTable from '@/hooks/useLocallyStoredTable';
+import { getLocalStorageItem } from '../../../util/localStorage';
+import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
+import { defaultFilters } from './Filters';
+import { Model, ModelRecord } from '../../../app/types/bikeTypes';
+import { Place } from '../../../app/types/filterTypes';
 
-const ModelTable = ({ filters }) => {
+const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
   const { isAdmin } = useAuth();
-  const { data, isLoading, isError, error } = useModelsQuery(
+  const { data, isLoading, isError, error } = useModelsQuery<ModelRecord[]>(
     { ...filters, placeId: 0 },
     {
       refetchInterval: 10000,
@@ -43,83 +46,84 @@ const ModelTable = ({ filters }) => {
     data: placesData,
     isError: placesIsError,
     isLoading: placesIsLoading,
-  } = usePlacesQuery();
+  } = usePlacesQuery<Place[]>();
 
-  const colorCount = (count) => {
+  const colorCount = (count: number) => {
     if (count === 0) return 'bg-count-none';
     if (count === 1) return 'bg-count-low';
     if (count <= 3) return 'bg-count-medium';
     return 'bg-count-high';
   };
 
-  const columns = useMemo(
-    () =>
-      [
-        {
-          id: 'color',
-          header: 'Kolor',
-          size: 50,
-          Cell: ({ row }) => (
-            <ColorPreview
-              primaryColor={row.original.primaryColor}
-              secondaryColor={row.original.secondaryColor}
-            />
+  const columns = useMemo<MRT_ColumnDef<ModelRecord>[]>(
+    () => [
+      {
+        id: 'color',
+        header: 'Kolor',
+        size: 50,
+        Cell: ({ row }) => (
+          <ColorPreview
+            primaryColor={row.original.primaryColor ?? null}
+            secondaryColor={row.original.secondaryColor ?? null}
+          />
+        ),
+      },
+      {
+        accessorKey: 'modelName',
+        header: 'Model',
+        size: 300,
+        Cell: ({ renderedCellValue, row }) =>
+          row.original.link ? (
+            <Link href={row.original.link}>{renderedCellValue}</Link>
+          ) : (
+            renderedCellValue
           ),
-        },
-        {
-          accessorKey: 'modelName',
-          header: 'Model',
-          size: 300,
-          Cell: ({ renderedCellValue, row }) =>
-            row.link ? (
-              <Link href={row.link}>{renderedCellValue}</Link>
-            ) : (
-              renderedCellValue
-            ),
-        },
-        {
-          accessorKey: 'frameSize',
-          header: 'Rama',
-        },
-        {
-          accessorKey: 'wheelSize',
-          header: 'Koła',
-        },
-        {
-          accessorKey: 'price',
-          header: 'Cena',
-        },
-        {
-          accessorKey: 'bikeCount',
-          header: 'Ilość',
-          Cell: ({ row, renderedCellValue }) => (
-            <Box
-              sx={{
-                p: 1,
-                textAlign: 'center',
-                borderRadius: 2,
-                width: '100%',
-              }}
-              className={colorCount(row.original.bikeCount)}
-            >
-              {renderedCellValue}
-            </Box>
-          ),
-        },
-      ].concat(
-        placesData?.map((place) => ({
-          id: place.placeName,
-          accessorFn: (row) =>
-            row.placeBikeCount.find((p) => p.placeId === place.placeId)?.count,
-          header: place.placeName,
-          muiTableHeadCellProps: {
-            align: 'center',
-          },
-          muiTableBodyCellProps: {
-            align: 'center',
-          },
-        })) ?? [],
-      ),
+      },
+      {
+        accessorKey: 'frameSize',
+        header: 'Rama',
+      },
+      {
+        accessorKey: 'wheelSize',
+        header: 'Koła',
+      },
+      {
+        accessorKey: 'price',
+        header: 'Cena',
+      },
+      {
+        accessorKey: 'bikeCount',
+        header: 'Ilość',
+        Cell: ({ row, renderedCellValue }) => (
+          <Box
+            sx={{
+              p: 1,
+              textAlign: 'center',
+              borderRadius: 2,
+              width: '100%',
+            }}
+            className={colorCount(row.original.bikeCount)}
+          >
+            {renderedCellValue}
+          </Box>
+        ),
+      },
+      ...(placesData?.map(
+        (place) =>
+          ({
+            id: place.name,
+            accessorFn: (row) =>
+              row.placeBikeCount.find((p) => p.placeId === place.id)?.count,
+            header: place.name,
+            muiTableHeadCellProps: {
+              align: 'center',
+            },
+            muiTableBodyCellProps: {
+              align: 'center',
+            },
+          } satisfies MRT_ColumnDef<ModelRecord>),
+      ) ?? []),
+    ],
     [placesData],
   );
 
@@ -129,7 +133,7 @@ const ModelTable = ({ filters }) => {
     enablePagination: false,
     enableRowVirtualization: true,
     enableFullScreenToggle: false,
-    enableExpandAll: data?.length < 10,
+    enableExpandAll: (data?.length ?? 0) < 10,
     state: { isLoading },
     renderDetailPanel: ({ row }) => (
       <ModelDetailsPanel model={row.original} placeId={0} />
@@ -142,11 +146,6 @@ const ModelTable = ({ filters }) => {
     enableColumnActions: false,
     enableStickyHeader: true,
     enableStickyFooter: true,
-    muiTableProps: {
-      sx: {
-        overflowX: 'auto',
-      },
-    },
     muiDetailPanelProps: {
       sx: {
         p: 0,
