@@ -1,7 +1,6 @@
-export type Employee = {
-  employeeId: number;
-  employeeName: string;
-};
+import { SelectOption } from './selectTypes';
+
+export type Employee = SelectOption;
 
 export type LoginModel = {
   username: string;

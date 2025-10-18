@@ -1,18 +1,18 @@
-import {useState} from "react";
-import {REGEX} from "@/util/regex";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import URLS, {URLKEYS} from "@/util/urls";
-import FetchSelect from "@/components/filtering/FetchSelect";
-import {Button} from "@mui/material";
-import ValidatedTextField from "@/components/input/ValidatedTextField";
+import { useState } from 'react';
+import { REGEX } from '../../../util/regex';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import URLS, { URLKEYS } from '../../../util/urls';
+import FetchSelect from '../../filtering/FetchSelect';
+import { Button } from '@mui/material';
+import ValidatedTextField from '../../input/ValidatedTextField';
 
-export default function AddPartModal({closeModal}) {
-  const [category, setCategory] = useState("");
-  const [type, setType] = useState("");
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [unit, setUnit] = useState("1");
+const AddPartModal = ({ closeModal }: { closeModal: () => void }) => {
+  const [category, setCategory] = useState('');
+  const [type, setType] = useState('');
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [unit, setUnit] = useState('1');
 
   const [isNameValid, setIsNameValid] = useState(false);
   const [isPriceValid, setIsPriceValid] = useState(false);
@@ -22,23 +22,26 @@ export default function AddPartModal({closeModal}) {
   const mutation = useMutation({
     mutationFn: async () => {
       return await axiosPrivate.post(
-        "parts",
+        'parts',
         JSON.stringify({
           partId: 0,
           partName: name,
           price: price,
           partTypeId: type,
           unitId: unit,
-        })
+        }),
       );
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({queryKey: [URLS.Parts], exact: false});
+      await queryClient.refetchQueries({
+        queryKey: [URLS.Parts],
+        exact: false,
+      });
       closeModal();
     },
   });
 
-  const updateName = (value) => {
+  const updateName = (value: string) => {
     if (REGEX.POLISH_TEXT.test(value) && value.length <= 40) {
       setIsNameValid(true);
     } else {
@@ -47,7 +50,7 @@ export default function AddPartModal({closeModal}) {
     setName(value);
   };
 
-  const updatePrice = (value) => {
+  const updatePrice = (value: string) => {
     const num = Number(value);
     if (!isNaN(num) && num > 0 && num < 10000) {
       setIsPriceValid(true);
@@ -57,10 +60,10 @@ export default function AddPartModal({closeModal}) {
     setPrice(value);
   };
 
-  const handleCategoryChange = (value) => {
+  const handleCategoryChange = (value: string) => {
     setCategory(value);
-    setType("");
-  }
+    setType('');
+  };
 
   return (
     <>
@@ -68,29 +71,29 @@ export default function AddPartModal({closeModal}) {
         value={category}
         onChange={handleCategoryChange}
         urlKey={URLKEYS.PartCategories}
-        defaultValue={""}
-        label='Kategoria'
+        defaultValue={''}
+        label="Kategoria"
         validated
       />
-      {category !== "" &&
+      {category !== '' && (
         <FetchSelect
           value={type}
           onChange={setType}
           urlKey={URLKEYS.PartTypes}
-          params={{id: category}}
-          defaultValue={""}
-          label='Typ'
+          params={{ id: category }}
+          defaultValue={''}
+          label="Typ"
           validated
         />
-      }
+      )}
       <ValidatedTextField
-        label='Nazwa'
+        label="Nazwa"
         value={name}
         onChange={updateName}
         regex={REGEX.POLISH_TEXT}
       />
       <ValidatedTextField
-        label='Cena'
+        label="Cena"
         value={price}
         onChange={updatePrice}
         regex={REGEX.PART_PRICE}
@@ -99,17 +102,20 @@ export default function AddPartModal({closeModal}) {
         value={unit}
         onChange={setUnit}
         urlKey={URLKEYS.Units}
-        defaultValue={""}
-        label='Jednostka'
+        defaultValue={''}
+        label="Jednostka"
         validated
       />
       <Button
-        color={"primary"} variant={"contained"}
-        disabled={!(isNameValid && isPriceValid && type !== "" && unit !== "")}
-        onClick={mutation.mutate}
+        color={'primary'}
+        variant={'contained'}
+        disabled={!(isNameValid && isPriceValid && type !== '' && unit !== '')}
+        onClick={() => mutation.mutate()}
       >
         Dodaj
       </Button>
     </>
   );
-}
+};
+
+export default AddPartModal;

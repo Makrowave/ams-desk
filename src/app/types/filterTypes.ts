@@ -1,28 +1,11 @@
-export type Color = HasHexCode & {
-  colorId: number;
-  colorName: string;
-};
+import { SelectOption, SelectOptionWithColor } from './selectTypes';
 
-export type Manufacturer = {
-  manufacturerId: number;
-  manufacturerName: string;
-};
+export type Color = SelectOptionWithColor;
 
-export type Status = HasHexCode & {
-  statusId: number;
-  statusName: string;
-};
+export type Manufacturer = SelectOption;
 
-export type Category = {
-  categoryId: number;
-  categoryName: string;
-};
+export type Status = SelectOptionWithColor;
 
-export interface HasHexCode {
-  hexCode: string;
-}
+export type Category = SelectOption;
 
-export type WheelSize = {
-  key: number;
-  value: number;
-};
+export type WheelSize = SelectOption;

@@ -1,3 +1,5 @@
+import { SelectOption } from './selectTypes';
+
 export type NewRepair = {
   phoneNumber: string;
   issue: string;
@@ -12,15 +14,9 @@ export type MergeParts = {
   part: Part;
 };
 
-export type PartCategory = {
-  id: number;
-  name: string;
-};
+export type PartCategory = SelectOption;
 
-export type PartType = {
-  id: number;
-  name: string;
-};
+export type PartType = SelectOption;
 
 export type ShortRepair = {
   id: number;
@@ -32,10 +28,7 @@ export type ShortRepair = {
   placeName: string;
 };
 
-export type Unit = {
-  id: number;
-  name: string;
-};
+export type Unit = SelectOption;
 
 export type Part = {
   partId: number;

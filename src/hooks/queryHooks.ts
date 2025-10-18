@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import type { AxiosError } from 'axios';
 import useAxiosPrivate from './useAxiosPrivate';
 import URLS from '../util/urls';
 import useAxiosAdmin from './useAxiosAdmin';
@@ -27,22 +28,25 @@ function buildQueryString(
 
 // Create query
 export const createQueryHook =
-  <T>(key: keyof typeof URLS, admin = false) =>
-  <T>(
+  <TData = unknown, K extends keyof typeof URLS = keyof typeof URLS>(
+    key: K,
+    admin = false,
+  ) =>
+  (
     params: Record<
       string,
       string | undefined | null | number | boolean
     > | null = null,
-    options = {},
+    options?: UseQueryOptions<TData, AxiosError, TData>,
   ) => {
     const axios = admin ? useAxiosAdmin() : useAxiosPrivate();
     const queryKey = [URLS[key], ...Object.values(params ?? {})];
 
-    return useQuery<T>({
+    return useQuery<TData, AxiosError>({
       queryKey,
       queryFn: async () => {
         const queryString = buildQueryString(params);
-        const response = await axios.get(`${URLS[key]}${queryString}`);
+        const response = await axios.get<TData>(`${URLS[key]}${queryString}`);
         return response.data;
       },
       ...options,
