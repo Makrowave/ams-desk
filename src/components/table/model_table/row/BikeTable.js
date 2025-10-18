@@ -165,7 +165,7 @@ export function BikeTable({ model, placeId }) {
             refetch={refetch}
             bikeId={row.original.id}
             basePrice={model.price}
-            placeId={row.original.placeId}
+            placeId={row.original.place}
           />
         </MaterialModal>
 
