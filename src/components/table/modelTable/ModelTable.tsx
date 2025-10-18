@@ -188,7 +188,7 @@ const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
             />
           }
         >
-          <AddBikeModal modelId={row.original.modelId} placeId={0} />
+          <AddBikeModal modelId={row.original.modelId} />
         </MaterialModal>,
         <MaterialModal
           label={'Zmień kolor'}

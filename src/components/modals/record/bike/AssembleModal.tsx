@@ -1,13 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import useAxiosPrivate from '@/hooks/useAxiosPrivate';
-import ErrorDisplay from '@/components/error/ErrorDisplay';
-import URLS, { URLKEYS } from '@/util/urls';
-import FetchSelect from '@/components/filtering/FetchSelect';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
+import ErrorDisplay from '../../../error/ErrorDisplay';
+import URLS, { URLKEYS } from '../../../../util/urls';
+import FetchSelect from '../../../filtering/FetchSelect';
 import { Button } from '@mui/material';
+import { BikeModalProps } from '../../types/modalTypes';
 
-const MoveModal = ({ bikeId, closeModal }) => {
-  const [place, setPlace] = useState('');
+const AssembleModal = ({ bikeId, closeModal }: BikeModalProps) => {
+  const [employeeId, setEmployeeId] = useState(0);
   const [error, setError] = useState('');
   const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
@@ -16,7 +17,8 @@ const MoveModal = ({ bikeId, closeModal }) => {
       return await axiosPrivate.put(
         URLS.Bikes2 + bikeId,
         JSON.stringify({
-          placeId: place,
+          assembledBy: employeeId.toString(),
+          statusId: 2,
         }),
         {
           headers: { 'Content-Type': 'application/json' },
@@ -28,7 +30,7 @@ const MoveModal = ({ bikeId, closeModal }) => {
         queryKey: [URLS.Bikes],
         exact: false,
       });
-      closeModal();
+      if (closeModal) closeModal();
     },
     onError: (error) => {
       setError(error.message);
@@ -39,23 +41,23 @@ const MoveModal = ({ bikeId, closeModal }) => {
     <>
       <ErrorDisplay message={error} isVisible={error !== ''} />
       <FetchSelect
-        value={place}
-        onChange={setPlace}
-        urlKey={URLKEYS.Places}
-        defaultValue={''}
-        label="Dokąd"
+        value={employeeId}
+        onChange={setEmployeeId}
+        urlKey={URLKEYS.Employees}
+        defaultValue={0}
+        label="Pracownik"
         validated
       />
       <Button
         variant={'contained'}
         color={'primary'}
         onClick={() => mutation.mutate()}
-        disabled={place === ''}
+        disabled={employeeId === 0}
       >
-        Przenieś
+        Złóż
       </Button>
     </>
   );
 };
 
-export default MoveModal;
+export default AssembleModal;

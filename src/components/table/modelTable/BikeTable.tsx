@@ -140,7 +140,7 @@ const BikeTable = ({ model, placeId }: Props) => {
             </Tooltip>
           }
         >
-          <MoveModal refetch={refetch} bikeId={row.original.id} />
+          <MoveModal bikeId={row.original.id} />
         </MaterialModal>
 
         <MaterialModal
@@ -153,7 +153,7 @@ const BikeTable = ({ model, placeId }: Props) => {
             </Tooltip>
           }
         >
-          <AssembleModal refetch={refetch} bikeId={row.original.id} />
+          <AssembleModal bikeId={row.original.id} />
         </MaterialModal>
 
         <MaterialModal
@@ -167,7 +167,6 @@ const BikeTable = ({ model, placeId }: Props) => {
           }
         >
           <SellModal
-            refetch={refetch}
             bikeId={row.original.id}
             basePrice={model.price}
             placeId={row.original.place}
@@ -184,7 +183,7 @@ const BikeTable = ({ model, placeId }: Props) => {
             </Tooltip>
           }
         >
-          <StatusModal refetch={refetch} bikeId={row.original.id} />
+          <StatusModal bikeId={row.original.id} />
         </MaterialModal>
 
         <MaterialModal
