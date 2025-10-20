@@ -1,3 +1,11 @@
+import {
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+} from '@mui/material';
 import { useState } from 'react';
 import type {
   Dispatch,
@@ -8,23 +16,23 @@ import type {
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 
 type PasswordProps = {
-  className?: string;
   value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  label?: string;
+  setValue: (v: string) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   onFocus?: (e: FocusEvent<HTMLInputElement, Element>) => void;
   onBlur?: (e: FocusEvent<HTMLInputElement, Element>) => void;
 };
 
 const Password = ({
-  className,
   value,
+  label = 'Hasło',
   setValue,
   onKeyDown,
   onFocus,
   onBlur,
 }: PasswordProps) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
     if (onFocus) onFocus(e);
@@ -35,10 +43,13 @@ const Password = ({
   };
 
   return (
-    <div className="relative h-fit bg-inherit transition-all flex items-center w-full">
-      <input
-        type={isVisible ? 'text' : 'password'}
-        className={className}
+    <FormControl>
+      <InputLabel htmlFor={`outlined-adornment-password-${label}`}>
+        {label}
+      </InputLabel>
+      <OutlinedInput
+        id={`outlined-adornment-password-${label}`}
+        type={showPassword ? 'text' : 'password'}
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
@@ -47,15 +58,18 @@ const Password = ({
         onFocus={handleFocus}
         onBlur={handleBlur}
         placeholder="Hasło"
+        endAdornment={
+          <InputAdornment position="end">
+            <IconButton
+              className="absolute right-1"
+              onClick={() => setShowPassword((p) => !p)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </IconButton>
+          </InputAdornment>
+        }
       />
-      <button
-        className="absolute right-1"
-        type="button"
-        onClick={() => setIsVisible(!isVisible)}
-      >
-        {isVisible ? <FaEyeSlash /> : <FaEye />}
-      </button>
-    </div>
+    </FormControl>
   );
 };
 

@@ -11,12 +11,13 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-import { appBarHeight } from '@/styles/layout';
+import { appBarHeight } from '../../styles/layout';
+import { Route } from '../routing/routes';
 
 const DRAWER_WIDTH_EXPANDED = 240;
 const DRAWER_WIDTH_COLLAPSED = 64;
 
-export default function SideBar({ baseUrl, links }) {
+const SideBar = ({ baseUrl, links }: { baseUrl: string; links: Route[] }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const path = usePathname();
 
@@ -71,16 +72,18 @@ export default function SideBar({ baseUrl, links }) {
         <List sx={{ pt: 1 }}>
           {links.map((item) => (
             <SideBarButton
-              href={baseUrl + item.url}
-              title={item.title}
+              href={baseUrl + item.href}
+              name={item.name}
               icon={item.icon}
-              current={path === baseUrl + item.url}
+              current={path === baseUrl + item.href}
               isExpanded={isExpanded}
-              key={item.url}
+              key={item.href}
             />
           ))}
         </List>
       </Box>
     </Drawer>
   );
-}
+};
+
+export default SideBar;

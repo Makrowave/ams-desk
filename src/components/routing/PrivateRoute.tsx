@@ -1,23 +1,23 @@
-"use client";
-import useAuth from "@/hooks/useAuth";
-import {usePathname, useRouter} from "next/navigation";
-import {useEffect, useState} from "react";
-import useRefreshUser from "@/hooks/useRefreshUser";
+'use client';
+import useAuth from '../../hooks/useAuth';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import useRefreshUser from '../../hooks/useRefreshUser';
 
-export default function PrivateRoute({children}) {
-  const {user, setPrevRoute} = useAuth();
+const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, setPrevRoute } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
-  const refreshUser = useRefreshUser()
+  const refreshUser = useRefreshUser();
   const [failedLogin, setFailedLogin] = useState(false);
 
   useEffect(() => {
     if (failedLogin) {
       setPrevRoute(pathname);
-      router.push("/login");
+      router.push('/login');
       return;
     }
-    if (user.token === "") {
+    if (user.token === '') {
       refreshUser()
         .then((response) => {
           if (!response) {
@@ -26,7 +26,7 @@ export default function PrivateRoute({children}) {
         })
         .catch(() => {
           setFailedLogin(true);
-        })
+        });
     }
   }, [user]);
 
@@ -34,4 +34,6 @@ export default function PrivateRoute({children}) {
     return null;
   }
   return <>{children}</>;
-}
+};
+
+export default PrivateRoute;

@@ -24,8 +24,8 @@ const themeOptions: ThemeOptions = {
       default: '#E8F3ED', // soft desaturated green
       paper: '#FFFFFF',
     },
-    // typography: work_sans.style,
   },
+  typography: work_sans.style,
 };
 
 export const theme = createTheme(themeOptions);

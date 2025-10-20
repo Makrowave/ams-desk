@@ -7,8 +7,20 @@ import {
   ListItemText,
   Tooltip,
 } from '@mui/material';
+import { Route } from '../routing/routes';
 
-export function SideBarButton({ href, title, current, icon, isExpanded }) {
+type SideBarButtonProps = {
+  current: boolean;
+  isExpanded: boolean;
+} & Route;
+
+export function SideBarButton({
+  href,
+  name,
+  current,
+  icon,
+  isExpanded,
+}: SideBarButtonProps) {
   const button = (
     <ListItemButton
       component={Link}
@@ -34,7 +46,7 @@ export function SideBarButton({ href, title, current, icon, isExpanded }) {
       </ListItemIcon>
       {isExpanded && (
         <ListItemText
-          primary={title}
+          primary={name}
           sx={{
             color: 'inherit',
             whiteSpace: 'nowrap',
@@ -50,7 +62,7 @@ export function SideBarButton({ href, title, current, icon, isExpanded }) {
   return (
     <ListItem disablePadding sx={{ display: 'block' }}>
       {!isExpanded ? (
-        <Tooltip title={title} placement="right">
+        <Tooltip title={name} placement="right">
           {button}
         </Tooltip>
       ) : (

@@ -2,6 +2,7 @@ import { Button, Stack, TextField, Typography } from '@mui/material';
 import ErrorDisplay from '../../error/ErrorDisplay';
 
 import { useEffect, useState } from 'react';
+import Password from '../../input/Password';
 
 type PasswordModalProps = {
   password: string;
@@ -48,33 +49,20 @@ export default function PasswordModal({
     <>
       <ErrorDisplay isVisible={error !== ''} message={error} />
       <Stack>
-        <Typography>Stare hasło</Typography>
-        <TextField
-          type="password"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
+        <Password label="Stare hasło" value={password} setValue={setPassword} />
       </Stack>
       <Stack>
-        <Typography>Nowe hasło</Typography>
-        <TextField
-          type="password"
+        <Password
+          label="Nowe hasło"
           value={newPassword}
-          onChange={(e) => {
-            setNewPassword(e.target.value);
-          }}
+          setValue={setNewPassword}
         />
       </Stack>
       <Stack>
-        <Typography>Potwierdź nowe hasło</Typography>
-        <TextField
-          type="password"
+        <Password
+          label="Potwierdź nowe hasło"
           value={confirmPassword}
-          onChange={(e) => {
-            setConfirmPassword(e.target.value);
-          }}
+          setValue={setConfirmPassword}
         />
       </Stack>
       <Button onClick={() => handleClick()}>Zmień hasło</Button>
