@@ -37,7 +37,7 @@ const BikeTable = ({ model, placeId }: Props) => {
   const { refetch, data, isPending, isError, error } = useBikesQuery<
     BikeRecord[]
   >({
-    id: model.modelId,
+    id: model.id,
     placeId: placeId,
   });
   const {

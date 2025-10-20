@@ -8,7 +8,7 @@ export type LoginModel = {
 };
 
 export type User = {
-  userId: number;
+  id: number;
   username: string;
   password?: string;
   employeeId?: number;

@@ -46,12 +46,12 @@ const SellModal = ({
             return [];
           }
           return oldData.map((model) => {
-            return model.modelId === data.modelId
+            return model.id === data.modelId
               ? {
                   ...model,
                   bikeCount: model.bikeCount - 1,
                   placeBikeCount: model.placeBikeCount.map((place) =>
-                    place.placeId === data.placeId
+                    place.id === data.placeId
                       ? {
                           ...place,
                           count: place.count - 1,

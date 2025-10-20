@@ -6,16 +6,16 @@ export type BikeRecord = {
 };
 
 export type PlaceBikeCount = {
-  placeId: number;
+  id: number;
   count: number;
   isAvailable: boolean;
 };
 
 export type ModelRecord = {
-  modelId: number;
+  id: number;
   productCode?: string;
   eanCode?: string;
-  modelName: string;
+  name: string;
   frameSize: number;
   wheelSize: number;
   manufacturerId: number;
@@ -32,12 +32,11 @@ export type ModelRecord = {
   placeBikeCount: PlaceBikeCount[];
 };
 
-export type Model = {
-  modelId: number;
+export type ModelDto = {
   productCode?: string;
   eanCode?: string;
   modelName: string;
-  frameSize: number;
+  frameSize?: number;
   wheelSize: number;
   isWoman: boolean;
   manufacturerId: number;
@@ -45,14 +44,14 @@ export type Model = {
   categoryId: number;
   primaryColor: string;
   secondaryColor: string;
-  price: number;
+  price?: number;
   isElectric: boolean;
   link?: string;
 };
 
 export type FavoriteModel = {
-  modelId: number;
-  modelName: string;
+  id: number;
+  name: string;
   manufacturerName: string;
   frameSize: number;
   wheelSize: number;
@@ -63,7 +62,7 @@ export type FavoriteModel = {
 };
 
 export type Bike = {
-  bikeId?: number;
+  id?: number;
   modelId?: number;
   placeId?: number;
   statusId?: number;

@@ -31,8 +31,8 @@ export type ShortRepair = {
 export type Unit = SelectOption;
 
 export type Part = {
-  partId: number;
-  partName: string;
+  id: number;
+  name: string;
   price: number;
   partTypeId: number;
   unitId: number;
@@ -41,14 +41,14 @@ export type Part = {
 };
 
 export type RepairStatus = {
-  repairStatusId: number;
+  id: number;
   name: string;
   color: string;
 };
 
 export type Service = {
-  serviceId?: number;
-  serviceName: string;
+  id?: number;
+  name: string;
   price: number;
   serviceCategoryId: number;
   serviceCategory?: ServiceCategory;
@@ -60,7 +60,7 @@ export type ServiceCategory = {
 };
 
 export type Repair = {
-  repairId: number;
+  id: number;
   phoneNumber: string;
   bikeName: string;
   issue: string;
@@ -83,7 +83,7 @@ export type Repair = {
 };
 
 export type PartUsed = {
-  partUsedId: number;
+  id: number;
   partId: number;
   repairId: number;
   amount: number;
@@ -93,7 +93,7 @@ export type PartUsed = {
 };
 
 export type ServiceDone = {
-  serviceDoneId: number;
+  id: number;
   serviceId: number;
   repairId: number;
   price: number;

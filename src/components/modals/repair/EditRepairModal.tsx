@@ -30,7 +30,7 @@ export default function EditRepairModal({
   const mutation = useMutation({
     mutationFn: async () => {
       const result = await axiosPrivate.put(
-        `${URLS.Repairs}UpdateIssue/${repair.repairId}`,
+        `${URLS.Repairs}UpdateIssue/${repair.id}`,
         {
           phoneNumber: phone,
           issue: issue,
@@ -57,7 +57,7 @@ export default function EditRepairModal({
           }));
 
           return oldData?.map((item) =>
-            item.repairId === data.repairId
+            item.id === data.repairId
               ? {
                   ...item,
                   phoneNumber: data.phoneNumber,

@@ -26,10 +26,9 @@ import URLS from '../../../util/urls';
 import ModelDetailsPanel from './ModelDetailsPanel';
 import { flexTableStyle } from '../../../styles/styles';
 import ColorPreview from '../ColorPreview';
-import { getLocalStorageItem } from '../../../util/localStorage';
 import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
 import { defaultFilters } from './Filters';
-import { Model, ModelRecord } from '../../../app/types/bikeTypes';
+import { ModelRecord } from '../../../app/types/bikeTypes';
 import { Place } from '../../../app/types/filterTypes';
 
 const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
@@ -133,7 +132,7 @@ const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
           ({
             id: place.name,
             accessorFn: (row) =>
-              row.placeBikeCount.find((p) => p.placeId === place.id)?.count,
+              row.placeBikeCount.find((p) => p.id === place.id)?.count,
             header: place.name,
             muiTableHeadCellProps: {
               align: 'center',
@@ -188,7 +187,7 @@ const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
             />
           }
         >
-          <AddBikeModal modelId={row.original.modelId} />
+          <AddBikeModal modelId={row.original.id} />
         </MaterialModal>,
         <MaterialModal
           label={'Zmień kolor'}
@@ -257,7 +256,7 @@ const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
               }
             >
               <DeleteModal
-                id={row.original.modelId}
+                id={row.original.id}
                 admin={true}
                 refetchQueryKey={URLS.Models}
                 url={URLS.Models}

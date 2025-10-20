@@ -1,25 +1,30 @@
 import { useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import useAxiosPrivate from '@/hooks/useAxiosPrivate';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 import ErrorDisplay from '../../../error/ErrorDisplay';
-import ColorInput from '@/components/input/ColorInput';
-import { REGEX } from '@/util/regex';
-import URLS, { URLKEYS } from '@/util/urls';
-import FetchSelect from '@/components/filtering/FetchSelect';
-import ValidatedTextField from '@/components/input/ValidatedTextField';
+import ColorInput from '../../../input/ColorInput';
+import { REGEX } from '../../../../util/regex';
+import URLS, { URLKEYS } from '../../../../util/urls';
+import FetchSelect from '../../../filtering/FetchSelect';
+import ValidatedTextField from '../../../input/ValidatedTextField';
 import { Box, Button, Checkbox, FormControlLabel } from '@mui/material';
+import { ModelDto, ModelRecord } from '../../../../app/types/bikeTypes';
 
-export default function AddModelModal({ closeModal }) {
-  const [model, setModel] = useState({
+export default function AddModelModal({
+  closeModal,
+}: {
+  closeModal: () => void;
+}) {
+  const [model, setModel] = useState<ModelDto>({
     modelName: '',
     productCode: '',
     eanCode: '',
-    frameSize: '',
-    price: '',
-    wheelSize: '',
-    manufacturerId: '',
-    categoryId: '',
-    colorId: '',
+    frameSize: 0,
+    price: undefined,
+    wheelSize: 0,
+    manufacturerId: 0,
+    categoryId: 0,
+    colorId: 0,
     primaryColor: '#FF00FF',
     secondaryColor: '#000000',
     isWoman: false,
@@ -32,7 +37,7 @@ export default function AddModelModal({ closeModal }) {
   const axiosPrivate = useAxiosPrivate();
   const [isValid, setIsValid] = useState(false);
 
-  const updateField = (key, value) => {
+  const updateField = (key: keyof ModelDto, value: ModelDto[typeof key]) => {
     setModel((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -44,12 +49,12 @@ export default function AddModelModal({ closeModal }) {
       return result.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueriesData(
+      queryClient.setQueriesData<ModelRecord[]>(
         {
           queryKey: [URLS.Models],
           exact: false,
         },
-        (oldData) => [...oldData, data],
+        (oldData = []) => [...oldData, data],
       );
       closeModal();
     },
@@ -65,14 +70,16 @@ export default function AddModelModal({ closeModal }) {
   const validate = () => {
     return (
       REGEX.MODEL_NAME.test(model.modelName) &&
-      REGEX.PRODUCT_NAME.test(model.productCode) &&
-      REGEX.EAN.test(model.eanCode) &&
-      REGEX.FRAME.test(model.frameSize) &&
-      REGEX.PRICE.test(model.price) &&
-      model.wheelSize !== '' &&
-      model.manufacturerId !== '' &&
-      model.categoryId !== '' &&
-      model.colorId !== '' &&
+      REGEX.PRODUCT_NAME.test(model.productCode ?? '') &&
+      REGEX.EAN.test(model.eanCode ?? '') &&
+      !!model.frameSize &&
+      !!model.price &&
+      REGEX.FRAME.test(model.frameSize.toString()) &&
+      REGEX.PRICE.test(model.price.toString()) &&
+      model.wheelSize !== 0 &&
+      model.manufacturerId !== 0 &&
+      model.categoryId !== 0 &&
+      model.colorId !== 0 &&
       !!model.primaryColor &&
       !!model.secondaryColor &&
       typeof model.isWoman === 'boolean' &&
@@ -117,7 +124,7 @@ export default function AddModelModal({ closeModal }) {
           />
           <ValidatedTextField
             label="Rozmiar ramy"
-            other={{ type: 'number' }}
+            type="number"
             value={model.frameSize}
             onChange={(v) => updateField('frameSize', v)}
             regex={REGEX.FRAME}
@@ -127,12 +134,12 @@ export default function AddModelModal({ closeModal }) {
             onChange={(v) => updateField('wheelSize', v)}
             urlKey={URLKEYS.WheelSizes}
             label="Rozmiar koła"
-            defaultValue=""
+            defaultValue={0}
             validated
           />
           <ValidatedTextField
             label="Cena"
-            other={{ type: 'number' }}
+            type="number"
             value={model.price}
             onChange={(v) => updateField('price', v)}
             regex={REGEX.PRICE}
@@ -153,7 +160,7 @@ export default function AddModelModal({ closeModal }) {
             onChange={(v) => updateField('manufacturerId', v)}
             urlKey={URLKEYS.Manufacturers}
             label="Producent"
-            defaultValue=""
+            defaultValue={0}
             validated
           />
           <FetchSelect
@@ -161,14 +168,14 @@ export default function AddModelModal({ closeModal }) {
             onChange={(v) => updateField('categoryId', v)}
             urlKey={URLKEYS.Categories}
             label="Kategoria"
-            defaultValue=""
+            defaultValue={0}
             validated
           />
           <FetchSelect
             value={model.colorId}
             onChange={(v) => updateField('colorId', v)}
             urlKey={URLKEYS.Colors}
-            defaultValue=""
+            defaultValue={0}
             label="Kolor"
             validated
           />

@@ -8,11 +8,11 @@ import { Button } from '@mui/material';
 import ValidatedTextField from '../../input/ValidatedTextField';
 
 const AddPartModal = ({ closeModal }: { closeModal: () => void }) => {
-  const [category, setCategory] = useState('');
-  const [type, setType] = useState('');
+  const [category, setCategory] = useState(0);
+  const [type, setType] = useState(0);
   const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [unit, setUnit] = useState('1');
+  const [price, setPrice] = useState<number | undefined>();
+  const [unit, setUnit] = useState(0);
 
   const [isNameValid, setIsNameValid] = useState(false);
   const [isPriceValid, setIsPriceValid] = useState(false);
@@ -50,9 +50,8 @@ const AddPartModal = ({ closeModal }: { closeModal: () => void }) => {
     setName(value);
   };
 
-  const updatePrice = (value: string) => {
-    const num = Number(value);
-    if (!isNaN(num) && num > 0 && num < 10000) {
+  const updatePrice = (value: number | undefined) => {
+    if (value !== undefined && !isNaN(value) && value > 0 && value < 10000) {
       setIsPriceValid(true);
     } else {
       setIsPriceValid(false);
@@ -60,28 +59,28 @@ const AddPartModal = ({ closeModal }: { closeModal: () => void }) => {
     setPrice(value);
   };
 
-  const handleCategoryChange = (value: string) => {
+  const handleCategoryChange = (value: number) => {
     setCategory(value);
-    setType('');
+    setType(0);
   };
 
   return (
     <>
       <FetchSelect
         value={category}
-        onChange={handleCategoryChange}
+        onChange={(v) => handleCategoryChange(v)}
         urlKey={URLKEYS.PartCategories}
-        defaultValue={''}
+        defaultValue={0}
         label="Kategoria"
         validated
       />
-      {category !== '' && (
+      {category !== 0 && (
         <FetchSelect
           value={type}
-          onChange={setType}
+          onChange={(v) => setType(v)}
           urlKey={URLKEYS.PartTypes}
           params={{ id: category }}
-          defaultValue={''}
+          defaultValue={0}
           label="Typ"
           validated
         />
@@ -89,27 +88,28 @@ const AddPartModal = ({ closeModal }: { closeModal: () => void }) => {
       <ValidatedTextField
         label="Nazwa"
         value={name}
-        onChange={updateName}
+        onChange={(v) => updateName(v ?? '')}
         regex={REGEX.POLISH_TEXT}
       />
       <ValidatedTextField
         label="Cena"
         value={price}
-        onChange={updatePrice}
+        type="number"
+        onChange={(v) => updatePrice(v)}
         regex={REGEX.PART_PRICE}
       />
       <FetchSelect
         value={unit}
-        onChange={setUnit}
+        onChange={(v) => setUnit(v)}
         urlKey={URLKEYS.Units}
-        defaultValue={''}
+        defaultValue={0}
         label="Jednostka"
         validated
       />
       <Button
         color={'primary'}
         variant={'contained'}
-        disabled={!(isNameValid && isPriceValid && type !== '' && unit !== '')}
+        disabled={!(isNameValid && isPriceValid && type !== 0 && unit !== 0)}
         onClick={() => mutation.mutate()}
       >
         Dodaj

@@ -20,13 +20,9 @@ const ChangeModelModal = ({ model, closeModal }: ModelModalProps) => {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const result = await axiosPrivate.put(
-        URLS.Models + model.modelId,
-        model,
-        {
-          headers: { 'Content-Type': 'application/json' },
-        },
-      );
+      const result = await axiosPrivate.put(URLS.Models + model.id, model, {
+        headers: { 'Content-Type': 'application/json' },
+      });
       return result.data;
     },
     onSuccess: (data) => {
@@ -38,7 +34,7 @@ const ChangeModelModal = ({ model, closeModal }: ModelModalProps) => {
         (oldData) => {
           return oldData
             ? oldData.map((m) =>
-                m.modelId === data.modelId
+                m.id === data.modelId
                   ? {
                       ...data,
                       bikeCount: m.bikeCount,
@@ -69,7 +65,7 @@ const ChangeModelModal = ({ model, closeModal }: ModelModalProps) => {
 
   const validate = () => {
     return (
-      REGEX.MODEL_NAME.test(editedModel.modelName) &&
+      REGEX.MODEL_NAME.test(editedModel.name) &&
       REGEX.PRODUCT_NAME.test(editedModel.productCode ?? '') &&
       REGEX.EAN.test(editedModel.eanCode ?? '') &&
       REGEX.FRAME.test(String(editedModel.frameSize ?? '')) &&
@@ -91,7 +87,7 @@ const ChangeModelModal = ({ model, closeModal }: ModelModalProps) => {
       <ErrorDisplay message={error} isVisible={error !== ''} />
       <ValidatedTextField
         label="Nazwa"
-        value={editedModel.modelName}
+        value={editedModel.name}
         onChange={(v) => updateField('modelName', v)}
         regex={REGEX.MODEL_NAME}
       />

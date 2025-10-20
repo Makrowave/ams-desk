@@ -23,7 +23,7 @@ const ColorModal = ({ model, closeModal }: ModelModalProps) => {
   const mutation = useMutation({
     mutationFn: async () => {
       const result = await axiosPrivate.put(
-        URLS.Models + model.modelId,
+        URLS.Models + model.id,
         JSON.stringify({
           ...model,
           colorId: color,
@@ -45,7 +45,7 @@ const ColorModal = ({ model, closeModal }: ModelModalProps) => {
         (oldData) => {
           return oldData
             ? oldData.map((m) =>
-                m.modelId === data.modelId
+                m.id === data.modelId
                   ? {
                       ...data,
                       bikeCount: m.bikeCount,
