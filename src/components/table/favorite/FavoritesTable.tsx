@@ -1,9 +1,12 @@
 'use client';
-import FavoriteModelRecord from '@/components/table/favorite/FavoriteModelRecord';
-import { useFavoritesQuery } from '@/hooks/queryHooks';
+import FavoriteModelRecord from './FavoriteModelRecord';
+import { useFavoritesQuery } from '../../../hooks/queryHooks';
+import { FavoriteModel } from '../../../app/types/bikeTypes';
 
-export default function FavoritesTable() {
-  const { data, isLoading, isError, error } = useFavoritesQuery(null, {
+const FavoritesTable = () => {
+  const { data, isLoading, isError, error } = useFavoritesQuery<
+    FavoriteModel[]
+  >(null, {
     refetchInterval: 5000,
   });
 
@@ -23,9 +26,11 @@ export default function FavoritesTable() {
         {!isError &&
           !isLoading &&
           data?.map((model) => (
-            <FavoriteModelRecord key={model.modelId} model={model} />
+            <FavoriteModelRecord key={model.id} model={model} />
           ))}
       </tbody>
     </table>
   );
-}
+};
+
+export default FavoritesTable;

@@ -1,24 +1,33 @@
 import { Box, Button, MenuItem, Paper, Select } from '@mui/material';
 import { DateCalendar, DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
-export default function TimeSelector({
+export type TimeSelectorProps = {
+  interval: string;
+  setInterval: (value: string) => void;
+  since: string | null;
+  setSince: Dispatch<SetStateAction<string | null>>;
+  until: string | null;
+  setUntil: Dispatch<SetStateAction<string | null>>;
+};
+
+const TimeSelector = ({
   interval,
   setInterval,
   since,
   setSince,
   until,
   setUntil,
-}) {
+}: TimeSelectorProps) => {
   const [selectedInterval, setSelectedInterval] = useState(3);
-  const setLatestInterval = (days) => {
+  const setLatestInterval = (days: number) => {
     setSince(
       new Date(Date.now() - days * 24 * 60 * 60 * 1000)
         .toISOString()
-        .split('T')[0],
+        .split('T')[0] ?? null,
     );
-    setUntil(new Date().toISOString().split('T')[0]);
+    setUntil(new Date().toISOString().split('T')[0] ?? null);
   };
 
   return (
@@ -43,7 +52,7 @@ export default function TimeSelector({
       <DatePicker
         value={since ? dayjs(since) : null}
         onChange={(v) => {
-          setSince(v);
+          setSince(v?.format('DD-MM-YYYY') ?? null);
           setSelectedInterval(0);
         }}
         label="Od"
@@ -56,7 +65,7 @@ export default function TimeSelector({
       <DatePicker
         value={until ? dayjs(until) : null}
         onChange={(v) => {
-          setUntil(v);
+          setUntil(v?.format('DD-MM-YYYY') ?? null);
           setSelectedInterval(0);
         }}
         label="Do"
@@ -192,4 +201,6 @@ export default function TimeSelector({
       </Box>
     </Paper>
   );
-}
+};
+
+export default TimeSelector;

@@ -1,9 +1,9 @@
 'use client';
-import SaleHistoryTable from '@/components/table/stats/SaleHistoryTable';
+import SaleHistoryTable from '../../../components/table/stats/SaleHistoryTable';
 import { useState } from 'react';
-import TimeSelector from '@/components/charts/TimeSelector';
+import TimeSelector from '../../../components/charts/TimeSelector';
 
-export default function SaleHistoryPage() {
+const SaleHistoryPage = () => {
   const [interval, setInterval] = useState('day');
   const [since, setSince] = useState(
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toLocaleDateString('sv-SE'),
@@ -23,4 +23,6 @@ export default function SaleHistoryPage() {
       <SaleHistoryTable since={since} until={until} />
     </>
   );
-}
+};
+
+export default SaleHistoryPage;

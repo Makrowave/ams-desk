@@ -10,7 +10,7 @@ import { User } from '../../../app/types/employeeTypes';
 type UserModalProps = {
   user?: User;
   action: 'post' | 'put';
-  closeModal: () => void;
+  closeModal?: () => void;
 };
 
 const UserModal = ({ user, action, closeModal }: UserModalProps) => {
@@ -57,7 +57,7 @@ const UserModal = ({ user, action, closeModal }: UserModalProps) => {
         queryKey: [URLS.Users],
         exact: false,
       });
-      closeModal();
+      if (closeModal) closeModal();
     },
     onError: (error) => {
       setError(error.message);

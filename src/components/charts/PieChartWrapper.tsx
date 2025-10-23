@@ -1,20 +1,31 @@
 import { useQuery } from '@tanstack/react-query';
 import { cloneElement, useState } from 'react';
-import useAxiosPrivate from '@/hooks/useAxiosPrivate';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { Box, Typography } from '@mui/material';
+import { chartColors } from '../../styles/colors';
+import { PieChart } from '../../app/types/stats';
 
-export default function PieChartWrapper({
+type PieChartWrapperProps = {
+  url: string;
+  queryObject: { [key: string]: any };
+  children: React.ReactElement;
+  showsQuantity?: boolean;
+  title: string;
+  className?: string;
+};
+
+const PieChartWrapper = ({
   url,
   queryObject,
   children,
-  showsQuantity,
+  showsQuantity = false,
   title,
   className,
-}) {
-  const [prevData, setPrevData] = useState([]);
+}: PieChartWrapperProps) => {
+  const [prevData, setPrevData] = useState<PieChart[]>([]);
   const queryKeys = Object.keys(queryObject);
   const queryValues = Object.values(queryObject);
-  const createQuery = (keys, values) => {
+  const createQuery = (keys: string[], values: any[]) => {
     let result = '?';
     for (let i = 0; i < keys.length; i++) {
       result += keys[i] + '=' + values[i] + '&';
@@ -22,7 +33,7 @@ export default function PieChartWrapper({
     return result.slice(0, -1);
   };
   const axiosPrivate = useAxiosPrivate();
-  const { data } = useQuery({
+  const { data } = useQuery<PieChart[]>({
     queryKey: [url, ...queryValues],
     queryFn: async () => {
       const response = await axiosPrivate.get(
@@ -40,7 +51,8 @@ export default function PieChartWrapper({
       series: [
         {
           data: preparePieChartData(data ?? prevData, showsQuantity),
-          arcLabel: (item) => `${item.value} ${showsQuantity ? '' : 'zł'}`,
+          arcLabel: (item: PieChart) =>
+            `${item.value} ${showsQuantity ? '' : 'zł'}`,
           arcLabelMinAngle: 20,
           arcLabelRadius: '60%',
         },
@@ -54,36 +66,9 @@ export default function PieChartWrapper({
       <ChildComponent />
     </Box>
   );
-}
+};
 
-const chartColors = [
-  '#3366CC',
-  '#DC3912',
-  '#FF9900',
-  '#109618',
-  '#990099',
-  '#3B3EAC',
-  '#0099C6',
-  '#DD4477',
-  '#66AA00',
-  '#B82E2E',
-  '#316395',
-  '#994499',
-  '#22AA99',
-  '#AAAA11',
-  '#6633CC',
-  '#E67300',
-  '#8B0707',
-  '#651067',
-  '#329262',
-  '#5574A6',
-  '#3B3EAC',
-  '#B77322',
-  '#16D620',
-  '#B91383',
-];
-
-const preparePieChartData = (data, isQuantity) => {
+const preparePieChartData = (data: PieChart[], isQuantity: boolean) => {
   let sortedData = [...data];
   sortedData.sort((a, b) => a.value - b.value);
 
@@ -96,3 +81,5 @@ const preparePieChartData = (data, isQuantity) => {
   mappedData.sort((a, b) => a.value - b.value);
   return mappedData;
 };
+
+export default PieChartWrapper;

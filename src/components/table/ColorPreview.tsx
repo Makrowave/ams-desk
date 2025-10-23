@@ -1,12 +1,12 @@
 import { FaBan } from 'react-icons/fa6';
 
 type Props = {
-  primaryColor: string | null;
-  secondaryColor: string | null;
+  primaryColor: string | undefined;
+  secondaryColor: string | undefined;
 };
 
 const ColorPreview = ({ primaryColor, secondaryColor }: Props) => {
-  return primaryColor === null || secondaryColor === null ? (
+  return !!primaryColor || !!secondaryColor ? (
     <FaBan className="h-6 w-6 mr-3" />
   ) : (
     <div

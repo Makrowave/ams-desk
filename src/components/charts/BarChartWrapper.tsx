@@ -1,36 +1,51 @@
 import { useQuery } from '@tanstack/react-query';
-import { cloneElement, useEffect, useRef, useState } from 'react';
-import useAxiosPrivate from '@/hooks/useAxiosPrivate';
+import { cloneElement, useRef, useState } from 'react';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {
   FaChartBar,
   FaChartColumn,
   FaChevronDown,
   FaChevronUp,
 } from 'react-icons/fa6';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, Collapse, IconButton, Typography } from '@mui/material';
+import { BarChartData } from '../../app/types/stats';
+import { chartColors } from '../../styles/colors';
 
-export default function BarChartWrapper({
+type BarChartWrapperProps<T extends string> = {
+  url: string;
+  queryObject: { [key: string]: any };
+  children: React.ReactElement;
+  title: string;
+  isStackedByDefault?: boolean;
+  collapsible?: boolean;
+  dataKey: T;
+  hideSelectors?: boolean;
+  seriesProps?: { [key: string]: any };
+};
+
+const BarChartWrapper = <T extends string>({
   url,
   queryObject,
   children,
-  isStackedByDefault,
+  isStackedByDefault = true,
   title,
-  className,
-  collapsible,
+  collapsible = false,
   dataKey,
   hideSelectors,
   seriesProps = {},
-}) {
-  const [prevData, setPrevData] = useState([]);
+}: BarChartWrapperProps<T>) => {
+  const [prevData, setPrevData] = useState<BarChartData<T>[]>([]);
   const queryKeys = Object.keys(queryObject);
   const queryValues = Object.values(queryObject);
-  const [seriesToggles, setSeriesToggles] = useState({});
-  const [height, setHeight] = useState();
+  const [seriesToggles, setSeriesToggles] = useState<Record<string, boolean>>(
+    {},
+  );
+  // const [height, setHeight] = useState<string | undefined>();
   const [isOpen, setIsOpen] = useState(true);
   const [isStacked, setIsStacked] = useState(isStackedByDefault);
-  const contentRef = useRef(null);
+  // const contentRef = useRef<HTMLDivElement | null>(null);
 
-  const createQuery = (keys, values) => {
+  const createQuery = (keys: string[], values: any[]) => {
     let result = '?';
     for (let i = 0; i < keys.length; i++) {
       result += keys[i] + '=' + values[i] + '&';
@@ -38,16 +53,20 @@ export default function BarChartWrapper({
     return result.slice(0, -1);
   };
   const axiosPrivate = useAxiosPrivate();
-  const { data } = useQuery({
+  const { data } = useQuery<BarChartData<T>[]>({
     queryKey: [url, ...queryValues],
     queryFn: async () => {
-      const response = await axiosPrivate.get(
+      const response = await axiosPrivate.get<BarChartData<T>[]>(
         `${url}${createQuery(queryKeys, queryValues)}`,
       );
-      const newToggles = Object.keys(response.data[0]).reduce((acc, key) => {
-        acc[key] = true;
+      const responseKeys = Object.keys(
+        response.data[0] ?? {},
+      ) as (keyof BarChartData<T>)[];
+
+      const newToggles = responseKeys.reduce((acc, key) => {
+        acc = { ...acc, [key]: true };
         return acc;
-      }, {});
+      }, {}) as Record<string, boolean>;
       delete newToggles[dataKey];
       if (prevData.length === 0 || newToggles !== seriesToggles) {
         setSeriesToggles(newToggles);
@@ -58,7 +77,10 @@ export default function BarChartWrapper({
     placeholderData: prevData,
   });
 
-  const createSeries = (data, blacklist) => {
+  const createSeries = (
+    data: BarChartData<T>[],
+    blacklist: Record<string, boolean>,
+  ) => {
     return Object.keys(data[0] ?? {})
       .filter((item) => item !== dataKey)
       .map((key, index) => ({
@@ -71,11 +93,11 @@ export default function BarChartWrapper({
       .filter((item) => blacklist[item.dataKey]);
   };
 
-  useEffect(() => {
-    if (contentRef.current) {
-      setHeight(isOpen ? `${contentRef.current.scrollHeight}px` : '0px');
-    }
-  }, [isOpen]);
+  // useEffect(() => {
+  //   if (contentRef.current) {
+  //     setHeight(isOpen ? `${contentRef.current.scrollHeight}px` : '0px');
+  //   }
+  // }, [isOpen]);
 
   const ChildComponent = () => {
     return cloneElement(children, {
@@ -88,7 +110,7 @@ export default function BarChartWrapper({
   };
 
   return (
-    <div className={`${className} flex flex-col`}>
+    <div className={`flex flex-col`}>
       <Box className="flex items-center justify-between flex-wrap relative">
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           {collapsible && (
@@ -123,36 +145,12 @@ export default function BarChartWrapper({
           {isStacked ? <FaChartBar /> : <FaChartColumn />}
         </IconButton>
       </Box>
-      <Box sx={{ height: `${height}px` }} ref={contentRef}>
+      {/* {<Box sx={{ height: `${height}px` }} ref={contentRef}>} */}
+      <Collapse in={isOpen || !collapsible}>
         <ChildComponent />
-      </Box>
+      </Collapse>
     </div>
   );
-}
+};
 
-const chartColors = [
-  '#3366CC',
-  '#DC3912',
-  '#FF9900',
-  '#109618',
-  '#990099',
-  '#DD4477',
-  '#0099C6',
-  '#3B3EAC',
-  '#66AA00',
-  '#B82E2E',
-  '#316395',
-  '#994499',
-  '#22AA99',
-  '#AAAA11',
-  '#6633CC',
-  '#E67300',
-  '#8B0707',
-  '#651067',
-  '#329262',
-  '#5574A6',
-  '#3B3EAC',
-  '#B77322',
-  '#16D620',
-  '#B91383',
-];
+export default BarChartWrapper;

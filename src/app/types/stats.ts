@@ -11,10 +11,10 @@ export type SoldBike = {
   discountPercent: number;
   saleDate: string;
 };
-export type Series<T> = {
-  label: string;
-  data: T[];
-};
+// export type Series<T> = {
+//   label: string;
+//   data: T[];
+// };
 export type PieChart = {
   id: number;
   name: string;
@@ -25,4 +25,11 @@ export type PieChart = {
 export type DateAndPrice = {
   date: string;
   price: number;
+};
+export type BarChartData<T extends string> = {
+  [key in T]: string;
+} & BarChartFields;
+
+type BarChartFields = {
+  [key: string]: number;
 };
