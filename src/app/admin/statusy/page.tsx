@@ -2,9 +2,10 @@
 import { useStatusesQuery } from '../../../hooks/queryHooks';
 import AdminTable from '../../../components/table/AdminTable';
 import URLS from '../../../util/urls';
+import { Status } from '../../../types/filterTypes';
 
-const StatusPanel = () => {
-  const { data, isLoading, isError } = useStatusesQuery();
+function StatusPanel() {
+  const { data, isLoading, isError } = useStatusesQuery<Status[]>();
   const rowFormat = [
     { key: '', label: 'Id', input: 'blank' },
     { key: 'statusName', label: 'Nazwa', input: 'text' },
@@ -23,6 +24,6 @@ const StatusPanel = () => {
       )}
     </div>
   );
-};
+}
 
 export default StatusPanel;

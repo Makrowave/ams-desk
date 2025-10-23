@@ -6,11 +6,11 @@ export default function CancelRepairModal({
   closeModal,
 }: {
   onClick: (status: REPAIR_STATUS) => void;
-  closeModal: () => void;
+  closeModal?: () => void;
 }) {
   const handleClick = () => {
     onClick(REPAIR_STATUS.Cancelled);
-    closeModal();
+    if (closeModal) closeModal();
   };
 
   return (

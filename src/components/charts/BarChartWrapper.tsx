@@ -8,7 +8,7 @@ import {
   FaChevronUp,
 } from 'react-icons/fa6';
 import { Box, Collapse, IconButton, Typography } from '@mui/material';
-import { BarChartData } from '../../app/types/stats';
+import { BarChartData } from '../../types/stats';
 import { chartColors } from '../../styles/colors';
 
 type BarChartWrapperProps<T extends string> = {

@@ -7,7 +7,7 @@ import ValidatedTextField from '../../../input/ValidatedTextField';
 import { Button } from '@mui/material';
 import { REGEX } from '../../../../util/regex';
 import { ModelModalProps } from '../../types/modalTypes';
-import { ModelRecord } from '../../../../app/types/bikeTypes';
+import { ModelRecord } from '../../../../types/bikeTypes';
 
 const AddEanModal = ({ model, closeModal }: ModelModalProps) => {
   const [ean, setEan] = useState(model.eanCode);

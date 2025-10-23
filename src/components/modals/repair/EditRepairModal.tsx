@@ -7,12 +7,12 @@ import { REGEX } from '../../../util/regex';
 import ValidatedTextarea from '../../input/ValidatedTextarea';
 import { Button } from '@mui/material';
 import { useState } from 'react';
-import { Repair } from '../../../app/types/repairTypes';
+import { Repair } from '../../../types/repairTypes';
 
 type EditRepairModalProps = {
   repair: Repair;
   updateRepair: React.Dispatch<React.SetStateAction<Repair>>;
-  closeModal: () => void;
+  closeModal?: () => void;
 };
 
 export default function EditRepairModal({
@@ -25,7 +25,7 @@ export default function EditRepairModal({
   const [phone, setPhone] = useState(repair.phoneNumber);
   const [place, setPlace] = useState(repair.placeId);
   const [bike, setBike] = useState(repair.bikeName);
-  const [issue, setIssue] = useState(repair.issue);
+  const [issue, setIssue] = useState<string | undefined>(repair.issue);
   const [employee, setEmployee] = useState(repair.takeInEmployeeId);
   const mutation = useMutation({
     mutationFn: async () => {
@@ -45,7 +45,7 @@ export default function EditRepairModal({
       queryClient.setQueriesData<Repair[]>(
         { queryKey: [URLS.Repairs], exact: false },
         (oldData) => {
-          closeModal();
+          if (closeModal) closeModal();
           updateRepair((prev) => ({
             ...prev,
             phoneNumber: data.phoneNumber,
@@ -83,7 +83,7 @@ export default function EditRepairModal({
           localStorage.setItem('repairModal:defaultPlace', `${value}`);
         }}
         urlKey={URLKEYS.Places}
-        defaultValue={''}
+        defaultValue={0}
         label="Miejsce przyjęcia"
         validated
       />
@@ -92,19 +92,19 @@ export default function EditRepairModal({
         onChange={setEmployee}
         urlKey={URLKEYS.Employees}
         label={'Kto przyjmuje'}
-        defaultValue={''}
+        defaultValue={0}
         validated
       />
       <ValidatedTextField
         label="Telefon"
         value={phone}
-        onChange={setPhone}
+        onChange={(v) => setPhone(v ?? '')}
         regex={REGEX.PHONE}
       />
       <ValidatedTextField
         label="Rower"
         value={bike}
-        onChange={setBike}
+        onChange={(v) => setBike(v ?? '')}
         regex={REGEX.POLISH_TEXT}
       />
       <ValidatedTextarea
@@ -120,13 +120,13 @@ export default function EditRepairModal({
         disabled={
           !(
             REGEX.POLISH_TEXT.test(bike) &&
-            REGEX.POLISH_TEXT.test(issue) &&
+            REGEX.POLISH_TEXT.test(issue ?? '') &&
             REGEX.PHONE.test(phone) &&
-            place !== '' &&
-            employee !== ''
+            place !== 0 &&
+            employee !== 0
           )
         }
-        onClick={mutation.mutate}
+        onClick={() => mutation.mutate()}
       >
         Edytuj
       </Button>

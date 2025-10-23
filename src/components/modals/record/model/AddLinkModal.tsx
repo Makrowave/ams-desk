@@ -7,7 +7,7 @@ import ValidatedTextField from '../../../input/ValidatedTextField';
 import { REGEX } from '../../../../util/regex';
 import { Button } from '@mui/material';
 import { ModelModalProps } from '../../types/modalTypes';
-import { ModelRecord } from '../../../../app/types/bikeTypes';
+import { ModelRecord } from '../../../../types/bikeTypes';
 
 const AddLinkModal = ({ model, closeModal }: ModelModalProps) => {
   const [link, setLink] = useState<string>();

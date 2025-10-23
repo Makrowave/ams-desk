@@ -5,16 +5,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosAdmin from '../../../hooks/useAxiosAdmin';
 import URLS, { URLKEYS } from '../../../util/urls';
 import FetchSelect from '../../filtering/FetchSelect';
-import { Service } from '../../../app/types/repairTypes';
+import { Service } from '../../../types/repairTypes';
 import ValidatedTextField from '../../input/ValidatedTextField';
 
-export default function ModifyServiceModal({
+const ModifyServiceModal = ({
   service,
   closeModal,
 }: {
   service: Service;
   closeModal?: () => void;
-}) {
+}) => {
   const [category, setCategory] = useState(service.serviceCategoryId);
   const [name, setName] = useState(service.name);
   const [price, setPrice] = useState<number | undefined>(service.price);
@@ -103,15 +103,15 @@ export default function ModifyServiceModal({
             )}
           </div>
           <ValidatedTextField
-            className="w-full focus:outline-none"
-            placeholder="Cena"
-            type="text"
+            label="Cena"
             value={price}
-            onChange={v}
+            type="number"
+            onChange={updatePrice}
+            regex={REGEX.PRICE}
           />
         </div>
         <button
-          disabled={!(isNameValid && isPriceValid && category !== '')}
+          disabled={!(isNameValid && isPriceValid && category !== 0)}
           className="button-primary text-center disabled:bg-gray-400"
           onClick={() => mutation.mutate()}
         >
@@ -120,4 +120,6 @@ export default function ModifyServiceModal({
       </div>
     </>
   );
-}
+};
+
+export default ModifyServiceModal;

@@ -6,7 +6,7 @@ type Props = {
 };
 
 const ColorPreview = ({ primaryColor, secondaryColor }: Props) => {
-  return !!primaryColor || !!secondaryColor ? (
+  return !primaryColor || !secondaryColor ? (
     <FaBan className="h-6 w-6 mr-3" />
   ) : (
     <div

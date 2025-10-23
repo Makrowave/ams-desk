@@ -1,6 +1,6 @@
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import ValidatedTextField from '../../input/ValidatedTextField';
-import { Part } from '../../../app/types/repairTypes';
+import { Part } from '../../../types/repairTypes';
 import { useState, useEffect } from 'react';
 import { REGEX } from '../../../util/regex';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

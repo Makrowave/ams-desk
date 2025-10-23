@@ -16,7 +16,10 @@ export type MergeParts = {
 
 export type PartCategory = SelectOption;
 
-export type PartType = SelectOption;
+export type PartType = SelectOption & {
+  partCategoryId: number;
+  partCategory?: PartCategory;
+};
 
 export type ShortRepair = {
   id: number;

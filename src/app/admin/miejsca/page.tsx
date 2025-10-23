@@ -2,9 +2,10 @@
 import { usePlacesQuery } from '../../../hooks/queryHooks';
 import AdminTable from '../../../components/table/AdminTable';
 import URLS from '../../../util/urls';
+import { Place } from '../../../types/filterTypes';
 
-const PlacesPanel = () => {
-  const { data, isLoading, isError } = usePlacesQuery();
+function PlacesPanel() {
+  const { data, isLoading, isError } = usePlacesQuery<Place[]>();
   const newRowFormat = [
     { key: '', label: 'Id', input: 'blank' },
     { key: 'placeName', label: 'Nazwa', input: 'text' },
@@ -17,6 +18,6 @@ const PlacesPanel = () => {
       )}
     </div>
   );
-};
+}
 
 export default PlacesPanel;

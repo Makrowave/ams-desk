@@ -11,13 +11,13 @@ export default function RepairModal({
   employeeId?: number;
   onClick: (employeeId: number) => void;
   label: string;
-  closeModal: () => void;
+  closeModal?: () => void;
 }) {
   const [employee, setEmployee] = useState(employeeId ?? 0);
   const handleClick = () => {
     if (employee) {
       onClick(employee);
-      closeModal();
+      if (closeModal) closeModal();
     }
   };
 

@@ -8,7 +8,7 @@ import { Button, Checkbox, FormControlLabel } from '@mui/material';
 import { REGEX } from '../../../../util/regex';
 import ValidatedTextField from '../../../input/ValidatedTextField';
 import { ModelModalProps } from '../../types/modalTypes';
-import { ModelRecord } from '../../../../app/types/bikeTypes';
+import { ModelRecord } from '../../../../types/bikeTypes';
 
 const ChangeModelModal = ({ model, closeModal }: ModelModalProps) => {
   const [editedModel, setEditedModel] = useState(model);
@@ -88,7 +88,7 @@ const ChangeModelModal = ({ model, closeModal }: ModelModalProps) => {
       <ValidatedTextField
         label="Nazwa"
         value={editedModel.name}
-        onChange={(v) => updateField('modelName', v)}
+        onChange={(v) => updateField('name', v)}
         regex={REGEX.MODEL_NAME}
       />
       <ValidatedTextField

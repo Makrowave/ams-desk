@@ -2,8 +2,8 @@ import BikeTable from './BikeTable';
 import { useColorsQuery } from '../../../hooks/queryHooks';
 import { FaBan } from 'react-icons/fa6';
 import { Box, CircularProgress, Paper, Stack, Typography } from '@mui/material';
-import { ModelRecord } from '../../../app/types/bikeTypes';
-import { Color } from '../../../app/types/filterTypes';
+import { ModelRecord } from '../../../types/bikeTypes';
+import { Color } from '../../../types/filterTypes';
 
 type ModelDetailsPanelProps = {
   model: ModelRecord;

@@ -1,7 +1,8 @@
+'use client';
 import Box from '@mui/material/Box';
 import Login from '../../components/login/Login';
 
-const Home = () => {
+function Home() {
   return (
     <Box
       component={'main'}
@@ -10,5 +11,5 @@ const Home = () => {
       <Login />
     </Box>
   );
-};
+}
 export default Home;

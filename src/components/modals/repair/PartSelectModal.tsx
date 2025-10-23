@@ -7,8 +7,15 @@ import {
   usePartTypesQuery,
 } from '../../../hooks/queryHooks';
 import MaterialModal from '../../modals/MaterialModal';
+import { Part, PartCategory, PartType } from '../../../types/repairTypes';
+import { strFind } from '../../../util/repairsHelper';
 
-export default function PartSelectModal({ mutation, closeModal }) {
+type PartSelectModalProps = {
+  mutation: (part: Part) => void;
+  closeModal?: () => void;
+};
+
+const PartSelectModal = ({ mutation, closeModal }: PartSelectModalProps) => {
   const [categoryId, setCategoryId] = useState(0);
   const [typeId, setTypeId] = useState(0);
   const [text, setText] = useState('');
@@ -17,29 +24,29 @@ export default function PartSelectModal({ mutation, closeModal }) {
     data: catData,
     isLoading: catIsLoading,
     isError: catIsError,
-  } = usePartCategoriesQuery();
-
-  // Fetch parts based on selected part type
-  const {
-    data: partData,
-    isLoading: partIsLoading,
-    isError: partIsError,
-  } = useFilteredPartsQuery({
-    categoryId: categoryId,
-    typeId: typeId,
-  });
+  } = usePartCategoriesQuery<PartCategory[]>();
 
   //Fetch types based on selected category
   const {
     data: typeData,
     isLoading: typeIsLoading,
     isError: typeIsError,
-  } = usePartTypesQuery({ id: categoryId });
+  } = usePartTypesQuery<PartType[]>({ id: categoryId });
 
-  const handleOnClick = (record) => {
+  // Fetch parts based on selected part type
+  const {
+    data: partData,
+    isLoading: partIsLoading,
+    isError: partIsError,
+  } = useFilteredPartsQuery<Part[]>({
+    categoryId: categoryId,
+    typeId: typeId,
+  });
+
+  const handleOnClick = (record: Part) => {
     mutation(record);
     setText('');
-    closeModal();
+    if (closeModal) closeModal();
   };
 
   return (
@@ -56,22 +63,24 @@ export default function PartSelectModal({ mutation, closeModal }) {
             )}
             {!catIsLoading &&
               !catIsError &&
-              [{ id: 0, name: 'Wszystkie' }, ...catData].map((category) => (
-                <li
-                  key={category.id}
-                  className={`p-2 rounded-md cursor-pointer transition-all ${
-                    categoryId === category.id
-                      ? 'bg-blue-500 text-white'
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                  onClick={() => {
-                    setCategoryId(category.id);
-                    setTypeId(0);
-                  }}
-                >
-                  {category.name}
-                </li>
-              ))}
+              [{ id: 0, name: 'Wszystkie' }, ...(catData ?? [])].map(
+                (category) => (
+                  <li
+                    key={category.id}
+                    className={`p-2 rounded-md cursor-pointer transition-all ${
+                      categoryId === category.id
+                        ? 'bg-blue-500 text-white'
+                        : 'hover:bg-gray-100 text-gray-700'
+                    }`}
+                    onClick={() => {
+                      setCategoryId(category.id);
+                      setTypeId(0);
+                    }}
+                  >
+                    {category.name}
+                  </li>
+                ),
+              )}
           </ul>
         </div>
 
@@ -84,19 +93,21 @@ export default function PartSelectModal({ mutation, closeModal }) {
             )}
             {!typeIsLoading &&
               !typeIsError &&
-              [{ id: 0, name: 'Wszystkie' }, ...typeData].map((type) => (
-                <li
-                  key={type.id}
-                  className={`p-2 rounded-md cursor-pointer transition-all ${
-                    typeId === type.id
-                      ? 'bg-emerald-400 text-white'
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                  onClick={() => setTypeId(type.id)}
-                >
-                  {type.name}
-                </li>
-              ))}
+              [{ id: 0, name: 'Wszystkie' }, ...(typeData ?? [])].map(
+                (type) => (
+                  <li
+                    key={type.id}
+                    className={`p-2 rounded-md cursor-pointer transition-all ${
+                      typeId === type.id
+                        ? 'bg-emerald-400 text-white'
+                        : 'hover:bg-gray-100 text-gray-700'
+                    }`}
+                    onClick={() => setTypeId(type.id)}
+                  >
+                    {type.name}
+                  </li>
+                ),
+              )}
           </ul>
         </div>
 
@@ -116,10 +127,10 @@ export default function PartSelectModal({ mutation, closeModal }) {
             )}
             {!partIsLoading &&
               !partIsError &&
-              partData
-                .filter((part) => strFind(part.partName, text))
+              partData!
+                .filter((part) => strFind(part.name, text))
                 .map((part) => (
-                  <li key={part.partId}>
+                  <li key={part.id}>
                     <button
                       className="flex justify-between w-full p-2 rounded-md cursor-pointer hover:bg-gray-100 text-gray-700 transition-all items-center"
                       onClick={() => handleOnClick(part)}
@@ -127,7 +138,7 @@ export default function PartSelectModal({ mutation, closeModal }) {
                       <div className="border-r border-gray-300 w-full text-start">
                         {categoryId === 0 && (
                           <span className="inline text-[11px] text-gray-400 underline">
-                            {part.partType.partCategory.partCategoryName}
+                            {part.partType?.partCategory?.name}
                           </span>
                         )}
                         {typeId === 0 && categoryId === 0 && (
@@ -137,10 +148,10 @@ export default function PartSelectModal({ mutation, closeModal }) {
                         )}
                         {typeId === 0 && (
                           <span className="inline text-[11px] text-gray-400 underline text-ellipsis">
-                            {part.partType.partTypeName}
+                            {part.partType?.name}
                           </span>
                         )}
-                        <span className="block">{part.partName}</span>
+                        <span className="block">{part.name}</span>
                       </div>
                       <div className="ml-2 min-w-16 text-end">
                         {part.price.toFixed(2)}
@@ -163,33 +174,6 @@ export default function PartSelectModal({ mutation, closeModal }) {
       </MaterialModal>
     </div>
   );
-}
-
-const strFind = (where, what) => {
-  if (typeof where !== 'string' || typeof what !== 'string') return false;
-  if (what === '') return true;
-  where = where.toLocaleLowerCase();
-  where = where
-    .split('')
-    .map((c) => polishDict[c] ?? c)
-    .join('');
-  what = what.toLocaleLowerCase();
-  what = what
-    .split('')
-    .map((c) => polishDict[c] ?? c)
-    .join('');
-
-  return where.includes(what);
 };
 
-const polishDict = {
-  ż: 'z',
-  ź: 'z',
-  ę: 'e',
-  ó: 'o',
-  ą: 'a',
-  ś: 's',
-  ł: 'l',
-  ć: 'c',
-  ń: 'n',
-};
+export default PartSelectModal;

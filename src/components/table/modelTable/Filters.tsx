@@ -10,6 +10,7 @@ import {
   FormControlLabel,
   FormGroup,
   Paper,
+  Stack,
   TextField,
   Typography,
 } from '@mui/material';
@@ -60,7 +61,7 @@ const Filters = ({
       >
         <Typography variant="h6">Filtry</Typography>
       </Box>
-      <FormGroup className={'flex-col gap-1.5'}>
+      <Stack component={'form'} spacing={2}>
         <TextField
           label="Nazwa"
           value={filters.name}
@@ -193,7 +194,7 @@ const Filters = ({
         >
           Reset
         </Button>
-      </FormGroup>
+      </Stack>
     </Paper>
   );
 };

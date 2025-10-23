@@ -6,7 +6,7 @@ import { MaterialReactTable, MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import { useMemo } from 'react';
 import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
-import { Bike } from '../../../app/types/bikeTypes';
+import { Bike } from '../../../types/bikeTypes';
 
 export default function ShortSaleHistoryTable() {
   const axiosPrivate = useAxiosPrivate();

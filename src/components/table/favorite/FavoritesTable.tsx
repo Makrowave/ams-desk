@@ -1,7 +1,7 @@
 'use client';
 import FavoriteModelRecord from './FavoriteModelRecord';
 import { useFavoritesQuery } from '../../../hooks/queryHooks';
-import { FavoriteModel } from '../../../app/types/bikeTypes';
+import { FavoriteModel } from '../../../types/bikeTypes';
 
 const FavoritesTable = () => {
   const { data, isLoading, isError, error } = useFavoritesQuery<

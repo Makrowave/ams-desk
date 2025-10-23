@@ -4,7 +4,7 @@ import { useState } from 'react';
 import BarChartWrapper from '../../../components/charts/BarChartWrapper';
 import TimeSelector from '../../../components/charts/TimeSelector';
 
-const RepairStatsPage = () => {
+function RepairStatsPage() {
   const [interval, setInterval] = useState('day');
   const [since, setSince] = useState<string | null>(
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toLocaleDateString('sv-SE'),
@@ -41,7 +41,7 @@ const RepairStatsPage = () => {
       </div>
     </>
   );
-};
+}
 
 export default RepairStatsPage;
 ``;

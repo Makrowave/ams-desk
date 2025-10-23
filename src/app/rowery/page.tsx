@@ -3,7 +3,7 @@ import Navigation from '../../components/navigation/Navigation';
 import PrivateRoute from '../../components/routing/PrivateRoute';
 import FilterModelTable from '../../components/table/modelTable/FilterModelTable';
 
-const Rowery = () => {
+function Rowery() {
   return (
     <PrivateRoute>
       <Navigation />
@@ -12,6 +12,6 @@ const Rowery = () => {
       </main>
     </PrivateRoute>
   );
-};
+}
 
 export default Rowery;

@@ -11,7 +11,7 @@ import PieChartWrapper from '../../../components/charts/PieChartWrapper';
 import TimeSelector from '../../../components/charts/TimeSelector';
 import Collapsible from '../../../components/Collapsible';
 
-const SaleStatsPage = () => {
+function SaleStatsPage() {
   const [interval, setInterval] = useState('day');
   const [since, setSince] = useState<string | null>(
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toLocaleDateString('sv-SE'),
@@ -233,6 +233,6 @@ const SaleStatsPage = () => {
       </div>
     </>
   );
-};
+}
 
 export default SaleStatsPage;

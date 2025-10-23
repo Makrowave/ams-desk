@@ -7,7 +7,7 @@ import FetchSelect from '../../../filtering/FetchSelect';
 import { Button } from '@mui/material';
 import ErrorDisplay from '../../../error/ErrorDisplay';
 import { ModelModalProps } from '../../types/modalTypes';
-import { ModelRecord } from '../../../../app/types/bikeTypes';
+import { ModelRecord } from '../../../../types/bikeTypes';
 
 const ColorModal = ({ model, closeModal }: ModelModalProps) => {
   const [primaryColor, setPrimaryColor] = useState(

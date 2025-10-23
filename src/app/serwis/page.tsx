@@ -2,11 +2,11 @@
 import PrivateRoute from '../../components/routing/PrivateRoute';
 import Navigation from '../../components/navigation/Navigation';
 import RepairTable from '../../components/repairs/RepairTable';
-import { REPAIR_STATUS } from '../../util/repairStatuses';
 import SideBar from '../../components/navigation/SideBar';
 import { repairsRoutes } from '../../components/routing/routes';
+import { createTableSrc, inProgress } from '../../util/repairsHelper';
 
-const RepairsPage = () => {
+function RepairsPage() {
   return (
     <PrivateRoute>
       <Navigation />
@@ -25,21 +25,6 @@ const RepairsPage = () => {
       </main>
     </PrivateRoute>
   );
-};
-
-const createTableSrc = (excluded: REPAIR_STATUS[]) => {
-  const result = excluded.reduce(
-    (src, exclude) => src + 'excluded=' + exclude + '&',
-    '/Repairs?',
-  );
-  return result.slice(0, result.length - 1);
-};
-
-const inProgress = [
-  REPAIR_STATUS.Collected,
-  REPAIR_STATUS.Finished,
-  REPAIR_STATUS.Notified,
-  REPAIR_STATUS.Cancelled,
-];
+}
 
 export default RepairsPage;

@@ -2,9 +2,10 @@
 import { useColorsQuery } from '../../../hooks/queryHooks';
 import AdminTable from '../../../components/table/AdminTable';
 import URLS from '../../../util/urls';
+import { Color } from '../../../types/filterTypes';
 
-const ColorsPanel = () => {
-  const { data, isLoading, isError } = useColorsQuery();
+function ColorsPanel() {
+  const { data, isLoading, isError } = useColorsQuery<Color[]>();
   const newRowFormat = [
     { key: '', label: 'Id', input: 'blank' },
     { key: 'colorName', label: 'Nazwa', input: 'text' },
@@ -17,6 +18,6 @@ const ColorsPanel = () => {
       )}
     </div>
   );
-};
+}
 
 export default ColorsPanel;

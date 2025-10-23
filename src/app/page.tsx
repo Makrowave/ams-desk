@@ -1,9 +1,11 @@
+'use client';
+
 import { Box, Paper, Typography } from '@mui/material';
 import Navigation from '../components/navigation/Navigation';
 import PrivateRoute from '../components/routing/PrivateRoute';
 import FavoritesTable from '../components/table/favorite/FavoritesTable';
 
-const Home = () => {
+export default function Home() {
   return (
     <PrivateRoute>
       <Navigation />
@@ -19,6 +21,7 @@ const Home = () => {
           }}
           elevation={3}
         >
+          ``
           <Typography variant="h4" component="h2" fontWeight={700} gutterBottom>
             Niski stan
           </Typography>
@@ -38,6 +41,4 @@ const Home = () => {
       </Box>
     </PrivateRoute>
   );
-};
-
-export default Home;
+}

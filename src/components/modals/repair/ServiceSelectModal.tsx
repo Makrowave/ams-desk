@@ -3,8 +3,18 @@ import {
   useServiceCategoriesQuery,
   useServicesFromCategoryQuery,
 } from '../../../hooks/queryHooks';
+import { Service, ServiceCategory } from '../../../types/repairTypes';
+import { strFind } from '../../../util/repairsHelper';
 
-export default function ServiceSelectModal({ mutation, closeModal }) {
+type ServiceSelectModalProps = {
+  mutation: (service: Service) => void;
+  closeModal?: () => void;
+};
+
+const ServiceSelectModal = ({
+  mutation,
+  closeModal,
+}: ServiceSelectModalProps) => {
   const [categoryId, setCategoryId] = useState(0);
   const [text, setText] = useState('');
   // Fetch categories
@@ -12,19 +22,19 @@ export default function ServiceSelectModal({ mutation, closeModal }) {
     data: catData,
     isLoading: catIsLoading,
     isError: catIsError,
-  } = useServiceCategoriesQuery();
+  } = useServiceCategoriesQuery<ServiceCategory[]>();
 
   // Fetch services based on selected category
   const {
     data: serData,
     isLoading: serIsLoading,
     isError: serIsError,
-  } = useServicesFromCategoryQuery({ id: categoryId });
+  } = useServicesFromCategoryQuery<Service[]>({ id: categoryId });
 
-  const handleOnClick = (record) => {
+  const handleOnClick = (record: Service) => {
     mutation(record);
     setText('');
-    closeModal();
+    if (closeModal) closeModal();
   };
 
   return (
@@ -38,19 +48,21 @@ export default function ServiceSelectModal({ mutation, closeModal }) {
           )}
           {!catIsLoading &&
             !catIsError &&
-            [{ id: 0, name: 'Wszystkie' }, ...catData].map((category) => (
-              <li
-                key={category.id}
-                className={`p-2 rounded-md cursor-pointer transition-all ${
-                  categoryId === category.id
-                    ? 'bg-blue-500 text-white'
-                    : 'hover:bg-gray-100 text-gray-700'
-                }`}
-                onClick={() => setCategoryId(category.id)}
-              >
-                {category.name}
-              </li>
-            ))}
+            [{ id: 0, name: 'Wszystkie' }, ...(catData ?? [])].map(
+              (category) => (
+                <li
+                  key={category.id}
+                  className={`p-2 rounded-md cursor-pointer transition-all ${
+                    categoryId === category.id
+                      ? 'bg-blue-500 text-white'
+                      : 'hover:bg-gray-100 text-gray-700'
+                  }`}
+                  onClick={() => setCategoryId(category.id)}
+                >
+                  {category.name}
+                </li>
+              ),
+            )}
         </ul>
       </div>
 
@@ -69,10 +81,10 @@ export default function ServiceSelectModal({ mutation, closeModal }) {
           )}
           {!serIsLoading &&
             !serIsError &&
-            serData
-              .filter((service) => strFind(service.serviceName, text))
+            serData!
+              .filter((service) => strFind(service.name, text))
               .map((service) => (
-                <li key={service.serviceId}>
+                <li key={service.id}>
                   <button
                     className="flex justify-between w-full p-2 rounded-md cursor-pointer hover:bg-gray-100 text-gray-700 transition-all items-center"
                     onClick={() => handleOnClick(service)}
@@ -80,10 +92,10 @@ export default function ServiceSelectModal({ mutation, closeModal }) {
                     <div className="border-r border-gray-300 w-full text-start">
                       {categoryId === 0 && (
                         <span className="block text-[11px] text-gray-400 underline">
-                          {service.serviceCategory.serviceCategoryName}
+                          {service.serviceCategory?.name}
                         </span>
                       )}
-                      {service.serviceName}
+                      {service.name}
                     </div>
                     <div className="ml-2 min-w-10 text-end">
                       {service.price}
@@ -95,33 +107,6 @@ export default function ServiceSelectModal({ mutation, closeModal }) {
       </div>
     </div>
   );
-}
-
-const strFind = (where, what) => {
-  if (typeof where !== 'string' || typeof what !== 'string') return false;
-  if (what === '') return true;
-  where = where.toLocaleLowerCase();
-  where = where
-    .split('')
-    .map((c) => polishDict[c] ?? c)
-    .join('');
-  what = what.toLocaleLowerCase();
-  what = what
-    .split('')
-    .map((c) => polishDict[c] ?? c)
-    .join('');
-
-  return where.includes(what);
 };
 
-const polishDict = {
-  ż: 'z',
-  ź: 'z',
-  ę: 'e',
-  ó: 'o',
-  ą: 'a',
-  ś: 's',
-  ł: 'l',
-  ć: 'c',
-  ń: 'n',
-};
+export default ServiceSelectModal;

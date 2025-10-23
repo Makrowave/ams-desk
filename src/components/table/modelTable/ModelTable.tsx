@@ -28,8 +28,8 @@ import { flexTableStyle } from '../../../styles/styles';
 import ColorPreview from '../ColorPreview';
 import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
 import { defaultFilters } from './Filters';
-import { ModelRecord } from '../../../app/types/bikeTypes';
-import { Place } from '../../../app/types/filterTypes';
+import { ModelRecord } from '../../../types/bikeTypes';
+import { Place } from '../../../types/filterTypes';
 
 const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
   const { isAdmin } = useAuth();
@@ -82,8 +82,8 @@ const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
         size: 50,
         Cell: ({ row }) => (
           <ColorPreview
-            primaryColor={row.original.primaryColor ?? null}
-            secondaryColor={row.original.secondaryColor ?? null}
+            primaryColor={row.original.primaryColor}
+            secondaryColor={row.original.secondaryColor}
           />
         ),
       },

@@ -1,3 +1,5 @@
+// 'use client';
+
 import MainLayout from '../components/MainLayout';
 import ProviderWrapper from '../components/providers/Providers';
 

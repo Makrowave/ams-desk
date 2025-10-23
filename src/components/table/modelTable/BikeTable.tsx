@@ -24,9 +24,9 @@ import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import { paperTableStyle } from '../../../styles/styles';
 import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
-import { Bike, BikeRecord, ModelRecord } from '../../../app/types/bikeTypes';
-import { Place, Status } from '../../../app/types/filterTypes';
-import { Employee } from '../../../app/types/employeeTypes';
+import { Bike, BikeRecord, ModelRecord } from '../../../types/bikeTypes';
+import { Place, Status } from '../../../types/filterTypes';
+import { Employee } from '../../../types/employeeTypes';
 
 type Props = {
   model: ModelRecord;

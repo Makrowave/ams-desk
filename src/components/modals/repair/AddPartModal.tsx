@@ -7,7 +7,7 @@ import FetchSelect from '../../filtering/FetchSelect';
 import { Button } from '@mui/material';
 import ValidatedTextField from '../../input/ValidatedTextField';
 
-const AddPartModal = ({ closeModal }: { closeModal: () => void }) => {
+const AddPartModal = ({ closeModal }: { closeModal?: () => void }) => {
   const [category, setCategory] = useState(0);
   const [type, setType] = useState(0);
   const [name, setName] = useState('');
@@ -37,7 +37,7 @@ const AddPartModal = ({ closeModal }: { closeModal: () => void }) => {
         queryKey: [URLS.Parts],
         exact: false,
       });
-      closeModal();
+      if (closeModal) closeModal();
     },
   });
 

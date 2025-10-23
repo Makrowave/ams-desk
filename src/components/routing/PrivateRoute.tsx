@@ -17,7 +17,7 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
       router.push('/login');
       return;
     }
-    if (user.token === '') {
+    if (!user.token) {
       refreshUser()
         .then((response) => {
           if (!response) {
@@ -28,7 +28,7 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
           setFailedLogin(true);
         });
     }
-  }, [user]);
+  }, [user.token]);
 
   if (!user.token) {
     return null;

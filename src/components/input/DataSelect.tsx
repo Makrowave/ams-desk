@@ -1,8 +1,5 @@
 import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import {
-  SelectOption,
-  SelectOptionWithColor,
-} from '../../app/types/selectTypes';
+import { SelectOption, SelectOptionWithColor } from '../../types/selectTypes';
 
 type DataSelectProps = {
   defaultValue: number;

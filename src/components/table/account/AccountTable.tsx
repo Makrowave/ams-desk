@@ -1,12 +1,13 @@
 'use client';
 import AccountRow from './AccountRow';
-import { useEmployeesQuery, useUsersQuery } from '@/hooks/queryHooks';
+import { useEmployeesQuery, useUsersQuery } from '../../../hooks/queryHooks';
+import { Employee, User } from '../../../types/employeeTypes';
 
-export default function AccountTable() {
-  const { data, isPending, isError, error } = useUsersQuery(null, {
+const AccountTable = () => {
+  const { data, isPending, isError, error } = useUsersQuery<User[]>(null, {
     refetchInterval: 5000,
   });
-  const employees = useEmployeesQuery();
+  const employees = useEmployeesQuery<Employee[]>();
   return (
     <table className="table w-full">
       <thead className="bg-secondary mb-px sticky top-0 z-10 shadow-lg h-10">
@@ -26,12 +27,12 @@ export default function AccountTable() {
           !employees.isError &&
           data.map((user) => {
             const employeeName = employees.data.find(
-              (e) => e.employeeId === user.employeeId,
-            )?.employeeName;
+              (e) => e.id === user.employeeId,
+            )?.name;
             return (
               <AccountRow
                 user={user}
-                key={user.userId}
+                key={user.id}
                 employeeName={employeeName ? employeeName : 'Brak'}
               />
             );
@@ -39,4 +40,6 @@ export default function AccountTable() {
       </tbody>
     </table>
   );
-}
+};
+
+export default AccountTable;

@@ -4,9 +4,9 @@ import { useServicesQuery } from '../../../hooks/queryHooks';
 import URLS, { URLKEYS } from '../../../util/urls';
 import AdminTable from '../../../components/table/AdminTable';
 import { Box } from '@mui/material';
-import { Service } from '../../types/repairTypes';
+import { Service } from '../../../types/repairTypes';
 
-const AdminRepairs = () => {
+function AdminRepairs() {
   const {
     isError: isServicesError,
     isLoading: isServicesLoading,
@@ -59,6 +59,6 @@ const AdminRepairs = () => {
       )}
     </Box>
   );
-};
+}
 
 export default AdminRepairs;

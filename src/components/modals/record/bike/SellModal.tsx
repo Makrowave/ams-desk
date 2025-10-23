@@ -7,7 +7,7 @@ import URLS from '../../../../util/urls';
 import { Button, Checkbox, FormControlLabel } from '@mui/material';
 import ValidatedTextField from '../../../input/ValidatedTextField';
 import { BikeModalProps } from '../../types/modalTypes';
-import { BikeRecord, ModelRecord } from '../../../../app/types/bikeTypes';
+import { BikeRecord, ModelRecord } from '../../../../types/bikeTypes';
 
 type SellModalProps = {
   basePrice: number;

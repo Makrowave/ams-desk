@@ -1,8 +1,9 @@
+'use client';
 import AdminLogin from '../../components/login/AdminLogin';
 import Navigation from '../../components/navigation/Navigation';
 import PrivateRoute from '../../components/routing/PrivateRoute';
 
-const AdminLoginPage = () => {
+function AdminLoginPage() {
   return (
     <PrivateRoute>
       <Navigation />
@@ -11,6 +12,6 @@ const AdminLoginPage = () => {
       </main>
     </PrivateRoute>
   );
-};
+}
 
 export default AdminLoginPage;

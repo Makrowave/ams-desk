@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import URLS from '../../../util/urls';
 import { Button, TextField } from '@mui/material';
-import { User } from '../../../app/types/employeeTypes';
+import { User } from '../../../types/employeeTypes';
 
 type UserModalProps = {
   user?: User;

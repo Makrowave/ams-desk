@@ -1,5 +1,5 @@
 import ColorPreview from '../ColorPreview';
-import { FavoriteModel } from '../../../app/types/bikeTypes';
+import { FavoriteModel } from '../../../types/bikeTypes';
 const FavoriteModelRecord = ({ model }: { model: FavoriteModel }) => {
   //Returns tailwind color class depending on bike count
   function colorCount(count: number) {

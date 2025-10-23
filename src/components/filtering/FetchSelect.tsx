@@ -2,7 +2,7 @@
 import { DataSelect } from '../input/DataSelect';
 import { createQueryHook } from '../../hooks/queryHooks';
 import { URLKEYS } from '../../util/urls';
-import { SelectOption } from '../../app/types/selectTypes';
+import { SelectOption } from '../../types/selectTypes';
 
 type FetchSelectProps = {
   urlKey: keyof typeof URLKEYS;
@@ -25,7 +25,7 @@ const FetchSelect = <T extends SelectOption>({
   validated,
 }: FetchSelectProps) => {
   const hook = createQueryHook(urlKey);
-  const { data, isPending, isError, error, refetch } = hook(params);
+  const { data, isPending, isError, error, refetch } = hook<T[]>(params);
 
   if (isPending) {
     return (

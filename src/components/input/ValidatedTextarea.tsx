@@ -2,8 +2,8 @@ import { TextField, TextFieldProps } from '@mui/material';
 
 type ValidatedTextareaProps = {
   placeholder: string;
-  value: string;
-  onChange: (value: string) => void;
+  value: string | undefined;
+  onChange: (value: string | undefined) => void;
   regex: RegExp;
   otherProps?: Partial<TextFieldProps>;
 };
@@ -22,7 +22,7 @@ export default function ValidatedTextarea({
       value={value}
       multiline
       onChange={(e) => onChange(e.target.value)}
-      error={!regex.test(value)}
+      error={!regex.test(value ?? '')}
     />
   );
 }

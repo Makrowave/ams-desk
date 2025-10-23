@@ -7,13 +7,14 @@ import { useEmployeesQuery } from '../../../hooks/queryHooks';
 import URLS from '../../../util/urls';
 import MaterialModal from '../../../components/modals/MaterialModal';
 import { Button } from '@mui/material';
+import { Employee } from '../../../types/employeeTypes';
 
-const EmployeesPanel = () => {
+function EmployeesPanel() {
   const {
     data: employeeData,
     error: isEmployeeError,
     isLoading: isEmployeeLoading,
-  } = useEmployeesQuery();
+  } = useEmployeesQuery<Employee[]>();
   const employeeRowFormat = [
     { key: '', label: 'Id', input: 'blank' },
     { key: 'employeeName', label: 'Pracownik', input: 'text' },
@@ -60,6 +61,6 @@ const EmployeesPanel = () => {
       </div>
     </>
   );
-};
+}
 
 export default EmployeesPanel;

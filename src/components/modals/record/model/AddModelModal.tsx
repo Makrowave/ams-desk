@@ -8,7 +8,7 @@ import URLS, { URLKEYS } from '../../../../util/urls';
 import FetchSelect from '../../../filtering/FetchSelect';
 import ValidatedTextField from '../../../input/ValidatedTextField';
 import { Box, Button, Checkbox, FormControlLabel } from '@mui/material';
-import { ModelDto, ModelRecord } from '../../../../app/types/bikeTypes';
+import { ModelDto, ModelRecord } from '../../../../types/bikeTypes';
 
 export default function AddModelModal({
   closeModal,

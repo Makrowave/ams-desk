@@ -2,9 +2,10 @@
 import { useCategoriesQuery } from '../../../hooks/queryHooks';
 import AdminTable from '../../../components/table/AdminTable';
 import URLS from '../../../util/urls';
+import { Category } from '../../../types/filterTypes';
 
-const CategoriesPanel = () => {
-  const { data, isLoading, isError } = useCategoriesQuery();
+function CategoriesPanel() {
+  const { data, isLoading, isError } = useCategoriesQuery<Category[]>();
   const newRowFormat = [
     { key: '', label: 'Id', input: 'blank' },
     { key: 'categoryName', label: 'Nazwa', input: 'text' },
@@ -20,6 +21,6 @@ const CategoriesPanel = () => {
       )}
     </div>
   );
-};
+}
 
 export default CategoriesPanel;

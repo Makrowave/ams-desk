@@ -1,4 +1,4 @@
-import { ModelRecord } from '../../../app/types/bikeTypes';
+import { ModelRecord } from '../../../types/bikeTypes';
 
 export type ModalProps = {
   closeModal?: () => void;

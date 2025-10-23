@@ -1,29 +1,33 @@
-import {formatPhone} from "./formatting";
+import { Repair } from '../types/repairTypes';
+import { formatPhone } from './formatting';
 
-export const printRepairDoc = async (htmlStringFn, repair) => {
-  const iframe = document.createElement("iframe");
-  iframe.style.position = "absolute";
-  iframe.style.visibility = "hidden";
+export const printRepairDoc = async (
+  htmlStringFn: (repair: Repair, style: string) => string,
+  repair: Repair,
+) => {
+  const iframe = document.createElement('iframe');
+  iframe.style.position = 'absolute';
+  iframe.style.visibility = 'hidden';
   document.body.appendChild(iframe);
-  const doc = iframe.contentWindow.document;
+  const doc = iframe.contentWindow!.document;
   doc.open();
-  let htmlString = htmlStringFn(repair, "");
+  let htmlString = htmlStringFn(repair, '');
   try {
     const response = await fetch(`${window.location.origin}/print.css`);
     const style = await response.text();
     htmlString = htmlStringFn(repair, style);
   } catch (error) {
-    console.error("Failed to load CSS:", error);
+    console.error('Failed to load CSS:', error);
   }
   doc.write(htmlString);
   doc.close();
 
-  iframe.contentWindow.focus();
-  iframe.contentWindow.print();
+  iframe.contentWindow!.focus();
+  iframe.contentWindow!.print();
   document.body.removeChild(iframe);
 };
 
-export const generateRepairNewDoc = (repair, style) => {
+export const generateRepairNewDoc = (repair: Repair, style: string) => {
   return `
 <html>
   <head>
@@ -33,12 +37,16 @@ export const generateRepairNewDoc = (repair, style) => {
   <body>
     <main>
       <section class="underline">
-        <img src='${window.location.origin}/logo.jpg' alt='Logo firmy, public/logo.jpg' />
-        <h3>ZGŁOSZENIE SERWISOWE #${repair.repairId}</h3>
+        <img src='${
+          window.location.origin
+        }/logo.jpg' alt='Logo firmy, public/logo.jpg' />
+        <h3>ZGŁOSZENIE SERWISOWE #${repair.id}</h3>
         <div class="pad-children">
           <div>
             <b>Data zgłoszenia:</b>
-            <span>${new Date(repair.arrivalDate).toLocaleDateString("pl-PL")}</span>
+            <span>${new Date(repair.arrivalDate).toLocaleDateString(
+              'pl-PL',
+            )}</span>
           </div>
           <div>
             <b>Tel. kontaktowy:</b>
@@ -58,12 +66,16 @@ export const generateRepairNewDoc = (repair, style) => {
         </div>
       </section>
       <section>
-        <img src='${window.location.origin}/logo.jpg' alt='Logo firmy, public/logo.jpg' />
-        <h3>ZGŁOSZENIE SERWISOWE #${repair.repairId}</h3>
+        <img src='${
+          window.location.origin
+        }/logo.jpg' alt='Logo firmy, public/logo.jpg' />
+        <h3>ZGŁOSZENIE SERWISOWE #${repair.id}</h3>
         <div class="pad-children">
           <div>
             <b>Data zgłoszenia:</b>
-            <span>${new Date(repair.arrivalDate).toLocaleDateString("pl-PL")}</span>
+            <span>${new Date(repair.arrivalDate).toLocaleDateString(
+              'pl-PL',
+            )}</span>
           </div>
           <div>
             <b>Tel. kontaktowy:</b>
@@ -93,34 +105,44 @@ export const generateRepairNewDoc = (repair, style) => {
 `;
 };
 
-export const printRepairCostDoc = async (htmlStringFn, repair) => {
-  const iframe = document.createElement("iframe");
-  iframe.style.position = "absolute";
-  iframe.style.visibility = "hidden";
+export const printRepairCostDoc = async (
+  htmlStringFn: (repair: Repair, style: string) => string,
+  repair: Repair,
+) => {
+  const iframe = document.createElement('iframe');
+  iframe.style.position = 'absolute';
+  iframe.style.visibility = 'hidden';
   document.body.appendChild(iframe);
-  const doc = iframe.contentWindow.document;
+  const doc = iframe.contentWindow!.document;
   doc.open();
-  let htmlString = htmlStringFn(repair, "");
+  let htmlString = htmlStringFn(repair, '');
   try {
     const response = await fetch(`${window.location.origin}/print.css`);
     const style = await response.text();
     htmlString = htmlStringFn(repair, style);
   } catch (error) {
-    console.error("Failed to load CSS:", error);
+    console.error('Failed to load CSS:', error);
   }
   doc.write(htmlString);
   doc.close();
 
-  iframe.contentWindow.focus();
-  iframe.contentWindow.print();
+  iframe.contentWindow!.focus();
+  iframe.contentWindow!.print();
   document.body.removeChild(iframe);
 };
 
-export const generateRepairCostDoc = (repair, style) => {
+export const generateRepairCostDoc = (repair: Repair, style: string) => {
   const totalServiceCost = repair.services.reduce((sum, s) => sum + s.price, 0);
-  const totalPartsCost = repair.parts.reduce((sum, p) => sum + p.price * p.amount, 0);
-  const totalCost = totalServiceCost + totalPartsCost + repair.additionalCosts - repair.discount;
-  console.log(repair)
+  const totalPartsCost = repair.parts.reduce(
+    (sum, p) => sum + p.price * p.amount,
+    0,
+  );
+  const totalCost =
+    totalServiceCost +
+    totalPartsCost +
+    repair.additionalCosts -
+    repair.discount;
+  console.log(repair);
   return `
 <html>
   <head>
@@ -129,10 +151,14 @@ export const generateRepairCostDoc = (repair, style) => {
   <body>
     <main style="display: flex; flex-direction: column;">
      <section class="underline">
-        <h3>KOSZTORYS NAPRAWY #${repair.repairId}</h3>
+        <h3>KOSZTORYS NAPRAWY #${repair.id}</h3>
         <div class="pad-children">
-          <div><b>Data zgłoszenia:</b> <span>${new Date(repair.arrivalDate).toLocaleDateString("pl-PL")}</span></div>
-          <div><b>Tel. kontaktowy:</b> <span>${formatPhone(repair.phoneNumber)}</span></div>
+          <div><b>Data zgłoszenia:</b> <span>${new Date(
+            repair.arrivalDate,
+          ).toLocaleDateString('pl-PL')}</span></div>
+          <div><b>Tel. kontaktowy:</b> <span>${formatPhone(
+            repair.phoneNumber,
+          )}</span></div>
           <div><b>Model roweru:</b> <span>${repair.bikeName}</span></div>
           <div><b>Zakres czynności:</b> <span>${repair.issue}</span></div>
         </div>
@@ -147,29 +173,45 @@ export const generateRepairCostDoc = (repair, style) => {
             <th>Cena jednostkowa</th>
             <th>Łączna cena</th>
           </tr>
-          ${repair.services.map(s => `
+          ${repair.services
+            .map(
+              (s) => `
             <tr>
               <td>Usługa</td>
-              <td>${s.service.serviceName}</td>
+              <td>${s.service?.name}</td>
               <td style="text-align: center;">-</td>
               <td style="text-align: right;">${s.price.toFixed(2)} PLN</td>
               <td style="text-align: right;">${s.price.toFixed(2)} PLN</td>
-            </tr>`).join('')}
-          ${repair.parts.map(p => `
+            </tr>`,
+            )
+            .join('')}
+          ${repair.parts
+            .map(
+              (p) => `
             <tr>
               <td>Część</td>
-              <td>${p.part.partName}</td>
+              <td>${p.part?.name}</td>
               <td style="text-align: center;">${p.amount}</td>
-              <td style="text-align: right;">${p.price.toFixed(2)} PLN/${p.part.unit.unitName}</td>
-              <td style="text-align: right;">${(p.price * p.amount).toFixed(2)} PLN</td>
-            </tr>`).join('')}
+              <td style="text-align: right;">${p.price.toFixed(2)} PLN/${
+                p.part?.unit?.name
+              }</td>
+              <td style="text-align: right;">${(p.price * p.amount).toFixed(
+                2,
+              )} PLN</td>
+            </tr>`,
+            )
+            .join('')}
           <tr>
             <td colspan="4"><b>Koszty dodatkowe</b></td>
-            <td style="text-align: right;">${repair.additionalCosts.toFixed(2)} PLN</td>
+            <td style="text-align: right;">${repair.additionalCosts.toFixed(
+              2,
+            )} PLN</td>
           </tr>
           <tr>
             <td colspan="4"><b>Rabat</b></td>
-            <td style="text-align: right;">- ${repair.discount.toFixed(2)} PLN</td>
+            <td style="text-align: right;">- ${repair.discount.toFixed(
+              2,
+            )} PLN</td>
           </tr>
           <tr>
             <td colspan="4"><b>Łączny koszt</b></td>

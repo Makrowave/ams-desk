@@ -12,7 +12,7 @@ import {
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
-import { Part } from '../../../app/types/repairTypes';
+import { Part } from '../../../types/repairTypes';
 
 export default function MergePartModal({
   part1,

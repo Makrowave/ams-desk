@@ -2,9 +2,9 @@
 import AdminTable from '../../../components/table/AdminTable';
 import URLS from '../../../util/urls';
 import { useWheelSizesQuery } from '../../../hooks/queryHooks';
-import { WheelSize } from '../../types/filterTypes';
+import { WheelSize } from '../../../types/filterTypes';
 
-const CategoriesPanel = () => {
+function CategoriesPanel() {
   const { data, isError, isLoading } = useWheelSizesQuery<WheelSize[]>();
   const newRowFormat = [{ key: 'wheelSize', label: 'Koło', input: 'text' }];
   return (
@@ -21,6 +21,6 @@ const CategoriesPanel = () => {
       )}
     </div>
   );
-};
+}
 
 export default CategoriesPanel;

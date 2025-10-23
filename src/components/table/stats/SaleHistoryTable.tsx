@@ -1,5 +1,5 @@
 // import ColorPreview from '../components/table/ColorPreview';
-import { SoldBike } from '../../../app/types/stats';
+import { SoldBike } from '../../../types/stats';
 import { usePlacesQuery, useSoldBikesQuery } from '../../../hooks/queryHooks';
 import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
 import { paperTableStyle } from '../../../styles/styles';
@@ -11,8 +11,8 @@ export default function SaleHistoryTable({
   since,
   until,
 }: {
-  since?: string;
-  until?: string;
+  since: string | null;
+  until: string | null;
 }) {
   const { data, isError, isLoading } = useSoldBikesQuery<SoldBike[]>({
     since: since ?? '',

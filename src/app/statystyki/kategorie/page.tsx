@@ -11,14 +11,17 @@ import BarChartWrapper from '../../../components/charts/BarChartWrapper';
 import Collapsible from '../../../components/Collapsible';
 import PieChartWrapper from '../../../components/charts/PieChartWrapper';
 import { usePlacesQuery } from '../../../hooks/queryHooks';
+import { Place } from '../../../types/filterTypes';
 
 export default function CategoriesStats({}) {
   const [interval, setInterval] = useState('day');
-  const [since, setSince] = useState(
+  const [since, setSince] = useState<string | null>(
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toLocaleDateString('sv-SE'),
   );
-  const [until, setUntil] = useState(new Date().toLocaleDateString('sv-SE'));
-  const placesQuery = usePlacesQuery();
+  const [until, setUntil] = useState<string | null>(
+    new Date().toLocaleDateString('sv-SE'),
+  );
+  const placesQuery = usePlacesQuery<Place[]>();
 
   const sxPie = {
     [`& .${pieArcLabelClasses.root}`]: {
@@ -93,17 +96,17 @@ export default function CategoriesStats({}) {
       </div>
       <div className="flex gap-80 mt-8">
         <Collapsible
-          className={
-            'flex flex-col gap-8 items-center p-4 bg-primary flex-1 rounded-lg self-start'
-          }
+          // className={
+          //   'flex flex-col gap-8 items-center p-4 bg-primary flex-1 rounded-lg self-start'
+          // }
           title={'Ilość sprzedanych rowerów wg. kategorii'}
           initialOpen={false}
         >
           {!placesQuery.isLoading &&
             !placesQuery.isError &&
-            placesQuery.data.map((place) => (
+            placesQuery.data!.map((place) => (
               <div
-                key={place.placeId}
+                key={place.id}
                 className={'p-4 flex flex-col items-center min-w-[600px]'}
               >
                 <BarChartWrapper
@@ -112,10 +115,10 @@ export default function CategoriesStats({}) {
                     since: since,
                     until: until,
                     isCount: true,
-                    placeId: place.placeId,
+                    placeId: place.id,
                   }}
-                  title={place.placeName}
-                  className="border border-gray-200 rounded-lg p-2 w-full"
+                  title={place.name}
+                  // className="border border-gray-200 rounded-lg p-2 w-full"
                   dataKey={'place'}
                   hideSelectors
                 >
@@ -132,9 +135,9 @@ export default function CategoriesStats({}) {
         <Collapsible title={'Sprzedaż wg. kategorii'} initialOpen={false}>
           {!placesQuery.isLoading &&
             !placesQuery.isError &&
-            placesQuery.data.map((place) => (
+            placesQuery.data!.map((place) => (
               <div
-                key={place.placeId}
+                key={place.id}
                 className={'p-4 flex flex-col items-center min-w-[600px]'}
               >
                 <BarChartWrapper
@@ -143,10 +146,10 @@ export default function CategoriesStats({}) {
                     since: since,
                     until: until,
                     isCount: false,
-                    placeId: place.placeId,
+                    placeId: place.id,
                   }}
-                  title={place.placeName}
-                  className="border border-gray-200 rounded-lg p-2 w-full"
+                  title={place.name}
+                  // className="border border-gray-200 rounded-lg p-2 w-full"
                   dataKey={'place'}
                   hideSelectors
                 >

@@ -3,7 +3,7 @@ import { cloneElement, useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { Box, Typography } from '@mui/material';
 import { chartColors } from '../../styles/colors';
-import { PieChart } from '../../app/types/stats';
+import { PieChart } from '../../types/stats';
 
 type PieChartWrapperProps = {
   url: string;

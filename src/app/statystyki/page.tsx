@@ -1,5 +1,4 @@
 'use client';
-
 import ShortSaleHistoryTable from '../../components/table/stats/ShortSaleHistoryTable';
 import BarChartWrapper from '../../components/charts/BarChartWrapper';
 import { BarChart, LineChart } from '@mui/x-charts';
@@ -42,7 +41,7 @@ const getToday = () => {
   return new Date().toLocaleDateString('sv-SE');
 };
 
-const DashBoard = () => {
+function DashBoard() {
   const axiosPrivate = useAxiosPrivate();
   const {
     data: todayData,
@@ -166,7 +165,7 @@ const DashBoard = () => {
       </div>
     </>
   );
-};
+}
 
 export default DashBoard;
 ``;

@@ -1,22 +1,30 @@
 'use client';
 import { FaChevronRight, FaPlus } from 'react-icons/fa6';
 import NewRepairModal from '../modals/repair/NewRepairModal';
-import useAxiosPrivate from '@/hooks/useAxiosPrivate';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
-import { usePlacesNotStorageQuery } from '@/hooks/queryHooks';
-import MaterialModal from '@/components/modals/MaterialModal';
-import { MaterialReactTable } from 'material-react-table';
+import { usePlacesNotStorageQuery } from '../../hooks/queryHooks';
+import MaterialModal from '../modals/MaterialModal';
+import { MaterialReactTable, MRT_ColumnDef } from 'material-react-table';
 import { Box, IconButton, MenuItem, Select } from '@mui/material';
 import Link from 'next/link';
-import { formatPhone } from '@/util/formatting';
+import { formatPhone } from '../../util/formatting';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
-import { paperTableStyle } from '@/styles/styles';
-import useLocallyStoredTable from '@/hooks/useLocallyStoredTable';
-import { getLocalStorageItem } from '@/util/localStorage';
+import { paperTableStyle } from '../../styles/styles';
+import useLocallyStoredTable from '../../hooks/useLocallyStoredTable';
+import { getLocalStorageItem } from '../../util/localStorage';
 import { Close } from '@mui/icons-material';
+import { Place } from '../../types/filterTypes';
+import { Repair } from '../../types/repairTypes';
 
-export default function RepairTable({ src, addButton, localKey }) {
+type RepairTableProps = {
+  src: string;
+  addButton?: boolean;
+  localKey: string;
+};
+
+const RepairTable = ({ src, addButton, localKey }: RepairTableProps) => {
   const storageKey = `repairTable.${localKey}`;
   const [filters, setFilters] = useState([
     { id: 'placeName', value: getLocalStorageItem(storageKey, undefined) },
@@ -43,23 +51,26 @@ export default function RepairTable({ src, addButton, localKey }) {
     data: placesData,
     isError: isPlacesError,
     isLoading: isPlacesLoading,
-  } = usePlacesNotStorageQuery();
+  } = usePlacesNotStorageQuery<Place[]>();
 
-  let placesOptions = (placesData ?? []).map((place) => place.placeName);
+  let placesOptions = (placesData ?? []).map((place) => place.name);
 
-  const columns = useMemo(
+  const columns = useMemo<MRT_ColumnDef<Repair>[]>(
     () => [
       { accessorKey: 'id', header: 'Nr.' },
       {
         accessorKey: 'date',
         header: 'Data',
         Cell: ({ row }) =>
-          new Date(row.original.date).toLocaleDateString('pl-PL'),
+          new Date(row.original.arrivalDate).toLocaleDateString('pl-PL'),
       },
       {
         accessorKey: 'phoneNumber',
         header: 'Telefon',
-        Cell: ({ renderedCellValue }) => formatPhone(renderedCellValue),
+        Cell: ({ renderedCellValue }) =>
+          typeof renderedCellValue === 'string'
+            ? formatPhone(renderedCellValue)
+            : renderedCellValue,
       },
       { accessorKey: 'bikeName', header: 'Rower' },
       {
@@ -87,11 +98,9 @@ export default function RepairTable({ src, addButton, localKey }) {
             data: placesData,
             isError: isPlacesError,
             isLoading: isPlacesLoading,
-          } = usePlacesNotStorageQuery();
+          } = usePlacesNotStorageQuery<Place[]>();
 
-          let placesOptions = (placesData ?? []).map(
-            (place) => place.placeName,
-          );
+          let placesOptions = (placesData ?? []).map((place) => place.name);
 
           const selectedValue =
             filters.find((f) => f.id === 'placeName')?.value ?? '';
@@ -102,7 +111,7 @@ export default function RepairTable({ src, addButton, localKey }) {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 1,
-                width: column,
+                // width: column,
               }}
             >
               <Select
@@ -181,8 +190,8 @@ export default function RepairTable({ src, addButton, localKey }) {
     onColumnFiltersChange: setFilters,
     state: {
       columnFilters: filters,
+      isLoading: isPending || isPlacesLoading,
     },
-    isLoading: isPending || isPlacesLoading,
     localization: MRT_Localization_PL,
     renderTopToolbarCustomActions: () =>
       addButton && (
@@ -200,4 +209,6 @@ export default function RepairTable({ src, addButton, localKey }) {
   });
 
   return <MaterialReactTable table={table} />;
-}
+};
+
+export default RepairTable;

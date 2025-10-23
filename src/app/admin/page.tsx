@@ -4,7 +4,7 @@ import useAuth from '../../hooks/useAuth';
 import Link from 'next/link';
 import { Link as MUILink } from '@mui/material';
 
-const AdminPanel = () => {
+function AdminPanel() {
   const { admin } = useAuth();
   return (
     <Stack sx={{ px: 12, py: 6, justifyContent: 'flex-start' }}>
@@ -50,6 +50,6 @@ const AdminPanel = () => {
       <Typography variant="h6">Zarządzanie kategoriami rowerów</Typography>
     </Stack>
   );
-};
+}
 
 export default AdminPanel;

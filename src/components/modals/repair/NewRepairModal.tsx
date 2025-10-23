@@ -9,20 +9,16 @@ import { Button } from '@mui/material';
 import ValidatedTextField from '../../input/ValidatedTextField';
 import ValidatedTextarea from '../../input/ValidatedTextarea';
 
-export default function NewRepairModal({
-  closeModal,
-}: {
-  closeModal?: () => void;
-}) {
+const NewRepairModal = ({ closeModal }: { closeModal?: () => void }) => {
   const axios = useAxiosPrivate();
   const router = useRouter();
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState<string>();
   const [place, setPlace] = useState(
-    localStorage.getItem('repairModal:defaultPlace') ?? '',
+    Number(localStorage.getItem('repairModal:defaultPlace') ?? 0),
   );
-  const [bike, setBike] = useState('');
-  const [issue, setIssue] = useState('');
-  const [employee, setEmployee] = useState('');
+  const [bike, setBike] = useState<string>();
+  const [issue, setIssue] = useState<string>();
+  const [employee, setEmployee] = useState(0);
 
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [isBikeValid, setIsBikeValid] = useState(false);
@@ -30,17 +26,21 @@ export default function NewRepairModal({
 
   const [error, setError] = useState('');
 
-  const updatePhone = (value) => {
+  const updatePhone = (value: string | undefined) => {
     setPhone(value);
-    setIsPhoneValid(REGEX.PHONE.test(value));
+    setIsPhoneValid(REGEX.PHONE.test(value ?? ''));
   };
-  const updateBike = (value) => {
+  const updateBike = (value: string | undefined) => {
     setBike(value);
-    setIsBikeValid(REGEX.POLISH_TEXT.test(value) && value.length <= 40);
+    setIsBikeValid(
+      REGEX.POLISH_TEXT.test(value ?? '') && (value?.length ?? 0) <= 40,
+    );
   };
-  const updateIssue = (value) => {
+  const updateIssue = (value: string | undefined) => {
     setIssue(value);
-    setIsIssueValid(REGEX.POLISH_TEXT.test(value) && value.length <= 200);
+    setIsIssueValid(
+      REGEX.POLISH_TEXT.test(value ?? '') && (value?.length ?? 0) <= 200,
+    );
   };
 
   const mutation = useMutation({
@@ -55,7 +55,7 @@ export default function NewRepairModal({
     },
     onSuccess: (response) => {
       const id = response.data;
-      closeModal();
+      if (closeModal) closeModal();
       router.push(`/serwis/${id}`);
     },
     onError: (error) => {
@@ -69,10 +69,10 @@ export default function NewRepairModal({
         value={place}
         onChange={(value) => {
           setPlace(value);
-          localStorage.setItem('repairModal:defaultPlace', value);
+          localStorage.setItem('repairModal:defaultPlace', value.toString());
         }}
         urlKey={URLKEYS.Places}
-        defaultValue={''}
+        defaultValue={0}
         label="Miejsce przyjęcia"
         validated
       />
@@ -81,7 +81,7 @@ export default function NewRepairModal({
         onChange={setEmployee}
         urlKey={URLKEYS.Employees}
         label={'Kto przyjmuje'}
-        defaultValue={''}
+        defaultValue={0}
         validated
       />
       <ValidatedTextField
@@ -111,14 +111,16 @@ export default function NewRepairModal({
             isBikeValid &&
             isIssueValid &&
             isPhoneValid &&
-            place !== '' &&
-            employee !== ''
+            place !== 0 &&
+            employee !== 0
           )
         }
-        onClick={mutation.mutate}
+        onClick={() => mutation.mutate()}
       >
         Stwórz
       </Button>
     </>
   );
-}
+};
+
+export default NewRepairModal;
