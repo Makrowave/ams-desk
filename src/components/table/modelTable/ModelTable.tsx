@@ -27,32 +27,12 @@ import ModelDetailsPanel from './ModelDetailsPanel';
 import { flexTableStyle } from '../../../styles/styles';
 import ColorPreview from '../ColorPreview';
 import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
-import { defaultFilters } from './Filters';
+import { defaultFilters, prepareFilters } from './Filters';
 import { ModelRecord } from '../../../types/bikeTypes';
 import { Place } from '../../../types/filterTypes';
 
 const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
   const { isAdmin } = useAuth();
-
-  const prepareFilters = (filters: typeof defaultFilters) => {
-    const entries = Object.entries(filters) as [
-      keyof typeof defaultFilters,
-      (typeof defaultFilters)[keyof typeof defaultFilters],
-    ][];
-
-    return Object.fromEntries(
-      entries.map(([key, value]) => {
-        if (key === 'isWoman') {
-          if (value === 1) return [key, 'false'];
-          return [key, 'true'];
-        }
-        if (key !== 'minPrice' && key !== 'maxPrice' && value === 0) {
-          return [key, undefined];
-        }
-        return [key, value];
-      }),
-    );
-  };
 
   const { data, isLoading, isError, error } = useModelsQuery<ModelRecord[]>(
     { ...prepareFilters(filters), placeId: 0 },

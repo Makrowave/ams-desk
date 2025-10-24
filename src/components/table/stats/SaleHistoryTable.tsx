@@ -6,14 +6,15 @@ import { paperTableStyle } from '../../../styles/styles';
 import { MaterialReactTable, MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import { useMemo } from 'react';
+import ColorPreview from '../ColorPreview';
 
-export default function SaleHistoryTable({
+const SaleHistoryTable = ({
   since,
   until,
 }: {
   since: string | null;
   until: string | null;
-}) {
+}) => {
   const { data, isError, isLoading } = useSoldBikesQuery<SoldBike[]>({
     since: since ?? '',
     until: until ?? '',
@@ -28,6 +29,20 @@ export default function SaleHistoryTable({
 
   const columns = useMemo<MRT_ColumnDef<SoldBike>[]>(
     () => [
+      {
+        id: 'color',
+        header: 'Kolor',
+        accessorKey: 'primaryColor',
+        size: 60,
+        enableSorting: false,
+        enableColumnFilter: false,
+        Cell: ({ row }) => (
+          <ColorPreview
+            primaryColor={row.original.primaryColor}
+            secondaryColor={row.original.secondaryColor}
+          />
+        ),
+      },
       {
         accessorKey: 'model',
         header: 'Model',
@@ -78,4 +93,6 @@ export default function SaleHistoryTable({
   });
 
   return <MaterialReactTable table={table} />;
-}
+};
+
+export default SaleHistoryTable;

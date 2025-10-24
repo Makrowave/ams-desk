@@ -16,7 +16,7 @@ import useLocallyStoredTable from '../../hooks/useLocallyStoredTable';
 import { getLocalStorageItem } from '../../util/localStorage';
 import { Close } from '@mui/icons-material';
 import { Place } from '../../types/filterTypes';
-import { Repair } from '../../types/repairTypes';
+import { ShortRepair } from '../../types/repairTypes';
 
 type RepairTableProps = {
   src: string;
@@ -55,14 +55,14 @@ const RepairTable = ({ src, addButton, localKey }: RepairTableProps) => {
 
   let placesOptions = (placesData ?? []).map((place) => place.name);
 
-  const columns = useMemo<MRT_ColumnDef<Repair>[]>(
+  const columns = useMemo<MRT_ColumnDef<ShortRepair>[]>(
     () => [
       { accessorKey: 'id', header: 'Nr.' },
       {
-        accessorKey: 'date',
+        accessorKey: 'arrivalDate',
         header: 'Data',
         Cell: ({ row }) =>
-          new Date(row.original.arrivalDate).toLocaleDateString('pl-PL'),
+          new Date(row.original.date).toLocaleDateString('pl-PL'),
       },
       {
         accessorKey: 'phoneNumber',

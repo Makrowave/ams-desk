@@ -4,6 +4,7 @@ import BarChartWrapper from '../../components/charts/BarChartWrapper';
 import { BarChart, LineChart } from '@mui/x-charts';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { Box, Stack, Paper, Typography } from '@mui/material';
 
 const getStartOfWeek = () => {
   const now = new Date();
@@ -41,7 +42,7 @@ const getToday = () => {
   return new Date().toLocaleDateString('sv-SE');
 };
 
-function DashBoard() {
+const DashBoard = () => {
   const axiosPrivate = useAxiosPrivate();
   const {
     data: todayData,
@@ -82,12 +83,25 @@ function DashBoard() {
       return response.data;
     },
   });
-
   return (
-    <>
-      <div className="flex flex-col gap-4">
-        <div className={'flex justify-between items-stretch gap-4 mt-4'}>
-          <div className="bg-primary p-4 rounded-lg flex flex-col flex-1">
+    <Box sx={{ mb: 4 }}>
+      <Box gap={4} display="flex" flexDirection="column">
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="stretch"
+          gap={4}
+          sx={{ mt: 4 }}
+        >
+          <Paper
+            sx={{
+              p: 4,
+              borderRadius: 2,
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
             <BarChartWrapper
               url={'SalesData/soldSum'}
               queryObject={{
@@ -96,7 +110,6 @@ function DashBoard() {
                 interval: 'day',
               }}
               title={'Rowery sprzedane dzisiaj'}
-              // className="border border-gray-200 rounded-lg p-2"
               dataKey={'date'}
             >
               <BarChart
@@ -106,17 +119,39 @@ function DashBoard() {
                 grid={{ horizontal: true }}
               />
             </BarChartWrapper>
-          </div>
-          <div className="bg-primary p-4 rounded-lg flex flex-col">
-            <h2>
-              <b>Historia</b>
-            </h2>
+          </Paper>
+          <Paper
+            sx={{
+              p: 4,
+              borderRadius: 2,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <Typography variant="h6" component="h2" fontWeight="bold">
+              Historia
+            </Typography>
             <ShortSaleHistoryTable />
-          </div>
-        </div>
-        <div className={'flex justify-between items-stretch gap-4 mt-4'}>
-          <div className="bg-primary p-4 rounded-lg flex flex-col flex-1">
+          </Paper>
+        </Box>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="stretch"
+          gap={4}
+          sx={{ mt: 4 }}
+        >
+          <Paper
+            sx={{
+              p: 4,
+              borderRadius: 2,
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
             <BarChartWrapper
+              isStackedByDefault={false}
               url={'SalesData/soldSum'}
               queryObject={{
                 since: getStartOfWeek(),
@@ -124,7 +159,6 @@ function DashBoard() {
                 interval: 'day',
               }}
               title={'Rowery sprzedane w tym tygodniu'}
-              // className="border border-gray-200 rounded-lg p-2"
               dataKey={'date'}
               seriesProps={{ showMark: false, curve: 'linear' }}
             >
@@ -134,38 +168,50 @@ function DashBoard() {
                 grid={{ vertical: true, horizontal: true }}
               />
             </BarChartWrapper>
-          </div>
-          <div className="bg-primary p-4 rounded-lg flex flex-col *:flex *:justify-between *:gap-x-32 gap-2">
-            <div>
-              <span>Sprzedaż dzisiaj</span>
-              <span>{todayData?.sum ?? ''} PLN</span>
-            </div>
-            <div>
-              <span>Ilość rowerów dzisiaj</span>
-              <span>{todayData?.count ?? ''}</span>
-            </div>
-            <div>
-              <span>Sprzedaż tygodnia</span>
-              <span>{weekData?.sum ?? ''} PLN</span>
-            </div>
-            <div>
-              <span>Ilość rowerów w tym tygodniu</span>
-              <span>{weekData?.count ?? ''}</span>
-            </div>
-            <div>
-              <span>Sprzedaż miesiąca</span>
-              <span>{monthData?.sum ?? ''} PLN</span>
-            </div>
-            <div>
-              <span>Ilość rowerów w tym miesiącu</span>
-              <span>{monthData?.count ?? ''}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+          </Paper>
+          <Paper
+            sx={{
+              p: 4,
+              borderRadius: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}
+          >
+            <Box gap={2} display="flex" flexDirection="column">
+              <Typography variant="h6" component="h2" fontWeight="bold">
+                Podsumowanie
+              </Typography>
+              <Box display="flex" justifyContent="space-between" gap={8}>
+                <Typography>Sprzedaż dzisiaj</Typography>
+                <Typography>{todayData?.sum ?? ''} PLN</Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" gap={8}>
+                <Typography>Ilość rowerów dzisiaj</Typography>
+                <Typography>{todayData?.count ?? ''}</Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" gap={8}>
+                <Typography>Sprzedaż tygodnia</Typography>
+                <Typography>{weekData?.sum ?? ''} PLN</Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" gap={8}>
+                <Typography>Ilość rowerów w tym tygodniu</Typography>
+                <Typography>{weekData?.count ?? ''}</Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" gap={8}>
+                <Typography>Sprzedaż miesiąca</Typography>
+                <Typography>{monthData?.sum ?? ''} PLN</Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" gap={8}>
+                <Typography>Ilość rowerów w tym miesiącu</Typography>
+                <Typography>{monthData?.count ?? ''}</Typography>
+              </Box>
+            </Box>
+          </Paper>
+        </Box>
+      </Box>
+    </Box>
   );
-}
+};
 
 export default DashBoard;
-``;

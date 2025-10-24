@@ -1,8 +1,9 @@
 'use client';
-import { BarChart, barLabelClasses, pieArcLabelClasses } from '@mui/x-charts';
+import { BarChart } from '@mui/x-charts';
 import { useState } from 'react';
 import BarChartWrapper from '../../../components/charts/BarChartWrapper';
 import TimeSelector from '../../../components/charts/TimeSelector';
+import { Paper } from '@mui/material';
 
 function RepairStatsPage() {
   const [interval, setInterval] = useState('day');
@@ -23,7 +24,7 @@ function RepairStatsPage() {
         until={until}
         setUntil={setUntil}
       />
-      <div className="bg-primary p-4 rounded-lg flex flex-col">
+      <Paper sx={{ p: 4 }}>
         <BarChartWrapper
           url={'RepairsData/repairsSum'}
           isStackedByDefault
@@ -38,10 +39,9 @@ function RepairStatsPage() {
             height={400}
           />
         </BarChartWrapper>
-      </div>
+      </Paper>
     </>
   );
 }
 
 export default RepairStatsPage;
-``;

@@ -221,6 +221,26 @@ export const defaultFilters = {
   noColorGroup: false,
 };
 
+export const prepareFilters = (filters: typeof defaultFilters) => {
+  const entries = Object.entries(filters) as [
+    keyof typeof defaultFilters,
+    (typeof defaultFilters)[keyof typeof defaultFilters],
+  ][];
+
+  return Object.fromEntries(
+    entries.map(([key, value]) => {
+      if (key === 'isWoman') {
+        if (value === 1) return [key, 'false'];
+        return [key, 'true'];
+      }
+      if (key !== 'minPrice' && key !== 'maxPrice' && value === 0) {
+        return [key, undefined];
+      }
+      return [key, value];
+    }),
+  );
+};
+
 export type FiltersType = typeof defaultFilters;
 
 type ReducerAction =

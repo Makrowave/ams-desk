@@ -7,7 +7,14 @@ import {
   FaChevronDown,
   FaChevronUp,
 } from 'react-icons/fa6';
-import { Box, Collapse, IconButton, Typography } from '@mui/material';
+import {
+  Box,
+  Checkbox,
+  Collapse,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { BarChartData } from '../../types/stats';
 import { chartColors } from '../../styles/colors';
 
@@ -93,12 +100,6 @@ const BarChartWrapper = <T extends string>({
       .filter((item) => blacklist[item.dataKey]);
   };
 
-  // useEffect(() => {
-  //   if (contentRef.current) {
-  //     setHeight(isOpen ? `${contentRef.current.scrollHeight}px` : '0px');
-  //   }
-  // }, [isOpen]);
-
   const ChildComponent = () => {
     return cloneElement(children, {
       ...children.props,
@@ -110,24 +111,22 @@ const BarChartWrapper = <T extends string>({
   };
 
   return (
-    <div className={`flex flex-col`}>
-      <Box className="flex items-center justify-between flex-wrap relative">
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          {collapsible && (
-            <IconButton onClick={() => setIsOpen(!isOpen)} sx={{ pr: 1 }}>
-              {isOpen ? <FaChevronDown /> : <FaChevronUp />}
-            </IconButton>
-          )}
-          <Typography variant="h6">{title}</Typography>
-        </Box>
+    <Stack>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        {collapsible && (
+          <IconButton onClick={() => setIsOpen(!isOpen)} sx={{ pr: 1 }}>
+            {isOpen ? <FaChevronDown /> : <FaChevronUp />}
+          </IconButton>
+        )}
+        <Typography variant="h6">{title}</Typography>
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', gap: 2, pr: 12 }}>
           {!hideSelectors &&
             Object.keys(seriesToggles).map((series, index) => (
               <Box key={series} sx={{ display: 'flex', alignItems: 'center' }}>
-                <input
-                  type={'checkbox'}
-                  className="scale-150 m-2"
-                  style={{ accentColor: chartColors[index] }}
+                <Checkbox
+                  sx={{ '&.Mui-checked': { color: chartColors[index] } }}
                   checked={seriesToggles[series]}
                   onChange={() => {
                     setSeriesToggles({
@@ -137,7 +136,7 @@ const BarChartWrapper = <T extends string>({
                     console.log(seriesToggles);
                   }}
                 />
-                {series}
+                <Typography>{series}</Typography>
               </Box>
             ))}
         </Box>
@@ -149,7 +148,7 @@ const BarChartWrapper = <T extends string>({
       <Collapse in={isOpen || !collapsible}>
         <ChildComponent />
       </Collapse>
-    </div>
+    </Stack>
   );
 };
 

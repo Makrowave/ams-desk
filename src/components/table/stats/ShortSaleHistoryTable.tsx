@@ -4,9 +4,12 @@ import ColorPreview from '../ColorPreview';
 import { paperTableStyle } from '../../../styles/styles';
 import { MaterialReactTable, MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
-import { Bike } from '../../../types/bikeTypes';
+import { Bike, ModelRecord } from '../../../types/bikeTypes';
+import { useModelsQuery } from '../../../hooks/queryHooks';
+import { defaultFilters, prepareFilters } from '../modelTable/Filters';
+import { SoldBike } from '../../../types/stats';
 
 export default function ShortSaleHistoryTable() {
   const axiosPrivate = useAxiosPrivate();
@@ -19,20 +22,21 @@ export default function ShortSaleHistoryTable() {
     },
   });
 
-  const columns = useMemo<MRT_ColumnDef<Bike>[]>(
+  const columns = useMemo<MRT_ColumnDef<SoldBike>[]>(
     () => [
       {
+        id: 'color',
         accessorKey: 'primaryColor',
-        header: '',
+        header: 'Kolor',
         size: 60,
         enableSorting: false,
         enableColumnFilter: false,
-        // Cell: ({ row }) => (
-        //   <ColorPreview
-        //     primaryColor={row.original?.primaryColor}
-        //     secondaryColor={row.original?.secondaryColor}
-        //   />
-        // ),
+        Cell: ({ row }) => (
+          <ColorPreview
+            primaryColor={row.original.primaryColor}
+            secondaryColor={row.original.secondaryColor}
+          />
+        ),
       },
       {
         accessorKey: 'model',

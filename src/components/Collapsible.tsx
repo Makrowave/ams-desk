@@ -1,4 +1,4 @@
-import { Box, Collapse, IconButton, Stack } from '@mui/material';
+import { Box, Collapse, IconButton, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
 
@@ -23,7 +23,9 @@ const Collapsible = ({
         <IconButton onClick={() => setIsOpen((p) => !p)} sx={{ pr: 2 }}>
           {isOpen ? <FaChevronDown /> : <FaChevronUp />}
         </IconButton>
-        <h2>{title}</h2>
+        <Typography variant="h6" component={'h2'}>
+          {title}
+        </Typography>
       </Box>
       <Collapse in={isOpen}>{children}</Collapse>
     </Stack>

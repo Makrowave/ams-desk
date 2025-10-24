@@ -36,6 +36,7 @@ const TimeSelector = ({
         mb: 4,
         p: 2,
         display: 'flex',
+        flexWrap: 'wrap',
         position: 'sticky',
         top: 0,
         zIndex: 10,
@@ -75,130 +76,137 @@ const TimeSelector = ({
           },
         }}
       />
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, height: '56px' }}>
-        <Button
-          color="secondary"
-          variant={selectedInterval === 1 ? 'contained' : 'outlined'}
-          className="button-primary"
-          onClick={() => {
-            setSelectedInterval(1);
-            setLatestInterval(0);
-          }}
-        >
-          Dziś
-        </Button>
-        <Button
-          color="secondary"
-          variant={selectedInterval === 2 ? 'contained' : 'outlined'}
-          className="button-primary"
-          onClick={() => {
-            setSelectedInterval(2);
-            setLatestInterval(7);
-          }}
-        >
-          Tydzień
-        </Button>
-        <Button
-          color="secondary"
-          variant={selectedInterval === 3 ? 'contained' : 'outlined'}
-          className="button-primary"
-          onClick={() => {
-            setSelectedInterval(3);
-            setLatestInterval(30);
-          }}
-        >
-          30 dni
-        </Button>
-        <Button
-          color="secondary"
-          variant={selectedInterval === 4 ? 'contained' : 'outlined'}
-          className="button-primary"
-          onClick={() => {
-            setSelectedInterval(4);
-            setLatestInterval(60);
-          }}
-        >
-          60 dni
-        </Button>
-        <Button
-          color="secondary"
-          variant={selectedInterval === 5 ? 'contained' : 'outlined'}
-          className="button-primary"
-          onClick={() => {
-            setSelectedInterval(5);
-            setLatestInterval(90);
-          }}
-        >
-          90 dni
-        </Button>
-        <Button
-          color="secondary"
-          variant={selectedInterval === 6 ? 'contained' : 'outlined'}
-          className="button-primary"
-          onClick={() => {
-            setSelectedInterval(6);
-            setLatestInterval(365);
-          }}
-        >
-          Rok
-        </Button>
-        <Button
-          color="secondary"
-          variant={selectedInterval === 7 ? 'contained' : 'outlined'}
-          className="button-primary"
-          onClick={() => {
-            setSelectedInterval(7);
-            setSince('');
-            setUntil('');
-          }}
-        >
-          Zawsze
-        </Button>
-        <Button
-          color="secondary"
-          variant={selectedInterval === 8 ? 'contained' : 'outlined'}
-          className="button-primary"
-          onClick={() => {
-            setSelectedInterval(8);
-            const firstCurrent = new Date(
-              new Date().getFullYear(),
-              new Date().getMonth(),
-              1,
-            ).toLocaleDateString('sv-SE');
-            const lastCurrent = new Date(
-              new Date().getFullYear(),
-              new Date().getMonth() + 1,
-              0,
-            ).toLocaleDateString('sv-SE');
-            setSince(firstCurrent);
-            setUntil(lastCurrent);
-          }}
-        >
-          Bieżący miesiąc
-        </Button>
-        <Button
-          color="secondary"
-          variant={selectedInterval === 9 ? 'contained' : 'outlined'}
-          className="button-primary"
-          onClick={() => {
-            setSelectedInterval(9);
-            const firstPrev = new Date(
-              new Date().getFullYear(),
-              new Date().getMonth() - 1,
-              1,
-            ).toLocaleDateString('sv-SE');
-            const lastPrev = new Date(
-              new Date().getFullYear(),
-              new Date().getMonth(),
-              0,
-            ).toLocaleDateString('sv-SE');
-            setSince(firstPrev);
-            setUntil(lastPrev);
-          }}
-        >
-          Poprzedni miesiąc
-        </Button>
-      </Box>
+      <Button
+        sx={{ height: '56px' }}
+        color="secondary"
+        variant={selectedInterval === 1 ? 'contained' : 'outlined'}
+        className="button-primary"
+        onClick={() => {
+          setSelectedInterval(1);
+          setLatestInterval(0);
+        }}
+      >
+        Dziś
+      </Button>
+      <Button
+        sx={{ height: '56px' }}
+        color="secondary"
+        variant={selectedInterval === 2 ? 'contained' : 'outlined'}
+        className="button-primary"
+        onClick={() => {
+          setSelectedInterval(2);
+          setLatestInterval(7);
+        }}
+      >
+        Tydzień
+      </Button>
+      <Button
+        sx={{ height: '56px' }}
+        color="secondary"
+        variant={selectedInterval === 3 ? 'contained' : 'outlined'}
+        className="button-primary"
+        onClick={() => {
+          setSelectedInterval(3);
+          setLatestInterval(30);
+        }}
+      >
+        30 dni
+      </Button>
+      <Button
+        sx={{ height: '56px' }}
+        color="secondary"
+        variant={selectedInterval === 4 ? 'contained' : 'outlined'}
+        className="button-primary"
+        onClick={() => {
+          setSelectedInterval(4);
+          setLatestInterval(60);
+        }}
+      >
+        60 dni
+      </Button>
+      <Button
+        sx={{ height: '56px' }}
+        color="secondary"
+        variant={selectedInterval === 5 ? 'contained' : 'outlined'}
+        className="button-primary"
+        onClick={() => {
+          setSelectedInterval(5);
+          setLatestInterval(90);
+        }}
+      >
+        90 dni
+      </Button>
+      <Button
+        sx={{ height: '56px' }}
+        color="secondary"
+        variant={selectedInterval === 6 ? 'contained' : 'outlined'}
+        className="button-primary"
+        onClick={() => {
+          setSelectedInterval(6);
+          setLatestInterval(365);
+        }}
+      >
+        Rok
+      </Button>
+      <Button
+        sx={{ height: '56px' }}
+        color="secondary"
+        variant={selectedInterval === 7 ? 'contained' : 'outlined'}
+        className="button-primary"
+        onClick={() => {
+          setSelectedInterval(7);
+          setSince('');
+          setUntil('');
+        }}
+      >
+        Zawsze
+      </Button>
+      <Button
+        sx={{ height: '56px' }}
+        color="secondary"
+        variant={selectedInterval === 8 ? 'contained' : 'outlined'}
+        className="button-primary"
+        onClick={() => {
+          setSelectedInterval(8);
+          const firstCurrent = new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            1,
+          ).toLocaleDateString('sv-SE');
+          const lastCurrent = new Date(
+            new Date().getFullYear(),
+            new Date().getMonth() + 1,
+            0,
+          ).toLocaleDateString('sv-SE');
+          setSince(firstCurrent);
+          setUntil(lastCurrent);
+        }}
+      >
+        Bieżący miesiąc
+      </Button>
+      <Button
+        sx={{ height: '56px' }}
+        color="secondary"
+        variant={selectedInterval === 9 ? 'contained' : 'outlined'}
+        className="button-primary"
+        onClick={() => {
+          setSelectedInterval(9);
+          const firstPrev = new Date(
+            new Date().getFullYear(),
+            new Date().getMonth() - 1,
+            1,
+          ).toLocaleDateString('sv-SE');
+          const lastPrev = new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            0,
+          ).toLocaleDateString('sv-SE');
+          setSince(firstPrev);
+          setUntil(lastPrev);
+        }}
+      >
+        Poprzedni miesiąc
+      </Button>
     </Paper>
   );
 };

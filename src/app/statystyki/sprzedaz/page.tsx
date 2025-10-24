@@ -10,8 +10,9 @@ import BarChartWrapper from '../../../components/charts/BarChartWrapper';
 import PieChartWrapper from '../../../components/charts/PieChartWrapper';
 import TimeSelector from '../../../components/charts/TimeSelector';
 import Collapsible from '../../../components/Collapsible';
+import { Box, Card, Paper, Stack } from '@mui/material';
 
-function SaleStatsPage() {
+const SaleStatsPage = () => {
   const [interval, setInterval] = useState('day');
   const [since, setSince] = useState<string | null>(
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toLocaleDateString('sv-SE'),
@@ -43,7 +44,7 @@ function SaleStatsPage() {
         until={until}
         setUntil={setUntil}
       />
-      <div className="bg-primary p-4 rounded-lg flex flex-col">
+      <Paper sx={{ p: 4 }}>
         <BarChartWrapper
           url={'SalesData/soldSum'}
           isStackedByDefault
@@ -58,16 +59,20 @@ function SaleStatsPage() {
             height={400}
           />
         </BarChartWrapper>
-      </div>
-
-      <div
-        className={'bg-primary p-4 rounded-lg flex flex-col mt-8 items-center'}
-      >
-        <Collapsible
-          // sx={{ width: '100%' }}
-          title={'Sprzedane rowery ze względu na typ ramy'}
-        >
-          <div className="flex items-center w-full h-fit">
+      </Paper>
+      <Paper sx={{ p: 4, mt: 4 }} component={Stack}>
+        <Collapsible title={'Sprzedane rowery ze względu na typ ramy'}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 4,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              mt: 2,
+              px: 2,
+            }}
+          >
             <PieChartWrapper
               url={'SalesData/getFrameTypeStats'}
               showsQuantity
@@ -107,17 +112,25 @@ function SaleStatsPage() {
                 height={400}
               />
             </PieChartWrapper>
-          </div>
+          </Box>
         </Collapsible>
-      </div>
-      <div
-        className={'bg-primary p-4 rounded-lg flex flex-col mt-8 items-center'}
-      >
+      </Paper>
+      <Paper sx={{ p: 4, mt: 4 }} component={Stack}>
         <Collapsible
           // sx={{ width: '100%' }}
           title={'Sprzedane rowery ze względu na to czy są elektryczne'}
         >
-          <div className="flex items-center w-full h-fit">
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 4,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              mt: 2,
+              px: 2,
+            }}
+          >
             <PieChartWrapper
               url={'SalesData/getElectricShare'}
               showsQuantity
@@ -146,20 +159,25 @@ function SaleStatsPage() {
             >
               <PieChart series={[]} sx={sxPie} width={600} height={400} />
             </PieChartWrapper>
-          </div>
+          </Box>
         </Collapsible>
-      </div>
-      <div className={'flex flex-wrap gap-8 mt-8'}>
-        <div
-          className={
-            'bg-primary p-4 rounded-lg flex flex-col items-center min-w-[600px]'
-          }
-        >
+      </Paper>
+      <Paper
+        sx={{
+          gap: 8,
+          mt: 4,
+          display: 'flex',
+          flexWrap: 'wrap',
+          p: 4,
+          justifyContent: 'space-evenly',
+          mb: 4,
+        }}
+      >
+        <Card>
           <BarChartWrapper
             url={'SalesData/getPlacesMedian'}
             queryObject={{ since: since, until: until }}
             title={'Cena sprzedanego roweru - mediana'}
-            // className="border border-gray-200 rounded-lg p-2 w-full"
             dataKey={'date'}
           >
             <BarChart
@@ -169,17 +187,12 @@ function SaleStatsPage() {
               sx={sxBar}
             />
           </BarChartWrapper>
-        </div>
-        <div
-          className={
-            'bg-primary p-4 rounded-lg flex flex-col items-center min-w-[600px]'
-          }
-        >
+        </Card>
+        <Card>
           <BarChartWrapper
             url={'SalesData/getPlacesAverage'}
             queryObject={{ since: since, until: until }}
             title={'Cena sprzedanego roweru - średnia'}
-            // className="border border-gray-200 rounded-lg p-2 w-full"
             dataKey={'date'}
           >
             <BarChart
@@ -189,8 +202,8 @@ function SaleStatsPage() {
               sx={sxBar}
             />
           </BarChartWrapper>
-        </div>
-        <div
+        </Card>
+        <Card
           className={
             'bg-primary p-4 rounded-lg flex flex-col items-center min-w-[600px]'
           }
@@ -199,7 +212,6 @@ function SaleStatsPage() {
             url={'SalesData/getPlacesMedianDiscount'}
             queryObject={{ since: since, until: until }}
             title={'Procent udzielonej zniżki - mediana'}
-            // className="border border-gray-200 rounded-lg p-2 w-full"
             dataKey={'date'}
           >
             <BarChart
@@ -209,17 +221,12 @@ function SaleStatsPage() {
               sx={sxBar}
             />
           </BarChartWrapper>
-        </div>
-        <div
-          className={
-            'bg-primary p-4 rounded-lg flex flex-col items-center min-w-[600px]'
-          }
-        >
+        </Card>
+        <Card>
           <BarChartWrapper
             url={'SalesData/getPlacesSum'}
             queryObject={{ since: since, until: until }}
             title={'Całkowita sprzedaż'}
-            // className="border border-gray-200 rounded-lg p-2 w-full"
             dataKey={'date'}
           >
             <BarChart
@@ -229,10 +236,10 @@ function SaleStatsPage() {
               sx={sxBar}
             />
           </BarChartWrapper>
-        </div>
-      </div>
+        </Card>
+      </Paper>
     </>
   );
-}
+};
 
 export default SaleStatsPage;

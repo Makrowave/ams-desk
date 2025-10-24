@@ -15,7 +15,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          marginLeft: '4rem', // ml-16
+          marginLeft: '4rem',
           height: 'calc(100vh - 60px)',
           overflowY: 'scroll',
           px: 8,

@@ -18,7 +18,6 @@ export default function Home() {
         }}
         elevation={3}
       >
-        ``
         <Typography variant="h4" component="h2" fontWeight={700} gutterBottom>
           Niski stan
         </Typography>

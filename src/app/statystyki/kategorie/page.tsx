@@ -12,6 +12,7 @@ import Collapsible from '../../../components/Collapsible';
 import PieChartWrapper from '../../../components/charts/PieChartWrapper';
 import { usePlacesQuery } from '../../../hooks/queryHooks';
 import { Place } from '../../../types/filterTypes';
+import { Box, Paper, Stack } from '@mui/material';
 
 export default function CategoriesStats({}) {
   const [interval, setInterval] = useState('day');
@@ -47,123 +48,139 @@ export default function CategoriesStats({}) {
         until={until}
         setUntil={setUntil}
       />
-      <div
-        className={'bg-primary p-4 rounded-lg flex flex-col mt-8 items-center'}
-      >
-        <Collapsible title={'Sprzedane rowery ze względu na kategorię'}>
-          <div className="flex justify-center items-center w-full h-fit">
-            <PieChartWrapper
-              url={'SalesData/getCategoryStats'}
-              showsQuantity
-              queryObject={{ since: since, until: until }}
-              title={'Ilość'}
-              className={'border-gray-200 border rounded-lg p-2 mx-auto'}
+      <Stack sx={{ gap: 4, mb: 4 }}>
+        <Paper sx={{ p: 2 }}>
+          <Collapsible title={'Sprzedane rowery ze względu na kategorię'}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 4,
+                justifyContent: 'space-evenly',
+                flexWrap: 'wrap',
+                p: 2,
+              }}
             >
-              <PieChart
-                series={[]}
-                sx={{
-                  [`& .${pieArcLabelClasses.root}`]: {
-                    fontWeight: 'bold',
-                    fontSize: '14px',
-                    fill: 'white',
-                  },
-                }}
-                width={600}
-                height={400}
-              />
-            </PieChartWrapper>
-            <PieChartWrapper
-              url={'SalesData/getCategoryStats'}
-              queryObject={{ since: since, until: until }}
-              title={'Przychód'}
-              className={'border-gray-200 border rounded-lg p-2 mx-auto'}
+              <PieChartWrapper
+                url={'SalesData/getCategoryStats'}
+                showsQuantity
+                queryObject={{ since: since, until: until }}
+                title={'Ilość'}
+                className={'border-gray-200 border rounded-lg p-2 mx-auto'}
+              >
+                <PieChart
+                  series={[]}
+                  sx={{
+                    [`& .${pieArcLabelClasses.root}`]: {
+                      fontWeight: 'bold',
+                      fontSize: '14px',
+                      fill: 'white',
+                    },
+                  }}
+                  width={600}
+                  height={400}
+                />
+              </PieChartWrapper>
+              <PieChartWrapper
+                url={'SalesData/getCategoryStats'}
+                queryObject={{ since: since, until: until }}
+                title={'Przychód'}
+                className={'border-gray-200 border rounded-lg p-2 mx-auto'}
+              >
+                <PieChart
+                  series={[]}
+                  sx={{
+                    [`& .${pieArcLabelClasses.root}`]: {
+                      fontWeight: 'bold',
+                      fontSize: '14px',
+                      fill: 'white',
+                    },
+                  }}
+                  width={600}
+                  height={400}
+                />
+              </PieChartWrapper>
+            </Box>
+          </Collapsible>
+        </Paper>
+        <Paper sx={{ p: 2 }}>
+          <Collapsible title={'Ilość sprzedanych rowerów wg. kategorii'}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 4,
+                justifyContent: 'space-evenly',
+                flexWrap: 'wrap',
+                p: 2,
+              }}
             >
-              <PieChart
-                series={[]}
-                sx={{
-                  [`& .${pieArcLabelClasses.root}`]: {
-                    fontWeight: 'bold',
-                    fontSize: '14px',
-                    fill: 'white',
-                  },
-                }}
-                width={600}
-                height={400}
-              />
-            </PieChartWrapper>
-          </div>
-        </Collapsible>
-      </div>
-      <div className="flex gap-80 mt-8">
-        <Collapsible
-          // className={
-          //   'flex flex-col gap-8 items-center p-4 bg-primary flex-1 rounded-lg self-start'
-          // }
-          title={'Ilość sprzedanych rowerów wg. kategorii'}
-          initialOpen={false}
-        >
-          {!placesQuery.isLoading &&
-            !placesQuery.isError &&
-            placesQuery.data!.map((place) => (
-              <div
-                key={place.id}
-                className={'p-4 flex flex-col items-center min-w-[600px]'}
-              >
-                <BarChartWrapper
-                  url={'SalesData/mostPopularCategoryByPlace'}
-                  queryObject={{
-                    since: since,
-                    until: until,
-                    isCount: true,
-                    placeId: place.id,
-                  }}
-                  title={place.name}
-                  // className="border border-gray-200 rounded-lg p-2 w-full"
-                  dataKey={'place'}
-                  hideSelectors
-                >
-                  <BarChart
-                    series={[]}
-                    barLabel={({ value }) => `${value}`}
-                    height={400}
-                    sx={sxBar}
-                  />
-                </BarChartWrapper>
-              </div>
-            ))}
-        </Collapsible>
-        <Collapsible title={'Sprzedaż wg. kategorii'} initialOpen={false}>
-          {!placesQuery.isLoading &&
-            !placesQuery.isError &&
-            placesQuery.data!.map((place) => (
-              <div
-                key={place.id}
-                className={'p-4 flex flex-col items-center min-w-[600px]'}
-              >
-                <BarChartWrapper
-                  url={'SalesData/mostPopularCategoryByPlace'}
-                  queryObject={{
-                    since: since,
-                    until: until,
-                    isCount: false,
-                    placeId: place.id,
-                  }}
-                  title={place.name}
-                  // className="border border-gray-200 rounded-lg p-2 w-full"
-                  dataKey={'place'}
-                  hideSelectors
-                >
-                  <BarChart
-                    series={[]}
-                    barLabel={({ value }) => `${value}zł`}
-                    height={400}
-                    sx={sxBar}
-                  />
-                </BarChartWrapper>
-              </div>
-            ))}
-        </Collapsible>
-      </div>
+              {!placesQuery.isLoading &&
+                !placesQuery.isError &&
+                placesQuery.data!.map((place) => (
+                  <Box key={place.id} sx={{ flex: 1, minWidth: 500 }}>
+                    <BarChartWrapper
+                      url={'SalesData/mostPopularCategoryByPlace'}
+                      queryObject={{
+                        since: since,
+                        until: until,
+                        isCount: true,
+                        placeId: place.id,
+                      }}
+                      title={place.name}
+                      dataKey={'place'}
+                      hideSelectors
+                    >
+                      <BarChart
+                        series={[]}
+                        barLabel={({ value }) => `${value}`}
+                        height={400}
+                        sx={sxBar}
+                      />
+                    </BarChartWrapper>
+                  </Box>
+                ))}
+            </Box>
+          </Collapsible>
+        </Paper>
+        <Paper sx={{ p: 2 }}>
+          <Collapsible title={'Sprzedaż wg. kategorii'}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 4,
+                p: 2,
+                justifyContent: 'space-evenly',
+                flexWrap: 'wrap',
+              }}
+            >
+              {!placesQuery.isLoading &&
+                !placesQuery.isError &&
+                placesQuery.data!.map((place) => (
+                  <Box key={place.id} sx={{ flex: 1, minWidth: 500 }}>
+                    <BarChartWrapper
+                      url={'SalesData/mostPopularCategoryByPlace'}
+                      queryObject={{
+                        since: since,
+                        until: until,
+                        isCount: false,
+                        placeId: place.id,
+                      }}
+                      title={place.name}
+                      dataKey={'place'}
+                      hideSelectors
+                    >
+                      <BarChart
+                        series={[]}
+                        barLabel={({ value }) => `${value}zł`}
+                        height={400}
+                        sx={sxBar}
+                      />
+                    </BarChartWrapper>
+                  </Box>
+                ))}
+            </Box>
+          </Collapsible>
+        </Paper>
+      </Stack>
     </>
   );
 }
