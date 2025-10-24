@@ -1,5 +1,12 @@
 import { cloneElement, useState } from 'react';
-import { Box, IconButton, Modal, Paper, Typography } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  Modal,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { FaXmark } from 'react-icons/fa6';
 
 type MaterialModalProps = {
@@ -32,30 +39,41 @@ const MaterialModal = ({ button, label, children }: MaterialModalProps) => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    border: '2px solid #000',
-    boxShadow: 24,
   };
   return (
-    <div>
+    <Box>
       <ButtonComponent />
       <Modal open={open} onClose={() => setOpen(false)}>
-        <Paper className={'p-2 min-w-[350px] w-fit'} sx={style}>
-          <Box className={'p-2 flex justify-between items-center'}>
+        <Paper sx={style} elevation={12}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              px: 2,
+              pt: 2,
+              pb: 1,
+            }}
+          >
             <Typography variant="h6">{label}</Typography>
             <IconButton onClick={() => setOpen(false)}>
               <FaXmark />
             </IconButton>
           </Box>
-          <Box
-            className={
-              'p-4 flex flex-col justify-between gap-2 flex-grow min-w-72'
-            }
+          <Stack
+            sx={{
+              px: 4,
+              pb: 4,
+              justifyContent: 'space-between',
+              gap: 2,
+              flexGrow: 1,
+              minWidth: 288,
+            }}
           >
             <ChildComponent />
-          </Box>
+          </Stack>
         </Paper>
       </Modal>
-    </div>
+    </Box>
   );
 };
 

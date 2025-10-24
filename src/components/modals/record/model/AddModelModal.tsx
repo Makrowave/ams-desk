@@ -16,7 +16,7 @@ export default function AddModelModal({
   closeModal: () => void;
 }) {
   const [model, setModel] = useState<ModelDto>({
-    modelName: '',
+    name: '',
     productCode: '',
     eanCode: '',
     frameSize: 0,
@@ -43,7 +43,7 @@ export default function AddModelModal({
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const result = await axiosPrivate.post(URLS.Models, model, {
+      const result = await axiosPrivate.post<ModelRecord>(URLS.Models, model, {
         headers: { 'Content-Type': 'application/json' },
       });
       return result.data;
@@ -69,7 +69,7 @@ export default function AddModelModal({
 
   const validate = () => {
     return (
-      REGEX.MODEL_NAME.test(model.modelName) &&
+      REGEX.MODEL_NAME.test(model.name) &&
       REGEX.PRODUCT_NAME.test(model.productCode ?? '') &&
       REGEX.EAN.test(model.eanCode ?? '') &&
       !!model.frameSize &&
@@ -106,8 +106,8 @@ export default function AddModelModal({
         >
           <ValidatedTextField
             label="Nazwa"
-            value={model.modelName}
-            onChange={(v) => updateField('modelName', v)}
+            value={model.name}
+            onChange={(v) => updateField('name', v)}
             regex={REGEX.MODEL_NAME}
           />
           <ValidatedTextField

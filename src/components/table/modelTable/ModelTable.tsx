@@ -88,7 +88,8 @@ const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
         ),
       },
       {
-        accessorKey: 'modelName',
+        id: 'name',
+        accessorKey: 'name',
         header: 'Model',
         size: 300,
         Cell: ({ renderedCellValue, row }) =>

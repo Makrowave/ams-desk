@@ -28,9 +28,6 @@ const SellModal = ({
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
-      console.log(
-        `${URLS.Bikes2}sell/${bikeId}?price=${price}&internet=${internetSale}`,
-      );
       console.log(price);
       const response = await axiosPrivate.put(
         `${URLS.Bikes2}sell/${bikeId}?price=${price}&internet=${internetSale}`,
@@ -38,6 +35,7 @@ const SellModal = ({
       return response.data;
     },
     onSuccess: (data) => {
+      console.log(data);
       queryClient.setQueriesData<ModelRecord[]>(
         { queryKey: [URLS.Models], exact: false },
         (oldData) => {
@@ -65,12 +63,11 @@ const SellModal = ({
           });
         },
       );
-      console.log([URLS.Bikes, data.modelId, placeId]);
       queryClient.setQueryData<BikeRecord[]>(
         [URLS.Bikes, data.modelId, placeId],
         (oldData) => {
+          console.log('Sale query key', [URLS.Bikes, data.modelId, placeId]);
           if (!oldData) {
-            console.log('sell - oldData undefined');
             return [];
           }
           return oldData.filter((bike) => bike.id !== bikeId);

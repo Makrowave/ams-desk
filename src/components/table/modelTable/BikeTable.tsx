@@ -24,7 +24,7 @@ import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import { paperTableStyle } from '../../../styles/styles';
 import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
-import { Bike, BikeRecord, ModelRecord } from '../../../types/bikeTypes';
+import { BikeRecord, ModelRecord } from '../../../types/bikeTypes';
 import { Place, Status } from '../../../types/filterTypes';
 import { Employee } from '../../../types/employeeTypes';
 
@@ -34,12 +34,11 @@ type Props = {
 };
 
 const BikeTable = ({ model, placeId }: Props) => {
-  const { refetch, data, isPending, isError, error } = useBikesQuery<
-    BikeRecord[]
-  >({
+  const { data, isPending, isError, error } = useBikesQuery<BikeRecord[]>({
     id: model.id,
     placeId: placeId,
   });
+
   const {
     data: placeData,
     isPending: placeIsPending,
@@ -169,7 +168,7 @@ const BikeTable = ({ model, placeId }: Props) => {
           <SellModal
             bikeId={row.original.id}
             basePrice={model.price}
-            placeId={row.original.place}
+            placeId={placeId ?? 0}
           />
         </MaterialModal>
 

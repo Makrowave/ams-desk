@@ -16,7 +16,7 @@ const AddEanModal = ({ model, closeModal }: ModelModalProps) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
-      const result = await axiosPrivate.put(
+      const result = await axiosPrivate.put<ModelRecord>(
         URLS.Models + model.id,
         JSON.stringify({
           ...model,
@@ -37,7 +37,7 @@ const AddEanModal = ({ model, closeModal }: ModelModalProps) => {
         (oldData) => {
           return oldData
             ? oldData.map((m) =>
-                m.id === data.modelId
+                m.id === data.id
                   ? {
                       ...data,
                       bikeCount: m.bikeCount,

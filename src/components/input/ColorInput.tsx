@@ -14,10 +14,9 @@ export default function ColorInput({
   setValue,
 }: ColorInputProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const isOpen = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setIsOpen(true);
     setAnchorEl(event.currentTarget);
   };
 
@@ -41,14 +40,14 @@ export default function ColorInput({
           }}
         />
       </Box>
-
       <Popover
+        onClose={() => setAnchorEl(null)}
         open={isOpen}
         anchorEl={anchorEl}
         style={{ zIndex: 1400 }}
         anchorOrigin={{ vertical: 'center', horizontal: 'left' }}
       >
-        <Box sx={{ boxShadow: 3 }}>
+        <Box>
           <ChromePicker
             color={value}
             onChange={(e) => setValue(e.hex)}

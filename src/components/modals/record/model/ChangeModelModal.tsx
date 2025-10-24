@@ -13,16 +13,19 @@ import { ModelRecord } from '../../../../types/bikeTypes';
 const ChangeModelModal = ({ model, closeModal }: ModelModalProps) => {
   const [editedModel, setEditedModel] = useState(model);
   const [isValid, setIsValid] = useState(false);
-  //Other
   const [error, setError] = useState('');
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const result = await axiosPrivate.put(URLS.Models + model.id, model, {
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const result = await axiosPrivate.put<ModelRecord>(
+        URLS.Models + model.id,
+        editedModel,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
       return result.data;
     },
     onSuccess: (data) => {
@@ -34,7 +37,7 @@ const ChangeModelModal = ({ model, closeModal }: ModelModalProps) => {
         (oldData) => {
           return oldData
             ? oldData.map((m) =>
-                m.id === data.modelId
+                m.id === data.id
                   ? {
                       ...data,
                       bikeCount: m.bikeCount,
@@ -64,6 +67,7 @@ const ChangeModelModal = ({ model, closeModal }: ModelModalProps) => {
   }
 
   const validate = () => {
+    console.log(editedModel);
     return (
       REGEX.MODEL_NAME.test(editedModel.name) &&
       REGEX.PRODUCT_NAME.test(editedModel.productCode ?? '') &&

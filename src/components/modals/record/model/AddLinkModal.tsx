@@ -10,13 +10,13 @@ import { ModelModalProps } from '../../types/modalTypes';
 import { ModelRecord } from '../../../../types/bikeTypes';
 
 const AddLinkModal = ({ model, closeModal }: ModelModalProps) => {
-  const [link, setLink] = useState<string>();
+  const [link, setLink] = useState<string | undefined>(model.link);
   const [error, setError] = useState('');
   const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
-      const result = await axiosPrivate.put(
+      const result = await axiosPrivate.put<ModelRecord>(
         URLS.Models + model.id,
         JSON.stringify({
           ...model,
@@ -37,7 +37,7 @@ const AddLinkModal = ({ model, closeModal }: ModelModalProps) => {
         (oldData) => {
           return oldData
             ? oldData.map((m) =>
-                m.id === data.modelId
+                m.id === data.id
                   ? {
                       ...data,
                       bikeCount: m.bikeCount,

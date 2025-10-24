@@ -35,7 +35,7 @@ export type ModelRecord = {
 export type ModelDto = {
   productCode?: string;
   eanCode?: string;
-  modelName: string;
+  name: string;
   frameSize?: number;
   wheelSize: number;
   isWoman: boolean;
