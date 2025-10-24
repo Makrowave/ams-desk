@@ -11,6 +11,14 @@ const Navigation = () => {
   const path = pathname.split('/')[1] ?? pathname.split('/')[0]!;
   const activeTab = baseRoutes.findIndex((item) => item.links?.includes(path));
 
+  // Implement mechanism to check if user has admin rights
+  // const { isAdmin } = useAuth();
+  // const routes = baseRoutes.filter((route) =>
+  //   isAdmin ? true : route.href !== '/adminlogin',
+  // );
+
+  if (pathname === '/login') return null;
+
   return (
     <AppBar
       elevation={6}

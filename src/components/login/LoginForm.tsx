@@ -23,49 +23,49 @@ const LoginForm = ({ login, loginError }: LoginFormProps) => {
     }
   };
 
-  const [loginFocus, setLoginFocus] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
-
   return (
-    <div className="justify-center flex content-center h-full items-center">
-      <Paper
-        component={'form'}
-        onSubmit={(e) => handleSubmit(e)}
-        sx={{
-          margin: 'auto',
-          display: 'flex',
-          flexDirection: 'column',
-          p: 4,
-          bgcolor: 'primary.main',
-          borderRadius: 2,
-          boxShadow: 3,
-          width: 300,
+    <Paper
+      component={'form'}
+      onSubmit={(e) => handleSubmit(e)}
+      sx={{
+        margin: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        p: 4,
+        borderRadius: 2,
+        boxShadow: 3,
+        gap: 4,
+        width: 300,
+      }}
+    >
+      <Typography variant="h5">Logowanie</Typography>
+      <ErrorDisplay message={loginError} isVisible={loginError !== ''} />
+      <TextField
+        label="Nazwa użytkownika"
+        value={username}
+        onChange={(e) => {
+          setUsername(e.target.value);
         }}
-      >
-        <Typography variant="h5">Logowanie</Typography>
-        <ErrorDisplay message={loginError} isVisible={loginError !== ''} />
-        <Typography>Nazwa użytkownika</Typography>
-        <TextField
-          value={username}
-          onChange={(e) => {
-            setUsername(e.target.value);
-          }}
-          onKeyDown={handleKeyDown}
-          onFocus={() => setLoginFocus(true)}
-          onBlur={() => setLoginFocus(false)}
-          placeholder="Login"
-        />
-        <Typography>Hasło</Typography>
-        <Password
-          value={password}
-          setValue={setPassword}
-          onKeyDown={handleKeyDown}
-          onFocus={() => setPasswordFocus(true)}
-          onBlur={() => setPasswordFocus(false)}
-        />
-        <Button type="submit">Zaloguj</Button>
-      </Paper>
-    </div>
+        sx={(theme) => ({
+          '& input:-webkit-autofill': {
+            WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.default} inset`,
+            boxShadow: `0 0 0 100px ${theme.palette.background.default} inset`,
+            WebkitTextFillColor: theme.palette.text.primary,
+          },
+        })}
+        onKeyDown={handleKeyDown}
+        placeholder="Login"
+      />
+      <Password
+        // label="Hasło"
+        value={password}
+        setValue={setPassword}
+        onKeyDown={handleKeyDown}
+      />
+      <Button variant="contained" type="submit">
+        Zaloguj
+      </Button>
+    </Paper>
   );
 };
 

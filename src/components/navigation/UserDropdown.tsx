@@ -41,7 +41,9 @@ export default function UserDropdown() {
           >
             {isAdmin ? <AdminPasswordModal /> : <UserPasswordModal />}
           </MaterialModal>
-          <MenuItem onClick={handleLogout}>Wyloguj się</MenuItem>
+          <MenuItem onClick={handleLogout}>
+            {isAdmin ? 'Wyjdź z trybu administratora' : 'Wyloguj się'}
+          </MenuItem>
         </SavedDataWarning>
       </Menu>
     </>

@@ -41,7 +41,7 @@ const Login = () => {
       if (response.status === 200) {
         setSuccess(true);
         const token = await refresh();
-        if (token !== '') {
+        if (token) {
           router.push('/');
         }
       }

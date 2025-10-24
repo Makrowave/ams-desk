@@ -20,8 +20,6 @@ type PasswordProps = {
   label?: string;
   setValue: (v: string) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
-  onFocus?: (e: FocusEvent<HTMLInputElement, Element>) => void;
-  onBlur?: (e: FocusEvent<HTMLInputElement, Element>) => void;
 };
 
 const Password = ({
@@ -29,35 +27,31 @@ const Password = ({
   label = 'Hasło',
   setValue,
   onKeyDown,
-  onFocus,
-  onBlur,
 }: PasswordProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
-    if (onFocus) onFocus(e);
-  };
-
-  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-    if (onBlur) onBlur(e);
-  };
-
   return (
-    <FormControl>
+    <FormControl variant="outlined">
       <InputLabel htmlFor={`outlined-adornment-password-${label}`}>
         {label}
       </InputLabel>
       <OutlinedInput
         id={`outlined-adornment-password-${label}`}
+        label={label}
         type={showPassword ? 'text' : 'password'}
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
         }}
         onKeyDown={onKeyDown}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
         placeholder="Hasło"
+        sx={(theme) => ({
+          '& input:-webkit-autofill': {
+            WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.default} inset`,
+            boxShadow: `0 0 0 100px ${theme.palette.background.default} inset`,
+            WebkitTextFillColor: theme.palette.text.primary,
+          },
+        })}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
