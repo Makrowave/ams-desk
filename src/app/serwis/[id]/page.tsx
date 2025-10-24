@@ -1,6 +1,7 @@
 'use client';
+import { Box } from '@mui/material';
 import Navigation from '../../../components/navigation/Navigation';
-import RepairDisplay from '../../../components/repairs/RepairDisplay';
+import RepairDisplay from '../../../components/repairs/repair/RepairDisplay';
 import PrivateRoute from '../../../components/routing/PrivateRoute';
 import { useRepairsQuery } from '../../../hooks/queryHooks';
 import { Repair } from '../../../types/repairTypes';
@@ -14,13 +15,19 @@ function RepairPage({ params }: { params: { id: string } }) {
   return (
     <PrivateRoute>
       <Navigation />
-      <main className="h-[calc(100vh - 48px)] overflow-y-auto">
-        <div className="w-full h-full">
-          <div className="main-div bg-gray-200 px-12 py-6 h-fit">
+      <Box
+        component={'main'}
+        sx={{ overflowY: 'auto', height: 'h-calc(100vh - 48px)' }}
+      >
+        <Box className="w-full h-full">
+          <Box
+            sx={{ py: 6, px: 12, height: 'fit-content' }}
+            className="main-div"
+          >
             {!(isPending || isError) && <RepairDisplay repair={data} />}
-          </div>
-        </div>
-      </main>
+          </Box>
+        </Box>
+      </Box>
     </PrivateRoute>
   );
 }

@@ -1,6 +1,6 @@
 // 'use client';
 
-import MainLayout from '../components/MainLayout';
+import Layout from '../components/navigation/Layout';
 import ProviderWrapper from '../components/providers/Providers';
 
 export const metadata = {
@@ -12,7 +12,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="pl">
       <ProviderWrapper>
-        <MainLayout>{children}</MainLayout>
+        <Layout>{children}</Layout>
       </ProviderWrapper>
     </html>
   );

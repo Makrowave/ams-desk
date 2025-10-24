@@ -4,38 +4,30 @@ import Navigation from '../../../components/navigation/Navigation';
 import RepairTable from '../../../components/repairs/RepairTable';
 import SideBar from '../../../components/navigation/SideBar';
 import { repairsRoutes } from '../../../components/routing/routes';
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Stack, Typography } from '@mui/material';
 import { createTableSrc, finished } from '../../../util/repairsHelper';
+import { drawerWidthCollapsed } from '../../../styles/layout';
 
 function FinishedRepairsPage() {
   return (
     <PrivateRoute>
       <Navigation />
-      <Box component="main" sx={{ overflowY: 'hidden', display: 'flex' }}>
+      <Box component={'main'} sx={{ overflowY: 'hidden' }}>
         <SideBar baseUrl={'/serwis'} links={repairsRoutes} />
-        <Box
-          sx={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            px: 12,
-            py: 6,
-            height: '100%',
-            overflowY: 'auto',
-            gap: 10,
-          }}
-        >
+        <Stack sx={{ mx: `${drawerWidthCollapsed + 30}px`, my: '30px' }}>
           <Paper
-            sx={{ bgcolor: 'background.paper', borderRadius: 3, p: 8 }}
-            elevation={3}
+            sx={{
+              flex: 1,
+              padding: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 4,
+            }}
           >
-            <Typography variant="h4" component="h2" gutterBottom sx={{ mb: 4 }}>
-              Ukończone
-            </Typography>
+            <Typography variant="h4">Ukończone</Typography>
             <RepairTable src={createTableSrc(finished)} localKey="finished" />
           </Paper>
-        </Box>
+        </Stack>
       </Box>
     </PrivateRoute>
   );

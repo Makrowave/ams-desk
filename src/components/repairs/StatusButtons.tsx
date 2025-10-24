@@ -17,6 +17,7 @@ import URLS from '../../util/urls';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import MaterialModal from '../modals/MaterialModal';
 import { Repair } from '../../types/repairTypes';
+import { Box, Button } from '@mui/material';
 
 type StatusButtonsProps = {
   localRepair: Repair;
@@ -124,10 +125,14 @@ const StatusButtons = ({
           <MaterialModal
             label={'Rozpocznij naprawę'}
             button={
-              <button className="button-primary flex items-center justify-center gap-2">
+              <Button
+                color="warning"
+                variant={'contained'}
+                sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+              >
                 <FaWrench />
-                <span>Rozpocznij</span>
-              </button>
+                Rozpocznij
+              </Button>
             }
           >
             <RepairModal
@@ -142,101 +147,119 @@ const StatusButtons = ({
       case REPAIR_STATUS.InProgress:
         return (
           <>
-            <button
-              className="button-primary flex items-center justify-center gap-2"
+            <Button
+              color="info"
+              variant={'contained'}
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
               onClick={() => {
                 changeStatus(REPAIR_STATUS.AwaitingParts);
               }}
             >
               <FaHourglass />
               <span>Oczekuj części</span>
-            </button>
-            <button
-              className="button-primary flex items-center justify-center gap-2"
+            </Button>
+            <Button
+              color="info"
+              variant={'contained'}
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
               onClick={() => {
                 changeStatus(REPAIR_STATUS.Warranty);
               }}
             >
               <FaShield />
               <span>Gwarancja</span>
-            </button>
-            <button
-              className="button-primary flex items-center justify-center gap-2"
+            </Button>
+            <Button
+              variant={'contained'}
+              color="info"
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
               onClick={() => {
                 changeStatus(REPAIR_STATUS.ContactNeeded);
               }}
             >
               <FaComment />
               <span>Zapytaj klienta</span>
-            </button>
+            </Button>
 
-            <button
-              className="button-primary flex items-center justify-center gap-2"
+            <Button
+              variant={'contained'}
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
               onClick={() => {
                 changeStatus(REPAIR_STATUS.Finished);
               }}
             >
               <FaCheck />
               <span>Zakończ</span>
-            </button>
+            </Button>
           </>
         );
       case REPAIR_STATUS.AwaitingParts:
       case REPAIR_STATUS.Warranty:
       case REPAIR_STATUS.ContactNeeded:
         return (
-          <button
-            className="button-primary flex items-center justify-center gap-2"
+          <Button
+            color="warning"
+            variant={'contained'}
+            sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
             onClick={() => {
               changeStatus(REPAIR_STATUS.InProgress);
             }}
           >
             <FaBoxOpen />
             <span>Wznów</span>
-          </button>
+          </Button>
         );
       case REPAIR_STATUS.Finished:
         return (
           <>
-            <button
-              className="button-primary flex items-center justify-center gap-2"
+            <Button
+              color="warning"
+              variant={'contained'}
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
               onClick={() => {
                 changeStatus(REPAIR_STATUS.InProgress);
               }}
             >
               <FaBoxOpen />
               <span>Wznów</span>
-            </button>
-            <button
-              className="button-primary flex items-center justify-center gap-2"
+            </Button>
+            <Button
+              variant={'contained'}
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
               onClick={() => {
                 changeStatus(REPAIR_STATUS.Notified);
               }}
             >
               <FaPhone />
               <span>Powiadom</span>
-            </button>
+            </Button>
           </>
         );
       case REPAIR_STATUS.Notified:
         return (
           <>
-            <button
-              className="button-primary flex items-center justify-center gap-2"
+            <Button
+              color="warning"
+              variant={'contained'}
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
               onClick={() => {
                 changeStatus(REPAIR_STATUS.InProgress);
               }}
             >
               <FaBoxOpen />
               <span>Wznów</span>
-            </button>
+            </Button>
             <MaterialModal
               label={'Wydaj rower'}
               button={
-                <button className="button-primary flex items-center justify-center gap-2">
+                <Button
+                  variant={'contained'}
+                  sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                  className="button-primary flex items-center justify-center gap-2"
+                >
                   <FaFlagCheckered />
                   <span>Wydaj</span>
-                </button>
+                </Button>
               }
             >
               <RepairModal
@@ -255,7 +278,7 @@ const StatusButtons = ({
   };
 
   return (
-    <div className="flex items-center gap-x-2 text-xl">
+    <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
       {renderButtons()}
       {!(
         localRepair.statusId === REPAIR_STATUS.Cancelled ||
@@ -264,16 +287,20 @@ const StatusButtons = ({
         <MaterialModal
           label={'Anuluj'}
           button={
-            <button className="button-primary flex items-center justify-center gap-2">
-              <FaRegCircleXmark className={'text-red-600'} />
+            <Button
+              variant={'contained'}
+              color="error"
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+            >
+              <FaRegCircleXmark />
               <span>Anuluj</span>
-            </button>
+            </Button>
           }
         >
           <CancelRepairModal onClick={changeStatus} />
         </MaterialModal>
       )}
-    </div>
+    </Box>
   );
 };
 

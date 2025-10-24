@@ -11,11 +11,12 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-import { appBarHeight } from '../../styles/layout';
+import {
+  appBarHeight,
+  drawerWidthCollapsed,
+  drawerWidthExpanded,
+} from '../../styles/layout';
 import { Route } from '../routing/routes';
-
-const DRAWER_WIDTH_EXPANDED = 240;
-const DRAWER_WIDTH_COLLAPSED = 64;
 
 const SideBar = ({ baseUrl, links }: { baseUrl: string; links: Route[] }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -28,11 +29,12 @@ const SideBar = ({ baseUrl, links }: { baseUrl: string; links: Route[] }) => {
   return (
     <Drawer
       variant="permanent"
+      elevation={4}
       sx={{
-        width: 0, // Don't take up space in flex layout
+        width: 0,
         flexShrink: 0,
         '& .MuiDrawer-paper': {
-          width: isExpanded ? DRAWER_WIDTH_EXPANDED : DRAWER_WIDTH_COLLAPSED,
+          width: isExpanded ? drawerWidthExpanded : drawerWidthCollapsed,
           boxSizing: 'border-box',
           transition: 'width 0.3s ease',
           overflowX: 'hidden',
@@ -40,7 +42,7 @@ const SideBar = ({ baseUrl, links }: { baseUrl: string; links: Route[] }) => {
           top: `${appBarHeight}px`,
           height: `calc(100vh - ${appBarHeight}px)`,
           left: 0,
-          zIndex: 1200,
+          zIndex: (theme) => theme.zIndex.appBar - 1,
         },
       }}
     >

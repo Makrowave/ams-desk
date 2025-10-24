@@ -5,20 +5,30 @@ import SideBar from '../../../components/navigation/SideBar';
 import { repairsRoutes } from '../../../components/routing/routes';
 import { collected, createTableSrc } from '../../../util/repairsHelper';
 import Navigation from '../../../components/navigation/Navigation';
+import { Box, Paper, Stack, Typography } from '@mui/material';
+import { drawerWidthCollapsed } from '../../../styles/layout';
 
 function CollectedRepairsPage() {
   return (
     <PrivateRoute>
       <Navigation />
-      <main className="overflow-y-hidden">
+      <Box component={'main'} sx={{ overflowY: 'hidden' }}>
         <SideBar baseUrl={'/serwis'} links={repairsRoutes} />
-        <div className="flex flex-col m-auto overflow-y-auto h-full px-12 py-6 items-center space-y-10">
-          <div className="bg-white rounded-xl p-8">
-            <h2 className="mb-4 text-2xl">Wydane</h2>
+        <Stack sx={{ mx: `${drawerWidthCollapsed + 30}px`, my: '30px' }}>
+          <Paper
+            sx={{
+              flex: 1,
+              padding: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 4,
+            }}
+          >
+            <Typography variant="h4">Wydane</Typography>
             <RepairTable src={createTableSrc(collected)} localKey="collected" />
-          </div>
-        </div>
-      </main>
+          </Paper>
+        </Stack>
+      </Box>
     </PrivateRoute>
   );
 }

@@ -6,10 +6,7 @@ import PrivateRoute from '../../components/routing/PrivateRoute';
 function AdminLoginPage() {
   return (
     <PrivateRoute>
-      <Navigation />
-      <main className="h-[calc(100vh-48px)]">
-        <AdminLogin />
-      </main>
+      <AdminLogin />
     </PrivateRoute>
   );
 }

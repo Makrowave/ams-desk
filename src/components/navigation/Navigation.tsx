@@ -12,7 +12,13 @@ const Navigation = () => {
   const activeTab = baseRoutes.findIndex((item) => item.links?.includes(path));
 
   return (
-    <AppBar position="static" sx={{ height: `${appBarHeight}px` }}>
+    <AppBar
+      elevation={6}
+      position="fixed"
+      sx={{
+        height: `${appBarHeight}px`,
+      }}
+    >
       <Toolbar>
         <Tabs value={activeTab} textColor="inherit" indicatorColor="secondary">
           {baseRoutes.map((tab) => (

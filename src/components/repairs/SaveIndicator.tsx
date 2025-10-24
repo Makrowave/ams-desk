@@ -14,6 +14,7 @@ const SaveIndicator = ({ status }: { status: 'success' | 'error' | '' }) => {
             color: 'success.contrastText',
             fontWeight: 500,
             fontSize: 16,
+            height: 'auto',
             borderRadius: 2,
           }}
         />

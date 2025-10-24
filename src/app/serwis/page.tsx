@@ -5,24 +5,34 @@ import RepairTable from '../../components/repairs/RepairTable';
 import SideBar from '../../components/navigation/SideBar';
 import { repairsRoutes } from '../../components/routing/routes';
 import { createTableSrc, inProgress } from '../../util/repairsHelper';
+import { drawerWidthCollapsed } from '../../styles/layout';
+import { Box, Stack, Paper, Typography } from '@mui/material';
 
 function RepairsPage() {
   return (
     <PrivateRoute>
       <Navigation />
-      <main className="overflow-y-hidden">
+      <Box component={'main'} sx={{ overflowY: 'hidden' }}>
         <SideBar baseUrl={'/serwis'} links={repairsRoutes} />
-        <div className="flex flex-col m-auto overflow-y-auto h-full px-12 py-6 items-center space-y-10">
-          <div className="bg-white rounded-xl p-8">
-            <h2 className="mb-4 text-2xl">W trakcie</h2>
+        <Stack sx={{ mx: `${drawerWidthCollapsed + 30}px`, my: '30px' }}>
+          <Paper
+            sx={{
+              flex: 1,
+              padding: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 4,
+            }}
+          >
+            <Typography variant="h4">W trakcie</Typography>
             <RepairTable
               src={createTableSrc(inProgress)}
-              addButton
               localKey="inProgress"
+              addButton
             />
-          </div>
-        </div>
-      </main>
+          </Paper>
+        </Stack>
+      </Box>
     </PrivateRoute>
   );
 }
