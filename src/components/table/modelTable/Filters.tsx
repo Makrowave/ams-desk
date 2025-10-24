@@ -8,18 +8,19 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  FormGroup,
   Paper,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 
-const Filters = ({
-  setQuery,
-}: {
+type FiltersProps = {
   setQuery: Dispatch<SetStateAction<FiltersType>>;
-}) => {
+  place: number;
+  setPlace: Dispatch<SetStateAction<number>>;
+};
+
+const Filters = ({ setQuery, place, setPlace }: FiltersProps) => {
   const updateFilters = (
     field: keyof FiltersType,
     value: FiltersType[keyof FiltersType],
@@ -62,6 +63,14 @@ const Filters = ({
         <Typography variant="h6">Filtry</Typography>
       </Box>
       <Stack component={'form'} spacing={2}>
+        <FetchSelect
+          value={place}
+          onChange={setPlace}
+          urlKey={URLKEYS.Places}
+          defaultName="Dowolne"
+          label="Miejsce"
+          defaultValue={defaultFilters.place}
+        />
         <TextField
           label="Nazwa"
           value={filters.name}

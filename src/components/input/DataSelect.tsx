@@ -3,6 +3,7 @@ import { SelectOption, SelectOptionWithColor } from '../../types/selectTypes';
 
 type DataSelectProps = {
   defaultValue: number;
+  defaultName?: string;
   value: number;
   onChange: (value: number) => void;
   options: SelectOption[];
@@ -12,6 +13,7 @@ type DataSelectProps = {
 
 const DataSelect = ({
   defaultValue,
+  defaultName,
   value,
   onChange,
   options,
@@ -37,7 +39,7 @@ const DataSelect = ({
           <MenuItemChild
             option={{
               id: defaultValue,
-              name: validated ? 'Wybierz' : 'Dowolny',
+              name: defaultName ?? (validated ? 'Wybierz' : 'Dowolny'),
             }}
             isColored={isColored}
           />

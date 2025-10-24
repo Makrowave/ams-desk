@@ -180,7 +180,7 @@ const RepairTable = ({ src, addButton, localKey }: RepairTableProps) => {
     [placesOptions],
   );
 
-  const table = useLocallyStoredTable(`Repair_${localKey}`, {
+  const { table } = useLocallyStoredTable(`Repair_${localKey}`, {
     ...paperTableStyle,
     columns: columns,
     data: data ?? [],

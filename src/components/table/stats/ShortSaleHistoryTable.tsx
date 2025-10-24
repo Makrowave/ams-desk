@@ -59,7 +59,7 @@ export default function ShortSaleHistoryTable() {
     [],
   );
 
-  const table = useLocallyStoredTable('SaleHistoryShort', {
+  const { table } = useLocallyStoredTable('SaleHistoryShort', {
     ...paperTableStyle,
     columns,
     data: data ?? [],

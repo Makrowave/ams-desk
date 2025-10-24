@@ -99,7 +99,7 @@ const BikeTable = ({ model, placeId }: Props) => {
     [placeData, statusData, employeeData],
   );
 
-  const table = useLocallyStoredTable('Bike', {
+  const { table } = useLocallyStoredTable('Bike', {
     ...paperTableStyle,
     columns,
     data: data ?? [],

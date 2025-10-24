@@ -11,6 +11,7 @@ type FetchSelectProps = {
   onChange: (value: number) => void;
   label: string;
   defaultValue: number;
+  defaultName?: string;
   validated?: boolean;
 };
 
@@ -22,6 +23,7 @@ const FetchSelect = <T extends SelectOption>({
   onChange,
   label,
   defaultValue,
+  defaultName,
   validated,
 }: FetchSelectProps) => {
   const hook = createQueryHook(urlKey);
@@ -56,6 +58,7 @@ const FetchSelect = <T extends SelectOption>({
       defaultValue={defaultValue}
       value={value}
       onChange={onChange}
+      defaultName={defaultName}
       options={data}
       label={label}
       validated={validated}

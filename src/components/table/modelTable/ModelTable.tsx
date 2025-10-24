@@ -5,7 +5,7 @@ import {
   MRT_ActionMenuItem,
   MRT_ColumnDef,
 } from 'material-react-table';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import MaterialModal from '../../modals/MaterialModal';
 import {
   FaBarcode,
@@ -30,12 +30,19 @@ import useLocallyStoredTable from '../../../hooks/useLocallyStoredTable';
 import { defaultFilters, prepareFilters } from './Filters';
 import { ModelRecord } from '../../../types/bikeTypes';
 import { Place } from '../../../types/filterTypes';
+import { countColors } from '../../../styles/colors';
 
-const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
+const ModelTable = ({
+  filters,
+  place,
+}: {
+  filters: typeof defaultFilters;
+  place: number;
+}) => {
   const { isAdmin } = useAuth();
 
   const { data, isLoading, isError, error } = useModelsQuery<ModelRecord[]>(
-    { ...prepareFilters(filters), placeId: 0 },
+    { ...prepareFilters(filters), placeId: place },
     {
       refetchInterval: 10000,
     },
@@ -47,11 +54,11 @@ const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
     isLoading: placesIsLoading,
   } = usePlacesQuery<Place[]>();
 
-  const colorCount = (count: number) => {
-    if (count === 0) return 'bg-count-none';
-    if (count === 1) return 'bg-count-low';
-    if (count <= 3) return 'bg-count-medium';
-    return 'bg-count-high';
+  const getColorFromCount = (count: number) => {
+    if (count === 0) return countColors.none;
+    if (count === 1) return countColors.low;
+    if (count <= 3) return countColors.medium;
+    return countColors.high;
   };
 
   const columns = useMemo<MRT_ColumnDef<ModelRecord>[]>(
@@ -101,8 +108,8 @@ const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
               textAlign: 'center',
               borderRadius: 2,
               width: '100%',
+              bgcolor: getColorFromCount(row.original.bikeCount),
             }}
-            className={colorCount(row.original.bikeCount)}
           >
             {renderedCellValue}
           </Box>
@@ -127,7 +134,7 @@ const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
     [placesData],
   );
 
-  const table = useLocallyStoredTable('Model', {
+  const { table, setColumnVisibility } = useLocallyStoredTable('Model', {
     columns,
     data: data ?? [],
     enablePagination: false,
@@ -136,7 +143,7 @@ const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
     enableExpandAll: (data?.length ?? 0) < 10,
     state: { isLoading },
     renderDetailPanel: ({ row }) => (
-      <ModelDetailsPanel model={row.original} placeId={0} />
+      <ModelDetailsPanel model={row.original} placeId={place} />
     ),
     enableColumnResizing: true,
     enableColumnOrdering: true,
@@ -247,6 +254,18 @@ const ModelTable = ({ filters }: { filters: typeof defaultFilters }) => {
         ),
       ].filter(Boolean),
   });
+
+  useEffect(() => {
+    setColumnVisibility((prev) => {
+      return (
+        placesData
+          ?.map((p) => p.name)
+          .reduce((obj, name) => {
+            return { ...obj, [name]: place === 0 };
+          }, {}) ?? prev
+      );
+    });
+  }, [placesData, setColumnVisibility, place]);
 
   return <MaterialReactTable table={table} />;
 };

@@ -38,7 +38,6 @@ export const createQueryHook =
   ) => {
     const axios = admin ? useAxiosAdmin() : useAxiosPrivate();
     const queryKey = [URLS[key], ...Object.values(params ?? {})];
-    console.log('Query Key:', queryKey);
 
     return useQuery<TData, AxiosError>({
       queryKey,

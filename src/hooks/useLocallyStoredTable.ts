@@ -61,7 +61,7 @@ const useLocallyStoredTable = <TData extends MRT_RowData>(
       ...tableDefinition.state,
     },
   });
-  return resultTable;
+  return { table: resultTable, setColumnVisibility };
 };
 
 export default useLocallyStoredTable;

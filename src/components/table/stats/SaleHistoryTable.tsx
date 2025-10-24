@@ -80,7 +80,7 @@ const SaleHistoryTable = ({
     [],
   );
 
-  const table = useLocallyStoredTable('SaleHistory', {
+  const { table } = useLocallyStoredTable('SaleHistory', {
     ...paperTableStyle,
     columns,
     data: data ?? [],

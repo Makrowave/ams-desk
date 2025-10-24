@@ -6,10 +6,11 @@ import { appBarHeight } from '../../../styles/layout';
 
 const FilterModelTable = () => {
   const [query, setQuery] = useState(defaultFilters);
+  const [place, setPlace] = useState<number>(0);
 
   return (
     <Stack sx={{ height: `calc(100vh - ${appBarHeight}px)` }} direction={'row'}>
-      <Filters setQuery={setQuery} />
+      <Filters setQuery={setQuery} place={place} setPlace={setPlace} />
       <Paper
         sx={{
           m: 2,
@@ -20,7 +21,7 @@ const FilterModelTable = () => {
           flex: 5,
         }}
       >
-        <ModelTable filters={query} />
+        <ModelTable filters={query} place={place} />
       </Paper>
     </Stack>
   );

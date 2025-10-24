@@ -24,3 +24,10 @@ export const chartColors = [
   '#16D620',
   '#B91383',
 ];
+
+export const countColors = {
+  none: '#ffcdd2',
+  low: '#f7cca6',
+  medium: '#fff0c2',
+  high: '#c8e6c9',
+};
