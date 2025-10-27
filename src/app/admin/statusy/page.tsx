@@ -3,26 +3,38 @@ import { useStatusesQuery } from '../../../hooks/queryHooks';
 import AdminTable from '../../../components/table/AdminTable';
 import URLS from '../../../util/urls';
 import { Status } from '../../../types/filterTypes';
+import { useMemo } from 'react';
+import { MRT_ColumnDef } from 'material-react-table';
+import ColorCell from '../../../components/table/ColorCell';
+import ColorEditTableCell from '../../../components/table/ColorEditTableCell';
 
 function StatusPanel() {
   const { data, isLoading, isError } = useStatusesQuery<Status[]>();
-  const rowFormat = [
-    { key: '', label: 'Id', input: 'blank' },
-    { key: 'statusName', label: 'Nazwa', input: 'text' },
-    { key: 'hexCode', label: '', input: 'color' },
-  ];
+
+  const columns = useMemo<MRT_ColumnDef<Status>[]>(
+    () => [
+      {
+        accessorKey: 'name',
+        header: 'Nazwa',
+      },
+      {
+        accessorKey: 'color',
+        id: 'color',
+        header: 'Kolor',
+        Cell: ColorCell,
+        Edit: ColorEditTableCell,
+      },
+    ],
+    [],
+  );
   return (
-    <div>
-      {!isError && !isLoading && (
-        <AdminTable
-          data={data}
-          url={URLS.Statuses}
-          newRowFormat={rowFormat}
-          noDelete
-          noAdd
-        />
-      )}
-    </div>
+    <AdminTable
+      columns={columns}
+      data={data}
+      url={URLS.Statuses}
+      noDelete
+      noAdd
+    />
   );
 }
 

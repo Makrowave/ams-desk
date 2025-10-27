@@ -1,10 +1,14 @@
 'use client';
-import { useState } from 'react';
-import { useServicesQuery } from '../../../hooks/queryHooks';
+import { useMemo, useState } from 'react';
+import {
+  useServiceCategoriesQuery,
+  useServicesQuery,
+} from '../../../hooks/queryHooks';
 import URLS, { URLKEYS } from '../../../util/urls';
 import AdminTable from '../../../components/table/AdminTable';
 import { Box } from '@mui/material';
-import { Service } from '../../../types/repairTypes';
+import { Service, ServiceCategory } from '../../../types/repairTypes';
+import { MRT_ColumnDef } from 'material-react-table';
 
 function AdminRepairs() {
   const {
@@ -14,50 +18,50 @@ function AdminRepairs() {
     error: servicesError,
   } = useServicesQuery<Service[]>();
 
-  const [serviceCategory, setServiceCategory] = useState(0);
-  const [serviceName, setServiceName] = useState('');
+  const {
+    data: serviceCategoriesData,
+    isLoading: isServiceCategoriesLoading,
+    isError: isServiceCategoriesError,
+  } = useServiceCategoriesQuery<ServiceCategory[]>();
 
-  const filteredServices =
-    servicesData === undefined
-      ? []
-      : servicesData.filter((service) => {
-          return (
-            (service.name.toLowerCase().includes(serviceName.toLowerCase()) ||
-              serviceName === '') &&
-            (service.serviceCategoryId === serviceCategory ||
-              serviceCategory === 0)
-          );
-        });
-
-  const newRowFormat = [
-    { key: '', label: '', input: 'blank' },
-    { key: 'serviceName', label: 'Nazwa', input: 'text' },
-    { key: 'price', label: 'Cena', input: 'text' },
-    {
-      key: 'serviceCategoryId',
-      label: 'Kategoria',
-      input: 'picker',
-      default: '',
-      pickerData: {
-        urlKey: URLKEYS.ServiceCategories,
-        params: {},
-        idKey: 'id',
-        valueKey: 'name',
+  const columns: MRT_ColumnDef<Service>[] = useMemo(
+    () => [
+      {
+        accessorKey: 'name',
+        header: 'Nazwa',
       },
-    },
-  ];
+      {
+        accessorKey: 'price',
+        header: 'Cena',
+      },
+      {
+        id: 'serviceCategoryId',
+        accessorKey: 'serviceCategoryId',
+        accessorFn: (row) => {
+          return (
+            serviceCategoriesData?.find(
+              (category) => category.id === row.serviceCategoryId,
+            )?.name || 'Brak'
+          );
+        },
+        header: 'Kategoria',
+        editVariant: 'select',
+        editSelectOptions: serviceCategoriesData?.map((category) => ({
+          value: category.id,
+          label: category.name,
+        })),
+      },
+    ],
+    [serviceCategoriesData],
+  );
 
   return (
-    <Box>
-      {!isServicesError && !isServicesLoading && (
-        <AdminTable
-          data={filteredServices}
-          url={URLS.Services}
-          noReorder
-          newRowFormat={newRowFormat}
-        />
-      )}
-    </Box>
+    <AdminTable
+      data={servicesData}
+      url={URLS.Services}
+      noReorder
+      columns={columns}
+    />
   );
 }
 

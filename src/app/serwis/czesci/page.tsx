@@ -93,7 +93,6 @@ const PartRepairsPage = () => {
 
   return (
     <PrivateRoute>
-      <Navigation />
       <main className="overflow-y-hidden">
         <SideBar baseUrl={'/serwis'} links={repairsRoutes} />
         <Paper className={'w-10/12 m-auto my-8 flex p-4'}>

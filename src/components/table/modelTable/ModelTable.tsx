@@ -162,97 +162,94 @@ const ModelTable = ({
     },
     ...flexTableStyle,
     enableRowActions: true,
-    renderRowActionMenuItems: ({ row, table }) =>
-      [
-        <MaterialModal
-          label={'Dodaj rower'}
-          button={
-            <MRT_ActionMenuItem
-              icon={<FaPlus />}
-              key={'add'}
-              label="Dodaj rower"
-              table={table}
-            />
-          }
-        >
-          <AddBikeModal modelId={row.original.id} />
-        </MaterialModal>,
-        <MaterialModal
-          label={'Zmień kolor'}
-          button={
-            <MRT_ActionMenuItem
-              icon={<FaPalette />}
-              key={'color'}
-              label="Zmień kolor"
-              table={table}
-            />
-          }
-        >
-          <ColorModal model={row.original} />
-        </MaterialModal>,
-        <MaterialModal
-          label={'Zmień link'}
-          button={
-            <MRT_ActionMenuItem
-              icon={<FaLink />}
-              key={'link'}
-              label="Zmień link"
-              table={table}
-            />
-          }
-        >
-          <AddLinkModal model={row.original} />
-        </MaterialModal>,
-        <MaterialModal
-          label={'Zmień EAN'}
-          button={
-            <MRT_ActionMenuItem
-              icon={<FaBarcode />}
-              key={'ean'}
-              label="Zmień EAN"
-              table={table}
-            />
-          }
-        >
-          <AddEanModal model={row.original} />
-        </MaterialModal>,
-        <MaterialModal
-          label={'Zmień dane roweru'}
-          button={
-            <MRT_ActionMenuItem
-              icon={<FaPenToSquare />}
-              key={'edit'}
-              label="Edytuj"
-              table={table}
-            />
-          }
-        >
-          <ChangeModelModal model={row.original} />
-        </MaterialModal>,
+    renderRowActionMenuItems: ({ row, table }) => [
+      <MaterialModal
+        label={'Dodaj rower'}
+        key={'add'}
+        button={
+          <MRT_ActionMenuItem
+            icon={<FaPlus />}
+            label="Dodaj rower"
+            table={table}
+          />
+        }
+      >
+        <AddBikeModal modelId={row.original.id} />
+      </MaterialModal>,
+      <MaterialModal
+        label={'Zmień kolor'}
+        key={'color'}
+        button={
+          <MRT_ActionMenuItem
+            icon={<FaPalette />}
+            label="Zmień kolor"
+            table={table}
+          />
+        }
+      >
+        <ColorModal model={row.original} />
+      </MaterialModal>,
+      <MaterialModal
+        label={'Zmień link'}
+        key={'link'}
+        button={
+          <MRT_ActionMenuItem
+            icon={<FaLink />}
+            label="Zmień link"
+            table={table}
+          />
+        }
+      >
+        <AddLinkModal model={row.original} />
+      </MaterialModal>,
+      <MaterialModal
+        label={'Zmień EAN'}
+        key={'ean'}
+        button={
+          <MRT_ActionMenuItem
+            icon={<FaBarcode />}
+            label="Zmień EAN"
+            table={table}
+          />
+        }
+      >
+        <AddEanModal model={row.original} />
+      </MaterialModal>,
+      <MaterialModal
+        label={'Zmień dane roweru'}
+        key={'edit'}
+        button={
+          <MRT_ActionMenuItem
+            icon={<FaPenToSquare />}
+            label="Edytuj"
+            table={table}
+          />
+        }
+      >
+        <ChangeModelModal model={row.original} />
+      </MaterialModal>,
 
-        isAdmin && (
-          <div className="border-border border-l px-1">
-            <MaterialModal
-              label={'Usuń model'}
-              button={
-                <MRT_ActionMenuItem
-                  icon={<FaRegCircleXmark />}
-                  key={'delete'}
-                  label="Usuń"
-                  table={table}
-                />
-              }
-            >
-              <DeleteModal
-                id={row.original.id}
-                admin={true}
-                refetchQueryKey={URLS.Models}
-                url={URLS.Models}
-              />
-            </MaterialModal>
-          </div>
-        ),
-      ].filter(Boolean),
+      isAdmin && (
+        <MaterialModal
+          label={'Usuń model'}
+          key={'delete'}
+          button={
+            <MRT_ActionMenuItem
+              icon={<FaRegCircleXmark />}
+              label="Usuń"
+              table={table}
+            />
+          }
+        >
+          <DeleteModal
+            id={row.original.id}
+            admin={true}
+            refetchQueryKey={URLS.Models}
+            url={URLS.Models}
+          />
+        </MaterialModal>
+      ),
+    ],
   });
 
   useEffect(() => {

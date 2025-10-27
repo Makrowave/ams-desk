@@ -50,7 +50,7 @@ export type RepairStatus = {
 };
 
 export type Service = {
-  id?: number;
+  id: number;
   name: string;
   price: number;
   serviceCategoryId: number;

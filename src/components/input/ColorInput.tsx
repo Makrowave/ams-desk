@@ -3,16 +3,12 @@ import { ChromePicker } from 'react-color';
 import { Box, IconButton, Popover, Popper, Typography } from '@mui/material';
 
 type ColorInputProps = {
-  title: string;
+  title?: string;
   value: string;
   setValue: (value: string) => void;
 };
 
-export default function ColorInput({
-  title,
-  value,
-  setValue,
-}: ColorInputProps) {
+const ColorInput = ({ title, value, setValue }: ColorInputProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isOpen = Boolean(anchorEl);
 
@@ -27,14 +23,14 @@ export default function ColorInput({
       justifyContent="space-between"
       gap={2}
     >
-      <Typography>{title}</Typography>
+      {title && <Typography>{title}</Typography>}
       <Box>
         <IconButton
           onClick={handleClick}
           sx={{
-            width: 40,
-            height: 40,
-            borderRadius: 2,
+            width: 30,
+            height: 30,
+            borderRadius: 1,
             bgcolor: value,
             border: '1px solid #ccc',
           }}
@@ -44,17 +40,18 @@ export default function ColorInput({
         onClose={() => setAnchorEl(null)}
         open={isOpen}
         anchorEl={anchorEl}
-        style={{ zIndex: 1400 }}
+        sx={{ zIndex: 1400 }}
+        elevation={12}
         anchorOrigin={{ vertical: 'center', horizontal: 'left' }}
       >
-        <Box>
-          <ChromePicker
-            color={value}
-            onChange={(e) => setValue(e.hex)}
-            disableAlpha
-          />
-        </Box>
+        <ChromePicker
+          color={value}
+          onChange={(e) => setValue(e.hex)}
+          disableAlpha
+        />
       </Popover>
     </Box>
   );
-}
+};
+
+export default ColorInput;

@@ -11,7 +11,6 @@ import { Box, Stack, Paper, Typography } from '@mui/material';
 function RepairsPage() {
   return (
     <PrivateRoute>
-      <Navigation />
       <Box component={'main'} sx={{ overflowY: 'hidden' }}>
         <SideBar baseUrl={'/serwis'} links={repairsRoutes} />
         <Stack sx={{ mx: `${drawerWidthCollapsed + 30}px`, my: '30px' }}>

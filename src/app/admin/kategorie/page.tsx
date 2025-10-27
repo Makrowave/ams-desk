@@ -3,24 +3,22 @@ import { useCategoriesQuery } from '../../../hooks/queryHooks';
 import AdminTable from '../../../components/table/AdminTable';
 import URLS from '../../../util/urls';
 import { Category } from '../../../types/filterTypes';
+import { MRT_ColumnDef } from 'material-react-table';
+import { useMemo } from 'react';
 
 function CategoriesPanel() {
   const { data, isLoading, isError } = useCategoriesQuery<Category[]>();
-  const newRowFormat = [
-    { key: '', label: 'Id', input: 'blank' },
-    { key: 'categoryName', label: 'Nazwa', input: 'text' },
-  ];
-  return (
-    <div>
-      {!isError && !isLoading && (
-        <AdminTable
-          data={data}
-          url={URLS.Categories}
-          newRowFormat={newRowFormat}
-        />
-      )}
-    </div>
-  );
+
+  const columns = useMemo<MRT_ColumnDef<Category>[]>(() => {
+    return [
+      {
+        accessorKey: 'name',
+        header: 'Nazwa',
+      },
+    ];
+  }, []);
+
+  return <AdminTable data={data} url={URLS.Categories} columns={columns} />;
 }
 
 export default CategoriesPanel;

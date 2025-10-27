@@ -1,13 +1,17 @@
 import { SelectOption, SelectOptionWithColor } from './selectTypes';
 
-export type Color = SelectOptionWithColor;
+export interface Orderable {
+  order: number;
+}
 
-export type Manufacturer = SelectOption;
+export type Color = SelectOptionWithColor & Orderable;
 
-export type Status = SelectOptionWithColor;
+export type Manufacturer = SelectOption & Orderable;
 
-export type Category = SelectOption;
+export type Status = SelectOptionWithColor & Orderable;
 
-export type WheelSize = SelectOption;
+export type Category = SelectOption & Orderable;
 
-export type Place = SelectOption;
+export type WheelSize = SelectOption & Orderable;
+
+export type Place = SelectOption & Orderable;

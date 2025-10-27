@@ -49,6 +49,10 @@ const useLocallyStoredTable = <TData extends MRT_RowData>(
   }, [columnVisibility]);
 
   const resultTable = useMaterialReactTable<TData>({
+    enableColumnDragging: true,
+    enableColumnOrdering: true,
+    enableColumnResizing: true,
+    enableHiding: true,
     onColumnOrderChange: setColumnOrder,
     onColumnSizingChange: setColumnSizing,
     onColumnVisibilityChange: setColumnVisibility,
