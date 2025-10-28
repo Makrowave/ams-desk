@@ -17,9 +17,11 @@ import { Part } from '../../../types/repairTypes';
 export default function MergePartModal({
   part1,
   part2,
+  closeModal,
 }: {
   part1: Part;
   part2: Part;
+  closeModal?: () => void;
 }) {
   const [localPart, setLocalPart] = useState(part1);
   const [category, setCategory] = useState(0);
@@ -54,6 +56,7 @@ export default function MergePartModal({
             .map((item) => (item.id === data.keptId ? data.part : item));
         },
       );
+      if (closeModal) closeModal();
     },
   });
 

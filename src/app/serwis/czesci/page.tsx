@@ -9,7 +9,7 @@ import {
 import PrivateRoute from '../../../components/routing/PrivateRoute';
 import Navigation from '../../../components/navigation/Navigation';
 import SideBar from '../../../components/navigation/SideBar';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import DeleteModal from '../../../components/modals/DeleteModal';
 import ModifyPartModal from '../../../components/modals/repair/ModifyPartModal';
 import URLS from '../../../util/urls';
@@ -34,18 +34,25 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
   Tooltip,
 } from '@mui/material';
 import MergePartModal from '../../../components/modals/repair/MergePartModal';
 import { Part, PartCategory, PartType } from '../../../types/repairTypes';
 import { repairsRoutes } from '../../../components/routing/routes';
 import { strFind } from '../../../util/repairsHelper';
+import { drawerWidthCollapsed } from '../../../styles/layout';
+import {
+  MaterialReactTable,
+  MRT_ColumnDef,
+  MRT_RowSelectionState,
+  useMaterialReactTable,
+} from 'material-react-table';
+import { paperTableStyle } from '../../../styles/styles';
+import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 
 const PartRepairsPage = () => {
   const [categoryId, setCategoryId] = useState(0);
   const [typeId, setTypeId] = useState(0);
-  const [text, setText] = useState('');
   // Fetch categories
   const {
     data: catData,
@@ -70,18 +77,19 @@ const PartRepairsPage = () => {
     typeId: typeId,
   });
 
-  const [selectedParts, setSelectedParts] = useState<Part[]>([]);
+  const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
 
-  const handleSelection = (part: Part) => {
-    if (selectionContains(part)) {
-      setSelectedParts((prev) => prev.filter((p) => !(p.id === part.id)));
-    } else if (selectedParts.length < 2) {
-      setSelectedParts((prev) => [...prev, part]);
+  const handleRowSelectionChange = (updaterOrValue: any) => {
+    const nextValue =
+      typeof updaterOrValue === 'function'
+        ? updaterOrValue(rowSelection)
+        : updaterOrValue;
+
+    const selectedKeys = Object.keys(nextValue).filter((key) => nextValue[key]);
+
+    if (selectedKeys.length <= 2) {
+      setRowSelection(nextValue);
     }
-  };
-
-  const selectionContains = (part: Part) => {
-    return selectedParts.some((selection) => selection.id === part.id);
   };
 
   const defaultSx = {
@@ -91,11 +99,119 @@ const PartRepairsPage = () => {
     maxHeight: 800,
   };
 
+  const partColumnDef: MRT_ColumnDef<Part>[] = [
+    {
+      accessorKey: 'name',
+      header: 'Część',
+    },
+    {
+      accessorKey: 'price',
+      header: 'Cena',
+    },
+    {
+      accessorKey: 'unit.name',
+      header: 'Jedn.',
+    },
+  ];
+
+  const partTable = useMaterialReactTable({
+    ...paperTableStyle,
+    columns: partColumnDef,
+    data: partData || [],
+    renderTopToolbarCustomActions: () => (
+      <MaterialModal
+        label={'Dodaj część'}
+        button={
+          <Tooltip title="Dodaj część">
+            <IconButton color={'primary'}>
+              <FaPlus />
+            </IconButton>
+          </Tooltip>
+        }
+      >
+        <AddPartModal />
+      </MaterialModal>
+    ),
+    enableFullScreenToggle: false,
+    enableColumnActions: false,
+    enableColumnFilters: false,
+    enableColumnOrdering: false,
+    enableHiding: false,
+    enableSorting: false,
+    positionGlobalFilter: 'right',
+    enableRowSelection: true,
+    enableSelectAll: false,
+    getRowId: (orignalRow) => orignalRow.id?.toString(),
+    initialState: { showGlobalFilter: true },
+    onRowSelectionChange: handleRowSelectionChange,
+    state: { isLoading: partIsLoading, rowSelection: rowSelection },
+    localization: MRT_Localization_PL,
+  });
+
+  const mergePartsTableData = useMemo(
+    () =>
+      (partData || []).filter((part) =>
+        Object.entries(rowSelection)
+          .filter(([_key, value]) => value)
+          .map(([key, _value]) => key)
+          .includes(part.id.toString()),
+      ),
+    [partData, rowSelection],
+  );
+
+  const mergePartTable = useMaterialReactTable({
+    ...paperTableStyle,
+    columns: partColumnDef,
+    data: mergePartsTableData,
+    enableFullScreenToggle: false,
+    enableColumnActions: false,
+    enableColumnFilters: false,
+    enableColumnOrdering: false,
+    enableDensityToggle: false,
+    enableHiding: false,
+    enableSorting: false,
+    enableGlobalFilter: false,
+    onRowSelectionChange: handleRowSelectionChange,
+    state: { rowSelection: rowSelection },
+    enableRowSelection: true,
+    positionGlobalFilter: 'right',
+    getRowId: (orignalRow) => orignalRow.id?.toString(),
+    localization: MRT_Localization_PL,
+    renderTopToolbarCustomActions: () => (
+      <MaterialModal
+        label={'Połącz części'}
+        button={
+          <Tooltip title="Połącz części">
+            <IconButton
+              color={'primary'}
+              disabled={mergePartsTableData.length !== 2}
+            >
+              <FaObjectUngroup />
+            </IconButton>
+          </Tooltip>
+        }
+      >
+        <MergePartModal
+          part1={mergePartsTableData[0]!}
+          part2={mergePartsTableData[1]!}
+        />
+      </MaterialModal>
+    ),
+  });
+
   return (
     <PrivateRoute>
-      <main className="overflow-y-hidden">
+      <Box component={'main'}>
         <SideBar baseUrl={'/serwis'} links={repairsRoutes} />
-        <Paper className={'w-10/12 m-auto my-8 flex p-4'}>
+        <Paper
+          sx={{
+            mx: `${drawerWidthCollapsed + 30}px`,
+            my: '30px',
+            p: 4,
+            display: 'flex',
+            gap: 2,
+          }}
+        >
           {/* Category List */}
           <List
             disablePadding
@@ -169,198 +285,19 @@ const PartRepairsPage = () => {
               )}
           </List>
           {/* Part List */}
-          {/*<input type="text" className="w-full rounded-lg p-1 border-gray-300 border"*/}
-          {/*       placeholder="Część"*/}
-          {/*       onChange={(e) => setText(e.target.value)}*/}
-          {/*/>*/}
           <Box
             sx={{
               flex: '3',
-              maxHeight: 800,
-              display: 'flex',
-              flexDirection: 'column',
             }}
           >
-            <TextField
-              label={'Wyszukaj część'}
-              sx={{ marginX: 0.5 }}
-              onChange={(e) => setText(e.target.value)}
-              value={text}
-            />
-            <TableContainer
-              sx={{ position: 'relative', overflow: 'scroll', flex: '1' }}
-            >
-              <Table stickyHeader>
-                <TableHead>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell>Część</TableCell>
-                    <TableCell>Cena</TableCell>
-                    <TableCell>Jedn.</TableCell>
-                    <TableCell>
-                      <Box className={'flex items-center justify-center'}>
-                        <MaterialModal
-                          label={'Dodaj część'}
-                          button={
-                            <Tooltip title="Dodaj część">
-                              <IconButton color="primary">
-                                <FaPlus />
-                              </IconButton>
-                            </Tooltip>
-                          }
-                        >
-                          <AddPartModal />
-                        </MaterialModal>
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {!partIsLoading &&
-                    !partIsError &&
-                    partData!
-                      .filter((part) => strFind(part.name, text))
-                      .map((part) => (
-                        <TableRow key={part.id}>
-                          <TableCell>
-                            <Checkbox
-                              onChange={() => handleSelection(part)}
-                              disabled={
-                                selectedParts.length >= 2 &&
-                                !selectionContains(part)
-                              }
-                              checked={selectedParts.includes(part)}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            {categoryId === 0 && (
-                              <span className="inline text-[11px] text-gray-400 underline">
-                                {part.partType?.partCategory?.name}
-                              </span>
-                            )}
-                            {typeId === 0 && categoryId === 0 && (
-                              <span className="inline text-[11px] text-gray-400">
-                                {' - '}
-                              </span>
-                            )}
-                            {typeId === 0 && (
-                              <span className="inline text-[11px] text-gray-400 underline text-ellipsis">
-                                {part.partType?.name}
-                              </span>
-                            )}
-                            <span className="block">{part.name}</span>
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {part.price.toFixed(2)}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            {part.unit?.name}
-                          </TableCell>
-                          <TableCell>
-                            <Box className={'flex items-center justify-center'}>
-                              <MaterialModal
-                                label={'Edytuj część'}
-                                button={
-                                  <Tooltip title={'Edytuj część'}>
-                                    <IconButton color={'primary'}>
-                                      <FaPencil />
-                                    </IconButton>
-                                  </Tooltip>
-                                }
-                              >
-                                <ModifyPartModal part={part} />
-                              </MaterialModal>
-                              <MaterialModal
-                                label={'Usuń część'}
-                                button={
-                                  <Tooltip title={'Usuń część'}>
-                                    <IconButton>
-                                      <FaCircleXmark className="text-red-600" />
-                                    </IconButton>
-                                  </Tooltip>
-                                }
-                              >
-                                <DeleteModal
-                                  id={part.id}
-                                  refetchQueryKey={URLS.Parts}
-                                  url={URLS.Parts}
-                                />
-                              </MaterialModal>
-                            </Box>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <MaterialReactTable table={partTable} />
           </Box>
-          <TableContainer
-            sx={{ ...defaultSx, flex: '2', position: 'relative' }}
-          >
-            <Table stickyHeader>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <MaterialModal
-                      label={'Połącz części'}
-                      button={
-                        <Tooltip title="Połącz części">
-                          <IconButton
-                            color={'primary'}
-                            disabled={selectedParts.length < 2}
-                          >
-                            <FaObjectUngroup />
-                          </IconButton>
-                        </Tooltip>
-                      }
-                    >
-                      <MergePartModal
-                        part1={selectedParts[0]!}
-                        part2={selectedParts[1]!}
-                      />
-                    </MaterialModal>
-                  </TableCell>
-                  <TableCell>Część</TableCell>
-                  <TableCell>Cena</TableCell>
-                  <TableCell>Jedn.</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {!partIsLoading &&
-                  !partIsError &&
-                  selectedParts.map((part) => (
-                    <TableRow key={part.id}>
-                      <TableCell>
-                        <Checkbox
-                          onChange={() => handleSelection(part)}
-                          disabled={
-                            selectedParts.length >= 2 &&
-                            !selectionContains(part)
-                          }
-                          checked={selectedParts.includes(part)}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <span className="inline text-[11px] text-gray-400 text-ellipsis">
-                          {part.partType?.partCategory?.name}
-                          {' - '}
-                          {part.partType?.name}
-                        </span>
-                        <span className="block">{part.name}</span>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {part.price.toFixed(2)}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {part.unit?.name}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          {/* Merge Part List */}
+          <Box>
+            <MaterialReactTable table={mergePartTable} />
+          </Box>
         </Paper>
-      </main>
+      </Box>
     </PrivateRoute>
   );
 };

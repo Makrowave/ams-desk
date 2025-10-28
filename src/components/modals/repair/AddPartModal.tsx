@@ -21,16 +21,17 @@ const AddPartModal = ({ closeModal }: { closeModal?: () => void }) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
-      return await axiosPrivate.post(
+      const response = await axiosPrivate.post(
         'parts',
         JSON.stringify({
           partId: 0,
-          partName: name,
+          name: name,
           price: price,
           partTypeId: type,
           unitId: unit,
         }),
       );
+      return response.data;
     },
     onSuccess: async () => {
       await queryClient.refetchQueries({
