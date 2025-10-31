@@ -80,7 +80,6 @@ const TimeSelector = ({
         sx={{ height: '56px' }}
         color="secondary"
         variant={selectedInterval === 1 ? 'contained' : 'outlined'}
-        className="button-primary"
         onClick={() => {
           setSelectedInterval(1);
           setLatestInterval(0);
@@ -92,7 +91,6 @@ const TimeSelector = ({
         sx={{ height: '56px' }}
         color="secondary"
         variant={selectedInterval === 2 ? 'contained' : 'outlined'}
-        className="button-primary"
         onClick={() => {
           setSelectedInterval(2);
           setLatestInterval(7);
@@ -104,7 +102,6 @@ const TimeSelector = ({
         sx={{ height: '56px' }}
         color="secondary"
         variant={selectedInterval === 3 ? 'contained' : 'outlined'}
-        className="button-primary"
         onClick={() => {
           setSelectedInterval(3);
           setLatestInterval(30);
@@ -116,7 +113,6 @@ const TimeSelector = ({
         sx={{ height: '56px' }}
         color="secondary"
         variant={selectedInterval === 4 ? 'contained' : 'outlined'}
-        className="button-primary"
         onClick={() => {
           setSelectedInterval(4);
           setLatestInterval(60);
@@ -128,7 +124,6 @@ const TimeSelector = ({
         sx={{ height: '56px' }}
         color="secondary"
         variant={selectedInterval === 5 ? 'contained' : 'outlined'}
-        className="button-primary"
         onClick={() => {
           setSelectedInterval(5);
           setLatestInterval(90);
@@ -140,7 +135,6 @@ const TimeSelector = ({
         sx={{ height: '56px' }}
         color="secondary"
         variant={selectedInterval === 6 ? 'contained' : 'outlined'}
-        className="button-primary"
         onClick={() => {
           setSelectedInterval(6);
           setLatestInterval(365);
@@ -152,7 +146,6 @@ const TimeSelector = ({
         sx={{ height: '56px' }}
         color="secondary"
         variant={selectedInterval === 7 ? 'contained' : 'outlined'}
-        className="button-primary"
         onClick={() => {
           setSelectedInterval(7);
           setSince('');
@@ -165,7 +158,6 @@ const TimeSelector = ({
         sx={{ height: '56px' }}
         color="secondary"
         variant={selectedInterval === 8 ? 'contained' : 'outlined'}
-        className="button-primary"
         onClick={() => {
           setSelectedInterval(8);
           const firstCurrent = new Date(
@@ -188,7 +180,6 @@ const TimeSelector = ({
         sx={{ height: '56px' }}
         color="secondary"
         variant={selectedInterval === 9 ? 'contained' : 'outlined'}
-        className="button-primary"
         onClick={() => {
           setSelectedInterval(9);
           const firstPrev = new Date(
