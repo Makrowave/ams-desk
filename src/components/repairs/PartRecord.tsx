@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FaRegCircleXmark } from 'react-icons/fa6';
-import { Part, PartUsed } from '../../types/repairTypes';
+import { PartUsed } from '../../types/repairTypes';
+import { TableRow, TableCell, IconButton, TextField, Box } from '@mui/material';
 
 type PartRecordProps = {
   index: number;
@@ -23,31 +24,41 @@ const PartRecord = ({
     changeAmount(localPart.id, value);
   };
   return (
-    <tr className="text-center *:p-2 odd:bg-primary">
-      <td>{index + 1}</td>
-      <td>{localPart.part?.name}</td>
-      <td>
+    <TableRow>
+      <TableCell>{index + 1}</TableCell>
+      <TableCell>{localPart.part?.name}</TableCell>
+      <TableCell>
         {localPart.price.toFixed(2)} ({localPart.part?.price.toFixed(2)})
-      </td>
-      <td>
-        <input
-          className="bg-inherit border border-gray-300 rounded-lg w-20 text-center"
-          type="number"
-          value={localPart.amount}
-          onChange={(e) => handleAmountChange(e)}
-        />
-        {' ' + localPart.part?.unit?.name}
-      </td>
-      <td>{(localPart.price * localPart.amount).toFixed(2)}</td>
-      <td>
-        <button
-          className="p-2 hover:bg-gray-200 transition-colors duration-200 rounded-lg"
+      </TableCell>
+      <TableCell>
+        <Box sx={{ display: 'inline-flex' }}>
+          <TextField
+            type="number"
+            variant="standard"
+            size="small"
+            value={localPart.amount}
+            onChange={handleAmountChange}
+            inputProps={{ min: 0, style: { textAlign: 'center', width: 60 } }}
+            sx={{ width: 80, mr: 1 }}
+          />
+          {localPart.part?.unit?.name}
+        </Box>
+      </TableCell>
+      <TableCell>{(localPart.price * localPart.amount).toFixed(2)}</TableCell>
+      <TableCell>
+        <IconButton
+          size="small"
           onClick={() => deleteFn(part.id)}
+          sx={{
+            p: 1,
+            borderRadius: 2,
+            '&:hover': { backgroundColor: 'grey.200' },
+          }}
         >
-          <FaRegCircleXmark className="text-red-600" />
-        </button>
-      </td>
-    </tr>
+          <FaRegCircleXmark style={{ color: '#e53935' }} />
+        </IconButton>
+      </TableCell>
+    </TableRow>
   );
 };
 

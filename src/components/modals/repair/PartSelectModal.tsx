@@ -9,6 +9,19 @@ import {
 import MaterialModal from '../../modals/MaterialModal';
 import { Part, PartCategory, PartType } from '../../../types/repairTypes';
 import { strFind } from '../../../util/repairsHelper';
+import {
+  Box,
+  List,
+  ListItemButton,
+  ListItemText,
+  TextField,
+  CircularProgress,
+  Button,
+  Stack,
+  Typography,
+  Paper,
+  Divider,
+} from '@mui/material';
 
 type PartSelectModalProps = {
   mutation: (part: Part) => void;
@@ -50,129 +63,211 @@ const PartSelectModal = ({ mutation, closeModal }: PartSelectModalProps) => {
   };
 
   return (
-    <div className="relative inline-block w-[1000px]">
-      <div className="flex">
+    <Box
+      sx={{ position: 'relative', display: 'inline-block', width: '1000px' }}
+    >
+      <Stack direction="row" spacing={0} sx={{ display: 'flex' }}>
         {/* Category List */}
-        <div className="w-3/12 pr-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden max-h-[500px] flex flex-col">
-          <h3 className="font-semibold mb-2 text-gray-700 min-h-7">
+        <Box
+          sx={{
+            width: '25%',
+            paddingRight: 2,
+            borderRight: '1px solid',
+            borderColor: 'divider',
+            maxHeight: '500px',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}
+        >
+          <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
             Kategoria
-          </h3>
-          <ul className="space-y-1 overflow-y-auto child-1">
+          </Typography>
+          <List
+            sx={{
+              flex: 1,
+              overflow: 'auto',
+              padding: 0,
+              gap: 1,
+            }}
+          >
             {catIsLoading && (
-              <li className="text-gray-500 text-center">Ładowanie...</li>
+              <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+                <CircularProgress size={24} />
+              </Box>
             )}
             {!catIsLoading &&
               !catIsError &&
               [{ id: 0, name: 'Wszystkie' }, ...(catData ?? [])].map(
                 (category) => (
-                  <li
+                  <ListItemButton
                     key={category.id}
-                    className={`p-2 rounded-md cursor-pointer transition-all ${
-                      categoryId === category.id
-                        ? 'bg-blue-500 text-white'
-                        : 'hover:bg-gray-100 text-gray-700'
-                    }`}
+                    selected={categoryId === category.id}
                     onClick={() => {
                       setCategoryId(category.id);
                       setTypeId(0);
                     }}
                   >
-                    {category.name}
-                  </li>
+                    <ListItemText primary={category.name} />
+                  </ListItemButton>
                 ),
               )}
-          </ul>
-        </div>
+          </List>
+        </Box>
 
         {/* Type List */}
-        <div className="w-4/12 px-2 border-r border-gray-300 overflow-x-hidden *:overflow-x-hidden max-h-[500px] flex flex-col">
-          <h3 className="font-semibold mb-2 text-gray-700 min-h-7">Typ</h3>
-          <ul className="space-y-1 overflow-y-auto child-1">
+        <Box
+          sx={{
+            width: '33%',
+            paddingX: 2,
+            borderRight: '1px solid',
+            borderColor: 'divider',
+            maxHeight: '500px',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}
+        >
+          <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
+            Typ
+          </Typography>
+          <List
+            sx={{
+              flex: 1,
+              overflow: 'auto',
+              padding: 0,
+              gap: 1,
+            }}
+          >
             {typeIsLoading && (
-              <li className="text-gray-500 text-center">Ładowanie...</li>
+              <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+                <CircularProgress size={24} />
+              </Box>
             )}
             {!typeIsLoading &&
               !typeIsError &&
               [{ id: 0, name: 'Wszystkie' }, ...(typeData ?? [])].map(
                 (type) => (
-                  <li
+                  <ListItemButton
                     key={type.id}
-                    className={`p-2 rounded-md cursor-pointer transition-all ${
-                      typeId === type.id
-                        ? 'bg-emerald-400 text-white'
-                        : 'hover:bg-gray-100 text-gray-700'
-                    }`}
+                    selected={typeId === type.id}
                     onClick={() => setTypeId(type.id)}
                   >
-                    {type.name}
-                  </li>
+                    <ListItemText primary={type.name} />
+                  </ListItemButton>
                 ),
               )}
-          </ul>
-        </div>
+          </List>
+        </Box>
 
         {/* Part List */}
-        <div className="w-5/12 pl-2 overflow-x-hidden *:overflow-x-hidden max-h-[500px] flex flex-col">
-          <h3 className="font-semibold mb-2 text-gray-700 min-h-7">Część</h3>
-          <input
-            type="text"
-            className="w-full rounded-lg p-1 border-gray-300 border"
+        <Box
+          sx={{
+            width: '42%',
+            paddingLeft: 2,
+            maxHeight: '500px',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}
+        >
+          <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
+            Część
+          </Typography>
+          <TextField
+            fullWidth
+            size="small"
             placeholder="Część"
+            value={text}
             onChange={(e) => setText(e.target.value)}
+            sx={{ mb: 2 }}
           />
 
-          <ul className="overflow-y-auto child-1">
+          <List
+            sx={{
+              flex: 1,
+              overflow: 'auto',
+              padding: 0,
+            }}
+          >
             {partIsLoading && (
-              <li className="text-gray-500 text-center">Ładowanie...</li>
+              <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+                <CircularProgress size={24} />
+              </Box>
             )}
             {!partIsLoading &&
               !partIsError &&
               partData!
                 .filter((part) => strFind(part.name, text))
                 .map((part) => (
-                  <li key={part.id}>
-                    <button
-                      className="flex justify-between w-full p-2 rounded-md cursor-pointer hover:bg-gray-100 text-gray-700 transition-all items-center"
+                  <Box key={part.id}>
+                    <ListItemButton
                       onClick={() => handleOnClick(part)}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        padding: 2,
+                        borderRight: '1px solid',
+                        borderColor: 'divider',
+                        mb: 1,
+                        borderRadius: 1,
+                      }}
                     >
-                      <div className="border-r border-gray-300 w-full text-start">
+                      <Box sx={{ flex: 1, textAlign: 'start' }}>
                         {categoryId === 0 && (
-                          <span className="inline text-[11px] text-gray-400 underline">
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              textDecoration: 'underline',
+                              color: 'text.secondary',
+                              display: 'block',
+                            }}
+                          >
                             {part.partType?.partCategory?.name}
-                          </span>
+                            {typeId === 0 && categoryId === 0 && ' - '}
+                            {typeId === 0 && part.partType?.name}
+                          </Typography>
                         )}
-                        {typeId === 0 && categoryId === 0 && (
-                          <span className="inline text-[11px] text-gray-400">
-                            {' - '}
-                          </span>
-                        )}
-                        {typeId === 0 && (
-                          <span className="inline text-[11px] text-gray-400 underline text-ellipsis">
-                            {part.partType?.name}
-                          </span>
-                        )}
-                        <span className="block">{part.name}</span>
-                      </div>
-                      <div className="ml-2 min-w-16 text-end">
+                        <Typography variant="body2" sx={{ display: 'block' }}>
+                          {part.name}
+                        </Typography>
+                      </Box>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          marginLeft: 2,
+                          minWidth: '64px',
+                          textAlign: 'right',
+                        }}
+                      >
                         {part.price.toFixed(2)}
-                      </div>
-                    </button>
-                  </li>
+                      </Typography>
+                    </ListItemButton>
+                  </Box>
                 ))}
-          </ul>
-        </div>
-      </div>
+          </List>
+        </Box>
+      </Stack>
+
       <MaterialModal
         label={'Dodaj część'}
         button={
-          <button className="absolute top-1 right-5 p-0.5 mx-2 hover:bg-gray-300 transition-colors duration-200 rounded-lg">
+          <Button
+            size="small"
+            sx={{
+              position: 'absolute',
+              top: 4,
+              right: 20,
+            }}
+          >
             <FaPlus />
-          </button>
+          </Button>
         }
       >
         <AddPartModal />
       </MaterialModal>
-    </div>
+    </Box>
   );
 };
 

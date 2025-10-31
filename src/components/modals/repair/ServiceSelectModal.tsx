@@ -5,6 +5,16 @@ import {
 } from '../../../hooks/queryHooks';
 import { Service, ServiceCategory } from '../../../types/repairTypes';
 import { strFind } from '../../../util/repairsHelper';
+import {
+  Box,
+  List,
+  ListItemButton,
+  ListItemText,
+  TextField,
+  CircularProgress,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 type ServiceSelectModalProps = {
   mutation: (service: Service) => void;
@@ -38,74 +48,142 @@ const ServiceSelectModal = ({
   };
 
   return (
-    <div className="flex w-[1000px]">
+    <Stack
+      direction="row"
+      spacing={0}
+      sx={{ width: '1000px', display: 'flex' }}
+    >
       {/* Category List */}
-      <div className="w-1/3 pr-2 border-r border-gray-300 overflow-hidden *:overflow-x-hidden max-h-[500px] flex flex-col">
-        <h3 className="font-semibold mb-2 text-gray-700 min-h-7">Kategoria</h3>
-        <ul className="space-y-1 overflow-y-auto child-1">
+      <Box
+        sx={{
+          width: '33%',
+          paddingRight: 2,
+          borderRight: '1px solid',
+          borderColor: 'divider',
+          maxHeight: '500px',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+        }}
+      >
+        <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
+          Kategoria
+        </Typography>
+        <List
+          sx={{
+            flex: 1,
+            overflow: 'auto',
+            padding: 0,
+            gap: 1,
+          }}
+        >
           {catIsLoading && (
-            <li className="text-gray-500 text-center">Ładowanie...</li>
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+              <CircularProgress size={24} />
+            </Box>
           )}
           {!catIsLoading &&
             !catIsError &&
             [{ id: 0, name: 'Wszystkie' }, ...(catData ?? [])].map(
               (category) => (
-                <li
+                <ListItemButton
                   key={category.id}
-                  className={`p-2 rounded-md cursor-pointer transition-all ${
-                    categoryId === category.id
-                      ? 'bg-blue-500 text-white'
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
+                  selected={categoryId === category.id}
                   onClick={() => setCategoryId(category.id)}
                 >
-                  {category.name}
-                </li>
+                  <ListItemText primary={category.name} />
+                </ListItemButton>
               ),
             )}
-        </ul>
-      </div>
+        </List>
+      </Box>
 
       {/* Services List */}
-      <div className="w-2/3 pl-2 overflow-x-hidden *:overflow-x-hidden max-h-[500px] flex flex-col">
-        <h3 className="font-semibold mb-2 text-gray-700 min-h-7">Usługa</h3>
-        <input
-          type="text"
-          className="w-full rounded-lg p-1 border-gray-300 border"
+      <Box
+        sx={{
+          width: '67%',
+          paddingLeft: 2,
+          maxHeight: '500px',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+        }}
+      >
+        <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
+          Usługa
+        </Typography>
+        <TextField
+          fullWidth
+          size="small"
           placeholder="Usługa"
+          value={text}
           onChange={(e) => setText(e.target.value)}
+          sx={{ mb: 2 }}
         />
-        <ul className="overflow-y-auto">
+        <List
+          sx={{
+            flex: 1,
+            overflow: 'auto',
+            padding: 0,
+          }}
+        >
           {serIsLoading && (
-            <li className="text-gray-500 text-center">Ładowanie...</li>
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+              <CircularProgress size={24} />
+            </Box>
           )}
           {!serIsLoading &&
             !serIsError &&
             serData!
               .filter((service) => strFind(service.name, text))
               .map((service) => (
-                <li key={service.id}>
-                  <button
-                    className="flex justify-between w-full p-2 rounded-md cursor-pointer hover:bg-gray-100 text-gray-700 transition-all items-center"
+                <Box key={service.id}>
+                  <ListItemButton
                     onClick={() => handleOnClick(service)}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: 2,
+                      borderRight: '1px solid',
+                      borderColor: 'divider',
+                      mb: 1,
+                      borderRadius: 1,
+                    }}
                   >
-                    <div className="border-r border-gray-300 w-full text-start">
+                    <Box sx={{ flex: 1, textAlign: 'start' }}>
                       {categoryId === 0 && (
-                        <span className="block text-[11px] text-gray-400 underline">
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            textDecoration: 'underline',
+                            color: 'text.secondary',
+                            display: 'block',
+                          }}
+                        >
                           {service.serviceCategory?.name}
-                        </span>
+                        </Typography>
                       )}
-                      {service.name}
-                    </div>
-                    <div className="ml-2 min-w-10 text-end">
+                      <Typography variant="body2" sx={{ display: 'block' }}>
+                        {service.name}
+                      </Typography>
+                    </Box>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        marginLeft: 2,
+                        minWidth: '40px',
+                        textAlign: 'right',
+                      }}
+                    >
                       {service.price}
-                    </div>
-                  </button>
-                </li>
+                    </Typography>
+                  </ListItemButton>
+                </Box>
               ))}
-        </ul>
-      </div>
-    </div>
+        </List>
+      </Box>
+    </Stack>
   );
 };
 

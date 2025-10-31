@@ -1,5 +1,6 @@
 import { FaRegCircleXmark } from 'react-icons/fa6';
 import { ServiceDone } from '../../types/repairTypes';
+import { TableRow, TableCell, IconButton, Box } from '@mui/material';
 
 type ServiceRecordProps = {
   index: number;
@@ -9,21 +10,34 @@ type ServiceRecordProps = {
 
 const ServiceRecord = ({ index, service, deleteFn }: ServiceRecordProps) => {
   return (
-    <tr className="text-center *:p-2 odd:bg-primary">
-      <td>{index + 1}</td>
-      <td>{service.service?.name}</td>
-      <td>
+    <TableRow>
+      <TableCell>{index + 1}</TableCell>
+      <TableCell>{service.service?.name}</TableCell>
+      <TableCell>
         {service.price.toFixed(2)} ({service.service?.price.toFixed(2)})
-      </td>
-      <td className="flex items-center justify-center">
-        <button
-          className="p-2 hover:bg-gray-200 transition-colors duration-200 rounded-lg"
-          onClick={() => deleteFn(service.id)}
+      </TableCell>
+      <TableCell align="center">
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
         >
-          <FaRegCircleXmark className="text-red-600" />
-        </button>
-      </td>
-    </tr>
+          <IconButton
+            size="small"
+            onClick={() => deleteFn(service.id)}
+            sx={{
+              p: 1,
+              borderRadius: 2,
+              '&:hover': { backgroundColor: 'grey.200' },
+            }}
+          >
+            <FaRegCircleXmark style={{ color: '#e53935' }} />
+          </IconButton>
+        </Box>
+      </TableCell>
+    </TableRow>
   );
 };
 
