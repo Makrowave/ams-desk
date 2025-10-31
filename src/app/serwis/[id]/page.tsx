@@ -19,11 +19,8 @@ function RepairPage({ params }: { params: { id: string } }) {
         component={'main'}
         sx={{ overflowY: 'auto', height: 'h-calc(100vh - 48px)' }}
       >
-        <Box className="w-full h-full">
-          <Box
-            sx={{ py: 6, px: 12, height: 'fit-content' }}
-            className="main-div"
-          >
+        <Box>
+          <Box sx={{ py: 6, px: 12, height: 'fit-content' }}>
             {!(isPending || isError) && <RepairDisplay repair={data} />}
           </Box>
         </Box>

@@ -6,6 +6,7 @@ import { REGEX } from '../../../util/regex';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import URLS, { URLKEYS } from '../../../util/urls';
 import FetchSelect from '../../filtering/FetchSelect';
+import { Button } from '@mui/material';
 
 export default function ModifyPartModal({
   part,
@@ -114,13 +115,13 @@ export default function ModifyPartModal({
         label="Jednostka"
         validated
       />
-      <button
+      <Button
         disabled={!(isNameValid && isPriceValid && type !== 0 && unit !== 0)}
-        className="button-primary text-center disabled:bg-gray-400"
+        variant="contained"
         onClick={() => mutation.mutate()}
       >
         Edytuj
-      </button>
+      </Button>
     </>
   );
 }

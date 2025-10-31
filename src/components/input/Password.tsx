@@ -54,10 +54,7 @@ const Password = ({
         })}
         endAdornment={
           <InputAdornment position="end">
-            <IconButton
-              className="absolute right-1"
-              onClick={() => setShowPassword((p) => !p)}
-            >
+            <IconButton onClick={() => setShowPassword((p) => !p)}>
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </IconButton>
           </InputAdornment>

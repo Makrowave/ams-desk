@@ -11,7 +11,6 @@ type PieChartWrapperProps = {
   children: React.ReactElement;
   showsQuantity?: boolean;
   title: string;
-  className?: string;
 };
 
 const PieChartWrapper = ({
@@ -20,7 +19,6 @@ const PieChartWrapper = ({
   children,
   showsQuantity = false,
   title,
-  className,
 }: PieChartWrapperProps) => {
   const [prevData, setPrevData] = useState<PieChart[]>([]);
   const queryKeys = Object.keys(queryObject);
@@ -61,7 +59,7 @@ const PieChartWrapper = ({
   };
 
   return (
-    <Box className={`${className} flex flex-col`}>
+    <Box>
       <Typography variant="h6">{title}</Typography>
       <ChildComponent />
     </Box>

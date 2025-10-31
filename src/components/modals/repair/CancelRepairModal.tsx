@@ -15,9 +15,7 @@ export default function CancelRepairModal({
 
   return (
     <>
-      <Typography className={'text-justify'}>
-        Czy na pewno chcesz anulować zgłoszenie?
-      </Typography>
+      <Typography>Czy na pewno chcesz anulować zgłoszenie?</Typography>
       <Button variant={'contained'} color={'error'} onClick={handleClick}>
         Anuluj
       </Button>

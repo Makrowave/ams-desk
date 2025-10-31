@@ -98,7 +98,6 @@ const SellModal = ({
       />
       <Button
         variant="contained"
-        className="mb-2"
         onClick={() => mutation.mutate()}
         disabled={!REGEX.PRICE.test(price?.toString() || '')}
       >

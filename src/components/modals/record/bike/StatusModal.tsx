@@ -51,7 +51,6 @@ const StatusModal = ({ bikeId, closeModal }: BikeModalProps) => {
 
       <Button
         variant="contained"
-        className="mb-2"
         onClick={() => mutation.mutate()}
         disabled={status === 0}
       >

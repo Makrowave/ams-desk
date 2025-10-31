@@ -78,7 +78,6 @@ const SaleStatsPage = () => {
               showsQuantity
               queryObject={{ since: since, until: until }}
               title={'Ilość'}
-              className={'border-gray-200 border rounded-lg p-2 mx-auto'}
             >
               <PieChart
                 series={[]}
@@ -97,7 +96,6 @@ const SaleStatsPage = () => {
               url={'SalesData/getFrameTypeStats'}
               queryObject={{ since: since, until: until }}
               title={'Przychód'}
-              // className={'border-gray-200 border rounded-lg p-2 mx-auto'}
             >
               <PieChart
                 series={[]}
@@ -136,7 +134,6 @@ const SaleStatsPage = () => {
               showsQuantity
               queryObject={{ since: since, until: until }}
               title={'Ilość'}
-              className={'border-gray-200 border rounded-lg p-2 mx-auto'}
             >
               <PieChart
                 series={[]}
@@ -155,7 +152,6 @@ const SaleStatsPage = () => {
               url={'SalesData/getElectricShare'}
               queryObject={{ since: since, until: until }}
               title={'Przychód'}
-              className={'border-gray-200 border rounded-lg p-2 mx-auto'}
             >
               <PieChart series={[]} sx={sxPie} width={600} height={400} />
             </PieChartWrapper>
@@ -203,11 +199,7 @@ const SaleStatsPage = () => {
             />
           </BarChartWrapper>
         </Card>
-        <Card
-          className={
-            'bg-primary p-4 rounded-lg flex flex-col items-center min-w-[600px]'
-          }
-        >
+        <Card>
           <BarChartWrapper
             url={'SalesData/getPlacesMedianDiscount'}
             queryObject={{ since: since, until: until }}

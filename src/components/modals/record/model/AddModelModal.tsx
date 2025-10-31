@@ -203,12 +203,7 @@ export default function AddModelModal({
           />
         </Box>
       </Box>
-      <Button
-        variant="contained"
-        className="mb-2"
-        onClick={handleClick}
-        disabled={!isValid}
-      >
+      <Button variant="contained" onClick={handleClick} disabled={!isValid}>
         Dodaj model
       </Button>
     </>

@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import useSavedData from '../../hooks/useSavedData';
 
 const SavedDataWarning = ({ children }: { children: React.ReactNode }) => {
@@ -13,11 +14,7 @@ const SavedDataWarning = ({ children }: { children: React.ReactNode }) => {
       }
     }
   };
-  return (
-    <div className="w-full h-full bg-transparent" onClick={handleNavigation}>
-      {children}
-    </div>
-  );
+  return <Box onClick={handleNavigation}>{children}</Box>;
 };
 
 export default SavedDataWarning;

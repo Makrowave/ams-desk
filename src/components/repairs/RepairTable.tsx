@@ -199,7 +199,7 @@ const RepairTable = ({ src, addButton, localKey }: RepairTableProps) => {
           label={'Nowe zgłoszenie'}
           button={
             <IconButton>
-              <FaPlus className="w-6 h-6" />
+              <FaPlus />
             </IconButton>
           }
         >

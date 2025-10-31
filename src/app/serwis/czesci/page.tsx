@@ -223,7 +223,6 @@ const PartRepairsPage = () => {
               [{ id: 0, name: 'Wszystkie' }, ...(catData ?? [])].map(
                 (category) => (
                   <ListItemButton
-                    className={category.id === categoryId ? 'sticky' : ''}
                     sx={{
                       ...(category.id === categoryId && {
                         position: 'sticky',

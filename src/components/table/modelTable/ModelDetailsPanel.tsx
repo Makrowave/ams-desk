@@ -30,7 +30,7 @@ const ModelDetailsPanel = ({ model, placeId }: ModelDetailsPanelProps) => {
         />
       );
     } else {
-      return <FaBan className="h-6 w-6" />;
+      return <FaBan />;
     }
   };
 

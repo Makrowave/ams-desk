@@ -65,7 +65,6 @@ export default function CategoriesStats({}) {
                 showsQuantity
                 queryObject={{ since: since, until: until }}
                 title={'Ilość'}
-                className={'border-gray-200 border rounded-lg p-2 mx-auto'}
               >
                 <PieChart
                   series={[]}
@@ -84,7 +83,6 @@ export default function CategoriesStats({}) {
                 url={'SalesData/getCategoryStats'}
                 queryObject={{ since: since, until: until }}
                 title={'Przychód'}
-                className={'border-gray-200 border rounded-lg p-2 mx-auto'}
               >
                 <PieChart
                   series={[]}
