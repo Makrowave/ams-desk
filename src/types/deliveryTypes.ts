@@ -8,82 +8,82 @@ export enum DeliveryStatus {
 }
 
 export type DeliveryModel = {
-  Id: number;
-  ProductCode?: string | null;
-  EanCode?: string | null;
-  Name?: string | null;
-  FrameSize?: number | null;
-  IsWoman?: boolean | null;
-  WheelSizeId?: number | null;
-  ManufacturerId?: number | null;
-  ColorId?: number | null;
-  CategoryId?: number | null;
-  PrimaryColor?: string | null;
-  SecondaryColor?: string | null;
-  Price?: number | null;
-  IsElectric?: boolean | null;
-  Link?: string | null;
-  InsertionDate: Date;
-  Manufacturer?: Manufacturer | null;
-  Color?: Color | null;
-  Category?: Category | null;
-  WheelSize?: WheelSize | null;
+  id: number;
+  productCode?: string | null;
+  eanCode?: string | null;
+  name?: string | null;
+  frameSize?: number | null;
+  isWoman?: boolean | null;
+  wheelSizeId?: number | null;
+  manufacturerId?: number | null;
+  colorId?: number | null;
+  categoryId?: number | null;
+  primaryColor?: string | null;
+  secondaryColor?: string | null;
+  price?: number | null;
+  isElectric?: boolean | null;
+  link?: string | null;
+  insertionDate: Date;
+  manufacturer?: Manufacturer | null;
+  color?: Color | null;
+  category?: Category | null;
+  wheelSize?: WheelSize | null;
 };
 
 export type DeliveryItem = {
-  Id: number;
-  DeliveryDocumentId: number;
-  ModelId?: number | null;
-  TemporaryModelId?: number | null;
-  Count: number;
-  StorageCount: number;
-  DeliveryModel?: DeliveryModel | null;
+  id: number;
+  deliveryDocumentId: number;
+  modelId?: number | null;
+  temporaryModelId?: number | null;
+  count: number;
+  storageCount: number;
+  deliveryModel?: DeliveryModel | null;
 };
 
 export type DeliveryDocument = {
-  Id: number;
-  Date: Date;
-  Name: string;
-  Items?: DeliveryItem[] | null;
+  id: number;
+  date: Date;
+  name: string;
+  items?: DeliveryItem[] | null;
 };
 
 export type Invoice = {
-  Id: number;
-  InvoiceNumber: string;
-  IssueDate: Date;
-  PaymentDate: Date;
-  IssuerName: string;
-  IssuerAddress: string;
-  NettoAmount: number;
-  BruttoAmount: number;
-  DeliveryId: number;
+  id: number;
+  invoiceNumber: string;
+  issueDate: Date;
+  paymentDate: Date;
+  issuerName: string;
+  issuerAddress: string;
+  nettoAmount: number;
+  bruttoAmount: number;
+  deliveryId: number;
 };
 
 export type Delivery = {
-  Id: number;
-  PlannedArrivalDate: Date;
-  StartDate?: Date | null;
-  FinishDate?: Date | null;
-  InvoiceId: number;
-  PlaceId: number;
-  Status: DeliveryStatus;
-  Place?: Place | null;
-  Invoice?: Invoice | null;
-  DeliveryDocuments: DeliveryDocument[];
+  id: number;
+  plannedArrivalDate: Date;
+  startDate?: Date | null;
+  finishDate?: Date | null;
+  invoiceId: number;
+  placeId: number;
+  status: DeliveryStatus;
+  place?: Place | null;
+  invoice?: Invoice | null;
+  deliveryDocuments: DeliveryDocument[];
 };
 
 export type NewDelivery = {
-  PlaceId: number;
-  InvoiceId: number;
-  PlannedArrivalDate: Date;
+  placeId: number;
+  invoiceId: number;
+  plannedArrivalDate: Date;
 };
 
 export type DeliverySummary = {
-  Id: number;
-  PlannedArrival: Date;
-  StartDate?: Date | null;
-  FinishDate?: Date | null;
-  Invoice: string;
-  StatusId: number;
-  Place: string;
+  id: number;
+  plannedArrival: Date;
+  startDate?: Date | null;
+  finishDate?: Date | null;
+  invoice: string;
+  statusId: number;
+  place: string;
 };
