@@ -1,11 +1,16 @@
 import { FaBan } from 'react-icons/fa6';
 
 type Props = {
-  primaryColor: string | undefined;
-  secondaryColor: string | undefined;
+  primaryColor: string | undefined | null;
+  secondaryColor: string | undefined | null;
+  disableRightMargin?: boolean;
 };
 
-const ColorPreview = ({ primaryColor, secondaryColor }: Props) => {
+const ColorPreview = ({
+  primaryColor,
+  secondaryColor,
+  disableRightMargin,
+}: Props) => {
   return !primaryColor || !secondaryColor ? (
     <FaBan />
   ) : (
@@ -21,7 +26,7 @@ const ColorPreview = ({ primaryColor, secondaryColor }: Props) => {
         width: 24,
         minHeight: 24,
         minWidth: 24,
-        marginRight: 12,
+        marginRight: disableRightMargin ? 0 : 12,
         alignSelf: 'center',
         borderRadius: '6px',
       }}

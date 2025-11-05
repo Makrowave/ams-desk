@@ -29,8 +29,9 @@ export const baseRoutes: Route[] = [
   { name: 'Strona Główna', href: '/', links: [''] },
   { name: 'Rowery', href: '/rowery', links: ['rowery'] },
   { name: 'Serwis', href: '/serwis', links: ['serwis'] },
-  { name: 'Zarządzanie', href: '/adminlogin', links: ['adminlogin', 'admin'] },
   { name: 'Statystyki', href: '/statystyki', links: ['statystyki'] },
+  { name: 'dostawy', href: '/dostawy', links: ['dostawy'] },
+  { name: 'Zarządzanie', href: '/adminlogin', links: ['adminlogin', 'admin'] },
 ];
 
 export const repairsRoutes: Route[] = [
@@ -59,4 +60,9 @@ export const statisticsRoutes: Route[] = [
   { name: 'Serwis', href: '/serwis', icon: <FaScrewdriverWrench /> },
   { name: 'Sprzedaż', href: '/sprzedaz', icon: <FaMoneyBill /> },
   { name: 'Kategorie', href: '/kategorie', icon: <FaChartSimple /> },
+];
+
+export const deliveryRoutes: Route[] = [
+  { name: 'Strona główna', href: '', icon: <FaHouse /> },
+  { name: 'Faktury', href: '/faktury', icon: <FaMoneyBill /> },
 ];

@@ -2,8 +2,8 @@ import { Category, Color, Manufacturer, Place, WheelSize } from './filterTypes';
 
 export enum DeliveryStatus {
   Pending = 0,
-  Started = 1,
-  Finished = 2,
+  InProgress = 1,
+  Completed = 2,
   Cancelled = 3,
 }
 

@@ -6,9 +6,12 @@ import {
 import { useMemo } from 'react';
 import { DeliverySummary } from '../../types/deliveryTypes';
 import useLocallyStoredTable from '../../hooks/useLocallyStoredTable';
-import { IconButton } from '@mui/material';
+import { Button, IconButton, Tooltip } from '@mui/material';
 import Link from 'next/link';
-import { ChevronRight } from '@mui/icons-material';
+import { Add, ChevronRight } from '@mui/icons-material';
+import { paperTableStyle } from '../../styles/styles';
+import MaterialModal from '../modals/MaterialModal';
+import NewDeliveryModal from './modals/NewDeliveryModal';
 
 const DeliverySummaryTable = () => {
   const { data, isLoading, isError } = {
@@ -76,11 +79,13 @@ const DeliverySummaryTable = () => {
   );
 
   const tableDef: MRT_TableOptions<DeliverySummary> = {
+    ...paperTableStyle,
     columns,
     data: data || [],
     state: {
       isLoading,
     },
+    renderTopToolbarCustomActions: () => <NewDeliveryModal />,
   };
 
   const { table } = useLocallyStoredTable<DeliverySummary>(

@@ -24,6 +24,12 @@ const themeOptions: ThemeOptions = {
       default: '#E8F3ED',
       paper: '#FFFFFF',
     },
+    deliveryStatus: {
+      pending: '#FF9800',
+      inProgress: '#2196F3',
+      completed: '#4CAF50',
+      cancelled: '#F44336',
+    },
   },
   typography: work_sans.style,
 };

@@ -1,5 +1,5 @@
+'use client';
 import {
-  MRT_Column,
   MRT_ColumnOrderState,
   MRT_ColumnSizingState,
   MRT_RowData,
