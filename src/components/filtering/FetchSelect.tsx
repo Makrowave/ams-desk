@@ -3,6 +3,8 @@ import { DataSelect } from '../input/DataSelect';
 import { createQueryHook } from '../../hooks/queryHooks';
 import { URLKEYS } from '../../util/urls';
 import { SelectOption } from '../../types/selectTypes';
+import { Box, CircularProgress, IconButton, Typography } from '@mui/material';
+import { Refresh } from '@mui/icons-material';
 
 type FetchSelectProps = {
   urlKey: keyof typeof URLKEYS;
@@ -29,39 +31,39 @@ const FetchSelect = <T extends SelectOption>({
   const hook = createQueryHook(urlKey);
   const { data, isPending, isError, error, refetch } = hook<T[]>(params);
 
-  if (isPending) {
-    return (
-      <div className="text-center bg-primary border-2 border-tertiary rounded w-full">
-        Ładowanie
-      </div>
-    );
-  }
+  const Adornment = () => {
+    if (isPending)
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+          <CircularProgress size={20} />
+        </Box>
+      );
 
-  if (isError) {
-    return (
-      <div className="text-center bg-error-light text-error-dark border-2 border-tertiary rounded w-full">
-        <button
-          onClick={() => refetch()}
-          className="flex justify-center self-start flex-row w-full"
-        >
-          Błąd {error?.response?.status}{' '}
-          <img
-            src="/refresh.png"
-            className="h-5 self-center px-2 rotate-[135deg]"
-          />
-        </button>
-      </div>
-    );
-  }
+    if (isError)
+      return (
+        <IconButton color="error" onClick={() => refetch()}>
+          <Refresh />
+        </IconButton>
+      );
+  };
+
+  const getName = () => {
+    if (isError) return 'Błąd';
+    if (isPending) return 'Ładowanie...';
+    return defaultName;
+  };
   return (
     <DataSelect
       defaultValue={defaultValue}
       value={value}
       onChange={onChange}
-      defaultName={defaultName}
-      options={data}
+      defaultName={getName()}
+      options={data ?? []}
       label={label}
       validated={validated}
+      adornment={<Adornment />}
+      error={isError}
+      // disabled={isPending || isError}
     />
   );
 };

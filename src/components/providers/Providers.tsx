@@ -7,12 +7,13 @@ import { ThemeProvider } from '@mui/material';
 import { theme } from '../../styles/theme';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/pl';
 
 export default function ProviderWrapper({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
       <AuthProvider>
         <SavedDataProvider>
           <ThemeProvider theme={theme}>

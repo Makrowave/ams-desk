@@ -23,7 +23,8 @@ const URLS = {
   SoldBikes: '/SalesData/Sold/',
   ServicesFromCategory: '/Services/FromCategory/',
   FilteredParts: '/Parts/Filtered/',
-};
+  NotAssignedInvoice: '/Invoices/NotAssigned/',
+} as const;
 
 export const URLKEYS = {
   Manufacturers: 'Manufacturers',
@@ -50,5 +51,6 @@ export const URLKEYS = {
   SoldBikes: 'SoldBikes',
   ServicesFromCategory: 'ServicesFromCategory',
   FilteredParts: 'FilteredParts',
+  NotAssignedInvoice: 'NotAssignedInvoice',
 } as const;
 export default URLS;

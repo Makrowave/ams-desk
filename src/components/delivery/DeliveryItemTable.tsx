@@ -81,7 +81,7 @@ const DeliveryItemTable = ({ data }: { data: DeliveryItem[] }) => {
     displayColumnDefOptions: {
       'mrt-row-actions': {
         header: '',
-        size: 130,
+        size: 300,
       },
     },
     renderRowActions: ({ row }) => (

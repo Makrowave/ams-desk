@@ -66,10 +66,7 @@ const DeliverySummaryTable = () => {
         id: 'goto',
         header: '',
         Cell: ({ row }) => (
-          <IconButton
-            LinkComponent={Link}
-            href={`/delivery/${row.original.id}`}
-          >
+          <IconButton LinkComponent={Link} href={`/dostawy/${row.original.id}`}>
             <ChevronRight />
           </IconButton>
         ),

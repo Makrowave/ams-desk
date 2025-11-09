@@ -121,6 +121,11 @@ const BikeTable = ({ model, placeId }: Props) => {
     positionActionsColumn: 'last',
     enableDensityToggle: false,
     enableFullScreenToggle: false,
+    displayColumnDefOptions: {
+      'mrt-row-actions': {
+        size: 300,
+      },
+    },
     muiTableProps: {
       sx: {
         px: 4,

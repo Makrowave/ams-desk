@@ -1,4 +1,4 @@
-import { cloneElement, useState } from 'react';
+import { cloneElement, useMemo, useState } from 'react';
 import {
   Box,
   IconButton,
@@ -34,7 +34,7 @@ const useModal = ({ button, label }: MaterialModalProps) => {
     });
   };
 
-  const Component = ({ children }: { children: React.ReactElement }) => {
+  const Component = ({ children }: { children: React.ReactNode }) => {
     return (
       <Box>
         <ButtonComponent />
@@ -72,7 +72,9 @@ const useModal = ({ button, label }: MaterialModalProps) => {
     );
   };
 
-  return { Modal: Component, setOpen, open };
+  const Body = useMemo(() => Component, [open]);
+
+  return { Modal: Body, setOpen, open };
 };
 
 export default useModal;

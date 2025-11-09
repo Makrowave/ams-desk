@@ -9,6 +9,9 @@ type DataSelectProps = {
   options: SelectOption[];
   label: string;
   validated?: boolean;
+  adornment?: JSX.Element;
+  disabled?: boolean;
+  error?: boolean;
 };
 
 const DataSelect = ({
@@ -19,6 +22,9 @@ const DataSelect = ({
   options,
   label,
   validated,
+  adornment,
+  disabled,
+  error,
 }: DataSelectProps): JSX.Element => {
   const isColored =
     options[0] !== undefined
@@ -29,11 +35,15 @@ const DataSelect = ({
     <FormControl fullWidth>
       <InputLabel id={label}>{label}</InputLabel>
       <Select
-        error={validated && value === defaultValue}
+        error={error !== undefined ? error : validated ? value === 0 : false}
         value={value}
-        onChange={(event) => onChange(Number(event.target.value))}
+        onChange={(event) => {
+          onChange(Number(event.target.value));
+        }}
         labelId={label}
         label={label}
+        endAdornment={adornment}
+        disabled={disabled}
       >
         <MenuItem value={defaultValue}>
           <MenuItemChild
