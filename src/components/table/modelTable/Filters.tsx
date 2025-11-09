@@ -13,6 +13,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import useAsyncRangeSlider from '../../../hooks/useAsyncRangeSlider';
 
 type FiltersProps = {
   setQuery: Dispatch<SetStateAction<FiltersType>>;
@@ -21,6 +22,14 @@ type FiltersProps = {
 };
 
 const Filters = ({ setQuery, place, setPlace }: FiltersProps) => {
+  // Create a ref to store the reset function
+  const resetRef = { current: () => {} };
+
+  const [filters, dispatch] = useReducer(
+    createReducer(() => resetRef.current()),
+    defaultFilters,
+  );
+
   const updateFilters = (
     field: keyof FiltersType,
     value: FiltersType[keyof FiltersType],
@@ -29,8 +38,20 @@ const Filters = ({ setQuery, place, setPlace }: FiltersProps) => {
     if (field === undefined) return;
     dispatch({ type: 'SET', field, value });
   };
-  const [filters, dispatch] = useReducer(reducer, defaultFilters);
 
+  const { rangeInput, reset } = useAsyncRangeSlider({
+    minValue: filters.minPrice,
+    maxValue: filters.maxPrice,
+    title: 'Cena',
+    setMin: (v) => updateFilters('minPrice', v),
+    setMax: (v) => updateFilters('maxPrice', v),
+    step: 250,
+    min: defaultFilters.minPrice,
+    max: defaultFilters.maxPrice,
+  });
+
+  // Update the ref with the actual reset function
+  resetRef.current = reset;
   const { isAdmin } = useAuth();
   useEffect(() => {
     setQuery(filters);
@@ -136,14 +157,7 @@ const Filters = ({ setQuery, place, setPlace }: FiltersProps) => {
           label="Status"
           defaultValue={defaultFilters.statusId}
         />
-
-        {/* <RangeInput
-          title="Cena"
-          minValue={filters.minPrice}
-          maxValue={filters.maxPrice}
-          setMin={(v) => updateFilters('minPrice', v)}
-          setMax={(v) => updateFilters('maxPrice', v)}
-        /> */}
+        {rangeInput}
         <FormControlLabel
           control={<Checkbox />}
           checked={filters.available}
@@ -220,7 +234,7 @@ export const defaultFilters = {
   isKids: false,
   categoryId: 0,
   minPrice: 0,
-  maxPrice: 100000,
+  maxPrice: 40000,
   colorId: 0,
   statusId: 0,
   productCode: '',
@@ -266,23 +280,26 @@ type ReducerAction =
       type: 'RESET';
     };
 
-const reducer = (state: FiltersType, action: ReducerAction) => {
-  switch (action.type) {
-    case 'SET':
-      return {
-        ...state,
-        [action.field]: action.value,
-      };
-    case 'TOGGLE':
-      return {
-        ...state,
-        [action.field]: !state[action.field],
-      };
-    case 'RESET':
-      return defaultFilters;
-    default:
-      return state;
-  }
+const createReducer = (reset: () => void) => {
+  return (state: FiltersType, action: ReducerAction) => {
+    switch (action.type) {
+      case 'SET':
+        return {
+          ...state,
+          [action.field]: action.value,
+        };
+      case 'TOGGLE':
+        return {
+          ...state,
+          [action.field]: !state[action.field],
+        };
+      case 'RESET':
+        reset();
+        return defaultFilters;
+      default:
+        return state;
+    }
+  };
 };
 
 export default Filters;
