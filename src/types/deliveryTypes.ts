@@ -23,7 +23,7 @@ export type DeliveryModel = {
   price?: number | null;
   isElectric?: boolean | null;
   link?: string | null;
-  insertionDate: Date;
+  insertionDate: string;
   manufacturer?: Manufacturer | null;
   color?: Color | null;
   category?: Category | null;
@@ -42,7 +42,7 @@ export type DeliveryItem = {
 
 export type DeliveryDocument = {
   id: number;
-  date: Date;
+  string: string;
   name: string;
   items?: DeliveryItem[] | null;
 };
@@ -50,8 +50,8 @@ export type DeliveryDocument = {
 export type Invoice = {
   id: number;
   invoiceNumber: string;
-  issueDate: Date;
-  paymentDate: Date;
+  issueDate: string;
+  paymentDate: string;
   issuerName: string;
   issuerAddress: string;
   nettoAmount: number;
@@ -61,9 +61,9 @@ export type Invoice = {
 
 export type Delivery = {
   id: number;
-  plannedArrivalDate: Date;
-  startDate?: Date | null;
-  finishDate?: Date | null;
+  plannedArrivalDate: string;
+  startDate?: string | null;
+  finishDate?: string | null;
   invoiceId: number;
   placeId: number;
   status: DeliveryStatus;
@@ -75,14 +75,14 @@ export type Delivery = {
 export type NewDelivery = {
   placeId: number;
   invoiceId: number;
-  plannedArrivalDate: Date;
+  plannedArrivalDate: string;
 };
 
 export type DeliverySummary = {
   id: number;
-  plannedArrival: Date;
-  startDate?: Date | null;
-  finishDate?: Date | null;
+  plannedArrival: string;
+  startDate?: string | null;
+  finishDate?: string | null;
   invoice: string;
   statusId: number;
   place: string;

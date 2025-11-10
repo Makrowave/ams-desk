@@ -11,13 +11,10 @@ import Link from 'next/link';
 import { CheckBox, ChevronRight, Close } from '@mui/icons-material';
 import { paperTableStyle } from '../../styles/styles';
 import NewInvoiceModal from './modal/NewInvoiceModal';
+import { useInvoiceQuery } from '../../hooks/queryHooks';
 
 const InvoicesTable = () => {
-  const { data, isLoading, isError } = {
-    data: [],
-    isLoading: false,
-    isError: false,
-  };
+  const { data, isLoading, isError } = useInvoiceQuery<Invoice[]>({});
 
   const columns = useMemo<MRT_ColumnDef<Invoice>[]>(
     () => [
@@ -59,7 +56,10 @@ const InvoicesTable = () => {
         id: 'goto',
         header: '',
         Cell: ({ row }) => (
-          <IconButton LinkComponent={Link} href={`/faktury/${row.original.id}`}>
+          <IconButton
+            LinkComponent={Link}
+            href={`/dostawy/faktury/${row.original.id}`}
+          >
             <ChevronRight />
           </IconButton>
         ),

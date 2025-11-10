@@ -11,7 +11,10 @@ const DeliveryLayout = ({ children }: { children: React.ReactNode }) => {
       <Box
         component={'main'}
         sx={{
-          overflowY: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
+          overflowY: 'auto',
           mx: `${drawerWidthCollapsed + 10}px`,
           my: '30px',
         }}

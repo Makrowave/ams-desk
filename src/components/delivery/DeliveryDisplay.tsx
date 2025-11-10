@@ -1,6 +1,6 @@
 'use client';
 import { Box, Button, Divider, Paper, Stack, Typography } from '@mui/material';
-import { Delivery, DeliveryStatus } from '../../types/deliveryTypes';
+import { Delivery, DeliveryStatus, Invoice } from '../../types/deliveryTypes';
 import DeliverySummary from './DeliverySummary';
 import InvoiceSummary from './InvoiceSummary';
 import DeliveryDocumentDisplay from './DeliveryDocumentDisplay';
@@ -8,18 +8,64 @@ import {
   getDeliveryStatusColor,
   getDeliveryStatusText,
 } from '../../util/deliveryHelpers';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import URLS, { URLKEYS } from '../../util/urls';
 
 const DeliveryDisplay = ({ delivery }: { delivery: Delivery }) => {
+  const axiosPrivate = useAxiosPrivate();
+  const queryClient = useQueryClient();
+
+  const statusChangeMutation = useMutation({
+    mutationFn: async ({
+      id,
+      action,
+    }: {
+      id: number;
+      action: 'start' | 'cancel' | 'finish';
+    }) => {
+      let url = '';
+      switch (action) {
+        case 'start':
+          url = URLS.StartDelivery;
+          break;
+        case 'cancel':
+          url = URLS.CancelDelivery;
+          break;
+        case 'finish':
+          url = URLS.FinishDelivery;
+          break;
+      }
+
+      const response = await axiosPrivate.post(url + `${id}`);
+      return response.data;
+    },
+
+    onSuccess: (data: Delivery) => {
+      queryClient.setQueryData<Delivery>(
+        [URLS.Delivery, data.id],
+        (oldData) => {
+          if (!oldData) return data;
+          return { ...oldData, status: data.status };
+        },
+      );
+
+      //For cancel
+      if (data.status === DeliveryStatus.Cancelled)
+        queryClient.invalidateQueries({ queryKey: [URLS.Invoices] });
+    },
+  });
+
   const handleStart = () => {
-    // TODO
+    statusChangeMutation.mutate({ id: delivery.id, action: 'start' });
   };
 
   const handleCancel = () => {
-    // TODO
+    statusChangeMutation.mutate({ id: delivery.id, action: 'cancel' });
   };
 
   const handleFinish = () => {
-    // TODO
+    statusChangeMutation.mutate({ id: delivery.id, action: 'finish' });
   };
 
   const handleDocumentAdd = () => {

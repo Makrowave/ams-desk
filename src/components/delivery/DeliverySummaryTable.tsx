@@ -6,19 +6,21 @@ import {
 import { useMemo } from 'react';
 import { DeliverySummary } from '../../types/deliveryTypes';
 import useLocallyStoredTable from '../../hooks/useLocallyStoredTable';
-import { Button, IconButton, Tooltip } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import Link from 'next/link';
-import { Add, ChevronRight } from '@mui/icons-material';
+import { ChevronRight } from '@mui/icons-material';
 import { paperTableStyle } from '../../styles/styles';
-import MaterialModal from '../modals/MaterialModal';
 import NewDeliveryModal from './modals/NewDeliveryModal';
+import { useDeliveriesQuery } from '../../hooks/queryHooks';
+import {
+  getDeliveryStatusColor,
+  getDeliveryStatusText,
+} from '../../util/deliveryHelpers';
 
 const DeliverySummaryTable = () => {
-  const { data, isLoading, isError } = {
-    data: [],
-    isLoading: false,
-    isError: false,
-  };
+  const { data, isLoading, isError } = useDeliveriesQuery<DeliverySummary[]>(
+    {},
+  );
 
   const columns = useMemo<MRT_ColumnDef<DeliverySummary>[]>(
     () => [
@@ -53,10 +55,25 @@ const DeliverySummaryTable = () => {
       {
         accessorKey: 'invoice',
         header: 'Faktura',
+        accessorFn: (row) => (row.invoice ? row.invoice : 'Brak - anulowana'),
       },
       {
         accessorKey: 'statusId',
         header: 'Status',
+        Cell: ({ cell }) => (
+          <Box
+            sx={{
+              py: 1,
+              px: 2,
+              bgcolor: getDeliveryStatusColor(cell.getValue() as number),
+              borderRadius: 1,
+            }}
+          >
+            <Typography variant="body1" sx={{ color: 'white' }}>
+              {getDeliveryStatusText(cell.getValue() as number)}
+            </Typography>
+          </Box>
+        ),
       },
       {
         accessorKey: 'place',
@@ -81,7 +98,14 @@ const DeliverySummaryTable = () => {
     data: data || [],
     state: {
       isLoading,
+      showAlertBanner: isError,
     },
+    muiToolbarAlertBannerProps: isError
+      ? {
+          color: 'error',
+          children: 'Nastąpił błąd',
+        }
+      : undefined,
     renderTopToolbarCustomActions: () => <NewDeliveryModal />,
   };
 

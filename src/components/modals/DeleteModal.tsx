@@ -12,6 +12,7 @@ type DeleteModalProps = {
   url: string;
   admin?: boolean;
   closeModal?: () => void;
+  onSuccess?: () => void;
 };
 
 const DeleteModal = ({
@@ -20,6 +21,7 @@ const DeleteModal = ({
   url,
   admin = false,
   closeModal,
+  onSuccess,
 }: DeleteModalProps) => {
   const axios = admin ? useAxiosAdmin() : useAxiosPrivate();
   const queryClient = useQueryClient();
@@ -34,6 +36,7 @@ const DeleteModal = ({
         { queryKey: [refetchQueryKey], exact: false },
         (oldData) => oldData?.filter((item) => Object.values(item)[0] !== id),
       );
+      onSuccess && onSuccess();
       if (closeModal) closeModal();
     },
     onError: (error) => {

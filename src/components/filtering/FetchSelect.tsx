@@ -17,7 +17,6 @@ type FetchSelectProps = {
   validated?: boolean;
 };
 
-//TODO - style
 const FetchSelect = <T extends SelectOption>({
   urlKey,
   params = null,
@@ -52,6 +51,9 @@ const FetchSelect = <T extends SelectOption>({
     if (isPending) return 'Ładowanie...';
     return defaultName;
   };
+
+  console.log(data);
+
   return (
     <DataSelect
       defaultValue={defaultValue}
@@ -62,8 +64,7 @@ const FetchSelect = <T extends SelectOption>({
       label={label}
       validated={validated}
       adornment={<Adornment />}
-      error={isError}
-      // disabled={isPending || isError}
+      disabled={isPending}
     />
   );
 };

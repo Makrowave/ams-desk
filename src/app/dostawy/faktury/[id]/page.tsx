@@ -1,21 +1,36 @@
 'use client';
 
+import { Box, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import InvoiceDisplay from '../../../../components/invoices/InvoiceDisplay';
+import { useInvoiceQuery } from '../../../../hooks/queryHooks';
 import { Invoice as InvoiceType } from '../../../../types/deliveryTypes';
 
 const Invoice = ({ params }: { params: { id: string } }) => {
-  const testInvoice: InvoiceType = {
-    id: Number(params.id),
-    invoiceNumber: 'TEST/2025/0001',
-    issueDate: new Date('2025-11-07'),
-    paymentDate: new Date('2025-11-21'),
-    issuerName: 'Test Firma',
-    issuerAddress: 'ul. Testowa 1, 00-000 Test',
-    nettoAmount: 123.45,
-    bruttoAmount: 151.64,
-    deliveryId: undefined,
-  };
-  return <InvoiceDisplay invoice={testInvoice} />;
+  const { data, isLoading, error } = useInvoiceQuery<InvoiceType>({
+    id: parseInt(params.id, 10),
+  });
+
+  if (isLoading) {
+    return (
+      <Paper component={Stack} sx={{ flex: 1, p: 2 }}>
+        <Box>
+          <Skeleton variant="text" height={40} width={200} />
+        </Box>
+      </Paper>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <Paper>
+        <Stack>
+          <Typography>Wystąpił błąd</Typography>
+        </Stack>
+      </Paper>
+    );
+  }
+
+  return <InvoiceDisplay invoice={data} />;
 };
 
 export default Invoice;

@@ -5,14 +5,41 @@ import { useRouter } from 'next/navigation';
 import useModal from '../../../hooks/useModal';
 import FetchSelect from '../../filtering/FetchSelect';
 import { useState } from 'react';
-import { URLKEYS } from '../../../util/urls';
+import URLS, { URLKEYS } from '../../../util/urls';
 import { DatePicker, MobileTimePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import { SelectOption } from '../../../types/selectTypes';
 
 const NewDeliveryModal = () => {
   const [place, setPlace] = useState<number>(0);
   const [invoice, setInvoice] = useState<number>(0);
   const [deliveryDate, setDeliveryDate] = useState<Dayjs>(dayjs());
+  const axiosPrivate = useAxiosPrivate();
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const result = await axiosPrivate.post(URLS.NewDelivery, {
+        placeId: place,
+        invoiceId: invoice,
+        expectedDeliveryDate: deliveryDate.toISOString(),
+      });
+      return result.data.id;
+    },
+    onSuccess: (deliveryId: number) => {
+      queryClient.setQueryData<SelectOption[]>(
+        [URLS.NotAssignedInvoice],
+        (oldData) => {
+          if (!oldData) return [];
+          return oldData.filter((inv) => inv.id !== invoice);
+        },
+      );
+      router.push(`/dostawy/${deliveryId}`);
+    },
+  });
 
   const setTime = (dayjs: Dayjs | null) => {
     let date: Dayjs = deliveryDate.clone();
@@ -40,12 +67,6 @@ const NewDeliveryModal = () => {
     label: 'Nowa dostawa',
   });
 
-  const handleAdd = () => {
-    const result = 1;
-    router.push(`/dostawy/${result}`);
-    setOpen(false);
-  };
-
   return (
     <Modal>
       <FetchSelect
@@ -62,7 +83,7 @@ const NewDeliveryModal = () => {
         value={invoice}
         urlKey={URLKEYS.NotAssignedInvoice}
         onChange={setInvoice}
-        validated={true}
+        validated
       />
       <DatePicker
         label="Oczekiwana data dostawy"
@@ -76,7 +97,14 @@ const NewDeliveryModal = () => {
         minTime={deliveryDate.isAfter(dayjs()) ? undefined : dayjs()}
         onChange={setTime}
       />
-      <Button variant="contained" onClick={handleAdd}>
+      <Button
+        variant="contained"
+        onClick={() => mutation.mutate()}
+        loading={mutation.isPending}
+        disabled={
+          place === 0 || invoice === 0 || deliveryDate.isBefore(dayjs())
+        }
+      >
         Dodaj
       </Button>
     </Modal>

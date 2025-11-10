@@ -39,6 +39,7 @@ export const createQueryHook =
     const axios = admin ? useAxiosAdmin() : useAxiosPrivate();
     const queryKey = [URLS[key], ...Object.values(params ?? {})];
 
+    console.log(queryKey);
     return useQuery<TData, AxiosError>({
       queryKey,
       queryFn: async () => {
@@ -75,3 +76,8 @@ export const useServicesFromCategoryQuery = createQueryHook(
   'ServicesFromCategory',
 );
 export const useFilteredPartsQuery = createQueryHook('FilteredParts');
+export const useInvoiceQuery = createQueryHook('Invoice');
+export const useInvoicesQuery = createQueryHook('Invoices');
+
+export const useDeliveriesQuery = createQueryHook('Deliveries');
+export const useDeliveryQuery = createQueryHook('Delivery');

@@ -31,11 +31,24 @@ const DataSelect = ({
       ? Object.keys(options[0]).includes('hexCode')
       : false;
 
+  const hasError = () => {
+    console.log({ value, defaultValue, validated, error });
+    // Explicit error prop takes precedence
+    if (error !== undefined) return error;
+
+    // If validated is true, check if value equals defaultValue (typically 0)
+    if (validated) {
+      return value === defaultValue;
+    }
+
+    return false;
+  };
+
   return (
     <FormControl fullWidth>
       <InputLabel id={label}>{label}</InputLabel>
       <Select
-        error={error !== undefined ? error : validated ? value === 0 : false}
+        error={hasError()}
         value={value}
         onChange={(event) => {
           onChange(Number(event.target.value));

@@ -6,12 +6,29 @@ import { Invoice } from '../../../types/deliveryTypes';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import URLS from '../../../util/urls';
 
 const NewInvoiceModal = () => {
   const [invoice, setInvoice] = useState<Partial<Invoice>>({
     invoiceNumber: '',
     issuerName: '',
     issuerAddress: '',
+    issueDate: dayjs().toISOString().split('T')[0],
+    paymentDate: dayjs().toISOString().split('T')[0],
+  });
+
+  const axiosPrivate = useAxiosPrivate();
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const result = await axiosPrivate.post(URLS.NewInvoice, invoice);
+      return result.data.id;
+    },
+    onSuccess: (invoiceId: number) => {
+      router.push(`/dostawy/faktury/${invoiceId}`);
+    },
   });
 
   const handleChange = (key: keyof Invoice, value: Invoice[keyof Invoice]) => {
@@ -31,11 +48,6 @@ const NewInvoiceModal = () => {
 
   const router = useRouter();
 
-  const handleAdd = () => {
-    //TODO
-    router.push(`/dostawy/faktury/1`);
-  };
-
   return (
     <Modal>
       <TextField
@@ -47,12 +59,16 @@ const NewInvoiceModal = () => {
       <DatePicker
         label="Data wystawienia"
         value={dayjs(invoice.issueDate)}
-        onChange={(newValue) => handleChange('issueDate', newValue?.toDate())}
+        onChange={(newValue) =>
+          handleChange('issueDate', newValue!.toISOString().split('T')[0]!)
+        }
       />
       <DatePicker
         label="Data płatności"
-        value={dayjs(invoice.issueDate)}
-        onChange={(newValue) => handleChange('paymentDate', newValue?.toDate())}
+        value={dayjs(invoice.paymentDate)}
+        onChange={(newValue) =>
+          handleChange('paymentDate', newValue!.toISOString().split('T')[0]!)
+        }
       />
       <TextField
         label="Wystawca"
@@ -85,7 +101,22 @@ const NewInvoiceModal = () => {
             invoice.bruttoAmount < invoice.nettoAmount)
         }
       />
-      <Button variant="contained" onClick={handleAdd}>
+      <Button
+        variant="contained"
+        onClick={() => mutation.mutate()}
+        disabled={
+          !invoice.invoiceNumber ||
+          !invoice.issuerName ||
+          !invoice.issuerAddress ||
+          invoice.nettoAmount === undefined ||
+          invoice.nettoAmount < 0 ||
+          invoice.bruttoAmount === undefined ||
+          invoice.bruttoAmount < 0 ||
+          (invoice.nettoAmount !== undefined &&
+            invoice.bruttoAmount < invoice.nettoAmount)
+        }
+        loading={mutation.isPending}
+      >
         Dodaj
       </Button>
     </Modal>

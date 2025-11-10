@@ -32,7 +32,7 @@ const DeliverySummary = ({ delivery }: { delivery: Delivery }) => {
         }}
       >
         <Typography variant="h6">Szczegóły</Typography>
-        <EditDeliveryModal />
+        <EditDeliveryModal delivery={delivery} />
       </Box>
       <List sx={{ width: '100%' }}>
         <ListItem>
@@ -44,14 +44,14 @@ const DeliverySummary = ({ delivery }: { delivery: Delivery }) => {
         <ListItem>
           <ListItemText
             primary="Planowana data"
-            secondary={delivery.plannedArrivalDate?.toLocaleDateString()}
+            secondary={delivery.plannedArrivalDate}
           />
         </ListItem>
         {delivery.startDate && (
           <ListItem>
             <ListItemText
               primary="Data rozpoczęcia"
-              secondary={delivery.startDate.toLocaleDateString()}
+              secondary={delivery.startDate}
             />
           </ListItem>
         )}
@@ -59,7 +59,7 @@ const DeliverySummary = ({ delivery }: { delivery: Delivery }) => {
           <ListItem>
             <ListItemText
               primary="Data zakończenia"
-              secondary={delivery.finishDate.toLocaleDateString()}
+              secondary={delivery.finishDate}
             />
           </ListItem>
         )}

@@ -1,3 +1,5 @@
+import Invoice from '../app/dostawy/faktury/[id]/page';
+
 const URLS = {
   Manufacturers: '/Manufacturers/',
   Models: '/Models/',
@@ -23,7 +25,16 @@ const URLS = {
   SoldBikes: '/SalesData/Sold/',
   ServicesFromCategory: '/Services/FromCategory/',
   FilteredParts: '/Parts/Filtered/',
-  NotAssignedInvoice: '/Invoices/NotAssigned/',
+  NotAssignedInvoice: '/Invoice/NotAssignedInvoice/',
+  NewDelivery: '/Deliveries/create/',
+  NewInvoice: '/Invoice/',
+  Invoice: '/Invoice/',
+  Invoices: '/Invoice/',
+  Deliveries: '/Deliveries/',
+  Delivery: '/Deliveries/',
+  StartDelivery: '/Deliveries/start/',
+  FinishDelivery: '/Deliveries/finish/',
+  CancelDelivery: '/Deliveries/cancel/',
 } as const;
 
 export const URLKEYS = {
@@ -52,5 +63,12 @@ export const URLKEYS = {
   ServicesFromCategory: 'ServicesFromCategory',
   FilteredParts: 'FilteredParts',
   NotAssignedInvoice: 'NotAssignedInvoice',
+  Invoice: 'Invoice',
+  Invoices: 'Invoices',
+  Deliveries: 'Deliveries',
+  StartDelivery: 'StartDelivery',
+  FinishDelivery: 'FinishDelivery',
+  CancelDelivery: 'CancelDelivery',
+  Delivery: 'Delivery',
 } as const;
 export default URLS;
