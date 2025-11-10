@@ -7,6 +7,7 @@ import { MaterialReactTable, MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 import { useMemo } from 'react';
 import ColorPreview from '../ColorPreview';
+import DateDisplay from '../../DateDisplay';
 
 const SaleHistoryTable = ({
   since,
@@ -75,6 +76,12 @@ const SaleHistoryTable = ({
       {
         accessorKey: 'saleDate',
         header: 'Data',
+        Cell: ({ row }) => (
+          <DateDisplay
+            date={row.original.saleDate}
+            typographyProps={{ variant: 'body2' }}
+          />
+        ),
       },
     ],
     [],

@@ -10,6 +10,7 @@ import { Bike, ModelRecord } from '../../../types/bikeTypes';
 import { useModelsQuery } from '../../../hooks/queryHooks';
 import { defaultFilters, prepareFilters } from '../modelTable/Filters';
 import { SoldBike } from '../../../types/stats';
+import DateDisplay from '../../DateDisplay';
 
 export default function ShortSaleHistoryTable() {
   const axiosPrivate = useAxiosPrivate();
@@ -54,6 +55,12 @@ export default function ShortSaleHistoryTable() {
       {
         accessorKey: 'saleDate',
         header: 'Data',
+        Cell: ({ row }) => (
+          <DateDisplay
+            date={row.original.saleDate}
+            typographyProps={{ variant: 'body2' }}
+          />
+        ),
       },
     ],
     [],

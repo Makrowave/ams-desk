@@ -45,6 +45,7 @@ import EditRepairModal from '../../modals/repair/EditRepairModal';
 import { Part, Repair, Service } from '../../../types/repairTypes';
 import { Employee } from '../../../types/employeeTypes';
 import CostsDisplay from './CostsDisplay';
+import DateDisplay from '../../DateDisplay';
 
 const RepairDisplay = ({ repair }: { repair: Repair }) => {
   const { isSaved, setIsSaved, updateIsUsed } = useSavedData();
@@ -347,20 +348,12 @@ const RepairDisplay = ({ repair }: { repair: Repair }) => {
               <Box sx={{ mb: 2, display: 'flex', gap: 4 }}>
                 <Card component={Stack} sx={{ width: 120, p: 2 }}>
                   <Typography fontWeight="bold">Data przyjęcia</Typography>
-                  <Typography>
-                    {new Date(localRepair.arrivalDate).toLocaleDateString(
-                      'pl-PL',
-                    )}
-                  </Typography>
+                  <DateDisplay date={localRepair.arrivalDate} />
                 </Card>
                 {localRepair.collectionDate !== null && (
                   <Card component={Stack} sx={{ width: 120, p: 2 }}>
                     <Typography fontWeight="bold">Data wydania</Typography>
-                    <Typography>
-                      {new Date(
-                        localRepair.collectionDate ?? '',
-                      ).toLocaleDateString('pl-PL')}
-                    </Typography>
+                    <DateDisplay date={localRepair.collectionDate} />
                   </Card>
                 )}
               </Box>

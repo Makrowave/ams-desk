@@ -17,6 +17,7 @@ import { getLocalStorageItem } from '../../util/localStorage';
 import { Close } from '@mui/icons-material';
 import { Place } from '../../types/filterTypes';
 import { ShortRepair } from '../../types/repairTypes';
+import DateDisplay from '../DateDisplay';
 
 type RepairTableProps = {
   src: string;
@@ -61,8 +62,12 @@ const RepairTable = ({ src, addButton, localKey }: RepairTableProps) => {
       {
         accessorKey: 'arrivalDate',
         header: 'Data',
-        Cell: ({ row }) =>
-          new Date(row.original.date).toLocaleDateString('pl-PL'),
+        Cell: ({ row }) => (
+          <DateDisplay
+            date={row.original.date}
+            typographyProps={{ variant: 'body2' }}
+          />
+        ),
       },
       {
         accessorKey: 'phoneNumber',
