@@ -11,6 +11,7 @@ import {
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import URLS, { URLKEYS } from '../../util/urls';
+import AddDeliveryDocumentModal from './modals/AddDeliveryDocumentModal';
 
 const DeliveryDisplay = ({ delivery }: { delivery: Delivery }) => {
   const axiosPrivate = useAxiosPrivate();
@@ -151,14 +152,13 @@ const DeliveryDisplay = ({ delivery }: { delivery: Delivery }) => {
           <Typography variant="h5" component={'h3'} sx={{ mb: 2 }}>
             Dokumenty dostawy
           </Typography>
-          <Button variant="contained" onClick={handleDocumentAdd}>
-            Dodaj
-          </Button>
+          <AddDeliveryDocumentModal delivery={delivery} />
         </Box>
         {delivery.deliveryDocuments &&
           delivery.deliveryDocuments.map((document) => (
             <DeliveryDocumentDisplay
               key={document.id}
+              deliveryId={delivery.id}
               deliveryDocument={document}
             />
           ))}

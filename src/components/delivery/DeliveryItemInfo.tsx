@@ -1,94 +1,128 @@
-import { Box, Divider, Grid, Typography } from '@mui/material';
-import { DeliveryItem } from '../../types/deliveryTypes';
-import React from 'react';
-import ColorPreview from '../table/ColorPreview';
+import { Box, CircularProgress, Fade, Grid } from '@mui/material';
+import {
+  Delivery,
+  DeliveryItem,
+  DeliveryModel,
+} from '../../types/deliveryTypes';
+import { useState } from 'react';
+import DeliveryModelDisplay from './DeliveryModelDisplay';
+import DeliveryModelEdit from './DeliveryModelEdit';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import URLS from '../../util/urls';
 
-const Detail = ({
-  primary,
-  secondary,
+const DeliveryItemInfo = ({
+  item,
+  deliveryId,
 }: {
-  primary: string;
-  secondary: string | React.ReactNode | undefined;
-}) => (
-  <Grid size={{ xs: 12, sm: 12, md: 6, lg: 3, xl: 2 }}>
-    <Typography variant="body2">{primary}</Typography>
-    <Box sx={{ width: 'fit-content' }}>
-      {typeof secondary === 'string' ? (
-        <Typography variant="body1">{secondary}</Typography>
-      ) : (
-        secondary
-      )}
-      <Divider sx={{ bgcolor: 'primary.main' }} />
-    </Box>
-  </Grid>
-);
-
-const DeliveryItemInfo = ({ item }: { item: DeliveryItem }) => {
+  item: DeliveryItem;
+  deliveryId: number;
+}) => {
   const model = item.deliveryModel;
 
-  const ModelBody = () => (
-    <>
-      <Detail primary="Nazwa" secondary={model?.name} />
-      <Detail primary="Kod EAN" secondary={model?.eanCode} />
-      <Detail primary="Kod produktu" secondary={model?.productCode} />
-      <Detail
-        primary="Typ ramy"
-        secondary={model?.isWoman ? 'Damska' : 'Męska'}
-      />
-      <Detail
-        primary="Elektryczny"
-        secondary={model?.isElectric ? 'Tak' : 'Nie'}
-      />
-      <Detail
-        primary="Kolory"
-        secondary={
-          <ColorPreview
-            primaryColor={model?.primaryColor}
-            secondaryColor={model?.secondaryColor}
-            disableRightMargin
-          />
-        }
-      />
-      <Detail
-        primary="Kolor"
-        secondary={
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <Box
-              sx={{
-                height: '20px',
-                width: '20px',
-                border: '1px solid lightgray',
-                borderRadius: '4px',
-                bgcolor: model?.color?.color,
-              }}
-            />
-            <Typography>{model?.color?.name}</Typography>
-          </Box>
-        }
-      />
-      <Detail primary="Rozmiar koła" secondary={`${model?.wheelSize?.name}"`} />
-      <Detail primary="Rozmiar ramy" secondary={model?.frameSize?.toString()} />
-      <Detail primary="Cena" secondary={model?.price?.toString()} />
-      <Detail primary="Producent" secondary={model?.manufacturer?.name} />
-      <Detail primary="Kategoria" secondary={model?.category?.name} />
-    </>
-  );
+  const [editData, setEditData] = useState(item.deliveryModel);
 
-  const NewModelBody = () => (
-    <>
-      <Box></Box>
-    </>
-  );
+  const axiosPrivate = useAxiosPrivate();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async ({
+      field,
+      value,
+    }: {
+      field: keyof DeliveryModel;
+      value: any;
+    }) => {
+      const response = await axiosPrivate.patch(URLS.TemporaryModel, {
+        id: item.temporaryModelId,
+        eanCode: editData.eanCode,
+        [field]: value,
+      });
+
+      return response.data;
+    },
+    onSuccess: (updatedModel: DeliveryModel, { field }) => {
+      queryClient.setQueryData<Delivery>(
+        [URLS.Deliveries, deliveryId],
+        (oldData) => {
+          if (!oldData) return undefined;
+          return {
+            ...oldData,
+            deliveryDocuments: oldData.deliveryDocuments.map((doc) => ({
+              ...doc,
+              items: doc.items?.map((itm) =>
+                itm.id === item.id
+                  ? {
+                      ...itm,
+                      deliveryModel: {
+                        ...itm.deliveryModel,
+                        [field]: updatedModel[field],
+                      },
+                    }
+                  : itm,
+              ),
+            })),
+          };
+        },
+      );
+    },
+  });
+
+  const handleSave = (field: keyof DeliveryModel, value: any) => {
+    mutation.mutate({ field, value });
+  };
 
   return (
-    <Box sx={{ display: 'flex', flexGrow: 1, width: '100%' }}>
+    <Box
+      sx={{ display: 'flex', flexGrow: 1, width: '100%', position: 'relative' }}
+    >
+      <Fade in={mutation.isPending}>
+        <Box
+          sx={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0 }}
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              left: 0,
+              bottom: 0,
+              bgcolor: 'rgba(0, 0, 0, 0.05)',
+              boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
+              zIndex: 10,
+            }}
+          />
+          <CircularProgress
+            size={60}
+            sx={{
+              position: 'absolute',
+              top: '40%',
+              left: '50%',
+              zIndex: 11,
+            }}
+          />
+        </Box>
+      </Fade>
       <Grid
         container
         spacing={2}
         padding={2}
-        sx={{ flexGrow: 1, width: '100%' }}
+        sx={{
+          flexGrow: 1,
+          width: '100%',
+          filter: mutation.isPending ? 'blur(4px)' : 'none',
+          transition: 'filter 0.4s ease',
+        }}
       >
-        {item.modelId ? <ModelBody /> : <NewModelBody />}
+        {item.modelId ? (
+          <DeliveryModelDisplay model={model} />
+        ) : (
+          <DeliveryModelEdit
+            editData={editData}
+            setEditData={setEditData}
+            handleSave={handleSave}
+          />
+        )}
       </Grid>
     </Box>
   );

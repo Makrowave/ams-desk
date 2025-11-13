@@ -12,7 +12,7 @@ type DeleteModalProps = {
   url: string;
   admin?: boolean;
   closeModal?: () => void;
-  onSuccess?: () => void;
+  onSuccess?: (data?: any) => void;
 };
 
 const DeleteModal = ({
@@ -31,12 +31,12 @@ const DeleteModal = ({
       return await axios.delete(`${url}${id}`);
     },
     //TODO stronger typing
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.setQueriesData<Array<object>>(
         { queryKey: [refetchQueryKey], exact: false },
         (oldData) => oldData?.filter((item) => Object.values(item)[0] !== id),
       );
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(data);
       if (closeModal) closeModal();
     },
     onError: (error) => {

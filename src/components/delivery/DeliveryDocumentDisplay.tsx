@@ -1,16 +1,38 @@
 'use client';
 import { Box, Card, IconButton, Stack, Typography } from '@mui/material';
-import { DeliveryDocument } from '../../types/deliveryTypes';
+import { Delivery, DeliveryDocument } from '../../types/deliveryTypes';
 import DeliveryItemTable from './DeliveryItemTable';
 import { Delete } from '@mui/icons-material';
+import DateDisplay from '../DateDisplay';
+import MaterialModal from '../modals/MaterialModal';
+import DeleteModal from '../modals/DeleteModal';
+import URLS from '../../util/urls';
+import { useQueryClient } from '@tanstack/react-query';
 
 const DeliveryDocumentDisplay = ({
   deliveryDocument,
+  deliveryId,
 }: {
   deliveryDocument: DeliveryDocument;
+  deliveryId: number;
 }) => {
+  const queryClient = useQueryClient();
   const handleDelete = () => {
-    //TODO
+    queryClient.setQueryData(
+      [URLS.Delivery, deliveryId],
+      (oldData: Delivery) => {
+        if (!oldData) return {};
+
+        return {
+          ...oldData,
+          deliveryDocuments: oldData.deliveryDocuments
+            ? oldData.deliveryDocuments.filter(
+                (doc) => doc.id !== deliveryDocument.id,
+              )
+            : [],
+        };
+      },
+    );
   };
 
   return (
@@ -26,15 +48,25 @@ const DeliveryDocumentDisplay = ({
         >
           <Typography>Dokument - {deliveryDocument.name}</Typography>
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-            <Typography>
-              {deliveryDocument.date.toLocaleDateString()}
-            </Typography>
-            <IconButton color="error" onClick={handleDelete}>
-              <Delete />
-            </IconButton>
+            <DateDisplay date={deliveryDocument.date} />
+            <MaterialModal
+              label="Usuń dokument"
+              button={
+                <IconButton color="error">
+                  <Delete />
+                </IconButton>
+              }
+            >
+              <DeleteModal
+                id={deliveryDocument.id}
+                refetchQueryKey=""
+                url={URLS.DeliveryDocuments}
+                onSuccess={handleDelete}
+              />
+            </MaterialModal>
           </Box>
         </Box>
-        <DeliveryItemTable data={deliveryDocument.items ?? []} />
+        <DeliveryItemTable deliveryDocument={deliveryDocument} />
       </Stack>
     </Card>
   );

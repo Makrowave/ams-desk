@@ -25,7 +25,7 @@ const NewDeliveryModal = () => {
       const result = await axiosPrivate.post(URLS.NewDelivery, {
         placeId: place,
         invoiceId: invoice,
-        expectedDeliveryDate: deliveryDate.toISOString(),
+        plannedArrivalDate: deliveryDate.toISOString(),
       });
       return result.data.id;
     },

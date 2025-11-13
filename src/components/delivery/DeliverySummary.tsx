@@ -11,6 +11,7 @@ import {
 import { FaPencil } from 'react-icons/fa6';
 import { Delivery } from '../../types/deliveryTypes';
 import EditDeliveryModal from './modals/EditDeliveryModal';
+import DateDisplay from '../DateDisplay';
 
 const DeliverySummary = ({ delivery }: { delivery: Delivery }) => {
   return (
@@ -44,7 +45,12 @@ const DeliverySummary = ({ delivery }: { delivery: Delivery }) => {
         <ListItem>
           <ListItemText
             primary="Planowana data"
-            secondary={delivery.plannedArrivalDate}
+            secondary={
+              <DateDisplay
+                typographyProps={{ variant: 'body2' }}
+                date={delivery.plannedArrivalDate}
+              />
+            }
           />
         </ListItem>
         {delivery.startDate && (

@@ -6,9 +6,10 @@ type ColorInputProps = {
   title?: string;
   value: string;
   setValue: (value: string) => void;
+  onBlur?: () => void;
 };
 
-const ColorInput = ({ title, value, setValue }: ColorInputProps) => {
+const ColorInput = ({ title, value, setValue, onBlur }: ColorInputProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isOpen = Boolean(anchorEl);
 
@@ -37,7 +38,10 @@ const ColorInput = ({ title, value, setValue }: ColorInputProps) => {
         />
       </Box>
       <Popover
-        onClose={() => setAnchorEl(null)}
+        onClose={() => {
+          setAnchorEl(null);
+          onBlur && onBlur();
+        }}
         open={isOpen}
         anchorEl={anchorEl}
         sx={{ zIndex: 1400 }}

@@ -37,13 +37,14 @@ export type DeliveryItem = {
   temporaryModelId?: number | null;
   count: number;
   storageCount: number;
-  deliveryModel?: DeliveryModel | null;
+  deliveryModel: DeliveryModel;
 };
 
 export type DeliveryDocument = {
   id: number;
-  string: string;
+  date: Date;
   name: string;
+  deliveryId: number;
   items?: DeliveryItem[] | null;
 };
 

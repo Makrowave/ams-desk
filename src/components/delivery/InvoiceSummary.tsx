@@ -1,6 +1,7 @@
 'use client';
 import { Card, Typography, List, ListItem, ListItemText } from '@mui/material';
 import { Invoice } from '../../types/deliveryTypes';
+import DateDisplay from '../DateDisplay';
 
 const InvoiceSummary = ({ invoice }: { invoice: Invoice }) => {
   return (
@@ -25,13 +26,23 @@ const InvoiceSummary = ({ invoice }: { invoice: Invoice }) => {
         <ListItem>
           <ListItemText
             primary="Data wystawienia"
-            secondary={invoice.issueDate?.toLocaleDateString()}
+            secondary={
+              <DateDisplay
+                date={invoice.issueDate}
+                typographyProps={{ variant: 'body2' }}
+              />
+            }
           />
         </ListItem>
         <ListItem>
           <ListItemText
             primary="Termin płatności"
-            secondary={invoice.paymentDate?.toLocaleDateString()}
+            secondary={
+              <DateDisplay
+                date={invoice.paymentDate}
+                typographyProps={{ variant: 'body2' }}
+              />
+            }
           />
         </ListItem>
         <ListItem>

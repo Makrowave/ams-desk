@@ -77,7 +77,7 @@ const DeliverySummaryTable = () => {
       },
       {
         accessorKey: 'place',
-        header: 'Place',
+        header: 'Miejsce',
       },
       {
         id: 'goto',

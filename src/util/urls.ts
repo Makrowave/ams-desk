@@ -35,6 +35,11 @@ const URLS = {
   StartDelivery: '/Deliveries/start/',
   FinishDelivery: '/Deliveries/finish/',
   CancelDelivery: '/Deliveries/cancel/',
+  DeliveryDocuments: '/DeliveryDocuments/',
+  DeliveryItems: '/DeliveryItems/',
+  DeliveryItemsIncrement: '/DeliveryItems/increment/',
+  DeliveryItemsDecrement: '/DeliveryItems/decrement/',
+  TemporaryModel: '/TemporaryModel/',
 } as const;
 
 export const URLKEYS = {
@@ -70,5 +75,10 @@ export const URLKEYS = {
   FinishDelivery: 'FinishDelivery',
   CancelDelivery: 'CancelDelivery',
   Delivery: 'Delivery',
+  DeliveryDocuments: 'DeliveryDocuments',
+  DeliveryItems: 'DeliveryItems',
+  DeliveryItemsIncrement: 'DeliveryItemsIncrement',
+  DeliveryItemsDecrement: 'DeliveryItemsDecrement',
+  TemporaryModel: 'TemporaryModel',
 } as const;
 export default URLS;
