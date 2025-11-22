@@ -40,6 +40,7 @@ const URLS = {
   DeliveryItemsIncrement: '/DeliveryItems/increment/',
   DeliveryItemsDecrement: '/DeliveryItems/decrement/',
   TemporaryModel: '/TemporaryModel/',
+  DeliveryItemAddToStorage: '/DeliveryItems/addToStorage/',
 } as const;
 
 export const URLKEYS = {
@@ -80,5 +81,6 @@ export const URLKEYS = {
   DeliveryItemsIncrement: 'DeliveryItemsIncrement',
   DeliveryItemsDecrement: 'DeliveryItemsDecrement',
   TemporaryModel: 'TemporaryModel',
+  DeliveryItemAddToStorage: 'DeliveryItemAddToStorage',
 } as const;
 export default URLS;

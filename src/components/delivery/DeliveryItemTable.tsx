@@ -13,16 +13,26 @@ import {
 import ColorPreview from '../table/ColorPreview';
 import useLocallyStoredTable from '../../hooks/useLocallyStoredTable';
 import { paperTableStyle } from '../../styles/styles';
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  ListItemIcon,
+  MenuItem,
+  Typography,
+} from '@mui/material';
 import AddModelDeliveryItemModal from './modals/AddModelDeliveryItemModal';
 import AddNewModelDeliveryItemModal from './modals/AddNewModelDeliveryItemModal';
 import DeliveryItemInfo from './DeliveryItemInfo';
 import { getColorForInStorageFeedback } from '../../util/deliveryHelpers';
 import AddToStorageModal from './modals/AddToStorageModal';
-import { Add, Remove } from '@mui/icons-material';
+import { AccountCircle, Add, Delete, Remove, Send } from '@mui/icons-material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import URLS from '../../util/urls';
+import URLS, { URLKEYS } from '../../util/urls';
+import React from 'react';
+import MaterialModal from '../modals/MaterialModal';
+import DeleteModal from '../modals/DeleteModal';
+import ThemedTable from '../table/ThemedTable';
 
 const DeliveryItemTable = ({
   deliveryDocument,
@@ -51,20 +61,23 @@ const DeliveryItemTable = ({
       const response = await axiosPrivate.post(prefix + item.id);
       return response.data;
     },
-    onSuccess: (data: number) => {
+    onSuccess: (data: number, { item: deliveryItem }) => {
       queryClient.setQueryData<Delivery>(
         [URLS.Delivery, deliveryDocument.deliveryId],
         (oldData) => {
+          console.log(oldData);
           if (!oldData) return undefined;
+          console.log(data);
+          console.log(oldData.deliveryDocuments);
           return {
             ...oldData,
             deliveryDocuments: oldData.deliveryDocuments.map((doc) => ({
               ...doc,
-              items: doc.items?.map((itm) =>
-                itm.id === data
+              deliveryItems: doc.deliveryItems?.map((itm) =>
+                itm.id === deliveryItem.id
                   ? {
                       ...itm,
-                      storageCount: itm.storageCount + 1,
+                      count: data,
                     }
                   : itm,
               ),
@@ -145,8 +158,9 @@ const DeliveryItemTable = ({
 
   const tableDef: MRT_TableOptions<DeliveryItem> = {
     ...paperTableStyle,
+
     columns,
-    data: deliveryDocument.items ?? [],
+    data: deliveryDocument.deliveryItems ?? [],
     renderTopToolbarCustomActions: () => (
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <AddModelDeliveryItemModal />
@@ -159,19 +173,64 @@ const DeliveryItemTable = ({
         item={row.original}
       />
     ),
+    enableColumnPinning: true,
+    // initialState: {
+    //   columnPinning: {
+    //     left: ['mrt-row-expand', 'mrt-row-actions'],
+    //   },
+    // },
     enableRowActions: true,
-    positionActionsColumn: 'last',
-    displayColumnDefOptions: {
-      'mrt-row-actions': {
-        header: '',
-        size: 300,
-      },
-    },
-    renderRowActions: ({ row }) => (
-      <Box>
-        <AddToStorageModal />
-      </Box>
-    ),
+    positionActionsColumn: 'first',
+    renderRowActionMenuItems: ({ closeMenu, row }) => [
+      <React.Fragment key={0}>
+        {row.original.modelId && (
+          <AddToStorageModal
+            itemId={row.original.id}
+            deliveryId={deliveryDocument.deliveryId}
+          />
+        )}
+      </React.Fragment>,
+      <MaterialModal
+        button={
+          <MenuItem
+            sx={{ bgcolor: 'error.main', color: 'white', m: 0 }}
+            key={1}
+            onClick={() => {
+              closeMenu();
+            }}
+          >
+            <ListItemIcon sx={{ color: 'white' }}>
+              <Delete />
+            </ListItemIcon>
+            Usuń
+          </MenuItem>
+        }
+        label={'Usuń'}
+      >
+        <DeleteModal
+          refetchQueryKey={''}
+          id={row.original.id}
+          url={URLS.DeliveryItems}
+          onSuccess={() => {
+            queryClient.setQueryData<Delivery>(
+              [URLS.Delivery, deliveryDocument.deliveryId],
+              (oldData) => {
+                if (!oldData) return undefined;
+                return {
+                  ...oldData,
+                  deliveryDocuments: oldData.deliveryDocuments.map((doc) => ({
+                    ...doc,
+                    deliveryItems: doc.deliveryItems?.filter(
+                      (itm) => itm.id !== row.original.id,
+                    ),
+                  })),
+                };
+              },
+            );
+          }}
+        />
+      </MaterialModal>,
+    ],
   };
   const { table } = useLocallyStoredTable<DeliveryItem>(
     'delivery-item-table',

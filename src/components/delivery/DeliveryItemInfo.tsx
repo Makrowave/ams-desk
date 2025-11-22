@@ -50,7 +50,7 @@ const DeliveryItemInfo = ({
             ...oldData,
             deliveryDocuments: oldData.deliveryDocuments.map((doc) => ({
               ...doc,
-              items: doc.items?.map((itm) =>
+              deliveryItems: doc.deliveryItems?.map((itm) =>
                 itm.id === item.id
                   ? {
                       ...itm,

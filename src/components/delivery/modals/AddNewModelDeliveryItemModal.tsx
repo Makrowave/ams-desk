@@ -44,7 +44,9 @@ const AddNewModelDeliveryItemModal = ({
               doc.id === deliveryDocument.id
                 ? {
                     ...doc,
-                    items: doc.items ? [...doc.items, data] : [data],
+                    deliveryItems: doc.deliveryItems
+                      ? [...doc.deliveryItems, data]
+                      : [data],
                   }
                 : doc,
             ),

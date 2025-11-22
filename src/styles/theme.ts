@@ -6,7 +6,7 @@ const work_sans = Work_Sans({
   weight: '400',
 });
 
-const themeOptions: ThemeOptions = {
+export const themeOptions = {
   palette: {
     mode: 'light',
     primary: {
@@ -32,6 +32,6 @@ const themeOptions: ThemeOptions = {
     },
   },
   typography: work_sans.style,
-};
+} as const satisfies ThemeOptions;
 
 export const theme = createTheme(themeOptions);

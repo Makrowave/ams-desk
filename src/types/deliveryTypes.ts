@@ -45,7 +45,7 @@ export type DeliveryDocument = {
   date: Date;
   name: string;
   deliveryId: number;
-  items?: DeliveryItem[] | null;
+  deliveryItems?: DeliveryItem[] | null;
 };
 
 export type Invoice = {
