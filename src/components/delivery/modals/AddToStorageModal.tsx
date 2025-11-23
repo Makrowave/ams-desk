@@ -4,7 +4,7 @@ import useModal from '../../../hooks/useModal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import URLS from '../../../util/urls';
-import { Delivery } from '../../../types/deliveryTypes';
+import { Delivery, DeliveryItem } from '../../../types/deliveryTypes';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 const AddToStorageModal = ({
   itemId,
@@ -15,8 +15,8 @@ const AddToStorageModal = ({
 }) => {
   const { Modal, setOpen } = useModal({
     button: (
-      <MenuItem key={1} sx={{ m: 0 }} color="warning">
-        <ListItemIcon>
+      <MenuItem key={1} sx={{ m: 0, bgcolor: 'warning.main', color: 'white' }}>
+        <ListItemIcon sx={{ color: 'white' }}>
           <LocalShippingIcon />
         </ListItemIcon>
         Wprowadź na magazyn
@@ -30,7 +30,7 @@ const AddToStorageModal = ({
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await axiosPrivate.post(
+      const response = await axiosPrivate.post<DeliveryItem>(
         URLS.DeliveryItemAddToStorage + itemId,
       );
       return response.data;
@@ -45,7 +45,9 @@ const AddToStorageModal = ({
             deliveryDocuments: oldData.deliveryDocuments.map((doc) => ({
               ...doc,
               deliveryItems: doc.deliveryItems?.map((itm) =>
-                itm.id === itemId ? data : itm,
+                itm.id === itemId
+                  ? { ...itm, storageCount: data.storageCount }
+                  : itm,
               ),
             })),
           };

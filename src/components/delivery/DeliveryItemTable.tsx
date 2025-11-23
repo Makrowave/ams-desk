@@ -163,7 +163,7 @@ const DeliveryItemTable = ({
     data: deliveryDocument.deliveryItems ?? [],
     renderTopToolbarCustomActions: () => (
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <AddModelDeliveryItemModal />
+        <AddModelDeliveryItemModal deliveryDocument={deliveryDocument} />
         <AddNewModelDeliveryItemModal deliveryDocument={deliveryDocument} />
       </Box>
     ),
@@ -191,13 +191,14 @@ const DeliveryItemTable = ({
         )}
       </React.Fragment>,
       <MaterialModal
+        key={1}
         button={
           <MenuItem
             sx={{ bgcolor: 'error.main', color: 'white', m: 0 }}
             key={1}
-            onClick={() => {
-              closeMenu();
-            }}
+            // onClick={() => {
+            //   closeMenu();
+            // }}
           >
             <ListItemIcon sx={{ color: 'white' }}>
               <Delete />
@@ -208,7 +209,13 @@ const DeliveryItemTable = ({
         label={'Usuń'}
       >
         <DeleteModal
+          key={2}
           refetchQueryKey={''}
+          info={
+            row.original.modelId !== undefined && row.original.storageCount > 0
+              ? 'Usunięcie nie spowoduje cofnięcia wprowadzenia na stan magazynowy'
+              : undefined
+          }
           id={row.original.id}
           url={URLS.DeliveryItems}
           onSuccess={() => {

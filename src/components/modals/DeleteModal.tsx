@@ -10,6 +10,7 @@ type DeleteModalProps = {
   refetchQueryKey: string;
   id: number | string;
   url: string;
+  info?: string;
   admin?: boolean;
   closeModal?: () => void;
   onSuccess?: (data?: any) => void;
@@ -19,6 +20,7 @@ const DeleteModal = ({
   refetchQueryKey,
   id,
   url,
+  info,
   admin = false,
   closeModal,
   onSuccess,
@@ -53,6 +55,7 @@ const DeleteModal = ({
     <>
       <ErrorDisplay message={error} isVisible={error !== ''} />
       <Typography variant={'h6'}>Czy na pewno?</Typography>
+      {info && <Typography>{info}</Typography>}
       <Button
         variant="contained"
         color={'error'}

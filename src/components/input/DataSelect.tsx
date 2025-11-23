@@ -32,7 +32,6 @@ const DataSelect = ({
       : false;
 
   const hasError = () => {
-    console.log({ value, defaultValue, validated, error });
     // Explicit error prop takes precedence
     if (error !== undefined) return error;
 

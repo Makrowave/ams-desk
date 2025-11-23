@@ -52,8 +52,6 @@ const FetchSelect = <T extends SelectOption>({
     return defaultName;
   };
 
-  console.log(data);
-
   return (
     <DataSelect
       defaultValue={defaultValue}

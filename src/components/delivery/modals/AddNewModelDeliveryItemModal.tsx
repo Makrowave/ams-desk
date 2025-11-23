@@ -5,7 +5,11 @@ import { useState } from 'react';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import URLS from '../../../util/urls';
-import { Delivery, DeliveryDocument } from '../../../types/deliveryTypes';
+import {
+  Delivery,
+  DeliveryDocument,
+  DeliveryItem,
+} from '../../../types/deliveryTypes';
 
 const AddNewModelDeliveryItemModal = ({
   deliveryDocument,
@@ -27,11 +31,14 @@ const AddNewModelDeliveryItemModal = ({
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => {
-      const result = await axiosPrivate.post(URLS.DeliveryItems, {
-        ean,
-        deliveryDocumentId: deliveryDocument.id,
-      });
-      return result.data;
+      const response = await axiosPrivate.post<DeliveryItem>(
+        URLS.DeliveryItems,
+        {
+          ean,
+          deliveryDocumentId: deliveryDocument.id,
+        },
+      );
+      return response.data;
     },
     onSuccess: (data) => {
       queryClient.setQueryData<Delivery>(

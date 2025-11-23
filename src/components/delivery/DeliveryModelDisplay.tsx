@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import { DeliveryModel } from '../../types/deliveryTypes';
 import React from 'react';
 import ColorPreview from '../table/ColorPreview';
@@ -11,15 +11,14 @@ const Detail = ({
   secondary: string | React.ReactNode | undefined;
 }) => (
   <Grid size={{ xs: 12, sm: 12, md: 6, lg: 3, xl: 2 }}>
-    <Typography variant="body2">{primary}</Typography>
-    <Box sx={{ width: 'fit-content' }}>
+    <Card sx={{ p: 2, minHeight: '80px' }}>
+      <Typography variant="body2">{primary}</Typography>
       {typeof secondary === 'string' ? (
         <Typography variant="body1">{secondary}</Typography>
       ) : (
         secondary
       )}
-      <Divider sx={{ bgcolor: 'primary.main' }} />
-    </Box>
+    </Card>
   </Grid>
 );
 
@@ -67,7 +66,7 @@ const DeliveryModelDisplay = ({ model }: DeliveryModelDisplayProps) => (
         </Box>
       }
     />
-    <Detail primary="Rozmiar koła" secondary={`${model?.wheelSize?.name}"`} />
+    <Detail primary="Rozmiar koła" secondary={`${model?.wheelSizeId}"`} />
     <Detail primary="Rozmiar ramy" secondary={model?.frameSize?.toString()} />
     <Detail primary="Cena" secondary={model?.price?.toString()} />
     <Detail primary="Producent" secondary={model?.manufacturer?.name} />
