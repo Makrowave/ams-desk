@@ -50,6 +50,14 @@ const DeliveryModelTable = ({
           ),
       },
       {
+        accessorKey: 'eanCode',
+        header: 'EAN',
+      },
+      {
+        accessorKey: 'productCode',
+        header: 'Kod produktu',
+      },
+      {
         accessorKey: 'frameSize',
         header: 'Rama',
       },
@@ -57,6 +65,7 @@ const DeliveryModelTable = ({
         accessorKey: 'wheelSize',
         header: 'Koła',
       },
+
       {
         accessorKey: 'price',
         header: 'Cena',

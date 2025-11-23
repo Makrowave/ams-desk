@@ -43,7 +43,7 @@ const NewInvoiceModal = () => {
         </IconButton>
       </Tooltip>
     ),
-    label: 'Nowa dostawa',
+    label: 'Nowa faktura',
   });
 
   const router = useRouter();

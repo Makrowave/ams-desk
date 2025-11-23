@@ -33,11 +33,16 @@ import React from 'react';
 import MaterialModal from '../modals/MaterialModal';
 import DeleteModal from '../modals/DeleteModal';
 import ThemedTable from '../table/ThemedTable';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 
 const DeliveryItemTable = ({
   deliveryDocument,
+  invalidDeliveryItems,
 }: {
   deliveryDocument: DeliveryDocument;
+  invalidDeliveryItems: number[] | null;
 }) => {
   const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
@@ -152,8 +157,27 @@ const DeliveryItemTable = ({
         accessorKey: 'deliveryModel.productCode',
         header: 'Kod produktu',
       },
+      {
+        id: 'validation',
+        header: 'Poprawność',
+        Cell: ({ row }) => {
+          if (row.original.modelId) {
+            return <CheckCircleIcon color="success" />;
+          }
+
+          if (invalidDeliveryItems === null) {
+            return <QuestionMarkIcon color="info" />;
+          }
+
+          return invalidDeliveryItems.includes(row.original.id) ? (
+            <PriorityHighIcon color="error" />
+          ) : (
+            <CheckCircleIcon color="success" />
+          );
+        },
+      },
     ],
-    [],
+    [invalidDeliveryItems],
   );
 
   const tableDef: MRT_TableOptions<DeliveryItem> = {
@@ -173,12 +197,6 @@ const DeliveryItemTable = ({
         item={row.original}
       />
     ),
-    enableColumnPinning: true,
-    // initialState: {
-    //   columnPinning: {
-    //     left: ['mrt-row-expand', 'mrt-row-actions'],
-    //   },
-    // },
     enableRowActions: true,
     positionActionsColumn: 'first',
     renderRowActionMenuItems: ({ closeMenu, row }) => [
@@ -196,9 +214,6 @@ const DeliveryItemTable = ({
           <MenuItem
             sx={{ bgcolor: 'error.main', color: 'white', m: 0 }}
             key={1}
-            // onClick={() => {
-            //   closeMenu();
-            // }}
           >
             <ListItemIcon sx={{ color: 'white' }}>
               <Delete />

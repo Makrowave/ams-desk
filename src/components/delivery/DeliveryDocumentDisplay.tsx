@@ -12,9 +12,11 @@ import { useQueryClient } from '@tanstack/react-query';
 const DeliveryDocumentDisplay = ({
   deliveryDocument,
   deliveryId,
+  invalidDeliveryItems,
 }: {
   deliveryDocument: DeliveryDocument;
   deliveryId: number;
+  invalidDeliveryItems: number[] | null;
 }) => {
   const queryClient = useQueryClient();
   const handleDelete = () => {
@@ -66,7 +68,10 @@ const DeliveryDocumentDisplay = ({
             </MaterialModal>
           </Box>
         </Box>
-        <DeliveryItemTable deliveryDocument={deliveryDocument} />
+        <DeliveryItemTable
+          deliveryDocument={deliveryDocument}
+          invalidDeliveryItems={invalidDeliveryItems}
+        />
       </Stack>
     </Card>
   );

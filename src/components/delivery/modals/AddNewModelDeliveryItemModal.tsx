@@ -10,6 +10,8 @@ import {
   DeliveryDocument,
   DeliveryItem,
 } from '../../../types/deliveryTypes';
+import ErrorDisplay from '../../error/ErrorDisplay';
+import { AxiosError } from 'axios';
 
 const AddNewModelDeliveryItemModal = ({
   deliveryDocument,
@@ -17,6 +19,7 @@ const AddNewModelDeliveryItemModal = ({
   deliveryDocument: DeliveryDocument;
 }) => {
   const [ean, setEan] = useState<string>('');
+  const [error, setError] = useState<string>('');
 
   const { Modal, setOpen } = useModal({
     button: (
@@ -62,11 +65,31 @@ const AddNewModelDeliveryItemModal = ({
       );
       setOpen(false);
       setEan('');
+      setError('');
+    },
+    onError: (err: AxiosError) => {
+      switch (err.response?.status) {
+        case 409:
+          setError(
+            'Model o podanym EAN już istnieje w dostawie. Dodaj go z listy modeli.',
+          );
+          break;
+        case 401:
+          setError('');
+          break;
+        default:
+          if ((err.response?.status ?? 0) >= 400) {
+            setError('Wystąpił błąd podczas dodawania modelu.');
+          } else {
+            setError('Brak połączenia z serwerem.');
+          }
+      }
     },
   });
 
   return (
     <Modal>
+      <ErrorDisplay message={error} isVisible={!!error} />
       <TextField
         value={ean}
         onChange={(e) => setEan(e.target.value)}

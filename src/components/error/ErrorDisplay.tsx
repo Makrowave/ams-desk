@@ -1,3 +1,5 @@
+import { Box, Typography } from '@mui/material';
+
 type ErrorDisplayProps = {
   message: string;
   isVisible: boolean;
@@ -5,12 +7,24 @@ type ErrorDisplayProps = {
 
 const ErrorDisplay = ({ message, isVisible }: ErrorDisplayProps) => {
   return isVisible ? (
-    <div className="bg-red-300 p-2 mt-2  border text-center text-wrap self-center w-full rounded-lg">
-      <span className="text-red-800 text-xl">{message}</span>
-    </div>
-  ) : (
-    <></>
-  );
+    <Box
+      sx={{
+        bgcolor: 'error.light',
+        p: 1,
+        mt: 2,
+        border: 1,
+        borderColor: 'error.main',
+        textAlign: 'center',
+        alignSelf: 'center',
+        maxWidth: '300px',
+        borderRadius: 2,
+      }}
+    >
+      <Typography variant="h6" color="error.contrastText">
+        {message}
+      </Typography>
+    </Box>
+  ) : null;
 };
 
 export default ErrorDisplay;

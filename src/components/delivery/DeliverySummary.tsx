@@ -57,7 +57,12 @@ const DeliverySummary = ({ delivery }: { delivery: Delivery }) => {
           <ListItem>
             <ListItemText
               primary="Data rozpoczęcia"
-              secondary={delivery.startDate}
+              secondary={
+                <DateDisplay
+                  typographyProps={{ variant: 'body2' }}
+                  date={delivery.startDate}
+                />
+              }
             />
           </ListItem>
         )}
@@ -65,7 +70,12 @@ const DeliverySummary = ({ delivery }: { delivery: Delivery }) => {
           <ListItem>
             <ListItemText
               primary="Data zakończenia"
-              secondary={delivery.finishDate}
+              secondary={
+                <DateDisplay
+                  typographyProps={{ variant: 'body2' }}
+                  date={delivery.finishDate}
+                />
+              }
             />
           </ListItem>
         )}

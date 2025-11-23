@@ -7,15 +7,21 @@ import DeliveryDocumentDisplay from './DeliveryDocumentDisplay';
 import {
   getDeliveryStatusColor,
   getDeliveryStatusText,
+  validateTemporaryModels,
 } from '../../util/deliveryHelpers';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import URLS, { URLKEYS } from '../../util/urls';
 import AddDeliveryDocumentModal from './modals/AddDeliveryDocumentModal';
+import { useState } from 'react';
 
 const DeliveryDisplay = ({ delivery }: { delivery: Delivery }) => {
   const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
+
+  const [invalidDeliveryItems, setInvalidDeliveryItems] = useState<
+    number[] | null
+  >(null);
 
   const statusChangeMutation = useMutation({
     mutationFn: async ({
@@ -66,6 +72,15 @@ const DeliveryDisplay = ({ delivery }: { delivery: Delivery }) => {
   };
 
   const handleFinish = () => {
+    const validationResult = validateTemporaryModels(delivery);
+    setInvalidDeliveryItems(validationResult);
+
+    console.log(validationResult);
+
+    if (validationResult.length > 0) {
+      return;
+    }
+
     statusChangeMutation.mutate({ id: delivery.id, action: 'finish' });
   };
 
@@ -152,7 +167,7 @@ const DeliveryDisplay = ({ delivery }: { delivery: Delivery }) => {
           <Typography variant="h5" component={'h3'} sx={{ mb: 2 }}>
             Dokumenty dostawy
           </Typography>
-          <AddDeliveryDocumentModal delivery={delivery} />
+          <AddDeliveryDocumentModal delivery={delivery} key={delivery.status} />
         </Box>
         {delivery.deliveryDocuments &&
           delivery.deliveryDocuments.map((document) => (
@@ -160,6 +175,7 @@ const DeliveryDisplay = ({ delivery }: { delivery: Delivery }) => {
               key={document.id}
               deliveryId={delivery.id}
               deliveryDocument={document}
+              invalidDeliveryItems={invalidDeliveryItems}
             />
           ))}
       </Stack>

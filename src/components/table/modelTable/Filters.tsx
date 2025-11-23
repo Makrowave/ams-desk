@@ -253,6 +253,7 @@ export const prepareFilters = (filters: typeof defaultFilters) => {
   return Object.fromEntries(
     entries.map(([key, value]) => {
       if (key === 'isWoman') {
+        if (value === 0) return [key, undefined];
         if (value === 1) return [key, 'false'];
         return [key, 'true'];
       }
